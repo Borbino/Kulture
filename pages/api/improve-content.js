@@ -19,7 +19,12 @@ const sanity = createClient({
  */
 async function improveWithHuggingFace(originalContent, ceoFeedback) {
   const HF_API_URL = 'https://api-inference.huggingface.co/models/microsoft/phi-2'
-  const HF_TOKEN = process.env.HUGGINGFACE_API_TOKEN || 'hf_' // 무료 토큰
+  const HF_TOKEN = process.env.HUGGINGFACE_API_TOKEN
+  
+  if (!HF_TOKEN || HF_TOKEN.length < 10) {
+    console.warn('[Improve Content] Invalid HF token, using fallback')
+    return null
+  }
   
   const prompt = `당신은 K-Culture 전문 콘텐츠 편집자입니다. CEO의 피드백을 바탕으로 기사를 개선하세요.
 
@@ -36,48 +41,77 @@ ${ceoFeedback}
 `
 
   try {
-    const response = await fetch(HF_API_URL, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${HF_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        inputs: prompt,
-        parameters: {
-          max_new_tokens: 800,
-          temperature: 0.7,
-          top_p: 0.9,
-          do_sample: true,
-        },
-      }),
-    })
+    // Retry logic with exponential backoff
+    let lastError
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 30000) // 30초 (HF cold start)
+        
+        const response = await fetch(HF_API_URL, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${HF_TOKEN}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            inputs: prompt,
+            parameters: {
+              max_new_tokens: 800,
+              temperature: 0.7,
+              top_p: 0.9,
+              do_sample: true,
+            },
+          }),
+          signal: controller.signal,
+        })
+        
+        clearTimeout(timeoutId)
+        
+        if (!response.ok) {
+          if (response.status === 503) {
+            // Model is loading, wait and retry
+            const delay = 5000 * Math.pow(2, attempt) // 5s, 10s, 20s
+            console.log(`[HF] Model loading, retry ${attempt + 1}/3 after ${delay}ms`)
+            await new Promise(resolve => setTimeout(resolve, delay))
+            continue
+          }
+          throw new Error(`HuggingFace API error: ${response.status}`)
+        }
 
-    if (!response.ok) {
-      throw new Error(`HuggingFace API error: ${response.status}`)
-    }
+        const result = await response.json()
+        const generatedText = result[0]?.generated_text || ''
+        
+        // 개선된 제목과 본문 파싱
+        const lines = generatedText.split('\n').filter(l => l.trim())
+        let improvedTitle = originalContent.title
+        let improvedBody = originalContent.body
+        
+        for (let i = 0; i < lines.length; i++) {
+          if (lines[i].includes('개선된 제목:')) {
+            improvedTitle = lines[i + 1]?.trim() || improvedTitle
+          }
+          if (lines[i].includes('개선된 본문:')) {
+            improvedBody = lines.slice(i + 1).join('\n').trim() || improvedBody
+          }
+        }
 
-    const result = await response.json()
-    const generatedText = result[0]?.generated_text || ''
-    
-    // 개선된 제목과 본문 파싱
-    const lines = generatedText.split('\n').filter(l => l.trim())
-    let improvedTitle = originalContent.title
-    let improvedBody = originalContent.body
-    
-    for (let i = 0; i < lines.length; i++) {
-      if (lines[i].includes('개선된 제목:')) {
-        improvedTitle = lines[i + 1]?.trim() || improvedTitle
+        return { title: improvedTitle, body: improvedBody }
+      } catch (error) {
+        lastError = error
+        if (attempt < 2) {
+          const delay = 1000 * Math.pow(2, attempt)
+          console.warn(`[HF] Attempt ${attempt + 1}/3 failed: ${error.message}, retrying after ${delay}ms`)
+          await new Promise(resolve => setTimeout(resolve, delay))
+        }
       }
-      if (lines[i].includes('개선된 본문:')) {
-        improvedBody = lines.slice(i + 1).join('\n').trim() || improvedBody
-      }
     }
-
-    return { title: improvedTitle, body: improvedBody }
-  } catch (error) {
-    console.error('HuggingFace API failed, using fallback:', error)
+    
+    console.error('HuggingFace API failed after 3 attempts:', lastError)
     // Fallback: 규칙 기반 개선
+    return applyRuleBasedImprovement(originalContent, ceoFeedback)
+  } catch (error) {
+    console.error('Unexpected error in improveWithHuggingFace:', error)
     return applyRuleBasedImprovement(originalContent, ceoFeedback)
   }
 }
