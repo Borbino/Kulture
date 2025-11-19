@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react'
-import { useSiteSettings, updateSiteSettings } from '@/lib/settings'
+import { useSiteSettings, updateSiteSettings } from '../../lib/settings.js'
 import styles from './settings.module.css'
 
 export default function AdminSettings() {

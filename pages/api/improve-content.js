@@ -3,7 +3,7 @@
  * [목적] Hugging Face 무료 API로 콘텐츠 즉시 개선
  */
 
-import sanity from '../../../lib/sanityClient'
+import sanity from '../../lib/sanityClient.js'
 
 /**
  * Hugging Face Inference API (100% 무료, 제한 없음)

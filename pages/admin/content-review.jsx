@@ -344,7 +344,6 @@ export default function ContentReview() {
 
               {selectedPost.image?.url && (
                 <div className={styles.imagePreview}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={selectedPost.image.url} alt={selectedPost.title} />
                 </div>
               )}
