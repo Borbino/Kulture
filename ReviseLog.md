@@ -39,7 +39,7 @@
 - 변경 대상 파일/경로: `package.json`, `tsconfig.json`, `next.config.js`, `.env.example`, `.eslintrc.json`, `.prettierrc`, `lib/sanityClient.js`, `lib/schemas/*.js`, `jest.config.js`, `docs/*.md`, `.gitignore`, `.vscode/*`
 - 변경 요약: 프로젝트 기초 구조 및 환경 세팅 완료 (Next.js + Sanity + TypeScript + 테스트 + 보안 정책)
 - 변경 상세 설명: README와 WORKGUIDE 기반으로 프로젝트 기본 폴더 구조(/src, /components, /utils, /lib, /pages, /test, /docs), Next.js 설정, Sanity CMS 클라이언트 및 스키마(Post/Category/Author), TypeScript, ESLint/Prettier, Jest 테스트 환경, 환경변수 관리 가이드, 개인정보보호 및 저작권 정책 초안을 생성. 모든 설정은 프로젝트 원칙 v12.0을 준수하며 무료 플랜(Vercel/Sanity/GitHub) 최대 활용 구조로 설계됨.
-- 관련 PR/이슈: (다음 PR 예정)
+- 관련 PR/이슈: https://github.com/Borbino/Kulture/pull/2
 
 ---
 
