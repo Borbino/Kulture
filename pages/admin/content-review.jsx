@@ -5,6 +5,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { createClient } from '@sanity/client'
 import styles from './content-review.module.css'
 
@@ -352,7 +353,13 @@ export default function ContentReview() {
 
               {selectedPost.image?.url && (
                 <div className={styles.imagePreview}>
-                  <img src={selectedPost.image.url} alt={selectedPost.title} />
+                  <Image
+                    src={selectedPost.image.url}
+                    alt={selectedPost.title}
+                    width={800}
+                    height={450}
+                    style={{ objectFit: 'cover' }}
+                  />
                 </div>
               )}
 
