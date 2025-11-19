@@ -171,11 +171,12 @@ export default async function handler(req, res) {
  * 소셜 미디어 포스트 생성
  */
 function generateSocialPosts(content) {
-  const title = content.title;
+  const title = content.title
+  const subtitle = content.subtitle || ''
 
   return {
     twitter: `🔥 ${title}\n\n최신 K-Culture 트렌드를 확인하세요!\n\n#KCulture #Korean #Trending #KPop #한류`,
     instagram: `${title} 📱\n\n요즘 가장 핫한 K-Culture 트렌드! 자세한 내용은 프로필 링크에서 확인하세요 ✨\n\n#한류 #KCulture #트렌드 #Korean #KPop #Viral #Trending #케이팝 #케이컬처`,
-    facebook: `${title}\n\n최근 소셜 미디어를 뜨겁게 달구고 있는 새로운 한류 트렌드에 대해 알아보세요. 이번 트렌드는 특히 글로벌 팬들 사이에서 큰 반향을 일으키고 있습니다.\n\n${content.subtitle}\n\n자세한 내용은 링크를 클릭해주세요!`,
-  };
+    facebook: `${title}\n\n최근 소셜 미디어를 뜨겁게 달구고 있는 새로운 한류 트렌드에 대해 알아보세요. 이번 트렌드는 특히 글로벌 팬들 사이에서 큰 반향을 일으키고 있습니다.${subtitle ? `\n\n${subtitle}` : ''}\n\n자세한 내용은 링크를 클릭해주세요!`,
+  }
 }
