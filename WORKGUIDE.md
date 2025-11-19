@@ -8,6 +8,44 @@
 - 대형 커뮤니티/플랫폼을 **최고 수준 자동화·수익성·트래픽·사용자 경험·법적 신뢰성** 기준으로 구축
 - 모든 운영/코드/의사결정은 **'프로젝트 원칙 v12.0'** 및 최신 글로벌 윤리/법 기준을 100% 우선 적용
 
+### ⚙️ 관리자 설정 시스템 (원칙 12)
+
+모든 기능은 CEO가 관리자 페이지에서 직접 제어할 수 있도록 설계:
+
+- **접속**: `https://kulture.wiki/admin/settings`
+- **인증**: 환경변수 `NEXT_PUBLIC_ADMIN_PASSWORD` (기본: kulture2025)
+- **설정 가능 항목**:
+  - 콘텐츠 제한 비율: 10~100%
+  - 광고 시청 시간: 5~120초
+  - 세션 유효 시간: 10~1440분
+  - 댓글, 인증, 점검 모드 등 모든 기능 On/Off
+
+**신규 기능 추가 시 필수 4단계**:
+1. `lib/schemas/siteSettings.js`에 필드 추가
+2. `lib/settings.js` DEFAULT_SETTINGS 업데이트
+3. `pages/admin/settings.jsx`에 UI 추가
+4. 컴포넌트에서 `useSiteSettings()` 사용
+
+상세: `docs/ADMIN_SETTINGS.md`
+
+### 📊 K-Culture 콘텐츠 수집 정책 (원칙 13)
+
+**수집 대상**: K-Pop, K-Drama, K-Movie, K-Food, K-Beauty, K-Fashion, K-Game, K-Webtoon 등
+
+**합법적 수집 방법**:
+- ✅ 공식 API 우선 사용 (YouTube Data API, Twitter API 등)
+- ✅ RSS/Atom 피드 활용
+- ✅ robots.txt 준수 및 Rate Limiting
+- ✅ 출처 명확 표기 + 원본 링크 제공
+- ✅ 요약/재구성 (원문 복사 금지)
+- ❌ VPN 우회 금지
+- ❌ 과도한 크롤링 금지
+- ❌ 개인정보 무단 수집 금지
+
+**2차 검증 시스템**: 팩트체크 및 신뢰도 평가 필수
+
+상세: `docs/CRAWLER_POLICY.md`
+
 ---
 
 ## 2. 이해관계자별 실전 시나리오 + 직접 경험 매뉴얼

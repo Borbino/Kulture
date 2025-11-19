@@ -60,6 +60,33 @@
 
 - 중요: 모든 변경 기록은 `ReviseLog.md`에 남겨야 합니다(날짜·작업자·이유). ReviseLog에 기록한 후에는 관련 문서에는 해당 ReviseLog 항목을 참조하는 방식으로 변경 이력을 관리하세요.
 
+### 12. 관리자 설정 시스템 원칙 (원칙 12)
+
+- **모든 신규 기능**은 관리자 페이지(`/admin/settings`)에서 On/Off 및 조정이 가능하도록 설계해야 한다.
+- 기능 구현 시 4단계 패턴 준수:
+  1. Sanity `siteSettings` 스키마에 필드 추가
+  2. `lib/settings.js`의 `DEFAULT_SETTINGS`에 기본값 추가
+  3. `pages/admin/settings.jsx`에 관리 UI 추가 (토글/슬라이더/체크박스)
+  4. 컴포넌트에서 `useSiteSettings()` Hook으로 설정 조회 및 적용
+- CEO가 코드 수정 없이 실시간으로 모든 기능을 제어할 수 있어야 한다.
+- 상세 가이드: `docs/ADMIN_SETTINGS.md` 참조
+
+### 13. K-Culture 콘텐츠 수집 원칙 (원칙 13)
+
+- **수집 범위**: K-Pop, K-Drama, K-Movie, K-Food, K-Beauty, K-Fashion, K-Game, K-Webtoon 등 한국 문화 전반
+- **합법적 수집 방법 우선**:
+  1. 공식 API 사용 (YouTube Data API, Twitter API, Naver API 등)
+  2. RSS/Atom 피드 활용
+  3. robots.txt 준수 및 Rate Limiting 적용
+  4. 공식 출처 명확 표기 및 원본 링크 제공
+- **저작권 보호**:
+  - 원문 전체 복사 금지, 요약/재구성만 허용
+  - Fair Use 원칙 준수 (비평, 연구, 뉴스 보도 목적)
+  - 저작권자 요청 시 즉시 삭제 체계 구축
+- **2차 검증 시스템**: 수집된 정보의 팩트체크 및 신뢰도 평가
+- **카테고리별 분류**: 각 K-Culture 분야별 체계적인 정보 정리
+- 상세 가이드: `docs/CRAWLER_POLICY.md` 참조
+
 **도메인 정보**
 
 - 도메인: `kulture.wiki` (프로젝트 소유자가 구매 및 소유)
