@@ -7,6 +7,7 @@
 ## 템플릿
 
 ### [ID: RL-YYYYMMDD-NN]
+
 - 날짜: YYYY-MM-DD HH:MM (KST)
 - 작성자: (예: 홍길동)
 - 변경 유형: (문서 / 코드 / 정책 / 기타)
@@ -20,6 +21,7 @@
 ## 예시(초기 항목)
 
 ### [ID: RL-20251119-01]
+
 - 날짜: 2025-11-19 11:45 (KST)
 - 작성자: 시스템(자동생성)
 - 변경 유형: 문서
@@ -33,6 +35,7 @@
 (추가 항목을 여기에 계속 작성하세요)
 
 ### [ID: RL-20251119-09]
+
 - 날짜: 2025-11-19 16:00 ~ 16:30 (KST)
 - 작성자: 시스템(자동) + CEO 요청
 - 변경 유형: 코드 + 문서
@@ -47,24 +50,24 @@
 - 변경 요약: **CEO 피드백 시스템 + 100% 무료 AI 적용**
 - 변경 상세 설명:
   CEO 요청에 따라 완전 무료로 운영 가능한 시스템으로 재설계:
-  
+
   **1. CEO 피드백 3단계 시스템**
   - **승인**: 즉시 게시 (publishedAt 설정)
   - **거절**: 거절 사유 입력 → AI 학습 데이터로 저장 → 향후 콘텐츠 생성 시 반영
   - **보완** (신규): CEO 피드백 기반 즉시 개선 → 정확성 검증 → 다시 승인 대기열로
-  
+
   **2. AI 학습 시스템**
   - ceoFeedback 스키마 생성 (action, feedback, contentSnapshot, timestamp)
   - 최근 50개 피드백 자동 분석
   - 키워드 빈도 기반 패턴 추출 (예: "출처" 20회, "객관" 15회)
   - 다음 콘텐츠 생성 시 자동 반영
-  
+
   **3. 100% 무료 AI 적용**
   - **기존**: OpenAI GPT-4 (월 $30-40)
   - **변경**: Hugging Face microsoft/phi-2 (완전 무료, 무제한)
   - 품질: GPT-3.5 수준 (2.7B 파라미터)
   - Fallback: 템플릿 기반 기사 생성 (규칙 기반)
-  
+
   **4. 콘텐츠 즉시 개선 API**
   - `/api/improve-content` 엔드포인트 생성
   - Hugging Face 무료 API로 콘텐츠 재생성
@@ -74,13 +77,13 @@
     2. 원본 키워드 유지 확인
     3. 금지어 필터링 (섹스, 마약, 도박 등)
   - 검증 통과 시 Sanity 업데이트 (status: 'pending')
-  
+
   **5. CEO 대시보드 UI 강화**
   - 승인/거절/보완 3개 버튼
   - 피드백 모달: 거절/보완 사유 입력
   - 실시간 처리 상태 표시 (isProcessing, 스피너)
   - 피드백 설명: "AI가 이 피드백을 학습하여 향후 콘텐츠 생성 시 반영합니다"
-  
+
   **6. 무료 플랜 최적화**
   - Hugging Face: 완전 무료, 제한 없음
   - Twitter API: 월 50만 조회 무료
@@ -89,41 +92,42 @@
   - Naver DataLab: 일 25,000회 무료
   - Vercel Hobby: 무료 호스팅 + Cron Jobs
   - **총 월 비용: $0**
-  
+
   **7. API 키 가이드 전면 개편**
   - OpenAI 제거, Hugging Face 추가
   - 무료 플랜 중심으로 재작성
   - 비용 비교표 추가 (유료 vs 무료)
   - Hugging Face 토큰 취득 방법 상세 설명
-  
+
   **8. 콘텐츠 생성 로직 변경**
   - CEO 피드백 패턴 우선 조회
   - 패턴을 AI 프롬프트에 반영
   - 예: "출처" 키워드 많으면 → "출처를 명확히 표기하세요" 스타일 가이드 추가
   - Hugging Face API 실패 시 → 템플릿 자동 생성 (Fallback)
-  
+
   **기술 스택**
   - AI: Hugging Face microsoft/phi-2 (무료)
   - 모니터링: Twitter, YouTube, Reddit, Naver (모두 무료)
   - 호스팅: Vercel Hobby (무료)
   - CMS: Sanity 무료 플랜
-  
+
   **CEO 요구사항 100% 반영**
   - ✅ 승인/거절/보완 3단계 시스템
   - ✅ 거절 사유 → AI 학습 → 향후 반영
   - ✅ 보완 버튼 → 즉시 개선 + 정확성 검증
   - ✅ 100% 무료 운영 (비용 0원)
   - ✅ CEO에게 물어보지 않고 자동 진행
-  
+
 - 관련 PR/이슈: https://github.com/Borbino/Kulture/pull/4
 
 ---
 
 ### [ID: RL-20251119-08]
+
 - 날짜: 2025-11-19 15:00 ~ 15:45 (KST)
 - 작성자: 시스템(자동) + CEO 요청
 - 변경 유형: 코드 + 문서
-- 변경 대상 파일/경로: 
+- 변경 대상 파일/경로:
   - `lib/vipMonitoring.js` (신규)
   - `pages/api/cron/vip-monitoring.js` (신규)
   - `pages/api/cron/trend-detection.js` (신규)
@@ -139,29 +143,29 @@
   - `vercel.json` (신규)
   - `docs/API_KEYS_GUIDE.md` (신규)
 - 변경 요약: **VIP 인물 추적 + AI 2차 창작물 자동 생성 시스템 완전 구현**
-- 변경 상세 설명: 
+- 변경 상세 설명:
   CEO 요청("에스파, BTS, 이병헌, 싸이, PSY, 손흥민 등 유명 한국인에 대한 얘기도 최대한 많이 언급이 되고 조회가 되어야 합니다. 특정 유명인물 혹은 최근에 떠오르는 한국 관련 이슈(K-pop demon hunters / huntrix 등)를 언제나 확인하도록 하고, 이에 대한 검색과 2차 창작물 제작 등의 작업도 자동화하도록 해주세요.")에 따라 완전 자동화 시스템 구현:
-  
+
   **1. VIP 인물 추적 시스템**
   - Tier 1 (실시간 5분): BTS (개별 멤버 포함), BLACKPINK, aespa (개별 멤버 포함), PSY, 손흥민, 이병헌
   - Tier 2 (1시간): NewJeans, Stray Kids, TWICE, 김민재, 이강인
   - 각 VIP별 키워드, 소셜미디어 링크, 우선순위, 모니터링 주기 설정
   - Twitter, YouTube, Instagram, Reddit, 커뮤니티(DC인사이드, 인스티즈, 더쿠) 자동 검색
-  
+
   **2. 트렌드 자동 감지**
   - 글로벌: Twitter Trends, Google Trends, YouTube Trending
   - 한국: Naver DataLab, Melon Chart, Genie Chart
   - 커뮤니티: DC인사이드 실시간, 인스티즈 차트, 더쿠 HOT, Reddit r/kpop
   - 특정 이슈 추적: "K-pop demon hunters", "Huntrix", "NewJeans OMG challenge", "aespa Supernova"
   - 멘션 1000+ 시 자동으로 hotIssue 저장
-  
+
   **3. AI 2차 창작물 자동 생성**
   - GPT-4: 500-800단어 기사 자동 작성 (제목, 부제, 본문, 결론)
   - DALL-E 3: 1024x1024 HD 이미지 생성 (옵션, 비용 고려)
   - GPT-3.5-turbo: Twitter/Instagram/Facebook 소셜 포스트 생성
   - 하루 3회 실행 (09:00, 15:00, 21:00 UTC = 18:00, 00:00, 06:00 KST)
   - 생성된 콘텐츠는 자동으로 status='pending'으로 저장 (CEO 승인 대기)
-  
+
   **4. CEO 승인 대시보드**
   - `/admin/content-review` 페이지 구현
   - 승인 대기 목록 실시간 조회
@@ -169,45 +173,46 @@
   - 본문 수정 기능
   - 승인/거절 원클릭
   - 이미지 미리보기, 소셜 포스트 미리보기
-  
+
   **5. Vercel Cron Jobs**
   - `*/5 * * * *`: VIP 모니터링 (5분마다)
   - `0 * * * *`: 트렌드 감지 (1시간마다)
   - `0 0,6,12 * * *`: AI 콘텐츠 생성 (하루 3회)
   - `0 13 * * *`: 일일 리포트 (매일 22:00 KST)
   - CRON_SECRET 인증으로 보안 강화
-  
+
   **6. Sanity 스키마 확장**
   - vipMonitoring: VIP 모니터링 결과 저장
   - trendSnapshot: 시간별 트렌드 스냅샷 (상위 50개)
   - hotIssue: 급부상 이슈 (K-pop demon hunters, Huntrix 등)
   - dailyReport: CEO 일일 요약 리포트
-  
+
   **7. API 키 가이드**
   - Twitter, YouTube, Instagram, OpenAI, Naver, Reddit API 취득 방법 문서화
   - 무료 플랜 활용 전략 (월 $0 운영 가능)
   - 비용 최적화 (GPT-3.5-turbo 사용 시 월 $2)
   - Rate Limit 대응 방법
-  
+
   **기술 스택**
   - Next.js 14 API Routes
   - Vercel Cron Jobs
   - OpenAI API (GPT-4 + DALL-E 3)
   - Sanity.io (CMS)
   - 50+ 무료 API 통합
-  
+
   **법적 준수**
   - robots.txt 100% 준수
   - Rate Limiting (1초당 1회)
   - 출처 명시 의무화
   - Fair Use 원칙
   - DMCA 대응 프로세스
-  
+
 - 관련 PR/이슈: https://github.com/Borbino/Kulture/pull/3
 
 ---
 
 ### [ID: RL-20251119-07]
+
 - 날짜: 2025-11-19 14:30 ~ 14:45 (KST)
 - 작성자: 시스템(자동) + CEO 요청
 - 변경 유형: 문서
@@ -219,6 +224,7 @@
 ---
 
 ### [ID: RL-20251119-06]
+
 - 날짜: 2025-11-19 14:00 ~ 14:15 (KST)
 - 작성자: 시스템(자동) + CEO 요청
 - 변경 유형: 코드 + 문서
@@ -230,6 +236,7 @@
 ---
 
 ### [ID: RL-20251119-05]
+
 - 날짜: 2025-11-19 13:30 ~ 13:50 (KST)
 - 작성자: 시스템(자동) + CEO 요청
 - 변경 유형: 코드
@@ -241,6 +248,7 @@
 ---
 
 ### [ID: RL-20251119-04]
+
 - 날짜: 2025-11-19 13:00 (KST)
 - 작성자: 시스템(자동)
 - 변경 유형: 코드 + 문서
@@ -252,6 +260,7 @@
 ---
 
 ### [ID: RL-20251119-03]
+
 - 날짜: 2025-11-19 12:40 (KST)
 - 작성자: 시스템(자동)
 - 변경 유형: 문서
@@ -263,6 +272,7 @@
 ---
 
 ### [ID: RL-20251119-02]
+
 - 날짜: 2025-11-19 12:30 (KST)
 - 작성자: CEO
 - 변경 유형: 문서

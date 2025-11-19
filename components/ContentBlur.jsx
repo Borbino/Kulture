@@ -74,9 +74,7 @@ export default function ContentBlur({ children, isAuthenticated, threshold = 0.5
 
   return (
     <div className={styles.container}>
-      <div className={styles.visibleContent}>
-        {children}
-      </div>
+      <div className={styles.visibleContent}>{children}</div>
       <div className={styles.blurOverlay}>
         {isWatchingAd ? (
           <div className={styles.adContainer}>
@@ -90,19 +88,23 @@ export default function ContentBlur({ children, isAuthenticated, threshold = 0.5
               <p className={styles.adNote}>광고가 끝나면 자동으로 전체 내용을 볼 수 있습니다</p>
               <div className={styles.adContent}>
                 {/* Google AdSense 광고 영역 */}
-                <ins className="adsbygoogle"
-                     style={{ display: 'block' }}
-                     data-ad-client={adSenseClientId}
-                     data-ad-slot="0000000000"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
+                <ins
+                  className="adsbygoogle"
+                  style={{ display: 'block' }}
+                  data-ad-client={adSenseClientId}
+                  data-ad-slot="0000000000"
+                  data-ad-format="auto"
+                  data-full-width-responsive="true"
+                ></ins>
               </div>
             </div>
           </div>
         ) : showAdOption && adFeatureEnabled ? (
           <div className={styles.lockMessage}>
             <h3>💡 광고를 시청하고 무료로 보기</h3>
-            <p>{adDuration}초 광고 시청 후 {sessionDuration}분 동안 모든 콘텐츠를 볼 수 있습니다</p>
+            <p>
+              {adDuration}초 광고 시청 후 {sessionDuration}분 동안 모든 콘텐츠를 볼 수 있습니다
+            </p>
             <div className={styles.buttons}>
               <button className={styles.adBtn} onClick={handleWatchAd}>
                 광고 보고 무료로 이용하기

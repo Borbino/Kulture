@@ -4,9 +4,7 @@
 import styles from './CommentList.module.css'
 
 export default function CommentList({ comments, isAuthenticated }) {
-  const visibleCount = isAuthenticated 
-    ? comments.length 
-    : Math.floor(comments.length * 0.4)
+  const visibleCount = isAuthenticated ? comments.length : Math.floor(comments.length * 0.4)
 
   const visibleComments = comments.slice(0, visibleCount)
   const hiddenCount = comments.length - visibleCount
@@ -14,7 +12,7 @@ export default function CommentList({ comments, isAuthenticated }) {
   return (
     <div className={styles.container}>
       <h3>댓글 {comments.length}개</h3>
-      
+
       {visibleComments.map(comment => (
         <div key={comment.id} className={styles.comment}>
           <div className={styles.author}>{comment.author}</div>

@@ -44,6 +44,7 @@ https://kulture.wiki/admin/settings
 - 환경변수로 변경 가능: `NEXT_PUBLIC_ADMIN_PASSWORD`
 
 **비밀번호 변경 방법:**
+
 ```bash
 # Vercel 환경변수 설정
 NEXT_PUBLIC_ADMIN_PASSWORD=새로운비밀번호
@@ -65,24 +66,27 @@ NEXT_PUBLIC_ADMIN_PASSWORD=새로운비밀번호
 
 #### 설정 항목
 
-| 항목 | 타입 | 범위 | 기본값 | 설명 |
-|------|------|------|--------|------|
-| **기능 활성화** | 토글 | On/Off | On | 콘텐츠 제한 전체 기능 활성화 |
-| **비회원 노출 비율** | 슬라이더 | 10~100% | 40% | 비회원에게 보여줄 콘텐츠 비율 |
-| **본문 텍스트 적용** | 체크박스 | On/Off | On | 게시물 본문에 제한 적용 |
-| **댓글 적용** | 체크박스 | On/Off | On | 댓글에 제한 적용 |
-| **이미지 적용** | 체크박스 | On/Off | On | 이미지에 제한 적용 |
-| **무료 이미지 개수** | 숫자 | 0~10 | 2 | 제한 없이 볼 수 있는 이미지 수 |
+| 항목                 | 타입     | 범위    | 기본값 | 설명                           |
+| -------------------- | -------- | ------- | ------ | ------------------------------ |
+| **기능 활성화**      | 토글     | On/Off  | On     | 콘텐츠 제한 전체 기능 활성화   |
+| **비회원 노출 비율** | 슬라이더 | 10~100% | 40%    | 비회원에게 보여줄 콘텐츠 비율  |
+| **본문 텍스트 적용** | 체크박스 | On/Off  | On     | 게시물 본문에 제한 적용        |
+| **댓글 적용**        | 체크박스 | On/Off  | On     | 댓글에 제한 적용               |
+| **이미지 적용**      | 체크박스 | On/Off  | On     | 이미지에 제한 적용             |
+| **무료 이미지 개수** | 숫자     | 0~10    | 2      | 제한 없이 볼 수 있는 이미지 수 |
 
 #### 사용 예시
 
 **시나리오 1: 전체 공개 이벤트**
+
 - 기능 활성화: Off → 모든 콘텐츠 제한 없이 공개
 
 **시나리오 2: 부분 개방 전략**
+
 - 비회원 노출 비율: 70% → 더 많은 콘텐츠 미리보기 허용
 
 **시나리오 3: 댓글만 제한**
+
 - 본문 텍스트 적용: Off
 - 댓글 적용: On → 본문은 전체 공개, 댓글만 제한
 
@@ -94,26 +98,29 @@ NEXT_PUBLIC_ADMIN_PASSWORD=새로운비밀번호
 
 #### 설정 항목
 
-| 항목 | 타입 | 범위 | 기본값 | 설명 |
-|------|------|------|--------|------|
-| **기능 활성화** | 토글 | On/Off | On | 광고 시청 기능 전체 활성화 |
-| **광고 최소 시청 시간** | 슬라이더 | 5~120초 | 30초 | 광고를 봐야 하는 최소 시간 |
-| **세션 유효 시간** | 슬라이더 | 10~1440분 | 60분 | 광고 시청 후 콘텐츠 접근 가능 시간 |
-| **AdSense Client ID** | 텍스트 | - | ca-pub-xxx | Google AdSense 클라이언트 ID |
-| **옵션으로 제시** | 체크박스 | On/Off | On | 로그인과 함께 선택지로 제공 |
+| 항목                    | 타입     | 범위      | 기본값     | 설명                               |
+| ----------------------- | -------- | --------- | ---------- | ---------------------------------- |
+| **기능 활성화**         | 토글     | On/Off    | On         | 광고 시청 기능 전체 활성화         |
+| **광고 최소 시청 시간** | 슬라이더 | 5~120초   | 30초       | 광고를 봐야 하는 최소 시간         |
+| **세션 유효 시간**      | 슬라이더 | 10~1440분 | 60분       | 광고 시청 후 콘텐츠 접근 가능 시간 |
+| **AdSense Client ID**   | 텍스트   | -         | ca-pub-xxx | Google AdSense 클라이언트 ID       |
+| **옵션으로 제시**       | 체크박스 | On/Off    | On         | 로그인과 함께 선택지로 제공        |
 
 #### 사용 예시
 
 **시나리오 1: 빠른 수익 테스트**
+
 - 광고 최소 시청 시간: 5초
 - 세션 유효 시간: 10분
 - → 짧은 광고로 빠른 전환 테스트
 
 **시나리오 2: 프리미엄 전략**
+
 - 옵션으로 제시: Off
 - → 광고만 표시하고 회원가입 옵션 숨김
 
 **시나리오 3: 수익 최적화**
+
 - 광고 최소 시청 시간: 60초
 - 세션 유효 시간: 180분
 - → 높은 광고 수익, 긴 세션
@@ -124,11 +131,11 @@ NEXT_PUBLIC_ADMIN_PASSWORD=새로운비밀번호
 
 #### 설정 항목
 
-| 항목 | 타입 | 기본값 | 설명 |
-|------|------|--------|------|
-| **댓글 기능 활성화** | 토글 | On | 댓글 전체 기능 활성화 |
-| **로그인 필수** | 체크박스 | On | 댓글 작성에 로그인 필요 |
-| **승인 시스템** | 체크박스 | Off | 관리자 승인 후 댓글 표시 |
+| 항목                 | 타입     | 기본값 | 설명                     |
+| -------------------- | -------- | ------ | ------------------------ |
+| **댓글 기능 활성화** | 토글     | On     | 댓글 전체 기능 활성화    |
+| **로그인 필수**      | 체크박스 | On     | 댓글 작성에 로그인 필요  |
+| **승인 시스템**      | 체크박스 | Off    | 관리자 승인 후 댓글 표시 |
 
 ---
 
@@ -136,11 +143,11 @@ NEXT_PUBLIC_ADMIN_PASSWORD=새로운비밀번호
 
 #### 설정 항목
 
-| 항목 | 타입 | 기본값 | 설명 |
-|------|------|--------|------|
-| **신규 회원가입 허용** | 체크박스 | On | 새로운 사용자 회원가입 허용 |
-| **이메일 인증 필수** | 체크박스 | Off | 회원가입 시 이메일 인증 요구 |
-| **소셜 로그인** | 체크박스 | Off | Google, Naver, Kakao 로그인 |
+| 항목                   | 타입     | 기본값 | 설명                         |
+| ---------------------- | -------- | ------ | ---------------------------- |
+| **신규 회원가입 허용** | 체크박스 | On     | 새로운 사용자 회원가입 허용  |
+| **이메일 인증 필수**   | 체크박스 | Off    | 회원가입 시 이메일 인증 요구 |
+| **소셜 로그인**        | 체크박스 | Off    | Google, Naver, Kakao 로그인  |
 
 ---
 
@@ -148,11 +155,11 @@ NEXT_PUBLIC_ADMIN_PASSWORD=새로운비밀번호
 
 #### 설정 항목
 
-| 항목 | 타입 | 기본값 | 설명 |
-|------|------|--------|------|
-| **사이트 이름** | 텍스트 | Kulture | 사이트 제목 |
-| **점검 모드** | 토글 | Off | 사이트 전체 점검 페이지 표시 |
-| **점검 메시지** | 텍스트 영역 | - | 점검 중 표시할 메시지 |
+| 항목            | 타입        | 기본값  | 설명                         |
+| --------------- | ----------- | ------- | ---------------------------- |
+| **사이트 이름** | 텍스트      | Kulture | 사이트 제목                  |
+| **점검 모드**   | 토글        | Off     | 사이트 전체 점검 페이지 표시 |
+| **점검 메시지** | 텍스트 영역 | -       | 점검 중 표시할 메시지        |
 
 ---
 
@@ -211,22 +218,18 @@ import { useSiteSettings } from '@/lib/settings'
 
 export default function MyFeature() {
   const { settings, loading } = useSiteSettings()
-  
+
   // 관리자 설정에서 값 가져오기
   const featureEnabled = settings.myFeature?.enabled ?? true
   const featureValue = settings.myFeature?.value ?? 50
-  
+
   // 기능이 비활성화되어 있으면 숨김
   if (!featureEnabled) {
     return null
   }
-  
+
   // 설정값 적용
-  return (
-    <div style={{ opacity: featureValue / 100 }}>
-      내 기능 내용
-    </div>
-  )
+  return <div style={{ opacity: featureValue / 100 }}>내 기능 내용</div>
 }
 ```
 
@@ -286,33 +289,27 @@ export const DEFAULT_SETTINGS = {
 ```jsx
 <section className={styles.section}>
   <h2>🎯 New Feature</h2>
-  
+
   <div className={styles.field}>
     <label className={styles.toggle}>
       <input
         type="checkbox"
         checked={formData.newFeature.enabled}
-        onChange={(e) =>
-          handleChange('newFeature', 'enabled', e.target.checked)
-        }
+        onChange={e => handleChange('newFeature', 'enabled', e.target.checked)}
       />
       <span className={styles.toggleSlider}></span>
       <span className={styles.toggleLabel}>기능 활성화</span>
     </label>
   </div>
-  
+
   <div className={styles.field}>
-    <label>
-      강도: {formData.newFeature.intensity}%
-    </label>
+    <label>강도: {formData.newFeature.intensity}%</label>
     <input
       type="range"
       min="0"
       max="100"
       value={formData.newFeature.intensity}
-      onChange={(e) =>
-        handleChange('newFeature', 'intensity', parseInt(e.target.value))
-      }
+      onChange={e => handleChange('newFeature', 'intensity', parseInt(e.target.value))}
       className={styles.slider}
     />
   </div>
@@ -328,9 +325,9 @@ export default function MyNewFeature() {
   const { settings, loading } = useSiteSettings()
   const enabled = settings.newFeature?.enabled ?? true
   const intensity = settings.newFeature?.intensity ?? 50
-  
+
   if (!enabled) return null
-  
+
   return <div>내 신규 기능 (강도: {intensity}%)</div>
 }
 ```
@@ -364,20 +361,23 @@ NEXT_PUBLIC_ADMIN_PASSWORD=kulture2025
 ### Q2: 관리자 페이지에 접속할 수 없어요
 
 **A**: 다음을 확인하세요:
+
 1. URL이 정확한지 (`/admin/settings`)
 2. 비밀번호가 맞는지
 3. 환경변수 `NEXT_PUBLIC_ADMIN_PASSWORD`가 설정되었는지
 
 ### Q3: 설정을 잘못 바꿨어요. 원래대로 돌릴 수 있나요?
 
-**A**: 
+**A**:
+
 - **방법 1**: 관리자 페이지에서 다시 수정
 - **방법 2**: Sanity Studio에서 이전 버전 복원 (History 기능)
 - **방법 3**: 코드의 `DEFAULT_SETTINGS`로 복원 (Sanity 문서 삭제)
 
 ### Q4: Sanity와 관리자 페이지 중 어디서 설정하나요?
 
-**A**: 
+**A**:
+
 - **관리자 페이지** (`/admin/settings`): CEO가 직관적으로 조작하기 좋음
 - **Sanity Studio**: 개발자가 세밀한 설정을 할 때 유용
 

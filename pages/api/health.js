@@ -38,16 +38,19 @@ export default async function handler(req, res) {
  */
 async function checkTwitter() {
   const token = process.env.TWITTER_BEARER_TOKEN
-  
+
   if (!token || token === 'your_twitter_bearer_token') {
     return { ok: false, message: 'Token not configured' }
   }
 
   try {
-    const response = await fetch('https://api.twitter.com/2/tweets/search/recent?query=test&max_results=10', {
-      headers: { 'Authorization': `Bearer ${token}` },
-      signal: AbortSignal.timeout(5000),
-    })
+    const response = await fetch(
+      'https://api.twitter.com/2/tweets/search/recent?query=test&max_results=10',
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        signal: AbortSignal.timeout(5000),
+      }
+    )
 
     if (response.status === 401) {
       return { ok: false, message: 'Invalid token' }
@@ -68,17 +71,23 @@ async function checkTwitter() {
  */
 async function checkYouTube() {
   const apiKey = process.env.YOUTUBE_API_KEY
-  
+
   if (!apiKey || apiKey === 'your_youtube_api_key') {
     return { ok: false, message: 'API key not configured' }
   }
 
   try {
-    const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=test&type=video&maxResults=1&key=${apiKey}`, {
-      signal: AbortSignal.timeout(5000),
-    })
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&q=test&type=video&maxResults=1&key=${apiKey}`,
+      {
+        signal: AbortSignal.timeout(5000),
+      }
+    )
 
-    if (response.status === 400 && (await response.json()).error?.errors?.[0]?.reason === 'keyInvalid') {
+    if (
+      response.status === 400 &&
+      (await response.json()).error?.errors?.[0]?.reason === 'keyInvalid'
+    ) {
       return { ok: false, message: 'Invalid API key' }
     }
 
@@ -94,7 +103,7 @@ async function checkYouTube() {
 async function checkReddit() {
   const clientId = process.env.REDDIT_CLIENT_ID
   const clientSecret = process.env.REDDIT_CLIENT_SECRET
-  
+
   if (!clientId || !clientSecret) {
     return { ok: false, message: 'Credentials not configured' }
   }
@@ -103,7 +112,7 @@ async function checkReddit() {
     const authResponse = await fetch('https://www.reddit.com/api/v1/access_token', {
       method: 'POST',
       headers: {
-        'Authorization': `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
+        Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: 'grant_type=client_credentials',
@@ -126,19 +135,22 @@ async function checkReddit() {
 async function checkNaver() {
   const clientId = process.env.NAVER_CLIENT_ID
   const clientSecret = process.env.NAVER_CLIENT_SECRET
-  
+
   if (!clientId || !clientSecret) {
     return { ok: false, message: 'Credentials not configured' }
   }
 
   try {
-    const response = await fetch('https://openapi.naver.com/v1/search/news.json?query=test&display=1', {
-      headers: {
-        'X-Naver-Client-Id': clientId,
-        'X-Naver-Client-Secret': clientSecret,
-      },
-      signal: AbortSignal.timeout(5000),
-    })
+    const response = await fetch(
+      'https://openapi.naver.com/v1/search/news.json?query=test&display=1',
+      {
+        headers: {
+          'X-Naver-Client-Id': clientId,
+          'X-Naver-Client-Secret': clientSecret,
+        },
+        signal: AbortSignal.timeout(5000),
+      }
+    )
 
     return { ok: response.ok, message: response.ok ? 'Connected' : `Error ${response.status}` }
   } catch (error) {
@@ -151,7 +163,7 @@ async function checkNaver() {
  */
 async function checkHuggingFace() {
   const token = process.env.HUGGINGFACE_API_TOKEN
-  
+
   if (!token || token.length < 10) {
     return { ok: false, message: 'Token not configured or invalid' }
   }
@@ -160,7 +172,7 @@ async function checkHuggingFace() {
     const response = await fetch('https://api-inference.huggingface.co/models/microsoft/phi-2', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ inputs: 'test' }),
@@ -188,16 +200,19 @@ async function checkSanity() {
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET
   const token = process.env.SANITY_API_TOKEN
-  
+
   if (!projectId || !dataset || !token) {
     return { ok: false, message: 'Credentials not configured' }
   }
 
   try {
-    const response = await fetch(`https://${projectId}.api.sanity.io/v2024-01-01/data/query/${dataset}?query=*[_type == "post"][0]`, {
-      headers: { 'Authorization': `Bearer ${token}` },
-      signal: AbortSignal.timeout(5000),
-    })
+    const response = await fetch(
+      `https://${projectId}.api.sanity.io/v2024-01-01/data/query/${dataset}?query=*[_type == "post"][0]`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        signal: AbortSignal.timeout(5000),
+      }
+    )
 
     return { ok: response.ok, message: response.ok ? 'Connected' : `Error ${response.status}` }
   } catch (error) {

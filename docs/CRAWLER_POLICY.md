@@ -43,19 +43,19 @@
 
 ### K-Culture 카테고리 (확장판)
 
-| 카테고리 | 세부 분야 | 공식 소스 | 비공식 소스 |
-|---------|----------|----------|------------|
-| **K-Pop** | 아이돌, 솔로, 음반, 차트, 뮤비, 팬덤 | YouTube, Spotify, Melon, 공식 팬카페 | 디시인사이드 힙합갤/아이돌갤, Reddit r/kpop, Twitter 팬계정, 인스티즈, 더쿠 |
-| **K-Drama** | 드라마, 예능, 웹드라마, 제작 소식 | 방송사 공식, Naver TV, TMDB | 디시 드라마갤, 네이트판, 루리웹, TheQoo |
-| **K-Movie** | 영화, 단편, 다큐, 시사회 | 영화진흥위원회, CGV, KOBIS | 디시 영화갤, 씨네21 유저 리뷰, 왓챠피디아 |
-| **K-Food** | 레시피, 맛집, 먹방, 쿡방, 음식 트렌드 | YouTube 공식 채널, 맛집 블로그 | 디시 요리갤, 맛집 인스타그램, 배달앱 리뷰 |
-| **K-Beauty** | 화장품, 스킨케어, 메이크업, 뷰티 팁 | 공식 브랜드 사이트, 화해, 글로우픽 | 디시 화장품갤, Reddit r/AsianBeauty, 인스타 뷰티 인플루언서 |
-| **K-Fashion** | 패션쇼, 브랜드, 스트릿 패션 | 서울패션위크, 무신사, 29CM | 디시 패션갤, 인스타그램 #OOTD, 스타일쉐어 |
-| **K-Game** | 게임, e-스포츠, 스트리밍 | Steam, Nexon, Riot Games | 디시 게임갤, 인벤, Twitch 스트리머, AfreecaTV |
-| **K-Webtoon** | 웹툰, 웹소설, 만화 | 네이버웹툰, 카카오페이지 | 디시 만화갤, 커뮤니티 팬아트, 리디북스 리뷰 |
-| **K-Celeb** | 연예인, 아이돌, 배우 인터뷰 | 공식 매거진(Vogue, GQ), 언론사 | 팬카페, 팬 Twitter, Instagram 팬페이지 |
-| **K-Travel** | 한국 여행, 관광지, 숙소 | 한국관광공사, Visit Korea | 디시 여행갤, TripAdvisor, Airbnb 리뷰 |
-| **K-Tech** | 한국 스타트업, IT 뉴스 | TechCrunch Korea, ZDNet | 디시 프로그래밍갤, GeekNews, 블로그 |
+| 카테고리      | 세부 분야                             | 공식 소스                            | 비공식 소스                                                                 |
+| ------------- | ------------------------------------- | ------------------------------------ | --------------------------------------------------------------------------- |
+| **K-Pop**     | 아이돌, 솔로, 음반, 차트, 뮤비, 팬덤  | YouTube, Spotify, Melon, 공식 팬카페 | 디시인사이드 힙합갤/아이돌갤, Reddit r/kpop, Twitter 팬계정, 인스티즈, 더쿠 |
+| **K-Drama**   | 드라마, 예능, 웹드라마, 제작 소식     | 방송사 공식, Naver TV, TMDB          | 디시 드라마갤, 네이트판, 루리웹, TheQoo                                     |
+| **K-Movie**   | 영화, 단편, 다큐, 시사회              | 영화진흥위원회, CGV, KOBIS           | 디시 영화갤, 씨네21 유저 리뷰, 왓챠피디아                                   |
+| **K-Food**    | 레시피, 맛집, 먹방, 쿡방, 음식 트렌드 | YouTube 공식 채널, 맛집 블로그       | 디시 요리갤, 맛집 인스타그램, 배달앱 리뷰                                   |
+| **K-Beauty**  | 화장품, 스킨케어, 메이크업, 뷰티 팁   | 공식 브랜드 사이트, 화해, 글로우픽   | 디시 화장품갤, Reddit r/AsianBeauty, 인스타 뷰티 인플루언서                 |
+| **K-Fashion** | 패션쇼, 브랜드, 스트릿 패션           | 서울패션위크, 무신사, 29CM           | 디시 패션갤, 인스타그램 #OOTD, 스타일쉐어                                   |
+| **K-Game**    | 게임, e-스포츠, 스트리밍              | Steam, Nexon, Riot Games             | 디시 게임갤, 인벤, Twitch 스트리머, AfreecaTV                               |
+| **K-Webtoon** | 웹툰, 웹소설, 만화                    | 네이버웹툰, 카카오페이지             | 디시 만화갤, 커뮤니티 팬아트, 리디북스 리뷰                                 |
+| **K-Celeb**   | 연예인, 아이돌, 배우 인터뷰           | 공식 매거진(Vogue, GQ), 언론사       | 팬카페, 팬 Twitter, Instagram 팬페이지                                      |
+| **K-Travel**  | 한국 여행, 관광지, 숙소               | 한국관광공사, Visit Korea            | 디시 여행갤, TripAdvisor, Airbnb 리뷰                                       |
+| **K-Tech**    | 한국 스타트업, IT 뉴스                | TechCrunch Korea, ZDNet              | 디시 프로그래밍갤, GeekNews, 블로그                                         |
 
 ### 수집 정보 유형 (확대)
 
@@ -217,12 +217,14 @@ const NATEPANN_SCRAPE = 'https://pann.nate.com'
 ```
 
 **장점**:
+
 - ✅ 법적으로 완벽히 안전
 - ✅ 구조화된 데이터
 - ✅ 50개 이상 무료 API 활용
 - ✅ 공식 + 비공식 소스 모두 커버
 
 **단점**:
+
 - ❌ API 키 발급 필요 (대부분 무료)
 - ❌ 일부 무료 티어 제한 (충분히 활용 가능)
 
@@ -236,17 +238,17 @@ const rssFeeds = [
   'https://rss.joins.com/joins_news_kculture.xml',
   'https://www.koreatimes.co.kr/www/rss/culture.xml',
   'https://www.hankyung.com/feed/entertainment',
-  
+
   // 해외 언론
   'https://www.billboard.com/c/music/music-news/feed/',
   'https://www.allkpop.com/feed',
   'https://www.soompi.com/feed',
-  
+
   // 블로그 & 매거진
   'https://medium.com/feed/tag/k-pop',
   'https://www.vogue.co.kr/feed',
   'https://www.gqkorea.co.kr/feed',
-  
+
   // 커뮤니티 RSS (RSSHub 활용)
   'https://rsshub.app/dcinside/board/idol/best',
   'https://rsshub.app/theqoo/popular',
@@ -258,12 +260,13 @@ const rssFeeds = [
 #### 비공식 커뮤니티 수집 전략
 
 **DC인사이드**:
+
 ```javascript
 // robots.txt 확인 후 허용된 범위만 크롤링
 const dcInsideGalleries = [
-  'https://gall.dcinside.com/board/lists?id=idol',    // 아이돌갤
-  'https://gall.dcinside.com/board/lists?id=drama',   // 드라마갤
-  'https://gall.dcinside.com/board/lists?id=movie',   // 영화갤
+  'https://gall.dcinside.com/board/lists?id=idol', // 아이돌갤
+  'https://gall.dcinside.com/board/lists?id=drama', // 드라마갤
+  'https://gall.dcinside.com/board/lists?id=movie', // 영화갤
   'https://gall.dcinside.com/board/lists?id=cooking', // 요리갤
 ]
 
@@ -271,18 +274,20 @@ const dcInsideGalleries = [
 ```
 
 **인스티즈/더쿠/네이트판**:
+
 ```javascript
 // 공개 게시판만 수집 (로그인 불필요)
 const communities = [
-  'https://www.instiz.net/pt',          // 인스티즈
-  'https://theqoo.net',                  // 더쿠
-  'https://pann.nate.com/talk',         // 네이트판
+  'https://www.instiz.net/pt', // 인스티즈
+  'https://theqoo.net', // 더쿠
+  'https://pann.nate.com/talk', // 네이트판
 ]
 
 // 수집 정보: 실시간 인기글, 트렌딩 토픽, 여론
 ```
 
 **소셜미디어 공개 게시물**:
+
 ```javascript
 // Instagram 공개 프로필 (로그인 불필요)
 const instagramProfiles = [
@@ -292,15 +297,10 @@ const instagramProfiles = [
 ]
 
 // Twitter 공개 트윗
-const twitterAccounts = [
-  'https://twitter.com/BTS_twt',
-  'https://twitter.com/BLACKPINK',
-]
+const twitterAccounts = ['https://twitter.com/BTS_twt', 'https://twitter.com/BLACKPINK']
 
 // Facebook 공개 페이지
-const facebookPages = [
-  'https://www.facebook.com/officialpsy',
-]
+const facebookPages = ['https://www.facebook.com/officialpsy']
 ```
 
 #### robots.txt 준수 코드
@@ -308,19 +308,19 @@ const facebookPages = [
 ```javascript
 import robotsParser from 'robots-parser'
 
-const checkRobots = async (url) => {
+const checkRobots = async url => {
   const robotsUrl = new URL('/robots.txt', url).href
   const robotsTxt = await fetch(robotsUrl).then(r => r.text())
   const robots = robotsParser(robotsUrl, robotsTxt)
-  
+
   // KultureBot 크롤러 식별
   const isAllowed = robots.isAllowed(url, 'KultureBot/1.0')
-  
+
   if (!isAllowed) {
     console.log(`❌ 크롤링 금지: ${url}`)
     return false
   }
-  
+
   console.log(`✅ 크롤링 허용: ${url}`)
   return true
 }
@@ -333,9 +333,9 @@ const checkRobots = async (url) => {
 import pLimit from 'p-limit'
 const limit = pLimit(1)
 
-const crawlWithLimit = async (urls) => {
+const crawlWithLimit = async urls => {
   return Promise.all(
-    urls.map(url => 
+    urls.map(url =>
       limit(() => {
         return new Promise(resolve => {
           setTimeout(async () => {
@@ -350,9 +350,9 @@ const crawlWithLimit = async (urls) => {
 
 // 각 사이트별 추가 제한
 const rateLimits = {
-  'dcinside.com': 2000,  // 2초당 1회
-  'instiz.net': 3000,    // 3초당 1회
-  'theqoo.net': 2000,    // 2초당 1회
+  'dcinside.com': 2000, // 2초당 1회
+  'instiz.net': 3000, // 3초당 1회
+  'theqoo.net': 2000, // 2초당 1회
 }
 ```
 
@@ -360,10 +360,11 @@ const rateLimits = {
 
 ```javascript
 const headers = {
-  'User-Agent': 'KultureBot/1.0 (+https://kulture.wiki/bot-info; contact@kulture.wiki; 합법적 K-Culture 정보 수집)',
-  'Accept': 'text/html,application/json',
+  'User-Agent':
+    'KultureBot/1.0 (+https://kulture.wiki/bot-info; contact@kulture.wiki; 합법적 K-Culture 정보 수집)',
+  Accept: 'text/html,application/json',
   'Accept-Language': 'ko-KR,en-US',
-  'Referer': 'https://kulture.wiki',
+  Referer: 'https://kulture.wiki',
 }
 ```
 
@@ -385,6 +386,7 @@ const headers = {
 #### Tier 1: 글로벌 슈퍼스타 (실시간 모니터링)
 
 **K-Pop 아이콘**:
+
 - **BTS** (방탄소년단): RM, 진, 슈가, 제이홉, 지민, 뷔, 정국
 - **BLACKPINK**: 지수, 제니, 로제, 리사
 - **aespa** (에스파): 카리나, 지젤, 윈터, 닝닝
@@ -394,6 +396,7 @@ const headers = {
 - **PSY** (싸이): Gangnam Style, That That
 
 **K-Drama/Movie 스타**:
+
 - **이병헌**: 할리우드 진출, 오징어 게임
 - **송강호**: 기생충, 칸 수상
 - **배두나**: 할리우드 활동
@@ -401,6 +404,7 @@ const headers = {
 - **마동석**: 범죄도시 시리즈
 
 **K-Sports 영웅**:
+
 - **손흥민**: 토트넘, EPL
 - **김민재**: 뮌헨, 분데스리가
 - **이강인**: PSG, 리그1
@@ -408,6 +412,7 @@ const headers = {
 - **김연경**: 배구 여제
 
 **K-Entertainment**:
+
 - **유재석**: 국민 MC
 - **이효리**: K-Pop 1세대
 - **싸이**: 글로벌 히트메이커
@@ -430,11 +435,11 @@ const trendingSources = {
   twitter: 'https://api.twitter.com/2/trends/place.json?id=23424868', // 한국
   youtube: 'https://www.googleapis.com/youtube/v3/search?regionCode=KR&chart=mostPopular',
   google: 'https://trends.google.com/trends/trendingsearches/daily/rss?geo=KR',
-  
+
   // 한국 트렌드
   naver: 'https://openapi.naver.com/v1/datalab/search',
   melon: 'https://www.melon.com/chart/index.htm',
-  
+
   // 커뮤니티 트렌드
   reddit: 'https://www.reddit.com/r/kpop/hot.json',
   dcInside: 'https://gall.dcinside.com/board/lists?id=idol&_dcbest=1',
@@ -443,8 +448,8 @@ const trendingSources = {
 
 // 트렌딩 키워드 예시
 const emergingTrends = [
-  'K-pop demon hunters',  // 최신 이슈
-  'Huntrix',              // 떠오르는 밈
+  'K-pop demon hunters', // 최신 이슈
+  'Huntrix', // 떠오르는 밈
   'NewJeans OMG challenge',
   'aespa Supernova dance',
   'BTS solo activities',
@@ -458,7 +463,7 @@ const emergingTrends = [
 ```javascript
 // VIP 인물별 자동 수집 설정
 const vipMonitoring = {
-  'BTS': {
+  BTS: {
     keywords: ['BTS', '방탄소년단', 'RM', 'Jin', 'Suga', 'JHope', 'Jimin', 'V', 'Jungkook'],
     sources: [
       'https://twitter.com/BTS_twt',
@@ -469,8 +474,8 @@ const vipMonitoring = {
     frequency: 'realtime', // 실시간 수집
     priority: 10, // 최고 우선순위
   },
-  
-  'aespa': {
+
+  aespa: {
     keywords: ['aespa', '에스파', 'Karina', 'Giselle', 'Winter', 'Ningning'],
     sources: [
       'https://twitter.com/aespa_official',
@@ -480,8 +485,8 @@ const vipMonitoring = {
     frequency: 'realtime',
     priority: 10,
   },
-  
-  'PSY': {
+
+  PSY: {
     keywords: ['PSY', '싸이', 'Gangnam Style', 'That That', 'P NATION'],
     sources: [
       'https://twitter.com/psy_oppa',
@@ -491,8 +496,8 @@ const vipMonitoring = {
     frequency: 'hourly',
     priority: 9,
   },
-  
-  '이병헌': {
+
+  이병헌: {
     keywords: ['이병헌', 'Lee Byung-hun', 'Squid Game'],
     sources: [
       'https://twitter.com/search?q=이병헌',
@@ -501,8 +506,8 @@ const vipMonitoring = {
     frequency: 'daily',
     priority: 8,
   },
-  
-  '손흥민': {
+
+  손흥민: {
     keywords: ['손흥민', 'Son Heung-min', 'Tottenham', 'Sonny'],
     sources: [
       'https://twitter.com/SpursOfficial',
@@ -524,15 +529,16 @@ import OpenAI from 'openai'
 const generateTrendReport = async () => {
   // 1. 지난 24시간 트렌드 수집
   const trends = await collectTrends24h()
-  
+
   // 2. GPT-4로 트렌드 분석
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-  
+
   const analysis = await openai.chat.completions.create({
     model: 'gpt-4',
-    messages: [{
-      role: 'user',
-      content: `
+    messages: [
+      {
+        role: 'user',
+        content: `
 다음은 지난 24시간 K-Culture 트렌드입니다:
 ${JSON.stringify(trends, null, 2)}
 
@@ -542,11 +548,12 @@ ${JSON.stringify(trends, null, 2)}
 3. viralContent: 바이럴 콘텐츠 (조회수 폭발)
 4. controversies: 논쟁/이슈 (주의 필요)
 5. opportunities: 콘텐츠 제작 기회
-      `
-    }],
+      `,
+      },
+    ],
     response_format: { type: 'json_object' },
   })
-  
+
   return JSON.parse(analysis.choices[0].message.content)
 }
 ```
@@ -557,17 +564,19 @@ ${JSON.stringify(trends, null, 2)}
 
 ```javascript
 // 트렌드 기반 자동 아티클 생성
-const generateArticle = async (trend) => {
+const generateArticle = async trend => {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-  
+
   const article = await openai.chat.completions.create({
     model: 'gpt-4',
-    messages: [{
-      role: 'system',
-      content: '당신은 K-Culture 전문 에디터입니다. SEO 최적화된 기사를 작성합니다.'
-    }, {
-      role: 'user',
-      content: `
+    messages: [
+      {
+        role: 'system',
+        content: '당신은 K-Culture 전문 에디터입니다. SEO 최적화된 기사를 작성합니다.',
+      },
+      {
+        role: 'user',
+        content: `
 트렌드: ${trend.keyword}
 데이터: ${JSON.stringify(trend.data)}
 
@@ -579,17 +588,18 @@ const generateArticle = async (trend) => {
 - 메타 설명 (150자)
 
 모든 출처를 명시하고, 원문을 복사하지 말고 재구성하세요.
-      `
-    }],
+      `,
+      },
+    ],
   })
-  
+
   return article.choices[0].message.content
 }
 
 // 이미지 생성 (DALL-E 3)
-const generateImage = async (concept) => {
+const generateImage = async concept => {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-  
+
   const image = await openai.images.generate({
     model: 'dall-e-3',
     prompt: `
@@ -600,19 +610,20 @@ High quality, trending on artstation
     size: '1024x1024',
     quality: 'hd',
   })
-  
+
   return image.data[0].url
 }
 
 // 소셜 미디어 포스트 생성
-const generateSocialPost = async (content) => {
+const generateSocialPost = async content => {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-  
+
   const post = await openai.chat.completions.create({
     model: 'gpt-4',
-    messages: [{
-      role: 'user',
-      content: `
+    messages: [
+      {
+        role: 'user',
+        content: `
 다음 내용으로 소셜 미디어 포스트를 작성하세요:
 ${content}
 
@@ -622,10 +633,11 @@ ${content}
 - Facebook (간결한 소개 + 링크)
 
 매력적이고 클릭하고 싶게 작성하세요.
-      `
-    }],
+      `,
+      },
+    ],
   })
-  
+
   return post.choices[0].message.content
 }
 ```
@@ -637,37 +649,35 @@ ${content}
 export default async function autoContentPipeline() {
   try {
     // 1. VIP 인물 실시간 모니터링
-    const vipUpdates = await monitorVIPs([
-      'BTS', 'aespa', 'BLACKPINK', 'PSY', '손흥민', '이병헌'
-    ])
-    
+    const vipUpdates = await monitorVIPs(['BTS', 'aespa', 'BLACKPINK', 'PSY', '손흥민', '이병헌'])
+
     // 2. 트렌드 감지
     const trends = await detectTrends()
-    
+
     // 3. 바이럴 콘텐츠 발견
     const viral = await findViralContent({
-      minViews: 100000,      // 10만 조회수 이상
-      minEngagement: 1000,   // 1천 좋아요/댓글 이상
-      timeWindow: '24h',     // 24시간 이내
+      minViews: 100000, // 10만 조회수 이상
+      minEngagement: 1000, // 1천 좋아요/댓글 이상
+      timeWindow: '24h', // 24시간 이내
     })
-    
+
     // 4. 2차 창작물 생성
     for (const item of [...vipUpdates, ...viral]) {
       // 기사 자동 생성
       const article = await generateArticle(item)
-      
+
       // 이미지 생성 (필요시)
       let image = null
       if (item.needsVisual) {
         image = await generateImage(item.concept)
       }
-      
+
       // 소셜 포스트 생성
       const socialPosts = await generateSocialPost(article)
-      
+
       // 5. 2차 검증
       const verification = await autoFilter(article)
-      
+
       if (verification.approved) {
         // 6. CEO 승인 대기열에 추가
         await addToPendingQueue({
@@ -681,16 +691,16 @@ export default async function autoContentPipeline() {
         })
       }
     }
-    
+
     // 7. 트렌드 리포트 생성
     const report = await generateTrendReport()
-    
+
     // 8. CEO에게 이메일 알림
     await sendEmailToCEO({
       subject: `📊 K-Culture 일일 트렌드 리포트 (${new Date().toLocaleDateString('ko-KR')})`,
       body: `
 오늘의 핫 트렌드:
-${report.topTrends.map((t, i) => `${i+1}. ${t.keyword} (${t.mentions.toLocaleString()} 언급)`).join('\n')}
+${report.topTrends.map((t, i) => `${i + 1}. ${t.keyword} (${t.mentions.toLocaleString()} 언급)`).join('\n')}
 
 떠오르는 스타:
 ${report.risingStars.join(', ')}
@@ -701,14 +711,13 @@ ${report.viralContent.map(v => `- ${v.title} (조회수 ${v.views.toLocaleString
 승인 대기 중인 콘텐츠: ${pendingQueue.length}건
       `,
     })
-    
+
     return {
       success: true,
       collected: vipUpdates.length + viral.length,
       generated: [...vipUpdates, ...viral].length,
       pending: pendingQueue.length,
     }
-    
   } catch (error) {
     console.error('Auto pipeline error:', error)
     await alertCEO('자동화 파이프라인 오류 발생', error.message)
@@ -720,34 +729,29 @@ ${report.viralContent.map(v => `- ${v.title} (조회수 ${v.views.toLocaleString
 
 ```javascript
 // "K-pop demon hunters" 같은 특정 이슈 자동 추적
-const trackSpecificIssue = async (issue) => {
-  const keywords = [
-    'K-pop demon hunters',
-    'Huntrix',
-    'NewJeans x horror',
-    'K-pop creepypasta',
-  ]
-  
+const trackSpecificIssue = async issue => {
+  const keywords = ['K-pop demon hunters', 'Huntrix', 'NewJeans x horror', 'K-pop creepypasta']
+
   const results = await Promise.all([
     // Twitter 검색
     searchTwitter(keywords),
-    
+
     // YouTube 검색
     searchYouTube(keywords),
-    
+
     // Reddit 검색
     searchReddit(keywords, ['r/kpop', 'r/creepy', 'r/nosleep']),
-    
+
     // TikTok 해시태그
     searchTikTok(keywords.map(k => `#${k.replace(/\s/g, '')}`)),
-    
+
     // DC인사이드 검색
     searchDCInside(keywords, ['idol', 'entertain']),
   ])
-  
+
   // AI 요약 생성
   const summary = await summarizeIssue(results)
-  
+
   return {
     issue: issue,
     mentions: results.reduce((sum, r) => sum + r.count, 0),
@@ -789,15 +793,18 @@ const trackSpecificIssue = async (issue) => {
 ```
 
 **공식 소스**:
+
 - YouTube Music API: 뮤직비디오, 음원
 - Spotify API: 차트, 플레이리스트
 - Melon API: 국내 차트 (제휴 필요)
 
 **커뮤니티 소스** (합법적 범위):
+
 - Reddit r/kpop RSS
 - Twitter #KPop 해시태그 (Public API)
 
 **수집 정보**:
+
 - 신곡 발매 정보 (공식 발표 기반)
 - 차트 순위 (공개 데이터)
 - 뮤직비디오 링크 (YouTube 임베드)
@@ -806,11 +813,13 @@ const trackSpecificIssue = async (issue) => {
 ### K-Drama
 
 **공식 소스**:
+
 - TMDB API: 드라마 메타데이터
 - Naver TV RSS: 공식 클립
 - 방송사 공식 홈페이지 RSS
 
 **수집 정보**:
+
 - 방영 스케줄
 - 출연진, 제작진
 - 줄거리 요약 (100자 이내)
@@ -819,11 +828,13 @@ const trackSpecificIssue = async (issue) => {
 ### K-Movie
 
 **공식 소스**:
+
 - 영화진흥위원회 KOBIS API
 - KMDB (한국영화데이터베이스) API
 - CGV/롯데시네마 RSS
 
 **수집 정보**:
+
 - 개봉 정보
 - 박스오피스 순위
 - 예고편 링크
@@ -878,20 +889,20 @@ export default async function handler(req, res) {
   if (req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
-  
+
   try {
     // 1. YouTube API로 K-Pop 신곡 수집
     const newReleases = await collectYouTubeKPop()
-    
+
     // 2. 콘텐츠 처리 (요약, 출처 태깅)
     const processed = await processContent(newReleases)
-    
+
     // 3. 팩트체크
     const verified = await factCheck(processed)
-    
+
     // 4. Sanity에 저장
     await saveToSanity(verified)
-    
+
     res.status(200).json({ success: true, count: verified.length })
   } catch (error) {
     res.status(500).json({ error: error.message })
@@ -913,25 +924,25 @@ const autoFilter = async (content) => {
   const checks = {
     // 저작권 침해 의심
     copyrightViolation: detectFullTextCopy(content),
-    
+
     // 개인정보 포함 여부
     personalInfo: detectPII(content), // 전화번호, 주민번호, 주소
-    
+
     // 혐오/차별 표현
     hateS peech: detectHateSpeech(content),
-    
+
     // 명예훼손 의심 표현
     defamation: detectDefamation(content),
-    
+
     // 성인 콘텐츠
     adultContent: detectAdultContent(content),
   }
-  
+
   // 하나라도 걸리면 자동 거부
   if (Object.values(checks).some(v => v === true)) {
     return { approved: false, reason: checks }
   }
-  
+
   return { approved: true }
 }
 ```
@@ -941,40 +952,40 @@ const autoFilter = async (content) => {
 ```javascript
 const trustScores = {
   // 공식 소스 (90-100점)
-  'youtube.com': 100,           // 공식 채널
-  'instagram.com': 95,          // 공식 프로필
-  'twitter.com': 95,            // 인증된 계정
-  'naver.com': 100,             // 네이버 뉴스
-  'kobis.or.kr': 100,           // 정부 기관
-  
+  'youtube.com': 100, // 공식 채널
+  'instagram.com': 95, // 공식 프로필
+  'twitter.com': 95, // 인증된 계정
+  'naver.com': 100, // 네이버 뉴스
+  'kobis.or.kr': 100, // 정부 기관
+
   // 주요 언론사 (80-90점)
-  'joins.com': 90,              // 중앙일보
-  'chosun.com': 90,             // 조선일보
-  'koreatimes.co.kr': 85,       // 코리아타임즈
-  'billboard.com': 90,          // 빌보드
-  'soompi.com': 85,             // Soompi
-  
+  'joins.com': 90, // 중앙일보
+  'chosun.com': 90, // 조선일보
+  'koreatimes.co.kr': 85, // 코리아타임즈
+  'billboard.com': 90, // 빌보드
+  'soompi.com': 85, // Soompi
+
   // 커뮤니티 (50-70점)
-  'dcinside.com': 60,           // DC인사이드
-  'reddit.com': 70,             // Reddit
-  'instiz.net': 60,             // 인스티즈
-  'theqoo.net': 60,             // 더쿠
-  'pann.nate.com': 55,          // 네이트판
-  
+  'dcinside.com': 60, // DC인사이드
+  'reddit.com': 70, // Reddit
+  'instiz.net': 60, // 인스티즈
+  'theqoo.net': 60, // 더쿠
+  'pann.nate.com': 55, // 네이트판
+
   // 개인 블로그/SNS (30-50점)
-  'tistory.com': 40,            // 개인 블로그
-  'medium.com': 50,             // Medium
-  'blog.naver.com': 40,         // 네이버 블로그
+  'tistory.com': 40, // 개인 블로그
+  'medium.com': 50, // Medium
+  'blog.naver.com': 40, // 네이버 블로그
 }
 
-const evaluateSource = (url) => {
+const evaluateSource = url => {
   const domain = new URL(url).hostname.replace('www.', '')
   const score = trustScores[domain] || 30 // 기본 30점
-  
+
   return {
     domain,
     score,
-    tier: score >= 80 ? 'HIGH' : score >= 60 ? 'MEDIUM' : 'LOW'
+    tier: score >= 80 ? 'HIGH' : score >= 60 ? 'MEDIUM' : 'LOW',
   }
 }
 ```
@@ -983,25 +994,23 @@ const evaluateSource = (url) => {
 
 ```javascript
 // 여러 소스에서 같은 정보 확인
-const crossCheck = async (content) => {
+const crossCheck = async content => {
   const similarSources = await findSimilarContent(content)
-  
+
   if (similarSources.length === 0) {
     return {
       verified: false,
-      reason: '단일 소스만 존재 (추가 확인 필요)'
+      reason: '단일 소스만 존재 (추가 확인 필요)',
     }
   }
-  
+
   if (similarSources.length >= 2) {
-    const officialSourceExists = similarSources.some(s => 
-      evaluateSource(s.url).tier === 'HIGH'
-    )
-    
+    const officialSourceExists = similarSources.some(s => evaluateSource(s.url).tier === 'HIGH')
+
     return {
       verified: true,
       confidence: officialSourceExists ? 'HIGH' : 'MEDIUM',
-      sources: similarSources
+      sources: similarSources,
     }
   }
 }
@@ -1013,11 +1022,11 @@ const crossCheck = async (content) => {
 // 검증 대기열
 const pendingQueue = {
   // 자동 승인 (신뢰도 90점 이상 + 공식 소스)
-  autoApproved: [], 
-  
+  autoApproved: [],
+
   // CEO 검토 필요 (신뢰도 60-90점)
   needsReview: [],
-  
+
   // 자동 거부 (불법/유해)
   autoRejected: [],
 }
@@ -1025,32 +1034,26 @@ const pendingQueue = {
 // CEO 대시보드 UI
 export default function ContentReviewDashboard() {
   const { pendingContents } = usePendingContents()
-  
+
   return (
     <div className={styles.dashboard}>
       <h2>📋 콘텐츠 검토 대기열</h2>
-      
+
       {pendingContents.map(content => (
         <div key={content.id} className={styles.contentCard}>
           <h3>{content.title}</h3>
           <p>{content.summary}</p>
-          
+
           <div className={styles.metadata}>
             <span>출처: {content.source}</span>
             <span>신뢰도: {content.trustScore}점</span>
             <span>검증 상태: {content.verificationStatus}</span>
           </div>
-          
+
           <div className={styles.actions}>
-            <button onClick={() => approveContent(content.id)}>
-              ✅ 승인
-            </button>
-            <button onClick={() => rejectContent(content.id)}>
-              ❌ 거부
-            </button>
-            <button onClick={() => editContent(content.id)}>
-              ✏️ 수정 후 승인
-            </button>
+            <button onClick={() => approveContent(content.id)}>✅ 승인</button>
+            <button onClick={() => rejectContent(content.id)}>❌ 거부</button>
+            <button onClick={() => editContent(content.id)}>✏️ 수정 후 승인</button>
           </div>
         </div>
       ))}
@@ -1066,26 +1069,26 @@ CEO의 부담을 줄이기 위한 자동 승인 조건:
 ```javascript
 const autoApprovalRules = {
   // 조건 1: 공식 소스 + 높은 신뢰도
-  rule1: (content) => {
-    return content.trustScore >= 90 && 
-           content.sourceType === 'official'
+  rule1: content => {
+    return content.trustScore >= 90 && content.sourceType === 'official'
   },
-  
+
   // 조건 2: 3개 이상 소스에서 크로스 체크
-  rule2: (content) => {
-    return content.verifiedSources.length >= 3 &&
-           content.verifiedSources.some(s => s.trustScore >= 80)
+  rule2: content => {
+    return (
+      content.verifiedSources.length >= 3 && content.verifiedSources.some(s => s.trustScore >= 80)
+    )
   },
-  
+
   // 조건 3: 정부/공공기관 소스
-  rule3: (content) => {
+  rule3: content => {
     const govDomains = ['go.kr', 'kobis.or.kr', 'data.go.kr']
     return govDomains.some(d => content.sourceUrl.includes(d))
   },
 }
 
 // 자동 승인 체크
-const shouldAutoApprove = (content) => {
+const shouldAutoApprove = content => {
   return Object.values(autoApprovalRules).some(rule => rule(content))
 }
 ```
@@ -1095,9 +1098,9 @@ const shouldAutoApprove = (content) => {
 ```javascript
 import OpenAI from 'openai'
 
-const factCheck = async (content) => {
+const factCheck = async content => {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-  
+
   const prompt = `
 다음 K-Culture 정보의 팩트체크를 수행하세요:
 
@@ -1111,13 +1114,13 @@ const factCheck = async (content) => {
 3. suggestions: 수정 제안
 4. verdict: "APPROVED" | "NEEDS_REVIEW" | "REJECTED"
   `
-  
+
   const response = await openai.chat.completions.create({
     model: 'gpt-4',
     messages: [{ role: 'user', content: prompt }],
     response_format: { type: 'json_object' },
   })
-  
+
   return JSON.parse(response.choices[0].message.content)
 }
 ```
@@ -1172,7 +1175,12 @@ export default function SourceAttribution({ source }) {
   return (
     <div className={styles.attribution}>
       <img src={source.favicon} alt={source.name} />
-      <span>출처: <a href={source.url} target="_blank">{source.name}</a></span>
+      <span>
+        출처:{' '}
+        <a href={source.url} target="_blank">
+          {source.name}
+        </a>
+      </span>
       <a href={source.url} className={styles.readOriginal}>
         원문 보기 →
       </a>
@@ -1236,7 +1244,7 @@ export default function SourceAttribution({ source }) {
       validation: Rule => Rule.min(0.1).max(5),
       initialValue: 1,
     },
-    
+
     // ========== VIP 인물 모니터링 ==========
     {
       name: 'vipMonitoring',
@@ -1275,7 +1283,7 @@ export default function SourceAttribution({ source }) {
         },
       ],
     },
-    
+
     // ========== 트렌드 자동 감지 ==========
     {
       name: 'trendDetection',
@@ -1310,7 +1318,7 @@ export default function SourceAttribution({ source }) {
         },
       ],
     },
-    
+
     // ========== 2차 창작물 자동 생성 ==========
     {
       name: 'autoContentGeneration',
@@ -1408,7 +1416,8 @@ DMCA_EMAIL=dmca@kulture.wiki
 
 ### Q: 공식 API가 없는 소스는 어떻게 하나요?
 
-**A**: 
+**A**:
+
 1. **RSS 피드 확인**: RSS/Atom 제공 여부 (RSSHub 활용 가능)
 2. **robots.txt 확인**: 크롤링 허용 범위 체크
 3. **공개 정보만 수집**: 로그인 불필요한 공개 게시판만
@@ -1418,7 +1427,8 @@ DMCA_EMAIL=dmca@kulture.wiki
 
 ### Q: 커뮤니티 게시물을 수집해도 되나요?
 
-**A**: 
+**A**:
+
 - ✅ **가능**: 공개 게시판의 제목, 조회수, 댓글 수 등 메타데이터
 - ✅ **가능**: 공개 게시물 요약 (원문 복사 아님, AI로 재구성)
 - ✅ **가능**: 트렌드 분석, 여론 요약
@@ -1427,6 +1437,7 @@ DMCA_EMAIL=dmca@kulture.wiki
 - ❌ **불가**: 로그인 필요한 비공개 게시판
 
 **예시**:
+
 ```javascript
 // ✅ 허용: 메타데이터 + 요약
 {
@@ -1445,7 +1456,8 @@ DMCA_EMAIL=dmca@kulture.wiki
 
 ### Q: "2차 검증"은 무엇인가요?
 
-**A**: 
+**A**:
+
 1. **자동 필터링 (AI)**: 불법/유해 콘텐츠 자동 감지
 2. **출처 신뢰도 평가**: 공식 소스 100점, 커뮤니티 50-70점
 3. **크로스 체크**: 2개 이상 소스에서 확인
@@ -1453,6 +1465,7 @@ DMCA_EMAIL=dmca@kulture.wiki
 5. **CEO 최종 승인**: 의심 콘텐츠는 수동 검토
 
 **자동 승인 조건**:
+
 - 공식 소스 + 신뢰도 90점 이상
 - 3개 이상 소스에서 크로스 체크
 - 정부/공공기관 소스
@@ -1462,6 +1475,7 @@ DMCA_EMAIL=dmca@kulture.wiki
 **A**: ✅ **합법적으로 가능** (조건부)
 
 **합법적 사유**:
+
 1. **공개 정보**: 로그인 없이 누구나 볼 수 있는 게시판
 2. **Fair Use**: 뉴스 보도, 비평, 연구 목적
 3. **출처 명시**: 명확한 출처 표기 + 원본 링크
@@ -1469,6 +1483,7 @@ DMCA_EMAIL=dmca@kulture.wiki
 5. **robots.txt 준수**: 크롤링 허용 범위만
 
 **필수 조건**:
+
 - ✅ 공개 게시판만 (비공개 X)
 - ✅ 메타데이터 + 요약만 (전문 복사 X)
 - ✅ 개인정보 제거 (이메일, 전화번호 등)
@@ -1477,7 +1492,8 @@ DMCA_EMAIL=dmca@kulture.wiki
 
 ### Q: 수집량이 너무 많아지면 어떻게 하나요?
 
-**A**: 
+**A**:
+
 1. **우선순위 시스템**: 공식 소스 우선, 커뮤니티는 인기글만
 2. **중복 제거**: 동일 내용은 하나만 저장
 3. **자동 아카이빙**: 오래된 콘텐츠(3개월 이상) 자동 보관
@@ -1488,15 +1504,15 @@ DMCA_EMAIL=dmca@kulture.wiki
 
 **A**: **대부분 무료!**
 
-| API | 무료 티어 | 비용 (유료 시) |
-|-----|---------|---------------|
-| YouTube Data API | 10,000 quota/일 | 무료 충분 |
-| Twitter API | 10,000 트윗/월 | $100/월 (필요 시) |
-| TMDB API | 무제한 | 완전 무료 |
-| Naver API | 25,000 요청/일 | 무료 충분 |
-| Spotify API | 무제한 | 완전 무료 |
-| KOBIS API | 무제한 | 완전 무료 |
-| NewsAPI | 100 요청/일 | $449/월 (불필요) |
+| API              | 무료 티어       | 비용 (유료 시)    |
+| ---------------- | --------------- | ----------------- |
+| YouTube Data API | 10,000 quota/일 | 무료 충분         |
+| Twitter API      | 10,000 트윗/월  | $100/월 (필요 시) |
+| TMDB API         | 무제한          | 완전 무료         |
+| Naver API        | 25,000 요청/일  | 무료 충분         |
+| Spotify API      | 무제한          | 완전 무료         |
+| KOBIS API        | 무제한          | 완전 무료         |
+| NewsAPI          | 100 요청/일     | $449/월 (불필요)  |
 
 **전략**: 무료 API만으로도 하루 수만 건 수집 가능
 
@@ -1511,6 +1527,7 @@ DMCA_EMAIL=dmca@kulture.wiki
 5. **법적 대응**: 정당한 Fair Use라면 반론 제출
 
 **예방책**:
+
 - 원문 전체 복사 절대 금지
 - 모든 콘텐츠에 출처 + 원본 링크
 - "요약" 표시로 2차 창작물임을 명시
@@ -1521,12 +1538,14 @@ DMCA_EMAIL=dmca@kulture.wiki
 **A**: ✅ **안전** (개인정보 제외)
 
 **수집하는 것** (공개 정보):
+
 - 게시물 제목, 내용 요약
 - 조회수, 좋아요, 댓글 수
 - 공개 프로필 (아이디, 닉네임)
 - 공개 해시태그, 트렌드
 
 **절대 수집 안 함** (개인정보):
+
 - ❌ 이메일 주소
 - ❌ 전화번호
 - ❌ 주민등록번호
@@ -1535,17 +1554,18 @@ DMCA_EMAIL=dmca@kulture.wiki
 - ❌ IP 주소
 
 **자동 제거 시스템**:
+
 ```javascript
-const removePII = (text) => {
+const removePII = text => {
   // 이메일 제거
   text = text.replace(/[\w.-]+@[\w.-]+\.\w+/g, '[이메일 제거]')
-  
+
   // 전화번호 제거
   text = text.replace(/\d{2,3}-\d{3,4}-\d{4}/g, '[전화번호 제거]')
-  
+
   // 주민번호 제거
   text = text.replace(/\d{6}-\d{7}/g, '[주민번호 제거]')
-  
+
   return text
 }
 ```

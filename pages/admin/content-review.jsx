@@ -29,7 +29,7 @@ export default function ContentReview() {
     }
   }, [isAuthenticated])
 
-  const handleLogin = (e) => {
+  const handleLogin = e => {
     e.preventDefault()
     if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
       setIsAuthenticated(true)
@@ -66,15 +66,18 @@ export default function ContentReview() {
   const [feedbackText, setFeedbackText] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
 
-  const approvePost = async (postId) => {
+  const approvePost = async postId => {
     if (!confirm('이 콘텐츠를 승인하시겠습니까?')) return
 
     try {
-      await sanity.patch(postId).set({ 
-        status: 'approved',
-        publishedAt: new Date().toISOString(),
-      }).commit()
-      
+      await sanity
+        .patch(postId)
+        .set({
+          status: 'approved',
+          publishedAt: new Date().toISOString(),
+        })
+        .commit()
+
       alert('승인되었습니다!')
       loadPendingPosts()
       setSelectedPost(null)
@@ -94,11 +97,14 @@ export default function ContentReview() {
         timestamp: new Date().toISOString(),
       })
 
-      await sanity.patch(postId).set({ 
-        status: 'rejected',
-        rejectionReason: reason,
-      }).commit()
-      
+      await sanity
+        .patch(postId)
+        .set({
+          status: 'rejected',
+          rejectionReason: reason,
+        })
+        .commit()
+
       alert('거절되었습니다. AI가 이 피드백을 학습하여 향후 콘텐츠 생성에 반영합니다.')
       loadPendingPosts()
       setSelectedPost(null)
@@ -182,7 +188,7 @@ export default function ContentReview() {
             type="password"
             placeholder="관리자 비밀번호"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             className={styles.passwordInput}
           />
           <button type="submit" className={styles.loginButton}>
@@ -215,7 +221,7 @@ export default function ContentReview() {
             <p>승인 대기 중인 콘텐츠가 없습니다.</p>
           ) : (
             <ul className={styles.postList}>
-              {pendingPosts.map((post) => (
+              {pendingPosts.map(post => (
                 <li
                   key={post._id}
                   className={selectedPost?._id === post._id ? styles.selected : ''}
@@ -227,9 +233,7 @@ export default function ContentReview() {
                       <span className={styles.trustScore}>
                         신뢰도: {post.metadata?.trustScore || 0}
                       </span>
-                      <span className={styles.source}>
-                        {post.metadata?.source}
-                      </span>
+                      <span className={styles.source}>{post.metadata?.source}</span>
                     </div>
                     <time>{new Date(post.createdAt).toLocaleString('ko-KR')}</time>
                   </div>
@@ -280,9 +284,7 @@ export default function ContentReview() {
               {feedbackModal && (
                 <div className={styles.modalOverlay}>
                   <div className={styles.modal}>
-                    <h3>
-                      {feedbackModal === 'reject' ? '거절 사유' : '보완 지시사항'}
-                    </h3>
+                    <h3>{feedbackModal === 'reject' ? '거절 사유' : '보완 지시사항'}</h3>
                     <p className={styles.modalDescription}>
                       {feedbackModal === 'reject'
                         ? 'AI가 이 피드백을 학습하여 향후 콘텐츠 생성 시 반영합니다.'
@@ -296,7 +298,7 @@ export default function ContentReview() {
                           : '예: 제목을 더 흥미롭게 바꿔주세요. 본문에 구체적인 통계를 추가해주세요.'
                       }
                       value={feedbackText}
-                      onChange={(e) => setFeedbackText(e.target.value)}
+                      onChange={e => setFeedbackText(e.target.value)}
                       rows={6}
                       disabled={isProcessing}
                     />
@@ -358,7 +360,7 @@ export default function ContentReview() {
                 <h3>본문</h3>
                 <textarea
                   value={selectedPost.body}
-                  onChange={(e) => setSelectedPost({ ...selectedPost, body: e.target.value })}
+                  onChange={e => setSelectedPost({ ...selectedPost, body: e.target.value })}
                   className={styles.bodyEditor}
                   rows={15}
                 />

@@ -8,7 +8,7 @@ describe('contentRestriction utils', () => {
     test('비회원은 40%만 표시', () => {
       const content = 'Line 1\nLine 2\nLine 3\nLine 4\nLine 5'
       const result = maskContent(content, false)
-      
+
       expect(result).toContain('Line 1')
       expect(result).toContain('[로그인하여 전체 내용 보기]')
       expect(result.split('\n').length).toBeLessThan(content.split('\n').length)
@@ -17,7 +17,7 @@ describe('contentRestriction utils', () => {
     test('회원은 전체 내용 표시', () => {
       const content = 'Line 1\nLine 2\nLine 3\nLine 4\nLine 5'
       const result = maskContent(content, true)
-      
+
       expect(result).toBe(content)
     })
   })
@@ -33,14 +33,14 @@ describe('contentRestriction utils', () => {
 
     test('비회원은 40%만 표시 + 잠금 메시지', () => {
       const result = filterComments(comments, false)
-      
+
       expect(result.length).toBe(3) // 2개 + 잠금 메시지
       expect(result[result.length - 1].isLocked).toBe(true)
     })
 
     test('회원은 모든 댓글 표시', () => {
       const result = filterComments(comments, true)
-      
+
       expect(result.length).toBe(5)
       expect(result).toEqual(comments)
     })

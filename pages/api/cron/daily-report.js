@@ -19,19 +19,22 @@ export default async function handler(req, res) {
   if (req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
-  
+
   try {
     const today = new Date().toISOString().split('T')[0]
     const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
-    
+
     // 1. VIP 모니터링 요약
-    const vipStats = await sanity.fetch(`
+    const vipStats = await sanity.fetch(
+      `
       *[_type == "vipMonitoring" && timestamp > $yesterday] {
         vipName,
         mentions
       }
-    `, { yesterday })
-    
+    `,
+      { yesterday }
+    )
+
     const vipSummary = vipStats.reduce((acc, cur) => {
       if (!acc[cur.vipName]) {
         acc[cur.vipName] = 0
@@ -39,25 +42,34 @@ export default async function handler(req, res) {
       acc[cur.vipName] += cur.mentions
       return acc
     }, {})
-    
+
     // 2. 핫 이슈 요약
-    const hotIssues = await sanity.fetch(`
+    const hotIssues = await sanity.fetch(
+      `
       *[_type == "hotIssue" && timestamp > $yesterday]
       | order(mentions desc)[0...10]
-    `, { yesterday })
-    
+    `,
+      { yesterday }
+    )
+
     // 3. 생성된 콘텐츠 요약
-    const pendingPosts = await sanity.fetch(`
+    const pendingPosts = await sanity.fetch(
+      `
       *[_type == "post" && status == "pending" && createdAt > $yesterday]
       | order(_createdAt desc)
-    `, { yesterday })
-    
+    `,
+      { yesterday }
+    )
+
     // 4. 승인된 콘텐츠 요약
-    const approvedPosts = await sanity.fetch(`
+    const approvedPosts = await sanity.fetch(
+      `
       *[_type == "post" && status == "approved" && _updatedAt > $yesterday]
       | order(_updatedAt desc)
-    `, { yesterday })
-    
+    `,
+      { yesterday }
+    )
+
     // 리포트 생성
     const report = {
       date: today,
@@ -81,7 +93,7 @@ export default async function handler(req, res) {
         pendingReview: pendingPosts.length,
       },
     }
-    
+
     // Sanity에 리포트 저장
     await sanity.create({
       _type: 'dailyReport',
@@ -89,9 +101,9 @@ export default async function handler(req, res) {
       report,
       timestamp: new Date().toISOString(),
     })
-    
+
     console.log(`[Daily Report] ${today} - Generated`)
-    
+
     res.status(200).json({
       success: true,
       report,

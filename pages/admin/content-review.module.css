@@ -132,7 +132,7 @@
 }
 
 .trustScore {
-  background: #4CAF50;
+  background: #4caf50;
   color: white;
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
@@ -182,7 +182,7 @@
 
 .approveButton {
   padding: 0.75rem 1.5rem;
-  background: #4CAF50;
+  background: #4caf50;
   color: white;
   border: none;
   border-radius: 6px;
@@ -457,6 +457,10 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

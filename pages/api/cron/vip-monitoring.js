@@ -20,16 +20,16 @@ export default async function handler(req, res) {
   if (req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
-  
+
   try {
     const now = Date.now()
     const results = []
-    
+
     // Tier 1: 실시간 모니터링 (항상 실행)
     for (const vip of VIP_DATABASE.tier1) {
       const data = await monitorVIP(vip.id)
       results.push(data)
-      
+
       // Sanity에 저장
       await sanity.create({
         _type: 'vipMonitoring',
@@ -40,14 +40,14 @@ export default async function handler(req, res) {
         timestamp: new Date().toISOString(),
       })
     }
-    
+
     // Tier 2: 1시간마다 (매 정시에만 실행)
     const minutes = new Date().getMinutes()
     if (minutes < 5) {
       for (const vip of VIP_DATABASE.tier2) {
         const data = await monitorVIP(vip.id)
         results.push(data)
-        
+
         await sanity.create({
           _type: 'vipMonitoring',
           vipId: vip.id,
@@ -58,9 +58,9 @@ export default async function handler(req, res) {
         })
       }
     }
-    
+
     console.log(`[VIP Monitoring] ${results.length} VIPs monitored at ${new Date().toISOString()}`)
-    
+
     res.status(200).json({
       success: true,
       monitored: results.length,

@@ -14,7 +14,7 @@ export function maskContent(content, isAuthenticated) {
   const lines = content.split('\n')
   const visibleLineCount = Math.floor(lines.length * 0.4) // 40%만 보임
   const visibleLines = lines.slice(0, visibleLineCount)
-  
+
   return visibleLines.join('\n') + '\n\n[로그인하여 전체 내용 보기]'
 }
 
@@ -28,14 +28,19 @@ export function filterComments(comments, isAuthenticated) {
   if (isAuthenticated) return comments
 
   const visibleCount = Math.floor(comments.length * 0.4) // 40%만 보임
-  return comments.slice(0, visibleCount).map(comment => ({
-    ...comment,
-    isLocked: false
-  })).concat([{
-    id: 'locked',
-    content: '나머지 댓글을 보려면 로그인하세요',
-    isLocked: true
-  }])
+  return comments
+    .slice(0, visibleCount)
+    .map(comment => ({
+      ...comment,
+      isLocked: false,
+    }))
+    .concat([
+      {
+        id: 'locked',
+        content: '나머지 댓글을 보려면 로그인하세요',
+        isLocked: true,
+      },
+    ])
 }
 
 /**
@@ -61,8 +66,8 @@ export function getSignupPrompt() {
       '모든 게시물 및 댓글 전체 보기',
       '좋아요 및 북마크 기능',
       '개인 맞춤 추천',
-      '알림 및 새 소식 받기'
-    ]
+      '알림 및 새 소식 받기',
+    ],
   }
 }
 
@@ -91,8 +96,8 @@ export class AdWatchSession {
     if (typeof window === 'undefined') return
     const session = {
       timestamp: Date.now(),
-      expiresAt: Date.now() + (60 * 60 * 1000), // 1시간 유효
-      articlesUnlocked: 1
+      expiresAt: Date.now() + 60 * 60 * 1000, // 1시간 유효
+      articlesUnlocked: 1,
     }
     localStorage.setItem(this.storageKey, JSON.stringify(session))
   }
