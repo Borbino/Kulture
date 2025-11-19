@@ -32,6 +32,17 @@
 
 (추가 항목을 여기에 계속 작성하세요)
 
+### [ID: RL-20251119-06]
+- 날짜: 2025-11-19 14:00 ~ 14:15 (KST)
+- 작성자: 시스템(자동) + CEO 요청
+- 변경 유형: 코드 + 문서
+- 변경 대상 파일/경로: `lib/schemas/siteSettings.js`, `lib/settings.js`, `pages/admin/settings.jsx`, `pages/admin/settings.module.css`, `components/ContentBlur.jsx`, `components/ContentBlur.module.css`, `docs/ADMIN_SETTINGS.md`
+- 변경 요약: 관리자 설정 시스템 구축 - CEO가 모든 기능을 On/Off 및 조정 가능
+- 변경 상세 설명: CEO 요청에 따라 관리자 페이지에서 모든 기능을 직접 제어할 수 있는 설정 시스템 구축. Sanity CMS에 siteSettings 스키마 추가 (콘텐츠 제한 비율 10~100%, 광고 시청 시간 5~120초, 세션 시간 10~1440분, 댓글/인증/일반 설정 등), 설정 관리 API/Hook (getSiteSettings, updateSiteSettings, useSiteSettings), 관리자 페이지 UI (토글/슬라이더/체크박스, 비밀번호 인증), 기존 컴포넌트 동적 연동 (ContentBlur, CommentList). 신규 기능도 동일 패턴으로 추가 가능하도록 확장성 확보. 관리자 페이지 URL: /admin/settings, 기본 비밀번호: kulture2025 (환경변수로 변경 가능).
+- 관련 PR/이슈: https://github.com/Borbino/Kulture/pull/2
+
+---
+
 ### [ID: RL-20251119-05]
 - 날짜: 2025-11-19 13:30 ~ 13:50 (KST)
 - 작성자: 시스템(자동) + CEO 요청

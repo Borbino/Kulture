@@ -54,6 +54,16 @@
   margin-top: 2rem;
 }
 
+.singleOption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .option {
   background: white;
   padding: 2rem;
