@@ -32,6 +32,17 @@
 
 (추가 항목을 여기에 계속 작성하세요)
 
+### [ID: RL-20251119-05]
+- 날짜: 2025-11-19 13:30 (KST)
+- 작성자: 시스템(자동) + CEO 요청
+- 변경 유형: 코드
+- 변경 대상 파일/경로: `utils/contentRestriction.js`, `components/ContentBlur.jsx`, `components/ContentBlur.module.css`, `components/CommentList.jsx`, `components/CommentList.module.css`, `test/contentRestriction.test.js`, `docs/CONTENT_RESTRICTION.md`
+- 변경 요약: 비회원 콘텐츠 제한 기능 구현 (50% 이상 블러/잠금)
+- 변경 상세 설명: CEO 요청에 따라 회원가입/로그인 유도를 위한 콘텐츠 제한 기능 구현. 비회원은 게시물 본문 40%, 댓글 40%, 이미지 처음 2개만 표시하고 나머지는 블러/잠금 처리. ContentBlur 컴포넌트(게시물용), CommentList 컴포넌트(댓글용), contentRestriction 유틸리티 함수, 테스트 코드 및 가이드 문서 포함. WORKGUIDE의 사용자 경험 목표(접근성과 회원 유도 균형)를 반영.
+- 관련 PR/이슈: (다음 PR 예정)
+
+---
+
 ### [ID: RL-20251119-04]
 - 날짜: 2025-11-19 13:00 (KST)
 - 작성자: 시스템(자동)
