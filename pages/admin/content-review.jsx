@@ -62,6 +62,10 @@ export default function ContentReview() {
     }
   }
 
+  const [feedbackModal, setFeedbackModal] = useState(null) // 'reject' or 'improve'
+  const [feedbackText, setFeedbackText] = useState('')
+  const [isProcessing, setIsProcessing] = useState(false)
+
   const approvePost = async (postId) => {
     if (!confirm('이 콘텐츠를 승인하시겠습니까?')) return
 
@@ -79,21 +83,83 @@ export default function ContentReview() {
     }
   }
 
-  const rejectPost = async (postId) => {
-    const reason = prompt('거절 사유를 입력하세요:')
-    if (!reason) return
-
+  const rejectPost = async (postId, reason) => {
     try {
+      // CEO 피드백을 학습 데이터로 저장
+      await sanity.create({
+        _type: 'ceoFeedback',
+        action: 'reject',
+        contentId: postId,
+        feedback: reason,
+        timestamp: new Date().toISOString(),
+      })
+
       await sanity.patch(postId).set({ 
         status: 'rejected',
         rejectionReason: reason,
       }).commit()
       
-      alert('거절되었습니다.')
+      alert('거절되었습니다. AI가 이 피드백을 학습하여 향후 콘텐츠 생성에 반영합니다.')
       loadPendingPosts()
       setSelectedPost(null)
+      setFeedbackModal(null)
+      setFeedbackText('')
     } catch (error) {
       alert('거절 실패: ' + error.message)
+    }
+  }
+
+  const improvePost = async (postId, feedback) => {
+    setIsProcessing(true)
+    try {
+      // 무료 AI로 콘텐츠 개선 (Hugging Face API 사용)
+      const response = await fetch('/api/improve-content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          postId,
+          feedback,
+          originalContent: selectedPost,
+        }),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        // CEO 피드백 저장
+        await sanity.create({
+          _type: 'ceoFeedback',
+          action: 'improve',
+          contentId: postId,
+          feedback,
+          timestamp: new Date().toISOString(),
+        })
+
+        alert('콘텐츠가 개선되었습니다. 다시 확인해주세요.')
+        loadPendingPosts()
+        setSelectedPost(null)
+        setFeedbackModal(null)
+        setFeedbackText('')
+      } else {
+        alert('개선 실패: ' + result.error)
+      }
+    } catch (error) {
+      alert('개선 실패: ' + error.message)
+    } finally {
+      setIsProcessing(false)
+    }
+  }
+
+  const handleFeedbackSubmit = () => {
+    if (!feedbackText.trim()) {
+      alert('피드백을 입력해주세요.')
+      return
+    }
+
+    if (feedbackModal === 'reject') {
+      rejectPost(selectedPost._id, feedbackText)
+    } else if (feedbackModal === 'improve') {
+      improvePost(selectedPost._id, feedbackText)
     }
   }
 
@@ -183,17 +249,86 @@ export default function ContentReview() {
                   <button
                     onClick={() => approvePost(selectedPost._id)}
                     className={styles.approveButton}
+                    disabled={isProcessing}
                   >
                     ✓ 승인
                   </button>
                   <button
-                    onClick={() => rejectPost(selectedPost._id)}
+                    onClick={() => {
+                      setFeedbackModal('improve')
+                      setFeedbackText('')
+                    }}
+                    className={styles.improveButton}
+                    disabled={isProcessing}
+                  >
+                    ✎ 보완
+                  </button>
+                  <button
+                    onClick={() => {
+                      setFeedbackModal('reject')
+                      setFeedbackText('')
+                    }}
                     className={styles.rejectButton}
+                    disabled={isProcessing}
                   >
                     ✗ 거절
                   </button>
                 </div>
               </div>
+
+              {/* CEO 피드백 모달 */}
+              {feedbackModal && (
+                <div className={styles.modalOverlay}>
+                  <div className={styles.modal}>
+                    <h3>
+                      {feedbackModal === 'reject' ? '거절 사유' : '보완 지시사항'}
+                    </h3>
+                    <p className={styles.modalDescription}>
+                      {feedbackModal === 'reject'
+                        ? 'AI가 이 피드백을 학습하여 향후 콘텐츠 생성 시 반영합니다.'
+                        : '무료 AI가 CEO님의 피드백을 바탕으로 콘텐츠를 즉시 개선합니다.'}
+                    </p>
+                    <textarea
+                      className={styles.feedbackTextarea}
+                      placeholder={
+                        feedbackModal === 'reject'
+                          ? '예: 출처가 불명확하고, 내용이 선정적입니다. 향후 더 공신력 있는 출처를 사용하세요.'
+                          : '예: 제목을 더 흥미롭게 바꿔주세요. 본문에 구체적인 통계를 추가해주세요.'
+                      }
+                      value={feedbackText}
+                      onChange={(e) => setFeedbackText(e.target.value)}
+                      rows={6}
+                      disabled={isProcessing}
+                    />
+                    <div className={styles.modalActions}>
+                      <button
+                        onClick={handleFeedbackSubmit}
+                        className={styles.submitButton}
+                        disabled={isProcessing}
+                      >
+                        {isProcessing ? '처리 중...' : '제출'}
+                      </button>
+                      <button
+                        onClick={() => {
+                          setFeedbackModal(null)
+                          setFeedbackText('')
+                        }}
+                        className={styles.cancelButton}
+                        disabled={isProcessing}
+                      >
+                        취소
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {isProcessing && (
+                <div className={styles.processingOverlay}>
+                  <div className={styles.spinner}></div>
+                  <p>AI가 콘텐츠를 개선하고 있습니다...</p>
+                </div>
+              )}
 
               <div className={styles.metadata}>
                 <div className={styles.metaItem}>

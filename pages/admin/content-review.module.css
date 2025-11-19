@@ -195,6 +195,28 @@
   background: #45a049;
 }
 
+.improveButton {
+  padding: 0.75rem 1.5rem;
+  background: #ff9800;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.improveButton:hover {
+  background: #f57c00;
+}
+
+.improveButton:disabled,
+.approveButton:disabled,
+.rejectButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .rejectButton {
   padding: 0.75rem 1.5rem;
   background: #f44336;
@@ -307,4 +329,134 @@
   height: 50vh;
   color: #999;
   font-size: 1.2rem;
+}
+
+/* CEO 피드백 모달 */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 600px;
+}
+
+.modal h3 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.modalDescription {
+  margin: 0 0 1.5rem 0;
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.feedbackTextarea {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.6;
+  resize: vertical;
+  margin-bottom: 1rem;
+}
+
+.feedbackTextarea:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.submitButton {
+  padding: 0.75rem 1.5rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.submitButton:hover {
+  background: #5568d3;
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  padding: 0.75rem 1.5rem;
+  background: #999;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.cancelButton:hover {
+  background: #777;
+}
+
+/* 로딩 오버레이 */
+.processingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.processingOverlay p {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: #667eea;
+  font-weight: 600;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
