@@ -1,33 +1,36 @@
-// [설명] 비회원 콘텐츠 제한 유틸리티 - 50% 이상 블러/잠금 처리
+// [설명] 비회원 콘텐츠 제한 유틸리티 - 관리자 설정 기반 제한
 // [일시] 2025-11-19 13:30 (KST)
+// [수정] 2025-11-20 08:42 (KST) - 하드코딩 제거, 설정 기반으로 변경
 // [목적] 회원가입/로그인 유도
 
 /**
- * 텍스트 콘텐츠의 50% 이상을 마스킹 처리
+ * 텍스트 콘텐츠를 관리자 설정 비율에 따라 마스킹 처리
  * @param {string} content - 원본 텍스트
  * @param {boolean} isAuthenticated - 로그인 여부
+ * @param {number} visiblePercentage - 보여줄 콘텐츠 비율 (기본값 40%)
  * @returns {string} - 마스킹된 텍스트 또는 원본
  */
-export function maskContent(content, isAuthenticated) {
+export function maskContent(content, isAuthenticated, visiblePercentage = 40) {
   if (isAuthenticated) return content
 
   const lines = content.split('\n')
-  const visibleLineCount = Math.floor(lines.length * 0.4) // 40%만 보임
+  const visibleLineCount = Math.floor((lines.length * visiblePercentage) / 100)
   const visibleLines = lines.slice(0, visibleLineCount)
 
   return visibleLines.join('\n') + '\n\n[로그인하여 전체 내용 보기]'
 }
 
 /**
- * 댓글 목록의 50% 이상 숨김 처리
+ * 댓글 목록을 관리자 설정 비율에 따라 숨김 처리
  * @param {Array} comments - 댓글 배열
  * @param {boolean} isAuthenticated - 로그인 여부
+ * @param {number} visiblePercentage - 보여줄 댓글 비율 (기본값 40%)
  * @returns {Array} - 필터링된 댓글 배열
  */
-export function filterComments(comments, isAuthenticated) {
+export function filterComments(comments, isAuthenticated, visiblePercentage = 40) {
   if (isAuthenticated) return comments
 
-  const visibleCount = Math.floor(comments.length * 0.4) // 40%만 보임
+  const visibleCount = Math.floor((comments.length * visiblePercentage) / 100)
   return comments
     .slice(0, visibleCount)
     .map(comment => ({

@@ -44,12 +44,12 @@ export default function ContentBlur({ children, isAuthenticated }) {
       }, 1000)
       return () => clearTimeout(timer)
     } else if (isWatchingAd && adTimer === 0) {
-      // 광고 시청 완료 - 관리자가 설정한 세션 시간 적용
-      adSession.markAdWatched(adDuration * 1000, sessionDuration)
+      // 광고 시청 완료 - 관리자가 설정한 세션 시간 적용 (분 단위로 전달)
+      adSession.markAdWatched(sessionDuration)
       setIsWatchingAd(false)
       setShowPrompt(false)
     }
-  }, [isWatchingAd, adTimer, adSession, adDuration, sessionDuration])
+  }, [isWatchingAd, adTimer, adSession, sessionDuration])
 
   const handleWatchAd = () => {
     setShowAdOption(false)

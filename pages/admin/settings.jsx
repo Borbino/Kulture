@@ -161,7 +161,11 @@ export default function AdminSettings() {
               step="5"
               value={formData.contentRestriction.visiblePercentage}
               onChange={e =>
-                handleChange('contentRestriction', 'visiblePercentage', parseInt(e.target.value))
+                handleChange(
+                  'contentRestriction',
+                  'visiblePercentage',
+                  parseInt(e.target.value, 10)
+                )
               }
               className={styles.slider}
             />
@@ -207,7 +211,7 @@ export default function AdminSettings() {
                 max="10"
                 value={formData.contentRestriction.freeImageCount}
                 onChange={e =>
-                  handleChange('contentRestriction', 'freeImageCount', parseInt(e.target.value))
+                  handleChange('contentRestriction', 'freeImageCount', parseInt(e.target.value, 10))
                 }
                 className={styles.numberInput}
               />
@@ -240,7 +244,9 @@ export default function AdminSettings() {
               max="120"
               step="5"
               value={formData.adWatchFeature.adDuration}
-              onChange={e => handleChange('adWatchFeature', 'adDuration', parseInt(e.target.value))}
+              onChange={e =>
+                handleChange('adWatchFeature', 'adDuration', parseInt(e.target.value, 10))
+              }
               className={styles.slider}
             />
           </div>
@@ -254,7 +260,7 @@ export default function AdminSettings() {
               step="10"
               value={formData.adWatchFeature.sessionDuration}
               onChange={e =>
-                handleChange('adWatchFeature', 'sessionDuration', parseInt(e.target.value))
+                handleChange('adWatchFeature', 'sessionDuration', parseInt(e.target.value, 10))
               }
               className={styles.slider}
             />
