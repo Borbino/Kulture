@@ -22,7 +22,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    const now = Date.now()
     const results = []
 
     // Tier 1: 실시간 모니터링 (항상 실행)

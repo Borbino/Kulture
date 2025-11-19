@@ -91,12 +91,13 @@ export class AdWatchSession {
 
   /**
    * 광고 시청 완료 기록
+   * @param {number} sessionDurationMinutes - 세션 유효 시간 (분 단위, 기본 60분)
    */
-  markAdWatched() {
+  markAdWatched(sessionDurationMinutes = 60) {
     if (typeof window === 'undefined') return
     const session = {
       timestamp: Date.now(),
-      expiresAt: Date.now() + 60 * 60 * 1000, // 1시간 유효
+      expiresAt: Date.now() + sessionDurationMinutes * 60 * 1000,
       articlesUnlocked: 1,
     }
     localStorage.setItem(this.storageKey, JSON.stringify(session))

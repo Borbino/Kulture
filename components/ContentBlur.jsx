@@ -8,7 +8,7 @@ import styles from './ContentBlur.module.css'
 import { AdWatchSession } from '@/utils/contentRestriction'
 import { useSiteSettings } from '@/lib/settings'
 
-export default function ContentBlur({ children, isAuthenticated, threshold = 0.5 }) {
+export default function ContentBlur({ children, isAuthenticated }) {
   const { settings, loading } = useSiteSettings()
   const [showPrompt, setShowPrompt] = useState(false)
   const [showAdOption, setShowAdOption] = useState(false)
@@ -22,17 +22,6 @@ export default function ContentBlur({ children, isAuthenticated, threshold = 0.5
   const adDuration = settings.adWatchFeature?.adDuration ?? 30
   const sessionDuration = settings.adWatchFeature?.sessionDuration ?? 60
   const adSenseClientId = settings.adWatchFeature?.adSenseClientId ?? 'ca-pub-xxxxxxxxxxxxxxxx'
-  const showAsOption = settings.adWatchFeature?.showAsOption ?? true
-
-  // 설정 로딩 중이면 대기
-  if (loading) {
-    return <>{children}</>
-  }
-
-  // 콘텐츠 제한 기능이 비활성화되어 있으면 제한 없음
-  if (!restrictionEnabled) {
-    return <>{children}</>
-  }
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -55,7 +44,7 @@ export default function ContentBlur({ children, isAuthenticated, threshold = 0.5
       return () => clearTimeout(timer)
     } else if (isWatchingAd && adTimer === 0) {
       // 광고 시청 완료 - 관리자가 설정한 세션 시간 적용
-      adSession.markAdWatched(adDuration * 1000, sessionDuration)
+      adSession.markAdWatched(sessionDuration)
       setIsWatchingAd(false)
       setShowPrompt(false)
     }
@@ -65,6 +54,16 @@ export default function ContentBlur({ children, isAuthenticated, threshold = 0.5
     setShowAdOption(false)
     setIsWatchingAd(true)
     setAdTimer(adDuration) // 관리자 설정의 adDuration 사용
+  }
+
+  // 설정 로딩 중이면 대기
+  if (loading) {
+    return <>{children}</>
+  }
+
+  // 콘텐츠 제한 기능이 비활성화되어 있으면 제한 없음
+  if (!restrictionEnabled) {
+    return <>{children}</>
   }
 
   // 로그인 상태이거나 광고 세션 유효 시 전체 콘텐츠 표시
