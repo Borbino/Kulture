@@ -65,3 +65,72 @@ export function getSignupPrompt() {
     ]
   }
 }
+
+/**
+ * 광고 시청 세션 관리
+ */
+export class AdWatchSession {
+  constructor() {
+    this.storageKey = 'kulture_ad_watch_session'
+    this.adDuration = 30 // 광고 최소 시청 시간 (초)
+  }
+
+  /**
+   * 로컬스토리지에서 세션 정보 가져오기
+   */
+  getSession() {
+    if (typeof window === 'undefined') return null
+    const data = localStorage.getItem(this.storageKey)
+    return data ? JSON.parse(data) : null
+  }
+
+  /**
+   * 광고 시청 완료 기록
+   */
+  markAdWatched() {
+    if (typeof window === 'undefined') return
+    const session = {
+      timestamp: Date.now(),
+      expiresAt: Date.now() + (60 * 60 * 1000), // 1시간 유효
+      articlesUnlocked: 1
+    }
+    localStorage.setItem(this.storageKey, JSON.stringify(session))
+  }
+
+  /**
+   * 세션 유효성 확인
+   */
+  isSessionValid() {
+    const session = this.getSession()
+    if (!session) return false
+    return Date.now() < session.expiresAt
+  }
+
+  /**
+   * 세션 초기화
+   */
+  clearSession() {
+    if (typeof window === 'undefined') return
+    localStorage.removeItem(this.storageKey)
+  }
+
+  /**
+   * 광고 시청 필요 여부 확인
+   * @param {boolean} isAuthenticated - 로그인 여부
+   * @returns {boolean} - 광고 시청 필요 여부
+   */
+  needsAdWatch(isAuthenticated) {
+    if (isAuthenticated) return false
+    return !this.isSessionValid()
+  }
+
+  /**
+   * 남은 시간 가져오기
+   */
+  getRemainingTime() {
+    const session = this.getSession()
+    if (!session) return 0
+    const remaining = Math.max(0, session.expiresAt - Date.now())
+    return Math.floor(remaining / 1000 / 60) // 분 단위
+  }
+}
