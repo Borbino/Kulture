@@ -6,8 +6,8 @@
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import styles from './ContentBlur.module.css'
-import { AdWatchSession } from '@/utils/contentRestriction'
-import { useSiteSettings } from '@/lib/settings'
+import { AdWatchSession } from '../utils/contentRestriction.js'
+import { useSiteSettings } from '../lib/settings.js'
 
 export default function ContentBlur({ children, isAuthenticated }) {
   const { settings, loading } = useSiteSettings()
@@ -59,7 +59,11 @@ export default function ContentBlur({ children, isAuthenticated }) {
 
   // 설정 로딩 중이면 대기
   if (loading) {
-    return <div aria-live="polite" aria-busy="true">{children}</div>
+    return (
+      <div aria-live="polite" aria-busy="true">
+        {children}
+      </div>
+    )
   }
 
   // 콘텐츠 제한 기능이 비활성화되어 있으면 제한 없음
@@ -74,15 +78,24 @@ export default function ContentBlur({ children, isAuthenticated }) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.visibleContent} aria-label="미리보기 콘텐츠">{children}</div>
-      <div className={styles.blurOverlay} role="dialog" aria-modal="true" aria-labelledby="content-lock-title">
+      <div className={styles.visibleContent} aria-label="미리보기 콘텐츠">
+        {children}
+      </div>
+      <div
+        className={styles.blurOverlay}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="content-lock-title"
+      >
         {isWatchingAd ? (
           <div className={styles.adContainer}>
             <div className={styles.adPlaceholder}>
               <p id="content-lock-title">📺 광고 시청 중...</p>
               <div className={styles.adTimer} role="timer" aria-live="polite">
                 <div className={styles.timerCircle}>
-                  <span className={styles.timerText} aria-label={`남은 시간 ${adTimer}초`}>{adTimer}초</span>
+                  <span className={styles.timerText} aria-label={`남은 시간 ${adTimer}초`}>
+                    {adTimer}초
+                  </span>
                 </div>
               </div>
               <p className={styles.adNote}>광고가 끝나면 자동으로 전체 내용을 볼 수 있습니다</p>
@@ -106,16 +119,16 @@ export default function ContentBlur({ children, isAuthenticated }) {
               {adDuration}초 광고 시청 후 {sessionDuration}분 동안 모든 콘텐츠를 볼 수 있습니다
             </p>
             <div className={styles.buttons}>
-              <button 
-                className={styles.adBtn} 
+              <button
+                className={styles.adBtn}
                 onClick={handleWatchAd}
                 type="button"
                 aria-label="광고 보고 무료로 이용하기"
               >
                 광고 보고 무료로 이용하기
               </button>
-              <button 
-                className={styles.backBtn} 
+              <button
+                className={styles.backBtn}
                 onClick={() => setShowAdOption(false)}
                 type="button"
                 aria-label="돌아가기"
@@ -137,11 +150,17 @@ export default function ContentBlur({ children, isAuthenticated }) {
                   <li>좋아요 & 북마크</li>
                 </ul>
                 <div className={styles.buttons}>
-                  <button className={styles.loginBtn} type="button" aria-label="로그인">로그인</button>
-                  <button className={styles.signupBtn} type="button" aria-label="회원가입">회원가입</button>
+                  <button className={styles.loginBtn} type="button" aria-label="로그인">
+                    로그인
+                  </button>
+                  <button className={styles.signupBtn} type="button" aria-label="회원가입">
+                    회원가입
+                  </button>
                 </div>
               </div>
-              <div className={styles.divider} aria-hidden="true">또는</div>
+              <div className={styles.divider} aria-hidden="true">
+                또는
+              </div>
               <div className={styles.option}>
                 <h4>📺 광고 시청</h4>
                 <ul className={styles.benefits}>
@@ -149,8 +168,8 @@ export default function ContentBlur({ children, isAuthenticated }) {
                   <li>{sessionDuration}분 무료 이용</li>
                   <li>회원가입 불필요</li>
                 </ul>
-                <button 
-                  className={styles.watchAdBtn} 
+                <button
+                  className={styles.watchAdBtn}
                   onClick={() => setShowAdOption(true)}
                   type="button"
                   aria-label="광고 보고 계속 읽기"

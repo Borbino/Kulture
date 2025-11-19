@@ -28,13 +28,11 @@ export default function CommentList({ comments, isAuthenticated }) {
 
       {!isAuthenticated && hiddenCount > 0 && (
         <div className={styles.lockedSection} role="alert" aria-live="polite">
-          <div className={styles.lockIcon} aria-hidden="true">🔒</div>
+          <div className={styles.lockIcon} aria-hidden="true">
+            🔒
+          </div>
           <p>나머지 {hiddenCount}개의 댓글을 보려면 로그인하세요</p>
-          <button 
-            className={styles.loginBtn}
-            type="button"
-            aria-label="로그인하고 모든 댓글 보기"
-          >
+          <button className={styles.loginBtn} type="button" aria-label="로그인하고 모든 댓글 보기">
             로그인하고 모든 댓글 보기
           </button>
         </div>
