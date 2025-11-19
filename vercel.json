@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "crons": [
+    {
+      "path": "/api/cron/vip-monitoring",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/trend-detection",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/content-generation",
+      "schedule": "0 0,6,12 * * *"
+    },
+    {
+      "path": "/api/cron/daily-report",
+      "schedule": "0 13 * * *"
+    }
+  ]
+}

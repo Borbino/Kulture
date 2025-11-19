@@ -380,7 +380,413 @@ const headers = {
 
 ## 카테고리별 수집 전략
 
-### K-Pop
+### 🌟 VIP 인물 트래킹 (최우선 수집)
+
+#### Tier 1: 글로벌 슈퍼스타 (실시간 모니터링)
+
+**K-Pop 아이콘**:
+- **BTS** (방탄소년단): RM, 진, 슈가, 제이홉, 지민, 뷔, 정국
+- **BLACKPINK**: 지수, 제니, 로제, 리사
+- **aespa** (에스파): 카리나, 지젤, 윈터, 닝닝
+- **NewJeans**: 민지, 하니, 다니엘, 해린, 혜인
+- **TWICE**: 나연, 정연, 모모, 사나, 지효, 미나, 다현, 채영, 쯔위
+- **Stray Kids**: 방찬, 리노, 창빈, 현진, 한, 필릭스, 승민, 아이엔
+- **PSY** (싸이): Gangnam Style, That That
+
+**K-Drama/Movie 스타**:
+- **이병헌**: 할리우드 진출, 오징어 게임
+- **송강호**: 기생충, 칸 수상
+- **배두나**: 할리우드 활동
+- **정호연**: 오징어 게임 → 글로벌 스타
+- **마동석**: 범죄도시 시리즈
+
+**K-Sports 영웅**:
+- **손흥민**: 토트넘, EPL
+- **김민재**: 뮌헨, 분데스리가
+- **이강인**: PSG, 리그1
+- **황희찬**: 울버햄튼
+- **김연경**: 배구 여제
+
+**K-Entertainment**:
+- **유재석**: 국민 MC
+- **이효리**: K-Pop 1세대
+- **싸이**: 글로벌 히트메이커
+
+#### Tier 2: 떠오르는 신예 (일일 체크)
+
+- **트렌딩 아이돌**: 차트 진입 신인 그룹
+- **신인 배우**: 드라마 주연급
+- **버츄얼 아이돌**: 이세계 아이돌, 플레이브
+- **인플루언서**: 100만 팔로워 이상
+
+### 🔥 실시간 트렌드 추적 시스템
+
+#### 자동 트렌드 감지
+
+```javascript
+// 실시간 트렌딩 키워드 모니터링
+const trendingSources = {
+  // 글로벌 트렌드
+  twitter: 'https://api.twitter.com/2/trends/place.json?id=23424868', // 한국
+  youtube: 'https://www.googleapis.com/youtube/v3/search?regionCode=KR&chart=mostPopular',
+  google: 'https://trends.google.com/trends/trendingsearches/daily/rss?geo=KR',
+  
+  // 한국 트렌드
+  naver: 'https://openapi.naver.com/v1/datalab/search',
+  melon: 'https://www.melon.com/chart/index.htm',
+  
+  // 커뮤니티 트렌드
+  reddit: 'https://www.reddit.com/r/kpop/hot.json',
+  dcInside: 'https://gall.dcinside.com/board/lists?id=idol&_dcbest=1',
+  theqoo: 'https://theqoo.net/hot',
+}
+
+// 트렌딩 키워드 예시
+const emergingTrends = [
+  'K-pop demon hunters',  // 최신 이슈
+  'Huntrix',              // 떠오르는 밈
+  'NewJeans OMG challenge',
+  'aespa Supernova dance',
+  'BTS solo activities',
+  '손흥민 골 세리머니',
+  'K-Drama 재벌집 막내아들',
+]
+```
+
+#### 인물별 전용 모니터링
+
+```javascript
+// VIP 인물별 자동 수집 설정
+const vipMonitoring = {
+  'BTS': {
+    keywords: ['BTS', '방탄소년단', 'RM', 'Jin', 'Suga', 'JHope', 'Jimin', 'V', 'Jungkook'],
+    sources: [
+      'https://twitter.com/BTS_twt',
+      'https://www.youtube.com/@BTS',
+      'https://www.instagram.com/bts.bighitofficial/',
+      'https://weverse.io/bts',
+    ],
+    frequency: 'realtime', // 실시간 수집
+    priority: 10, // 최고 우선순위
+  },
+  
+  'aespa': {
+    keywords: ['aespa', '에스파', 'Karina', 'Giselle', 'Winter', 'Ningning'],
+    sources: [
+      'https://twitter.com/aespa_official',
+      'https://www.youtube.com/@aespa',
+      'https://www.instagram.com/aespa_official/',
+    ],
+    frequency: 'realtime',
+    priority: 10,
+  },
+  
+  'PSY': {
+    keywords: ['PSY', '싸이', 'Gangnam Style', 'That That', 'P NATION'],
+    sources: [
+      'https://twitter.com/psy_oppa',
+      'https://www.youtube.com/@officialpsy',
+      'https://www.instagram.com/42psy42/',
+    ],
+    frequency: 'hourly',
+    priority: 9,
+  },
+  
+  '이병헌': {
+    keywords: ['이병헌', 'Lee Byung-hun', 'Squid Game'],
+    sources: [
+      'https://twitter.com/search?q=이병헌',
+      'https://www.instagram.com/explore/tags/이병헌/',
+    ],
+    frequency: 'daily',
+    priority: 8,
+  },
+  
+  '손흥민': {
+    keywords: ['손흥민', 'Son Heung-min', 'Tottenham', 'Sonny'],
+    sources: [
+      'https://twitter.com/SpursOfficial',
+      'https://www.instagram.com/hm_son7/',
+      'https://www.youtube.com/@Spursofficial',
+    ],
+    frequency: 'hourly',
+    priority: 9,
+  },
+}
+```
+
+### 📊 트렌드 자동 분석 시스템
+
+```javascript
+// 매일 오전 9시 트렌드 리포트 생성
+import OpenAI from 'openai'
+
+const generateTrendReport = async () => {
+  // 1. 지난 24시간 트렌드 수집
+  const trends = await collectTrends24h()
+  
+  // 2. GPT-4로 트렌드 분석
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  
+  const analysis = await openai.chat.completions.create({
+    model: 'gpt-4',
+    messages: [{
+      role: 'user',
+      content: `
+다음은 지난 24시간 K-Culture 트렌드입니다:
+${JSON.stringify(trends, null, 2)}
+
+다음 항목을 분석하여 JSON으로 반환하세요:
+1. topTrends: 상위 10개 트렌드
+2. risingStars: 떠오르는 인물/그룹
+3. viralContent: 바이럴 콘텐츠 (조회수 폭발)
+4. controversies: 논쟁/이슈 (주의 필요)
+5. opportunities: 콘텐츠 제작 기회
+      `
+    }],
+    response_format: { type: 'json_object' },
+  })
+  
+  return JSON.parse(analysis.choices[0].message.content)
+}
+```
+
+### 🎨 2차 창작물 자동 생성
+
+#### AI 기반 콘텐츠 생성
+
+```javascript
+// 트렌드 기반 자동 아티클 생성
+const generateArticle = async (trend) => {
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  
+  const article = await openai.chat.completions.create({
+    model: 'gpt-4',
+    messages: [{
+      role: 'system',
+      content: '당신은 K-Culture 전문 에디터입니다. SEO 최적화된 기사를 작성합니다.'
+    }, {
+      role: 'user',
+      content: `
+트렌드: ${trend.keyword}
+데이터: ${JSON.stringify(trend.data)}
+
+다음 형식으로 기사를 작성하세요:
+- 제목 (SEO 최적화, 50자 이내)
+- 리드 문단 (100자)
+- 본문 (500-800자, 3-5 문단)
+- 태그 (5-10개)
+- 메타 설명 (150자)
+
+모든 출처를 명시하고, 원문을 복사하지 말고 재구성하세요.
+      `
+    }],
+  })
+  
+  return article.choices[0].message.content
+}
+
+// 이미지 생성 (DALL-E 3)
+const generateImage = async (concept) => {
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  
+  const image = await openai.images.generate({
+    model: 'dall-e-3',
+    prompt: `
+K-Pop concept art: ${concept}
+Style: Modern, vibrant, Korean aesthetic
+High quality, trending on artstation
+    `,
+    size: '1024x1024',
+    quality: 'hd',
+  })
+  
+  return image.data[0].url
+}
+
+// 소셜 미디어 포스트 생성
+const generateSocialPost = async (content) => {
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  
+  const post = await openai.chat.completions.create({
+    model: 'gpt-4',
+    messages: [{
+      role: 'user',
+      content: `
+다음 내용으로 소셜 미디어 포스트를 작성하세요:
+${content}
+
+형식:
+- Twitter (280자, 해시태그 3개)
+- Instagram 캡션 (2200자, 해시태그 30개)
+- Facebook (간결한 소개 + 링크)
+
+매력적이고 클릭하고 싶게 작성하세요.
+      `
+    }],
+  })
+  
+  return post.choices[0].message.content
+}
+```
+
+### 🤖 완전 자동화 파이프라인
+
+```javascript
+// 매시간 실행되는 자동화 시스템
+export default async function autoContentPipeline() {
+  try {
+    // 1. VIP 인물 실시간 모니터링
+    const vipUpdates = await monitorVIPs([
+      'BTS', 'aespa', 'BLACKPINK', 'PSY', '손흥민', '이병헌'
+    ])
+    
+    // 2. 트렌드 감지
+    const trends = await detectTrends()
+    
+    // 3. 바이럴 콘텐츠 발견
+    const viral = await findViralContent({
+      minViews: 100000,      // 10만 조회수 이상
+      minEngagement: 1000,   // 1천 좋아요/댓글 이상
+      timeWindow: '24h',     // 24시간 이내
+    })
+    
+    // 4. 2차 창작물 생성
+    for (const item of [...vipUpdates, ...viral]) {
+      // 기사 자동 생성
+      const article = await generateArticle(item)
+      
+      // 이미지 생성 (필요시)
+      let image = null
+      if (item.needsVisual) {
+        image = await generateImage(item.concept)
+      }
+      
+      // 소셜 포스트 생성
+      const socialPosts = await generateSocialPost(article)
+      
+      // 5. 2차 검증
+      const verification = await autoFilter(article)
+      
+      if (verification.approved) {
+        // 6. CEO 승인 대기열에 추가
+        await addToPendingQueue({
+          type: 'auto-generated',
+          source: 'AI Pipeline',
+          content: article,
+          image: image,
+          socialPosts: socialPosts,
+          trustScore: 85, // AI 생성 콘텐츠는 85점
+          priority: item.priority,
+        })
+      }
+    }
+    
+    // 7. 트렌드 리포트 생성
+    const report = await generateTrendReport()
+    
+    // 8. CEO에게 이메일 알림
+    await sendEmailToCEO({
+      subject: `📊 K-Culture 일일 트렌드 리포트 (${new Date().toLocaleDateString('ko-KR')})`,
+      body: `
+오늘의 핫 트렌드:
+${report.topTrends.map((t, i) => `${i+1}. ${t.keyword} (${t.mentions.toLocaleString()} 언급)`).join('\n')}
+
+떠오르는 스타:
+${report.risingStars.join(', ')}
+
+바이럴 콘텐츠:
+${report.viralContent.map(v => `- ${v.title} (조회수 ${v.views.toLocaleString()})`).join('\n')}
+
+승인 대기 중인 콘텐츠: ${pendingQueue.length}건
+      `,
+    })
+    
+    return {
+      success: true,
+      collected: vipUpdates.length + viral.length,
+      generated: [...vipUpdates, ...viral].length,
+      pending: pendingQueue.length,
+    }
+    
+  } catch (error) {
+    console.error('Auto pipeline error:', error)
+    await alertCEO('자동화 파이프라인 오류 발생', error.message)
+  }
+}
+```
+
+### 🎯 특정 이슈 추적 예시
+
+```javascript
+// "K-pop demon hunters" 같은 특정 이슈 자동 추적
+const trackSpecificIssue = async (issue) => {
+  const keywords = [
+    'K-pop demon hunters',
+    'Huntrix',
+    'NewJeans x horror',
+    'K-pop creepypasta',
+  ]
+  
+  const results = await Promise.all([
+    // Twitter 검색
+    searchTwitter(keywords),
+    
+    // YouTube 검색
+    searchYouTube(keywords),
+    
+    // Reddit 검색
+    searchReddit(keywords, ['r/kpop', 'r/creepy', 'r/nosleep']),
+    
+    // TikTok 해시태그
+    searchTikTok(keywords.map(k => `#${k.replace(/\s/g, '')}`)),
+    
+    // DC인사이드 검색
+    searchDCInside(keywords, ['idol', 'entertain']),
+  ])
+  
+  // AI 요약 생성
+  const summary = await summarizeIssue(results)
+  
+  return {
+    issue: issue,
+    mentions: results.reduce((sum, r) => sum + r.count, 0),
+    sentiment: analyzeSentiment(results),
+    summary: summary,
+    topContent: results
+      .flatMap(r => r.items)
+      .sort((a, b) => b.engagement - a.engagement)
+      .slice(0, 10),
+  }
+}
+```
+
+### ⏰ 스케줄링 설정
+
+```javascript
+// Vercel Cron Jobs 설정
+// vercel.json
+{
+  "crons": [
+    {
+      "path": "/api/cron/vip-monitoring",
+      "schedule": "*/5 * * * *"  // 5분마다 VIP 체크
+    },
+    {
+      "path": "/api/cron/trend-detection",
+      "schedule": "0 * * * *"     // 매시간 트렌드 감지
+    },
+    {
+      "path": "/api/cron/content-generation",
+      "schedule": "0 9,15,21 * * *"  // 오전 9시, 오후 3시, 밤 9시
+    },
+    {
+      "path": "/api/cron/daily-report",
+      "schedule": "0 9 * * *"     // 매일 오전 9시 리포트
+    }
+  ]
+}
+```
 
 **공식 소스**:
 - YouTube Music API: 뮤직비디오, 음원
@@ -777,7 +1183,7 @@ export default function SourceAttribution({ source }) {
 
 ---
 
-## 관리자 설정 연동
+### 관리자 설정 연동
 
 모든 크롤러 기능은 관리자 페이지에서 제어 가능:
 
@@ -808,6 +1214,12 @@ export default function SourceAttribution({ source }) {
           { title: 'K-Movie', value: 'kmovie' },
           { title: 'K-Food', value: 'kfood' },
           { title: 'K-Beauty', value: 'kbeauty' },
+          { title: 'K-Fashion', value: 'kfashion' },
+          { title: 'K-Game', value: 'kgame' },
+          { title: 'K-Webtoon', value: 'kwebtoon' },
+          { title: 'K-Celeb', value: 'kceleb' },
+          { title: 'K-Travel', value: 'ktravel' },
+          { title: 'K-Tech', value: 'ktech' },
         ],
       },
     },
@@ -823,6 +1235,125 @@ export default function SourceAttribution({ source }) {
       type: 'number',
       validation: Rule => Rule.min(0.1).max(5),
       initialValue: 1,
+    },
+    
+    // ========== VIP 인물 모니터링 ==========
+    {
+      name: 'vipMonitoring',
+      title: '🌟 VIP Monitoring',
+      type: 'object',
+      fields: [
+        {
+          name: 'enabled',
+          title: 'Enable VIP Monitoring',
+          type: 'boolean',
+          initialValue: true,
+        },
+        {
+          name: 'vipList',
+          title: 'VIP List',
+          description: '실시간 모니터링할 인물/그룹',
+          type: 'array',
+          of: [{
+            type: 'object',
+            fields: [
+              { name: 'name', type: 'string', title: 'Name' },
+              { name: 'keywords', type: 'array', of: [{ type: 'string' }], title: 'Keywords' },
+              { name: 'priority', type: 'number', title: 'Priority (1-10)', validation: Rule => Rule.min(1).max(10) },
+              { name: 'frequency', type: 'string', title: 'Check Frequency', options: {
+                list: ['realtime', 'hourly', 'daily']
+              }},
+            ]
+          }],
+          initialValue: [
+            { name: 'BTS', keywords: ['BTS', '방탄소년단'], priority: 10, frequency: 'realtime' },
+            { name: 'aespa', keywords: ['aespa', '에스파'], priority: 10, frequency: 'realtime' },
+            { name: 'PSY', keywords: ['PSY', '싸이'], priority: 9, frequency: 'hourly' },
+            { name: '손흥민', keywords: ['손흥민', 'Son Heung-min'], priority: 9, frequency: 'hourly' },
+            { name: '이병헌', keywords: ['이병헌', 'Lee Byung-hun'], priority: 8, frequency: 'daily' },
+          ],
+        },
+      ],
+    },
+    
+    // ========== 트렌드 자동 감지 ==========
+    {
+      name: 'trendDetection',
+      title: '🔥 Trend Detection',
+      type: 'object',
+      fields: [
+        {
+          name: 'enabled',
+          title: 'Enable Trend Detection',
+          type: 'boolean',
+          initialValue: true,
+        },
+        {
+          name: 'minMentions',
+          title: 'Minimum Mentions',
+          description: '트렌드로 인식할 최소 언급 수',
+          type: 'number',
+          initialValue: 1000,
+        },
+        {
+          name: 'trackingKeywords',
+          title: 'Custom Tracking Keywords',
+          description: '수동으로 추적할 키워드',
+          type: 'array',
+          of: [{ type: 'string' }],
+          initialValue: [
+            'K-pop demon hunters',
+            'Huntrix',
+            'NewJeans challenge',
+            'aespa Supernova',
+          ],
+        },
+      ],
+    },
+    
+    // ========== 2차 창작물 자동 생성 ==========
+    {
+      name: 'autoContentGeneration',
+      title: '🎨 Auto Content Generation',
+      type: 'object',
+      fields: [
+        {
+          name: 'enabled',
+          title: 'Enable Auto Generation',
+          type: 'boolean',
+          initialValue: true,
+        },
+        {
+          name: 'generateArticles',
+          title: 'Generate Articles',
+          description: 'AI로 기사 자동 생성',
+          type: 'boolean',
+          initialValue: true,
+        },
+        {
+          name: 'generateImages',
+          title: 'Generate Images',
+          description: 'DALL-E로 이미지 생성',
+          type: 'boolean',
+          initialValue: false, // 비용 발생
+        },
+        {
+          name: 'generateSocialPosts',
+          title: 'Generate Social Posts',
+          description: 'SNS 포스트 자동 생성',
+          type: 'boolean',
+          initialValue: true,
+        },
+        {
+          name: 'aiModel',
+          title: 'AI Model',
+          type: 'string',
+          options: {
+            list: ['gpt-4', 'gpt-3.5-turbo', 'claude-3-opus']
+          },
+          initialValue: 'gpt-4',
+        },
+      ],
     },
   ],
 },

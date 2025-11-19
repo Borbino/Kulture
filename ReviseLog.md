@@ -32,6 +32,94 @@
 
 (추가 항목을 여기에 계속 작성하세요)
 
+### [ID: RL-20251119-08]
+- 날짜: 2025-11-19 15:00 ~ 15:45 (KST)
+- 작성자: 시스템(자동) + CEO 요청
+- 변경 유형: 코드 + 문서
+- 변경 대상 파일/경로: 
+  - `lib/vipMonitoring.js` (신규)
+  - `pages/api/cron/vip-monitoring.js` (신규)
+  - `pages/api/cron/trend-detection.js` (신규)
+  - `pages/api/cron/content-generation.js` (신규)
+  - `pages/api/cron/daily-report.js` (신규)
+  - `pages/admin/content-review.jsx` (신규)
+  - `pages/admin/content-review.module.css` (신규)
+  - `lib/schemas/vipMonitoring.js` (신규)
+  - `lib/schemas/trendSnapshot.js` (신규)
+  - `lib/schemas/hotIssue.js` (신규)
+  - `lib/schemas/dailyReport.js` (신규)
+  - `lib/schemas/index.js` (업데이트)
+  - `vercel.json` (신규)
+  - `docs/API_KEYS_GUIDE.md` (신규)
+- 변경 요약: **VIP 인물 추적 + AI 2차 창작물 자동 생성 시스템 완전 구현**
+- 변경 상세 설명: 
+  CEO 요청("에스파, BTS, 이병헌, 싸이, PSY, 손흥민 등 유명 한국인에 대한 얘기도 최대한 많이 언급이 되고 조회가 되어야 합니다. 특정 유명인물 혹은 최근에 떠오르는 한국 관련 이슈(K-pop demon hunters / huntrix 등)를 언제나 확인하도록 하고, 이에 대한 검색과 2차 창작물 제작 등의 작업도 자동화하도록 해주세요.")에 따라 완전 자동화 시스템 구현:
+  
+  **1. VIP 인물 추적 시스템**
+  - Tier 1 (실시간 5분): BTS (개별 멤버 포함), BLACKPINK, aespa (개별 멤버 포함), PSY, 손흥민, 이병헌
+  - Tier 2 (1시간): NewJeans, Stray Kids, TWICE, 김민재, 이강인
+  - 각 VIP별 키워드, 소셜미디어 링크, 우선순위, 모니터링 주기 설정
+  - Twitter, YouTube, Instagram, Reddit, 커뮤니티(DC인사이드, 인스티즈, 더쿠) 자동 검색
+  
+  **2. 트렌드 자동 감지**
+  - 글로벌: Twitter Trends, Google Trends, YouTube Trending
+  - 한국: Naver DataLab, Melon Chart, Genie Chart
+  - 커뮤니티: DC인사이드 실시간, 인스티즈 차트, 더쿠 HOT, Reddit r/kpop
+  - 특정 이슈 추적: "K-pop demon hunters", "Huntrix", "NewJeans OMG challenge", "aespa Supernova"
+  - 멘션 1000+ 시 자동으로 hotIssue 저장
+  
+  **3. AI 2차 창작물 자동 생성**
+  - GPT-4: 500-800단어 기사 자동 작성 (제목, 부제, 본문, 결론)
+  - DALL-E 3: 1024x1024 HD 이미지 생성 (옵션, 비용 고려)
+  - GPT-3.5-turbo: Twitter/Instagram/Facebook 소셜 포스트 생성
+  - 하루 3회 실행 (09:00, 15:00, 21:00 UTC = 18:00, 00:00, 06:00 KST)
+  - 생성된 콘텐츠는 자동으로 status='pending'으로 저장 (CEO 승인 대기)
+  
+  **4. CEO 승인 대시보드**
+  - `/admin/content-review` 페이지 구현
+  - 승인 대기 목록 실시간 조회
+  - 신뢰도 점수, 출처, 트렌드 키워드, 멘션 수, AI 모델 표시
+  - 본문 수정 기능
+  - 승인/거절 원클릭
+  - 이미지 미리보기, 소셜 포스트 미리보기
+  
+  **5. Vercel Cron Jobs**
+  - `*/5 * * * *`: VIP 모니터링 (5분마다)
+  - `0 * * * *`: 트렌드 감지 (1시간마다)
+  - `0 0,6,12 * * *`: AI 콘텐츠 생성 (하루 3회)
+  - `0 13 * * *`: 일일 리포트 (매일 22:00 KST)
+  - CRON_SECRET 인증으로 보안 강화
+  
+  **6. Sanity 스키마 확장**
+  - vipMonitoring: VIP 모니터링 결과 저장
+  - trendSnapshot: 시간별 트렌드 스냅샷 (상위 50개)
+  - hotIssue: 급부상 이슈 (K-pop demon hunters, Huntrix 등)
+  - dailyReport: CEO 일일 요약 리포트
+  
+  **7. API 키 가이드**
+  - Twitter, YouTube, Instagram, OpenAI, Naver, Reddit API 취득 방법 문서화
+  - 무료 플랜 활용 전략 (월 $0 운영 가능)
+  - 비용 최적화 (GPT-3.5-turbo 사용 시 월 $2)
+  - Rate Limit 대응 방법
+  
+  **기술 스택**
+  - Next.js 14 API Routes
+  - Vercel Cron Jobs
+  - OpenAI API (GPT-4 + DALL-E 3)
+  - Sanity.io (CMS)
+  - 50+ 무료 API 통합
+  
+  **법적 준수**
+  - robots.txt 100% 준수
+  - Rate Limiting (1초당 1회)
+  - 출처 명시 의무화
+  - Fair Use 원칙
+  - DMCA 대응 프로세스
+  
+- 관련 PR/이슈: https://github.com/Borbino/Kulture/pull/3
+
+---
+
 ### [ID: RL-20251119-07]
 - 날짜: 2025-11-19 14:30 ~ 14:45 (KST)
 - 작성자: 시스템(자동) + CEO 요청
