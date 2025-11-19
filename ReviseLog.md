@@ -32,6 +32,17 @@
 
 (추가 항목을 여기에 계속 작성하세요)
 
+### [ID: RL-20251119-03]
+- 날짜: 2025-11-19 12:40 (KST)
+- 작성자: 시스템(자동)
+- 변경 유형: 문서
+- 변경 대상 파일/경로: `AGENT_POLICY.md`, `AGENT_USAGE.md`, `PR_TEMPLATE.md`, `REVIEW_SUMMARY.md`, `.github/workflows/revise_log_check.yml`, `README.md`, `WORKGUIDE.md`, `ReviseLog.md`
+- 변경 요약: Agent 정책·사용 가이드·PR 템플릿 및 CI 워크플로우 추가
+- 변경 상세 설명: 프로젝트의 자동화 작업을 안전하게 운영하기 위한 문서와 워크플로우를 추가함. ReviseLog 규칙과 PR 검사 워크플로우를 통해 자동 변경의 투명성 및 CI 보장을 강화함.
+- 관련 PR/이슈: https://github.com/Borbino/Kulture/pull/1
+
+---
+
 ### [ID: RL-20251119-02]
 - 날짜: 2025-11-19 12:30 (KST)
 - 작성자: CEO
