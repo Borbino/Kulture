@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "crons": [
+    {
+      "path": "/api/cron/vip-monitoring",
+      "schedule": "*/30 * * * *",
+      "comment": "VIP 모니터링 - 30분마다 (일 48회, 무료 플랜 최적화)"
+    },
+    {
+      "path": "/api/cron/trend-detection",
+      "schedule": "0 */2 * * *",
+      "comment": "트렌드 감지 - 2시간마다 (일 12회)"
+    },
+    {
+      "path": "/api/cron/content-generation",
+      "schedule": "0 9,12,15,18 * * *",
+      "comment": "AI 콘텐츠 생성 - 일 4회 (9시, 12시, 15시, 18시 KST)"
+    },
+    {
+      "path": "/api/cron/daily-report",
+      "schedule": "0 22 * * *",
+      "comment": "일일 리포트 - 매일 22:00 KST"
+    },
+    {
+      "path": "/api/health",
+      "schedule": "*/10 * * * *",
+      "comment": "헬스체크 - 10분마다 (API 상태 모니터링)"
+    }
+  ]
+}

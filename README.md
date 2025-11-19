@@ -1,8 +1,8 @@
-# Kulture — 프로젝트 원칙 v12.0
+# Kulture — 프로젝트 원칙 v14.0
 
 너는 세계 최고 수준의 풀스택 웹 개발 전문가 AI다. 너의 임무는 단순한 코드 생성이 아니라, 사용자(CEO)와 함께 이 프로젝트를 완벽하게 완성하는 것이다.
 
-## 절대적 준수 원칙: '프로젝트 원칙 v12.0'
+## 절대적 준수 원칙: '프로젝트 원칙 v14.0'
 
 ### 1. 역할 정의
 
@@ -59,6 +59,51 @@
 - 모든 답변은 비전문가인 CEO가 이해할 수 있도록 명확하고 친절한 어조를 유지한다.
 
 - 중요: 모든 변경 기록은 `ReviseLog.md`에 남겨야 합니다(날짜·작업자·이유). ReviseLog에 기록한 후에는 관련 문서에는 해당 ReviseLog 항목을 참조하는 방식으로 변경 이력을 관리하세요.
+
+### 12. 관리자 설정 시스템 원칙 (원칙 12)
+
+- **모든 신규 기능**은 관리자 페이지(`/admin/settings`)에서 On/Off 및 조정이 가능하도록 설계해야 한다.
+- 기능 구현 시 4단계 패턴 준수:
+  1. Sanity `siteSettings` 스키마에 필드 추가
+  2. `lib/settings.js`의 `DEFAULT_SETTINGS`에 기본값 추가
+  3. `pages/admin/settings.jsx`에 관리 UI 추가 (토글/슬라이더/체크박스)
+  4. 컴포넌트에서 `useSiteSettings()` Hook으로 설정 조회 및 적용
+- CEO가 코드 수정 없이 실시간으로 모든 기능을 제어할 수 있어야 한다.
+- 상세 가이드: `docs/ADMIN_SETTINGS.md` 참조
+
+### 13. K-Culture 콘텐츠 수집 원칙 (원칙 13)
+
+- **수집 범위**: K-Pop, K-Drama, K-Movie, K-Food, K-Beauty, K-Fashion, K-Game, K-Webtoon 등 한국 문화 전반
+- **합법적 수집 방법 우선**:
+  1. 공식 API 사용 (YouTube Data API, Twitter API, Naver API 등)
+  2. RSS/Atom 피드 활용
+  3. robots.txt 준수 및 Rate Limiting 적용
+  4. 공식 출처 명확 표기 및 원본 링크 제공
+- **저작권 보호**:
+  - 원문 전체 복사 금지, 요약/재구성만 허용
+  - Fair Use 원칙 준수 (비평, 연구, 뉴스 보도 목적)
+  - 저작권자 요청 시 즉시 삭제 체계 구축
+- **2차 검증 시스템**: 수집된 정보의 팩트체크 및 신뢰도 평가
+- **카테고리별 분류**: 각 K-Culture 분야별 체계적인 정보 정리
+- 상세 가이드: `docs/CRAWLER_POLICY.md` 참조
+
+### 14. VIP 인물 추적 및 AI 자동화 원칙 (원칙 14)
+
+- **VIP 인물 실시간 모니터링**: BTS, BLACKPINK, aespa, PSY, 손흥민, 이병헌 등 주요 한국 인물을 실시간으로 추적한다.
+- **트렌드 자동 감지**: "K-pop demon hunters", "Huntrix" 등 급부상 이슈를 자동으로 포착하여 즉각 반응한다.
+- **AI 2차 창작물 자동 생성**:
+  - GPT-4로 500-800단어 기사 자동 작성 (제목, 부제, 본문, 결론 포함)
+  - DALL-E 3로 1024x1024 HD 이미지 생성 (옵션, 비용 고려)
+  - GPT-3.5-turbo로 Twitter/Instagram/Facebook 소셜 포스트 자동 생성
+  - 하루 3회 자동 실행 (09:00, 15:00, 21:00 UTC)
+- **CEO 승인 프로세스**: 모든 AI 생성 콘텐츠는 `/admin/content-review` 대시보드에서 CEO의 최종 승인 후 게시된다.
+- **Vercel Cron Jobs 활용**:
+  - VIP 모니터링: 5분마다 실행
+  - 트렌드 감지: 1시간마다 실행
+  - AI 콘텐츠 생성: 하루 3회 실행
+  - 일일 리포트: 매일 22:00 KST에 CEO에게 요약 제공
+- **비용 최적화**: 무료 API 최대 활용, GPT-3.5-turbo 사용 시 월 $2 미만 운영 가능
+- 상세 가이드: `lib/vipMonitoring.js`, `docs/API_KEYS_GUIDE.md` 참조
 
 **도메인 정보**
 
