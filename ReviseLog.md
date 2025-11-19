@@ -33,12 +33,12 @@
 (추가 항목을 여기에 계속 작성하세요)
 
 ### [ID: RL-20251119-07]
-- 날짜: 2025-11-19 14:30 (KST)
+- 날짜: 2025-11-19 14:30 ~ 14:45 (KST)
 - 작성자: 시스템(자동) + CEO 요청
 - 변경 유형: 문서
 - 변경 대상 파일/경로: `README.md`, `WORKGUIDE.md`, `docs/CRAWLER_POLICY.md`
-- 변경 요약: 관리자 설정 원칙 문서화 + K-Culture 크롤링 정책 수립
-- 변경 상세 설명: CEO 요청에 따라 (1) 모든 신규 기능은 관리자 페이지에서 제어 가능하도록 하는 원칙을 README.md(원칙 12), WORKGUIDE.md에 명문화. 신규 기능 추가 시 4단계 패턴 필수화. (2) K-Culture 콘텐츠 수집 정책 수립(원칙 13). **법적으로 안전한 크롤링 방법**만 사용: 공식 API 우선(YouTube, TMDB, Twitter 등), RSS/Atom 피드, robots.txt 준수, Rate Limiting, 출처 명확 표기, 원문 복사 금지(요약/재구성만). VPN 우회, 과도한 크롤링, 개인정보 무단 수집 절대 금지. 2차 검증 시스템(팩트체크), DMCA 대응 프로세스, 관리자 설정 연동 포함. K-Pop/K-Drama/K-Movie/K-Food/K-Beauty/K-Fashion/K-Game/K-Webtoon 등 전 분야 카테고리별 수집 전략 문서화.
+- 변경 요약: 관리자 설정 원칙 문서화 + K-Culture 크롤링 정책 대폭 확장
+- 변경 상세 설명: CEO 요청에 따라 (1) 모든 신규 기능은 관리자 페이지에서 제어 가능하도록 하는 원칙을 README.md(원칙 12), WORKGUIDE.md에 명문화. (2) **K-Culture 콘텐츠 수집 범위 대폭 확장**: 공식 소스(YouTube, Instagram, Twitter 공식 계정, 언론사, 정부 API) + 비공식 소스(DC인사이드, 인스티즈, 더쿠, 네이트판, Reddit, 개인 블로그) 모두 포함. **50개 이상 무료 API 활용** (YouTube, Twitter, Instagram, Facebook, Naver, Kakao, TMDB, Spotify, KOBIS, Steam, Riot Games 등). 수집 정보 유형 10가지로 확장 (메타데이터, 요약, 통계, 미디어, 반응, 트렌드, 리뷰, 토론, 팬 창작물, 내부 정보). **3단계 2차 검증 시스템**: 자동 필터링(AI), 출처 신뢰도 평가(공식 100점/커뮤니티 50-70점), 크로스 체크. CEO 승인 대시보드로 최종 게시 판단. **합법성 유지**: robots.txt 준수, Rate Limiting(1초당 1회), 출처 명시, 원문 복사 금지(요약/재구성), 개인정보 자동 제거, DMCA 대응. K-Pop/K-Drama/K-Movie/K-Food/K-Beauty/K-Fashion/K-Game/K-Webtoon/K-Celeb/K-Travel/K-Tech 등 11개 카테고리 전방위 수집.
 - 관련 PR/이슈: https://github.com/Borbino/Kulture/pull/2
 
 ---
