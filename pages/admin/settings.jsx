@@ -4,8 +4,8 @@
  * [목적] CEO가 모든 기능을 On/Off하고 조정할 수 있는 대시보드
  */
 
-import { useState, useEffect } from 'react'
-import { useSiteSettings, updateSiteSettings } from '@/lib/settings'
+import { useState, useEffect, useRef } from 'react'
+import { useSiteSettings, updateSiteSettings } from '../../lib/settings.js'
 import styles from './settings.module.css'
 
 export default function AdminSettings() {
@@ -15,10 +15,20 @@ export default function AdminSettings() {
   const [saveMessage, setSaveMessage] = useState('')
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
+  const saveMessageTimerRef = useRef(null)
 
   useEffect(() => {
     setFormData(settings)
   }, [settings])
+
+  // 클린업: 컴포넌트 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (saveMessageTimerRef.current) {
+        clearTimeout(saveMessageTimerRef.current)
+      }
+    }
+  }, [])
 
   // 간단한 비밀번호 인증 (환경변수 기반)
   const handleAuth = e => {
@@ -63,10 +73,14 @@ export default function AdminSettings() {
     try {
       setSaving(true)
       setSaveMessage('')
+      // 이전 타이머가 있으면 정리
+      if (saveMessageTimerRef.current) {
+        clearTimeout(saveMessageTimerRef.current)
+      }
       await updateSiteSettings(formData)
       setSaveMessage('✅ 설정이 성공적으로 저장되었습니다!')
       await refresh()
-      setTimeout(() => setSaveMessage(''), 3000)
+      saveMessageTimerRef.current = setTimeout(() => setSaveMessage(''), 3000)
     } catch (err) {
       setSaveMessage('❌ 저장 중 오류가 발생했습니다: ' + err.message)
     } finally {

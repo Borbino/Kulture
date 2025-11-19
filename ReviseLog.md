@@ -118,7 +118,7 @@
   - ✅ 100% 무료 운영 (비용 0원)
   - ✅ CEO에게 물어보지 않고 자동 진행
 
-- 관련 PR/이슈: https://github.com/Borbino/Kulture/pull/4
+- 관련 PR/이슈: [#4](https://github.com/Borbino/Kulture/pull/4)
 
 ---
 
@@ -207,7 +207,7 @@
   - Fair Use 원칙
   - DMCA 대응 프로세스
 
-- 관련 PR/이슈: https://github.com/Borbino/Kulture/pull/3
+- 관련 PR/이슈: [#3](https://github.com/Borbino/Kulture/pull/3)
 
 ---
 
@@ -219,7 +219,7 @@
 - 변경 대상 파일/경로: `README.md`, `WORKGUIDE.md`, `docs/CRAWLER_POLICY.md`
 - 변경 요약: 관리자 설정 원칙 문서화 + K-Culture 크롤링 정책 대폭 확장
 - 변경 상세 설명: CEO 요청에 따라 (1) 모든 신규 기능은 관리자 페이지에서 제어 가능하도록 하는 원칙을 README.md(원칙 12), WORKGUIDE.md에 명문화. (2) **K-Culture 콘텐츠 수집 범위 대폭 확장**: 공식 소스(YouTube, Instagram, Twitter 공식 계정, 언론사, 정부 API) + 비공식 소스(DC인사이드, 인스티즈, 더쿠, 네이트판, Reddit, 개인 블로그) 모두 포함. **50개 이상 무료 API 활용** (YouTube, Twitter, Instagram, Facebook, Naver, Kakao, TMDB, Spotify, KOBIS, Steam, Riot Games 등). 수집 정보 유형 10가지로 확장 (메타데이터, 요약, 통계, 미디어, 반응, 트렌드, 리뷰, 토론, 팬 창작물, 내부 정보). **3단계 2차 검증 시스템**: 자동 필터링(AI), 출처 신뢰도 평가(공식 100점/커뮤니티 50-70점), 크로스 체크. CEO 승인 대시보드로 최종 게시 판단. **합법성 유지**: robots.txt 준수, Rate Limiting(1초당 1회), 출처 명시, 원문 복사 금지(요약/재구성), 개인정보 자동 제거, DMCA 대응. K-Pop/K-Drama/K-Movie/K-Food/K-Beauty/K-Fashion/K-Game/K-Webtoon/K-Celeb/K-Travel/K-Tech 등 11개 카테고리 전방위 수집.
-- 관련 PR/이슈: https://github.com/Borbino/Kulture/pull/2
+- 관련 PR/이슈: [#2](https://github.com/Borbino/Kulture/pull/2)
 
 ---
 
@@ -231,7 +231,7 @@
 - 변경 대상 파일/경로: `lib/schemas/siteSettings.js`, `lib/settings.js`, `pages/admin/settings.jsx`, `pages/admin/settings.module.css`, `components/ContentBlur.jsx`, `components/ContentBlur.module.css`, `docs/ADMIN_SETTINGS.md`
 - 변경 요약: 관리자 설정 시스템 구축 - CEO가 모든 기능을 On/Off 및 조정 가능
 - 변경 상세 설명: CEO 요청에 따라 관리자 페이지에서 모든 기능을 직접 제어할 수 있는 설정 시스템 구축. Sanity CMS에 siteSettings 스키마 추가 (콘텐츠 제한 비율 10~100%, 광고 시청 시간 5~120초, 세션 시간 10~1440분, 댓글/인증/일반 설정 등), 설정 관리 API/Hook (getSiteSettings, updateSiteSettings, useSiteSettings), 관리자 페이지 UI (토글/슬라이더/체크박스, 비밀번호 인증), 기존 컴포넌트 동적 연동 (ContentBlur, CommentList). 신규 기능도 동일 패턴으로 추가 가능하도록 확장성 확보. 관리자 페이지 URL: /admin/settings, 기본 비밀번호: kulture2025 (환경변수로 변경 가능).
-- 관련 PR/이슈: https://github.com/Borbino/Kulture/pull/2
+- 관련 PR/이슈: [#2](https://github.com/Borbino/Kulture/pull/2)
 
 ---
 
@@ -243,7 +243,7 @@
 - 변경 대상 파일/경로: `utils/contentRestriction.js`, `components/ContentBlur.jsx`, `components/ContentBlur.module.css`, `components/CommentList.jsx`, `components/CommentList.module.css`, `test/contentRestriction.test.js`, `docs/CONTENT_RESTRICTION.md`
 - 변경 요약: 비회원 콘텐츠 제한 기능 + 광고 시청 대체 기능 구현
 - 변경 상세 설명: CEO 요청에 따라 회원가입/로그인 유도를 위한 콘텐츠 제한 기능과 광고 시청 대체 경로 구현. 비회원은 게시물 본문 40%, 댓글 40%, 이미지 처음 2개만 표시하고 나머지는 블러/잠금 처리. **광고 시청 기능**: Google AdSense 통합, 30초 광고 시청 시 1시간 콘텐츠 접근 권한 부여, localStorage 기반 세션 관리(AdWatchSession 클래스), 타이머 UI 및 자동 잠금 해제. ContentBlur 컴포넌트(3단계 UI: 잠금→옵션→광고), CommentList 컴포넌트, contentRestriction 유틸리티, 테스트 코드 및 가이드 문서 포함. 프리미엄(로그인) vs 무료(광고) 경로 제공으로 수익 다변화.
-- 관련 PR/이슈: https://github.com/Borbino/Kulture/pull/2
+- 관련 PR/이슈: [#2](https://github.com/Borbino/Kulture/pull/2)
 
 ---
 
@@ -255,7 +255,7 @@
 - 변경 대상 파일/경로: `package.json`, `tsconfig.json`, `next.config.js`, `.env.example`, `.eslintrc.json`, `.prettierrc`, `lib/sanityClient.js`, `lib/schemas/*.js`, `jest.config.js`, `docs/*.md`, `.gitignore`, `.vscode/*`
 - 변경 요약: 프로젝트 기초 구조 및 환경 세팅 완료 (Next.js + Sanity + TypeScript + 테스트 + 보안 정책)
 - 변경 상세 설명: README와 WORKGUIDE 기반으로 프로젝트 기본 폴더 구조(/src, /components, /utils, /lib, /pages, /test, /docs), Next.js 설정, Sanity CMS 클라이언트 및 스키마(Post/Category/Author), TypeScript, ESLint/Prettier, Jest 테스트 환경, 환경변수 관리 가이드, 개인정보보호 및 저작권 정책 초안을 생성. 모든 설정은 프로젝트 원칙 v12.0을 준수하며 무료 플랜(Vercel/Sanity/GitHub) 최대 활용 구조로 설계됨.
-- 관련 PR/이슈: https://github.com/Borbino/Kulture/pull/2
+- 관련 PR/이슈: [#2](https://github.com/Borbino/Kulture/pull/2)
 
 ---
 
@@ -267,7 +267,7 @@
 - 변경 대상 파일/경로: `AGENT_POLICY.md`, `AGENT_USAGE.md`, `PR_TEMPLATE.md`, `REVIEW_SUMMARY.md`, `.github/workflows/revise_log_check.yml`, `README.md`, `WORKGUIDE.md`, `ReviseLog.md`
 - 변경 요약: Agent 정책·사용 가이드·PR 템플릿 및 CI 워크플로우 추가
 - 변경 상세 설명: 프로젝트의 자동화 작업을 안전하게 운영하기 위한 문서와 워크플로우를 추가함. ReviseLog 규칙과 PR 검사 워크플로우를 통해 자동 변경의 투명성 및 CI 보장을 강화함.
-- 관련 PR/이슈: https://github.com/Borbino/Kulture/pull/1
+- 관련 PR/이슈: [#1](https://github.com/Borbino/Kulture/pull/1)
 
 ---
 

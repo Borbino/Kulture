@@ -105,6 +105,6 @@
 - **비용 최적화**: 무료 API 최대 활용, GPT-3.5-turbo 사용 시 월 $2 미만 운영 가능
 - 상세 가이드: `lib/vipMonitoring.js`, `docs/API_KEYS_GUIDE.md` 참조
 
-**도메인 정보**
+## 도메인 정보
 
 - 도메인: `kulture.wiki` (프로젝트 소유자가 구매 및 소유)

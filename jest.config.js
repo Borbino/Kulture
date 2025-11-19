@@ -6,7 +6,12 @@ const config = {
     '^@/utils/(.*)$': '<rootDir>/utils/$1',
     '^@/lib/(.*)$': '<rootDir>/lib/$1',
     '^@/src/(.*)$': '<rootDir>/src/$1',
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
+  },
+  transformIgnorePatterns: ['/node_modules/(?!(@testing-library)/)'],
   collectCoverageFrom: [
     'components/**/*.{js,jsx,ts,tsx}',
     'lib/**/*.{js,jsx,ts,tsx}',
