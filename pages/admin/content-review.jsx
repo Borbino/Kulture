@@ -5,16 +5,8 @@
  */
 
 import { useState, useEffect } from 'react'
-import { createClient } from '@sanity/client'
+import sanity from '../../lib/sanityClient'
 import styles from './content-review.module.css'
-
-const sanity = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-  token: process.env.NEXT_PUBLIC_SANITY_API_TOKEN,
-  apiVersion: '2024-01-01',
-  useCdn: false,
-})
 
 export default function ContentReview() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -352,6 +344,7 @@ export default function ContentReview() {
 
               {selectedPost.image?.url && (
                 <div className={styles.imagePreview}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={selectedPost.image.url} alt={selectedPost.title} />
                 </div>
               )}

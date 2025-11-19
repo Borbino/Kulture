@@ -3,15 +3,7 @@
  * [목적] Hugging Face 무료 API로 콘텐츠 즉시 개선
  */
 
-import { createClient } from '@sanity/client'
-
-const sanity = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-  token: process.env.SANITY_API_TOKEN,
-  apiVersion: '2024-01-01',
-  useCdn: false,
-})
+import sanity from '../../../lib/sanityClient'
 
 /**
  * Hugging Face Inference API (100% 무료, 제한 없음)

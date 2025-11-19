@@ -4,15 +4,7 @@
  * [목적] CEO에게 일일 요약 리포트 제공
  */
 
-import { createClient } from '@sanity/client'
-
-const sanity = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-  token: process.env.SANITY_API_TOKEN,
-  apiVersion: '2024-01-01',
-  useCdn: false,
-})
+import sanity from '../../../lib/sanityClient'
 
 export default async function handler(req, res) {
   // Cron Secret 검증

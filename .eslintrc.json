@@ -2,9 +2,15 @@
   "extends": ["next/core-web-vitals", "prettier"],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off",
+    "react/prop-types": "warn",
     "@next/next/no-html-link-for-pages": "off",
     "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
-    "prefer-const": "warn"
+    "prefer-const": "warn",
+    "no-console": "off",
+    "eqeqeq": ["error", "always"],
+    "curly": "off",
+    "no-var": "error",
+    "prefer-arrow-callback": "warn",
+    "no-duplicate-imports": "error"
   }
 }
