@@ -30,13 +30,13 @@ export default async function handler(req, res) {
       )
 
       const previousMentions = previousData?.mentions || 0
-      const changePercent = previousMentions > 0
-        ? ((data.mentions - previousMentions) / previousMentions) * 100
-        : 0
+      const changePercent =
+        previousMentions > 0 ? ((data.mentions - previousMentions) / previousMentions) * 100 : 0
 
       // 알림 레벨 결정
       let alertLevel = 'normal'
-      if (changePercent > 100) alertLevel = 'critical' // 100% 이상 급증
+      if (changePercent > 100)
+        alertLevel = 'critical' // 100% 이상 급증
       else if (changePercent > 50) alertLevel = 'high' // 50% 이상 증가
 
       // 긴급 알림 대상

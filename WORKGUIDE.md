@@ -496,15 +496,18 @@ git commit -m "feat: add new feature"
 ### 9-3. 리뷰 리포트 자동 생성
 
 **생성 문서**:
-1. `CODE_IMPROVEMENT_REPORT.md`: 개선 제안 사항 (우선순위별)
-2. `CRITICAL_FIX_REPORT.md`: 즉시 수정 필요 사항 (보안, 버그)
-3. `ReviseLog.md`: 모든 변경사항 기록
+1. `ReviseLog.md`: 모든 코드 리뷰 결과 및 변경사항 통합 기록 (단일 진실 공급원)
+2. 별도의 리포트 파일(CODE_IMPROVEMENT_REPORT.md, CRITICAL_FIX_REPORT.md 등)은 생성하지 않음
 
-**리포트 구조**:
+**ReviseLog.md 리포트 구조**:
 ```markdown
-## [날짜] 코드 리뷰 리포트
+### [ID: RL-YYYYMMDD-NN]
+- 날짜: YYYY-MM-DD HH:MM (KST)
+- 작성자: GitHub Copilot (자동 코드 리뷰)
+- 변경 유형: 코드 리뷰
+- 코드 품질 점수: 85/100 (A등급)
 
-### 즉시 수정 필요 (Critical)
+**즉시 수정 필요 (Critical)**:
 - [SECURITY] XSS 취약점: `pages/admin/settings.jsx` 라인 45
 - [BUG] null 참조 에러: `lib/sanityClient.js` 라인 102
 

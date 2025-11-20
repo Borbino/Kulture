@@ -248,9 +248,8 @@ npm run build         # Next.js 빌드 검증
 #### 15-3. 리뷰 리포트 생성
 
 **자동 생성 문서**:
-- `CODE_IMPROVEMENT_REPORT.md`: 개선 제안 사항
-- `CRITICAL_FIX_REPORT.md`: 즉시 수정 필요 사항
-- `ReviseLog.md`: 모든 변경사항 기록
+- `ReviseLog.md`: 모든 변경사항 및 코드 리뷰 결과 통합 기록 (단일 진실 공급원)
+- 별도의 리포트 파일(CODE_IMPROVEMENT_REPORT.md, CRITICAL_FIX_REPORT.md 등)은 생성하지 않음
 
 **리포트 내용**:
 - 발견된 이슈 목록 (우선순위별)
@@ -291,11 +290,11 @@ npm run build         # Next.js 빌드 검증
 **주요 이슈 발견 시**:
 - Slack/이메일로 자동 알림
 - GitHub PR에 코멘트 추가
-- `CRITICAL_FIX_REPORT.md` 업데이트
+- `ReviseLog.md`에 Critical 태그로 기록
 
 **정기 리포트**:
-- 주간 코드 품질 리포트 (매주 월요일)
-- 월간 기술 부채 리포트 (매월 1일)
+- 주간 코드 품질 리포트 (매주 월요일, ReviseLog.md)
+- 월간 기술 부채 리포트 (매월 1일, ReviseLog.md)
 
 #### 15-7. 지속적 개선
 
