@@ -16,7 +16,8 @@ describe('contentRestriction utils', () => {
     })
 
     test('비회원은 관리자 설정 비율(70%) 적용', () => {
-      const content = 'Line 1\nLine 2\nLine 3\nLine 4\nLine 5\nLine 6\nLine 7\nLine 8\nLine 9\nLine 10'
+      const content =
+        'Line 1\nLine 2\nLine 3\nLine 4\nLine 5\nLine 6\nLine 7\nLine 8\nLine 9\nLine 10'
       const result = maskContent(content, false, 70)
 
       const visibleLines = result.split('\n').filter(line => line.startsWith('Line')).length

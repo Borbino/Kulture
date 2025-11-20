@@ -3,7 +3,13 @@
  * [목적] 모든 외부 API 연결 상태 확인 (stub 함수 탐지)
  */
 
+import rateLimitMiddleware from '../../lib/rateLimiter.js'
+
 export default async function handler(req, res) {
+  // Rate limiting: 60회/분
+  const rateLimitResult = rateLimitMiddleware('api')(req, res, () => {})
+  if (rateLimitResult !== undefined) return rateLimitResult
+
   const checks = {
     twitter: checkTwitter(),
     youtube: checkYouTube(),

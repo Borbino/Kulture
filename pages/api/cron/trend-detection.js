@@ -11,10 +11,11 @@ import {
 } from '../../../lib/trendManagement'
 import { trackIssue, TRACKING_ISSUES } from '../../../lib/vipMonitoring'
 import sanity from '../../../lib/sanityClient'
+import { isValidCronRequest } from '../../../lib/rateLimiter'
 
 export default async function handler(req, res) {
   // Cron Secret 검증
-  if (req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!isValidCronRequest(req)) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
 

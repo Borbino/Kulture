@@ -22,6 +22,11 @@
       "comment": "일일 리포트 - 매일 22:00 KST"
     },
     {
+      "path": "/api/cron/performance-report",
+      "schedule": "0 * * * *",
+      "comment": "성능 리포트 - 1시간마다 (일 24회, API 성능 추적)"
+    },
+    {
       "path": "/api/health",
       "schedule": "*/10 * * * *",
       "comment": "헬스체크 - 10분마다 (API 상태 모니터링)"

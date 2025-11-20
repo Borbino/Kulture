@@ -100,6 +100,7 @@ ReviseLog.md 기록
 ### PR 기반 개발 워크플로우
 
 **절대 규칙**:
+
 - ❌ **main 브랜치에 직접 커밋/푸시 금지**
 - ✅ **모든 변경은 feature 브랜치 → PR → 병합 순서로만 진행**
 
@@ -143,21 +144,22 @@ git branch -d feature/새기능명
 
 ### 브랜치 네이밍 규칙
 
-| 타입 | 형식 | 예시 | 설명 |
-|------|------|------|------|
-| 기능 추가 | `feature/기능명` | `feature/social-login` | 새로운 기능 개발 |
-| 버그 수정 | `fix/버그명` | `fix/comment-bug` | 버그 수정 |
-| 문서 업데이트 | `docs/문서명` | `docs/update-readme` | README, 가이드 등 문서 변경 |
-| 리팩토링 | `refactor/대상` | `refactor/api-structure` | 코드 구조 개선 (기능 변경 없음) |
-| 테스트 | `test/테스트명` | `test/unit-tests` | 테스트 코드 추가/수정 |
-| 스타일 | `style/대상` | `style/css-modules` | 코드 포맷팅, CSS 변경 |
-| 빌드/설정 | `chore/작업명` | `chore/update-deps` | 의존성 업데이트, 설정 변경 |
+| 타입          | 형식             | 예시                     | 설명                            |
+| ------------- | ---------------- | ------------------------ | ------------------------------- |
+| 기능 추가     | `feature/기능명` | `feature/social-login`   | 새로운 기능 개발                |
+| 버그 수정     | `fix/버그명`     | `fix/comment-bug`        | 버그 수정                       |
+| 문서 업데이트 | `docs/문서명`    | `docs/update-readme`     | README, 가이드 등 문서 변경     |
+| 리팩토링      | `refactor/대상`  | `refactor/api-structure` | 코드 구조 개선 (기능 변경 없음) |
+| 테스트        | `test/테스트명`  | `test/unit-tests`        | 테스트 코드 추가/수정           |
+| 스타일        | `style/대상`     | `style/css-modules`      | 코드 포맷팅, CSS 변경           |
+| 빌드/설정     | `chore/작업명`   | `chore/update-deps`      | 의존성 업데이트, 설정 변경      |
 
 ### 커밋 메시지 규칙 (Conventional Commits)
 
 **형식**: `<type>: <subject>`
 
 **타입**:
+
 - `feat:` 새 기능 추가
 - `fix:` 버그 수정
 - `docs:` 문서만 변경
@@ -167,6 +169,7 @@ git branch -d feature/새기능명
 - `chore:` 빌드 프로세스, 도구 설정 변경
 
 **예시**:
+
 ```bash
 feat: add Google OAuth login functionality
 fix: resolve comment display issue on mobile
@@ -179,26 +182,33 @@ chore: upgrade Next.js to 16.0.3
 ### PR 생성 가이드
 
 **PR 제목**:
+
 - 커밋 메시지 규칙 준수
 - 명확하고 간결하게 (50자 이내 권장)
 
 **PR 설명 템플릿**:
+
 ```markdown
 ## 변경 사항
+
 - 무엇을 변경했는지 요약
 
 ## 변경 이유
+
 - 왜 이 변경이 필요한지 설명
 
 ## 테스트 결과
+
 - [ ] ESLint 통과
 - [ ] Jest 테스트 통과
 - [ ] 로컬 환경 테스트 완료
 
 ## 스크린샷 (UI 변경 시)
+
 - 변경 전/후 비교
 
 ## 참조
+
 - 관련 이슈 번호: #123
 - ReviseLog ID: RL-20251120-05
 ```
@@ -206,6 +216,7 @@ chore: upgrade Next.js to 16.0.3
 ### 코드 리뷰 체크리스트
 
 **리뷰어 확인 사항**:
+
 - [ ] 코드가 원칙 v14.0을 준수하는가?
 - [ ] 모든 테스트가 통과하는가?
 - [ ] ESLint 에러가 없는가?
@@ -430,7 +441,190 @@ function collectKDramaNews() {
 
 ---
 
-## 8. 최종 안내/운영 원칙
+## 9. 자동 코드 리뷰 및 품질 관리 프로토콜
+
+**🚨 필수: 모든 작업 완료 시 자동 코드 리뷰를 의무적으로 실시합니다.**
+
+### 9-1. 자동 검증 체크리스트
+
+**사소한 문제 탐지** (Zero Tolerance):
+- [ ] ESLint 경고 0개 (`npm run lint`)
+- [ ] TypeScript/JavaScript 컴파일 에러 0개
+- [ ] 미사용 변수/import 제거
+- [ ] 콘솔 로그 제거 (프로덕션 코드)
+- [ ] 주석 처리된 코드 제거
+- [ ] TODO/FIXME 주석 처리 (이슈 번호 포함)
+
+**개선 및 고도화 기회**:
+- [ ] 성능 병목 분석 (O(n²) 알고리즘, 불필요한 re-render)
+- [ ] 접근성(a11y) 개선 (ARIA 속성, 키보드 네비게이션)
+- [ ] SEO 최적화 (meta 태그, Open Graph, 구조화된 데이터)
+- [ ] 보안 취약점 (XSS, CSRF, SQL Injection 방지)
+- [ ] 코드 가독성 (복잡한 로직 단순화, 명확한 변수명)
+- [ ] 에러 핸들링 (try-catch, 사용자 친화적 에러 메시지)
+
+**중복 코드 제거**:
+- [ ] 동일/유사 로직 3회 이상 반복 → 함수/Hook 추출
+- [ ] 공통 유틸리티 함수 통합 (`lib/` 디렉토리)
+- [ ] 중복 스타일링 제거 (CSS Modules 활용)
+- [ ] 중복 API 호출 최소화 (캐싱 적용)
+- [ ] 반복되는 컴포넌트 로직 → Custom Hook 추출
+
+### 9-2. 실행 명령어
+
+**로컬 검증**:
+```bash
+# 전체 코드 품질 검사
+npm run lint          # ESLint (자동 수정: npm run lint -- --fix)
+npm test              # Jest 테스트 (커버리지: npm test -- --coverage)
+npm run build         # Next.js 빌드 검증
+```
+
+**Git Hook 자동 실행**:
+```bash
+# Husky pre-commit hook (자동 실행)
+# - ESLint 검사
+# - Prettier 포맷팅
+# - Jest 유닛 테스트
+git commit -m "feat: add new feature"
+```
+
+**CI/CD 자동 실행**:
+- GitHub Actions workflow (PR 생성 시)
+- Vercel 배포 전 검증
+
+### 9-3. 리뷰 리포트 자동 생성
+
+**생성 문서**:
+1. `CODE_IMPROVEMENT_REPORT.md`: 개선 제안 사항 (우선순위별)
+2. `CRITICAL_FIX_REPORT.md`: 즉시 수정 필요 사항 (보안, 버그)
+3. `ReviseLog.md`: 모든 변경사항 기록
+
+**리포트 구조**:
+```markdown
+## [날짜] 코드 리뷰 리포트
+
+### 즉시 수정 필요 (Critical)
+- [SECURITY] XSS 취약점: `pages/admin/settings.jsx` 라인 45
+- [BUG] null 참조 에러: `lib/sanityClient.js` 라인 102
+
+### 개선 제안 (Medium)
+- [PERFORMANCE] 불필요한 re-render: `components/CommentList.jsx`
+- [DUPLICATE] 중복 API 호출: `pages/api/improve-content.js`
+
+### 리팩토링 기회 (Low)
+- [CODE_SMELL] 복잡한 조건문: `utils/contentRestriction.js` 라인 78
+- [NAMING] 불명확한 변수명: `x` → `userClickCount`
+```
+
+### 9-4. 자동 수정 가능 항목
+
+**즉시 적용 (No Approval)**:
+- ESLint --fix로 수정 가능한 포맷팅
+- Prettier 코드 스타일 통일
+- Unused imports 제거
+- 간단한 변수명 수정
+
+**CEO 승인 필요**:
+- 로직 변경 (알고리즘 최적화)
+- 보안 취약점 수정 (인증/권한 로직)
+- 중복 코드 추출 (함수 시그니처 변경)
+- 아키텍처 변경 (디렉토리 구조, API 설계)
+
+### 9-5. 적용 대상 및 제외 파일
+
+**적용 대상**:
+- `components/**/*.jsx`
+- `pages/**/*.jsx`
+- `lib/**/*.js`
+- `utils/**/*.js`
+- `*.module.css`
+- `next.config.js`, `vercel.json`
+- `README.md`, `WORKGUIDE.md`, `docs/**/*.md`
+
+**제외 파일**:
+- `node_modules/`
+- `.next/`, `out/`
+- `*.min.js`, `*.bundle.js`
+- `.env`, `.env.local`
+
+### 9-6. CEO 알림 및 리포트
+
+**즉시 알림 (Critical)**:
+- 보안 취약점 발견 시
+- 프로덕션 버그 발견 시
+- 빌드 실패 시
+
+**주기적 리포트**:
+- **주간 코드 품질 리포트** (매주 월요일 09:00 KST)
+  - 신규 개선 제안
+  - 해결된 이슈
+  - 코드 품질 지표 (ESLint 경고 수, 테스트 커버리지)
+- **월간 기술 부채 리포트** (매월 1일)
+  - 누적된 TODO/FIXME
+  - 중복 코드 현황
+  - 리팩토링 우선순위
+
+### 9-7. 지속적 개선 프로세스
+
+**학습 및 규칙 추가**:
+1. 자주 발생하는 이슈 → ESLint 규칙 추가
+2. Best Practice 발견 → 템플릿/스니펫 제공
+3. 팀 코딩 컨벤션 업데이트
+
+**문서 자동 업데이트**:
+- 모든 리뷰 결과 → `ReviseLog.md` 기록
+- 새로운 Best Practice → `WORKGUIDE.md` 추가
+- 아키텍처 변경 → `README.md` 반영
+
+**메트릭 추적**:
+- ESLint 경고 수 추이
+- 테스트 커버리지 변화
+- 빌드 시간 변화
+- 번들 사이즈 변화
+
+### 9-8. 실전 예시
+
+**Before (개선 전)**:
+```javascript
+// ❌ 중복 코드, 복잡한 로직, 성능 이슈
+function processData(data) {
+  let result = []
+  for (let i = 0; i < data.length; i++) {
+    for (let j = 0; j < data.length; j++) {
+      if (data[i].id === data[j].parentId) {
+        result.push({ ...data[i], children: data[j] })
+      }
+    }
+  }
+  return result
+}
+```
+
+**After (개선 후)**:
+```javascript
+// ✅ 최적화, 명확한 로직, O(n) 성능
+function processData(data) {
+  const parentMap = new Map(data.map(item => [item.id, item]))
+  
+  return data
+    .filter(item => item.parentId)
+    .map(child => ({
+      ...parentMap.get(child.parentId),
+      children: child,
+    }))
+}
+```
+
+**리포트**:
+- 개선 항목: 성능 최적화 (O(n²) → O(n))
+- 예상 효과: 1000개 데이터 처리 시간 500ms → 5ms
+- 변경 파일: `lib/dataProcessor.js`
+- ReviseLog ID: RL-20251120-15
+
+---
+
+## 10. 최종 안내/운영 원칙
 
 - 본 README는 "누구든 바로 따라할 수 있는" 시나리오, FAQ, 코드 예시, 작업 매뉴얼, 변경이력, 장애복구, 협업/교육/테스트 기록까지  
   모든 이해관계자가 직접 활용 가능한 "완전무결, 최신, 실전 중심의 통합 표준 문서"입니다.
