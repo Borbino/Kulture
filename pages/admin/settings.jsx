@@ -400,7 +400,7 @@ export default function AdminSettings() {
                 value={formData.general.maintenanceMessage}
                 onChange={e => handleChange('general', 'maintenanceMessage', e.target.value)}
                 className={styles.textarea}
-                rows="3"
+                rows={3}
               />
             </label>
           </div>

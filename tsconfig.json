@@ -1,0 +1,70 @@
+{
+  "compilerOptions": {
+    // JavaScript 파일 허용 및 타입 체크 활성화
+    "allowJs": true,
+    "checkJs": true,
+    
+    // ECMAScript 버전 및 라이브러리
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    
+    // 모듈 시스템
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    
+    // JSX 설정 (Next.js)
+    "jsx": "preserve",
+    
+    // 출력 설정
+    "noEmit": true,
+    "incremental": true,
+    "isolatedModules": true,
+    
+    // 타입 체크 수준 (점진적 적용)
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": true,
+    
+    // 모듈 해석
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    
+    // 경로 별칭 (Next.js)
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["components/*"],
+      "@/lib/*": ["lib/*"],
+      "@/utils/*": ["utils/*"],
+      "@/pages/*": ["pages/*"]
+    },
+    
+    // 성능 최적화
+    "skipLibCheck": true,
+    
+    // React 타입 지원
+    "types": ["node", "react", "react-dom", "jest"]
+  },
+  "include": [
+    "**/*.js",
+    "**/*.jsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "out",
+    "dist",
+    "build",
+    "coverage",
+    "jest.setup.js",
+    "jest.config.js",
+    "**/*.test.js",
+    "**/*.test.jsx",
+    "**/*.spec.js",
+    "**/*.spec.jsx"
+  ]
+}
