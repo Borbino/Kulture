@@ -101,15 +101,18 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # 8. PR 자동 병합 (승인 없이)
+      # 8. PR 자동 병합
       - name: Auto-merge PR
         if: steps.pr.outputs.pr_number != ''
         run: |
+          # 잠시 대기 (PR 상태 안정화)
+          sleep 5
+          
           gh pr merge ${{ steps.pr.outputs.pr_number }} \
             --squash \
-            --auto \
             --delete-branch
-          echo "✅ PR이 자동 병합으로 설정되었습니다 (모든 검사 통과 시 자동 병합)"
+          
+          echo "✅ PR #${{ steps.pr.outputs.pr_number }}이 main 브랜치에 병합되었습니다!"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
