@@ -63,7 +63,17 @@ jobs:
             
             # 커밋 메시지에서 PR 제목 추출
             COMMIT_MSG=$(git log -1 --pretty=%B)
-            PR_TITLE="${COMMIT_MSG%%$'\n'*}"
+            COMMIT_TITLE="${COMMIT_MSG%%$'\n'*}"
+            
+            # ReviseLog ID 생성 (날짜 기반)
+            TODAY=$(date +%Y%m%d)
+            # 오늘 날짜의 기존 PR 개수 확인
+            EXISTING_COUNT=$(gh pr list --state all --search "created:$(date +%Y-%m-%d)" --json number --jq 'length')
+            NEXT_NUM=$(printf "%02d" $((EXISTING_COUNT + 1)))
+            REVISE_LOG_ID="RL-${TODAY}-${NEXT_NUM}"
+            
+            # PR 제목에 ReviseLog ID 추가
+            PR_TITLE="${REVISE_LOG_ID}: ${COMMIT_TITLE}"
             
             # PR 생성
             PR_URL=$(gh pr create \
