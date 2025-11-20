@@ -101,29 +101,22 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # 8. PR 자동 승인
-      - name: Auto-approve PR
-        if: steps.pr.outputs.pr_number != ''
-        run: |
-          gh pr review ${{ steps.pr.outputs.pr_number }} --approve --body "✅ 자동 승인: 모든 품질 검사가 통과되었습니다."
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # 9. PR 자동 병합
+      # 8. PR 자동 병합 (승인 없이)
       - name: Auto-merge PR
         if: steps.pr.outputs.pr_number != ''
         run: |
           gh pr merge ${{ steps.pr.outputs.pr_number }} \
             --squash \
-            --delete-branch \
-            --subject "Auto-merge: ${{ github.ref_name }}" \
-            --body "자동 병합 완료: 모든 품질 검사 통과"
+            --auto \
+            --delete-branch
+          echo "✅ PR이 자동 병합으로 설정되었습니다 (모든 검사 통과 시 자동 병합)"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # 10. 병합 완료 알림
-      - name: Merge notification
+      # 9. 완료 알림
+      - name: Completion notification
         if: success()
         run: |
-          echo "✅ PR이 성공적으로 병합되었습니다!"
-          echo "🎉 ${{ github.ref_name }} → main"
+          echo "✅ 워크플로우가 성공적으로 완료되었습니다!"
+          echo "🎉 PR #${{ steps.pr.outputs.pr_number }} 생성 완료"
+          echo "📋 ${{ github.ref_name }} → main"
