@@ -59,7 +59,7 @@
   - `WORKGUIDE.md` (섹션 9 추가: 자동 코드 리뷰 프로토콜)
 - 변경 요약: Phase 2 추천 작업 완료 (Performance Report Sanity 통합, Vercel Cron 설정, API Rate Limiting, 이미지 최적화, 자동 코드 리뷰 정책 문서화)
 - 변경 상세 설명:
-  1. **Performance Report Sanity Schema**: 
+  1. **Performance Report Sanity Schema**:
      - 성능 데이터를 Sanity DB에 저장하기 위한 스키마 생성
      - 필드: period, summary, apis (p50/p95/p99 포함), caches, errors, timestamp
      - pages/api/cron/performance-report.js에서 Sanity save 활성화
@@ -133,7 +133,7 @@
 
   **작업 순서 및 결과**:
 
-  ---
+  ***
 
   ## 1순위: 성능 모니터링 시스템 구축 ✅
 
@@ -142,7 +142,7 @@
   **신규 생성 파일**:
 
   ### `lib/performanceMonitor.js` (363줄)
-  
+
   **기능**:
   - API 호출 추적 (응답시간, 성공/실패율)
   - 캐시 히트율 측정
@@ -152,7 +152,7 @@
 
   **핵심 메서드**:
 
-  ```javascript
+  ````javascript
   class PerformanceMonitor {
     startApiCall(apiName) // API 호출 시작 - 종료 함수 반환
     recordCacheAccess(cacheName, isHit) // 캐시 히트/미스 기록
@@ -172,9 +172,9 @@
   - 에러: 소스별 에러 카운트, 최근 에러 메시지
 
   ### `pages/api/cron/performance-report.js` (신규)
-  
+
   **실행주기**: 1시간마다
-  
+
   **기능**:
   - 성능 리포트 생성 및 콘솔 출력
   - 메트릭 초기화 (다음 시간 집계 준비)
@@ -276,7 +276,7 @@
   **신규 테스트 파일**:
 
   ### `test/performanceMonitor.test.js` (16개 테스트)
-  
+
   **테스트 항목**:
   - API 호출 추적: 성공/실패 기록, 누적 통계, 응답시간
   - 캐시 히트율: 히트/미스 기록, 히트율 계산
@@ -286,7 +286,7 @@
   - 메트릭 초기화: reset() 기능
 
   ### `test/vipMonitoring.test.js` (7개 테스트)
-  
+
   **테스트 항목**:
   - VIP_DATABASE: tier1/tier2/tier3 존재 확인
   - VIP 필수 필드: id, name, keywords 검증
@@ -295,9 +295,9 @@
   - 이슈 필수 필드: keyword, description, relatedKeywords, priority, autoGenerate
 
   ### `test/trendManagement.test.js` (스킵)
-  
+
   **문제**: Jest ESM 모듈 호환성 이슈 (Sanity Client)
-  
+
   **대응**: jest.config.js에서 해당 테스트 제외
 
   ```javascript
@@ -360,6 +360,8 @@
   - ✅ 모든 작업 순차 진행 완료
   - ✅ 과정 중 오류 없음
 
+  ````
+
 - 관련 PR/이슈: 프로젝트 고도화 (4개 작업 완료)
 
 ### [ID: RL-20251120-07]
@@ -380,17 +382,17 @@
   **발견된 문제 및 해결**:
 
   **1. socialMediaIntegration.js - Promise.allSettled 실패 로깅 누락**
-  
+
   **문제점**:
   - Promise.allSettled로 여러 플랫폼 동시 호출하지만 실패한 요청 로깅 없음
   - 디버깅 어려움 (어떤 플랫폼이 실패했는지 알 수 없음)
-  
+
   **해결**:
 
-  ```javascript
+  ````javascript
   // 수정 전
   await Promise.allSettled(promises)
-  
+
   // 수정 후
   const settledResults = await Promise.allSettled(promises)
   settledResults.forEach((result, index) => {
@@ -400,17 +402,17 @@
   })
 
   ```text
-  
+
   **영향**:
   - Instagram, TikTok, Weibo 등 플랫폼 API 실패 시 즉시 로그 확인 가능
   - 디버깅 시간 단축 및 플랫폼별 문제 파악 용이
 
   **2. advancedContentGeneration.js - HF API 에러 메시지 불명확**
-  
+
   **문제점**:
   - 에러 메시지가 `HF API error: 503` 형식으로만 표시
   - 인증 실패(401)와 Rate Limit(429) 구분 불가
-  
+
   **해결**:
 
   ```javascript
@@ -418,7 +420,7 @@
   if (!response.ok) {
     throw new Error(`HF API error: ${response.status}`)
   }
-  
+
   // 수정 후
   if (response.status === 401) {
     throw new Error('HF API authentication failed - check HUGGINGFACE_API_TOKEN')
@@ -432,19 +434,19 @@
   }
 
   ```text
-  
+
   **영향**:
   - 개발자가 에러 원인 즉시 파악 가능
   - 인증 문제는 환경변수 체크, Rate Limit은 대기 필요 등 명확한 조치 가능
   - 에러 응답 본문 일부(100자) 포함으로 상세 정보 제공
 
   **3. vipMonitoring.js - Reddit OAuth 토큰 중복 발급**
-  
+
   **문제점**:
   - `searchCommunities()` 호출마다 새 OAuth 토큰 발급
   - Reddit 모니터링: 시간당 ~60회 호출 → 60회 토큰 발급
   - 불필요한 API 요청 및 응답 지연 발생 (~200ms/요청)
-  
+
   **해결**:
 
   ```javascript
@@ -476,7 +478,7 @@
   const accessToken = await getRedditToken()
 
   ```text
-  
+
   **영향**:
   - Reddit OAuth 호출 98% 감소 (60회/시간 → 1회/시간)
   - API 응답 시간 ~200ms 단축 (캐시 히트 시)
@@ -487,6 +489,8 @@
   - ESLint: 0 errors, 0 warnings
   - Jest: 8/8 tests passed
   - npm audit: 0 vulnerabilities
+
+  ````
 
 - 관련 PR/이슈: 코드 품질 개선 (제2차 전체 검토)
 
@@ -507,15 +511,15 @@
   **발견된 문제 및 해결**:
 
   **1. advancedContentGeneration.js - 함수 파라미터 불일치**
-  
+
   **문제점**:
   - `generateTemplateContent()` 함수 정의: `function generateTemplateContent(issue)`
   - 함수 호출: `generateTemplateContent(issue, format)` (2곳)
   - format 파라미터가 전달되지만 함수가 받지 않아 포맷별 템플릿 생성 불가
-  
+
   **해결**:
 
-  ```javascript
+  ````javascript
   // 수정 전
   function generateTemplateContent(issue) {
     return `# ${issue.keyword} - 최신 K-Culture 트렌드 분석...`
@@ -524,27 +528,27 @@
   // 수정 후
   function generateTemplateContent(issue, format = 'article') {
     const formatConfig = CONTENT_FORMATS[format] || CONTENT_FORMATS.article
-    
+
     return `# ${issue.keyword} - 최신 K-Culture 트렌드 분석
-    
+
     ## SEO 키워드
     ${issue.keyword}, K-Culture, 한류, ${formatConfig.name}, 소셜미디어`
   }
 
   ```text
-  
+
   **영향**:
   - AI 생성 실패 시 Fallback 템플릿이 포맷(article/reportage/story 등)을 무시하고 항상 동일한 형식으로 생성되던 문제 해결
   - 이제 5가지 포맷(article, reportage, story, retrospective, interview)별로 맞춤형 템플릿 생성
   - SEO 키워드에 포맷명 자동 추가
 
   **2. trendManagement.js - 날짜 타입 불일치**
-  
+
   **문제점**:
   - Line 308: `const daysSinceUpdate = Math.floor((now - lastUpdate) / (1000 * 60 * 60 * 24))`
   - `now`는 Date 객체, `lastUpdate`도 Date 객체
   - Date 객체 간 직접 뺄셈은 작동하지만 타입 안정성이 보장되지 않음
-  
+
   **해결**:
 
   ```javascript
@@ -555,7 +559,7 @@
   const daysSinceUpdate = Math.floor((Number(now) - Number(lastUpdate)) / (1000 * 60 * 60 * 24))
 
   ```text
-  
+
   **영향**:
   - 명시적 Number() 변환으로 타입 안정성 확보
   - TypeScript 환경에서도 타입 에러 방지
@@ -581,6 +585,8 @@
   **되돌리기 방법**:
   - advancedContentGeneration.js: `format` 파라미터 제거, formatConfig 사용 제거
   - trendManagement.js: `Number()` 래핑 제거, 직접 뺄셈 복원
+
+  ````
 
 - 관련 PR/이슈: N/A (마이너 버그 수정)
 
@@ -874,8 +880,7 @@
 
   **작업 프로세스 플로우차트**:
 
-
-  ```text
+  ````text
   CEO 요청 접수
       ↓
   README.md/WORKGUIDE.md 확인
@@ -926,6 +931,8 @@
   - README.md: MD032 경고 1건
   - WORKGUIDE.md: MD009, MD031, MD032, MD036, MD040 경고 다수
   - 영향: 없음 (포맷 이슈)
+
+  ````
 
 - 관련 PR/이슈: N/A (프로젝트 거버넌스 강화)
 

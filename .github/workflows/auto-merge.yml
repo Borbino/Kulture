@@ -63,17 +63,7 @@ jobs:
             
             # 커밋 메시지에서 PR 제목 추출
             COMMIT_MSG=$(git log -1 --pretty=%B)
-            COMMIT_TITLE="${COMMIT_MSG%%$'\n'*}"
-            
-            # ReviseLog ID 생성 (날짜 기반)
-            TODAY=$(date +%Y%m%d)
-            # 오늘 날짜의 기존 PR 개수 확인
-            EXISTING_COUNT=$(gh pr list --state all --search "created:$(date +%Y-%m-%d)" --json number --jq 'length')
-            NEXT_NUM=$(printf "%02d" $((EXISTING_COUNT + 1)))
-            REVISE_LOG_ID="RL-${TODAY}-${NEXT_NUM}"
-            
-            # PR 제목에 ReviseLog ID 추가
-            PR_TITLE="${REVISE_LOG_ID}: ${COMMIT_TITLE}"
+            PR_TITLE="${COMMIT_MSG%%$'\n'*}"
             
             # PR 생성
             PR_URL=$(gh pr create \
@@ -111,21 +101,27 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # 8. PR 자동 병합 (승인 없이 squash merge)
-      - name: Auto-merge PR
+      # 8. PR 자동 승인
+      - name: Auto-approve PR
         if: steps.pr.outputs.pr_number != ''
         run: |
-          # GitHub Actions는 자신이 만든 PR을 승인할 수 없으므로 --admin으로 병합
-          gh pr merge ${{ steps.pr.outputs.pr_number }} \
-            --squash \
-            --admin \
-            --delete-branch \
-            --subject "Auto-merge: ${{ github.ref_name }}" \
-            --body "자동 병합 완료: 모든 품질 검사 통과 (ESLint, Jest, Build)"
+          gh pr review ${{ steps.pr.outputs.pr_number }} --approve --body "✅ 자동 승인: 모든 품질 검사가 통과되었습니다."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # 9. 병합 완료 알림
+      # 9. PR 자동 병합
+      - name: Auto-merge PR
+        if: steps.pr.outputs.pr_number != ''
+        run: |
+          gh pr merge ${{ steps.pr.outputs.pr_number }} \
+            --squash \
+            --delete-branch \
+            --subject "Auto-merge: ${{ github.ref_name }}" \
+            --body "자동 병합 완료: 모든 품질 검사 통과"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 10. 병합 완료 알림
       - name: Merge notification
         if: success()
         run: |

@@ -89,7 +89,7 @@ describe('RateLimiter', () => {
     await new Promise(resolve => setTimeout(resolve, 1100))
 
     limiter.cleanup()
-    
+
     // cleanup은 resetAt + windowMs 이후에만 삭제하므로 아직 존재
     const status = limiter.getStatus('test-ip')
     expect(status).toBeDefined()
