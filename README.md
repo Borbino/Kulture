@@ -89,6 +89,7 @@
 **모든 변경사항은 Pull Request(PR) 방식으로 관리합니다.**
 
 **워크플로우**:
+
 1. **브랜치 생성**: `feature/기능명` 또는 `fix/버그명` 형식으로 생성
 2. **작업 및 커밋**: 해당 브랜치에서 작업 후 커밋
 3. **원격 푸시**: `git push origin 브랜치명`
@@ -98,6 +99,7 @@
 7. **브랜치 삭제**: 병합 완료 후 feature 브랜치 삭제
 
 **브랜치 네이밍 규칙**:
+
 - `feature/기능명`: 새 기능 추가 (예: `feature/admin-dashboard`)
 - `fix/버그명`: 버그 수정 (예: `fix/comment-display`)
 - `docs/문서명`: 문서 업데이트 (예: `docs/update-readme`)
@@ -105,6 +107,7 @@
 - `test/테스트명`: 테스트 추가/수정 (예: `test/add-unit-tests`)
 
 **커밋 메시지 규칙** (Conventional Commits):
+
 - `feat:` 새 기능 추가
 - `fix:` 버그 수정
 - `docs:` 문서 변경
@@ -114,6 +117,7 @@
 - `chore:` 빌드/설정 변경
 
 **예시**:
+
 ```bash
 # 1. 새 브랜치 생성
 git checkout -b feature/social-login
@@ -129,6 +133,7 @@ git push origin feature/social-login
 ```
 
 **주의사항**:
+
 - ❌ main 브랜치에 직접 푸시 금지
 - ✅ 모든 변경은 PR을 통해서만 병합
 - ✅ PR 제목은 커밋 메시지 규칙 준수

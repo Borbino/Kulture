@@ -100,6 +100,7 @@ ReviseLog.md 기록
 ### PR 기반 개발 워크플로우
 
 **절대 규칙**:
+
 - ❌ **main 브랜치에 직접 커밋/푸시 금지**
 - ✅ **모든 변경은 feature 브랜치 → PR → 병합 순서로만 진행**
 
@@ -143,21 +144,22 @@ git branch -d feature/새기능명
 
 ### 브랜치 네이밍 규칙
 
-| 타입 | 형식 | 예시 | 설명 |
-|------|------|------|------|
-| 기능 추가 | `feature/기능명` | `feature/social-login` | 새로운 기능 개발 |
-| 버그 수정 | `fix/버그명` | `fix/comment-bug` | 버그 수정 |
-| 문서 업데이트 | `docs/문서명` | `docs/update-readme` | README, 가이드 등 문서 변경 |
-| 리팩토링 | `refactor/대상` | `refactor/api-structure` | 코드 구조 개선 (기능 변경 없음) |
-| 테스트 | `test/테스트명` | `test/unit-tests` | 테스트 코드 추가/수정 |
-| 스타일 | `style/대상` | `style/css-modules` | 코드 포맷팅, CSS 변경 |
-| 빌드/설정 | `chore/작업명` | `chore/update-deps` | 의존성 업데이트, 설정 변경 |
+| 타입          | 형식             | 예시                     | 설명                            |
+| ------------- | ---------------- | ------------------------ | ------------------------------- |
+| 기능 추가     | `feature/기능명` | `feature/social-login`   | 새로운 기능 개발                |
+| 버그 수정     | `fix/버그명`     | `fix/comment-bug`        | 버그 수정                       |
+| 문서 업데이트 | `docs/문서명`    | `docs/update-readme`     | README, 가이드 등 문서 변경     |
+| 리팩토링      | `refactor/대상`  | `refactor/api-structure` | 코드 구조 개선 (기능 변경 없음) |
+| 테스트        | `test/테스트명`  | `test/unit-tests`        | 테스트 코드 추가/수정           |
+| 스타일        | `style/대상`     | `style/css-modules`      | 코드 포맷팅, CSS 변경           |
+| 빌드/설정     | `chore/작업명`   | `chore/update-deps`      | 의존성 업데이트, 설정 변경      |
 
 ### 커밋 메시지 규칙 (Conventional Commits)
 
 **형식**: `<type>: <subject>`
 
 **타입**:
+
 - `feat:` 새 기능 추가
 - `fix:` 버그 수정
 - `docs:` 문서만 변경
@@ -167,6 +169,7 @@ git branch -d feature/새기능명
 - `chore:` 빌드 프로세스, 도구 설정 변경
 
 **예시**:
+
 ```bash
 feat: add Google OAuth login functionality
 fix: resolve comment display issue on mobile
@@ -179,26 +182,33 @@ chore: upgrade Next.js to 16.0.3
 ### PR 생성 가이드
 
 **PR 제목**:
+
 - 커밋 메시지 규칙 준수
 - 명확하고 간결하게 (50자 이내 권장)
 
 **PR 설명 템플릿**:
+
 ```markdown
 ## 변경 사항
+
 - 무엇을 변경했는지 요약
 
 ## 변경 이유
+
 - 왜 이 변경이 필요한지 설명
 
 ## 테스트 결과
+
 - [ ] ESLint 통과
 - [ ] Jest 테스트 통과
 - [ ] 로컬 환경 테스트 완료
 
 ## 스크린샷 (UI 변경 시)
+
 - 변경 전/후 비교
 
 ## 참조
+
 - 관련 이슈 번호: #123
 - ReviseLog ID: RL-20251120-05
 ```
@@ -206,6 +216,7 @@ chore: upgrade Next.js to 16.0.3
 ### 코드 리뷰 체크리스트
 
 **리뷰어 확인 사항**:
+
 - [ ] 코드가 원칙 v14.0을 준수하는가?
 - [ ] 모든 테스트가 통과하는가?
 - [ ] ESLint 에러가 없는가?
