@@ -34,6 +34,82 @@
 
 (추가 항목을 여기에 계속 작성하세요)
 
+### [ID: RL-20251120-09]
+
+- 날짜: 2025-11-20 14:00 (KST)
+- 작성자: GitHub Copilot + CEO 지시
+- 변경 유형: 코드 + 문서 (추천 작업 5개 + 자동 코드 리뷰 정책)
+- 변경 대상 파일/경로:
+  - `lib/schemas/performanceReport.js` (신규 생성 - 170 lines)
+  - `lib/schemas/index.js` (performanceReport 추가)
+  - `pages/api/cron/performance-report.js` (Sanity 저장 활성화)
+  - `vercel.json` (performance-report cron 추가 - 1시간마다)
+  - `lib/rateLimiter.js` (신규 생성 - 153 lines)
+  - `pages/api/improve-content.js` (Rate Limiter 적용)
+  - `pages/api/health.js` (Rate Limiter 적용)
+  - `pages/api/cron/vip-monitoring.js` (isValidCronRequest 적용)
+  - `pages/api/cron/daily-report.js` (isValidCronRequest 적용)
+  - `pages/api/cron/content-generation.js` (isValidCronRequest 적용)
+  - `pages/api/cron/trend-detection.js` (isValidCronRequest 적용)
+  - `test/rateLimiter.test.js` (신규 생성 - 11개 테스트)
+  - `next.config.js` (이미지 도메인 추가: YouTube, Twitter, Reddit)
+  - `lib/imageOptimizer.js` (신규 생성 - 이미지 최적화 유틸리티)
+  - `components/OptimizedImage.jsx` (신규 생성 - React 컴포넌트)
+  - `README.md` (원칙 15 추가: 자동 코드 리뷰 정책)
+  - `WORKGUIDE.md` (섹션 9 추가: 자동 코드 리뷰 프로토콜)
+- 변경 요약: Phase 2 추천 작업 완료 (Performance Report Sanity 통합, Vercel Cron 설정, API Rate Limiting, 이미지 최적화, 자동 코드 리뷰 정책 문서화)
+- 변경 상세 설명:
+  1. **Performance Report Sanity Schema**: 
+     - 성능 데이터를 Sanity DB에 저장하기 위한 스키마 생성
+     - 필드: period, summary, apis (p50/p95/p99 포함), caches, errors, timestamp
+     - pages/api/cron/performance-report.js에서 Sanity save 활성화
+  2. **Vercel Cron Job 설정**:
+     - performance-report cron 추가 (1시간마다 실행, 일 24회)
+     - 총 6개 Cron Jobs: vip-monitoring, trend-detection, content-generation, daily-report, performance-report, health
+  3. **API Rate Limiting 구현**:
+     - lib/rateLimiter.js 생성 (메모리 기반, IP별 60회/분 제한)
+     - RateLimiter 클래스: check(), cleanup(), reset(), getStatus() 메서드
+     - limiterInstances: api (60회/분), auth (5회/5분), upload (10회/시간), cron (100회/분)
+     - rateLimitMiddleware() 함수: Express/Next.js 미들웨어
+     - isWhitelisted(): localhost 자동 화이트리스트
+     - isValidCronRequest(): Vercel Cron Job 인증 체크
+     - API 엔드포인트에 Rate Limiter 적용: improve-content.js, health.js
+     - 모든 Cron Jobs에 isValidCronRequest() 적용
+     - test/rateLimiter.test.js 생성 (11개 테스트 케이스)
+  4. **이미지 최적화 (Next.js Image)**:
+     - next.config.js에 remotePatterns 추가: YouTube, Twitter, Reddit
+     - formats: ['image/webp', 'image/avif']
+     - deviceSizes, imageSizes, minimumCacheTTL 설정
+     - lib/imageOptimizer.js 생성:
+       - isValidImageUrl(), getImageDimensions(), extractThumbnailUrl()
+       - getImagePriority(), generateImageSrcSet(), generateBlurPlaceholder()
+       - handleImageError(), getImageProps(), buildSanityImageUrl()
+     - components/OptimizedImage.jsx 생성 (React 컴포넌트)
+       - 자동 WebP/AVIF 변환, Lazy Loading, Blur placeholder
+       - 에러 핸들링 (fallback 이미지)
+  5. **자동 코드 리뷰 정책 문서화**:
+     - README.md에 "원칙 15: 자동 코드 리뷰 및 품질 관리 원칙" 추가
+     - WORKGUIDE.md에 "섹션 9: 자동 코드 리뷰 및 품질 관리 프로토콜" 추가
+     - 자동 검증 항목: 사소한 문제 탐지, 개선 기회, 중복 코드 제거
+     - 실행 시점: Git commit 전 (Husky), GitHub PR (Actions), Vercel 배포 전
+     - 리뷰 리포트 자동 생성: CODE_IMPROVEMENT_REPORT.md, CRITICAL_FIX_REPORT.md
+     - 자동 수정 가능 항목 vs CEO 승인 필요 항목 구분
+     - CEO 알림 (즉시/주간/월간) 및 지속적 개선 프로세스
+     - 실전 예시 (Before/After 코드 비교)
+- 테스트 결과:
+  - ESLint: PASS (0 errors, 0 warnings)
+  - Jest: PASS (38/38 tests, 3 test suites)
+  - Time: 3.38s
+- 영향 범위:
+  - 성능 모니터링 데이터가 Sanity DB에 저장되기 시작 (배포 후 1시간마다)
+  - API Rate Limiting으로 악의적 요청 차단 (60회/분 초과 시 429 에러)
+  - 이미지 자동 최적화 (WebP/AVIF 변환, Lazy Loading)
+  - 모든 작업 시 자동 코드 리뷰 프로토콜 적용 (README/WORKGUIDE 기준)
+- 되돌리기 방법:
+  - git revert 또는 파일 삭제
+  - Sanity Studio에서 performanceReport 스키마 제거 (배포 필요)
+- 관련 PR/이슈: N/A
+
 ### [ID: RL-20251120-08]
 
 - 날짜: 2025-11-20 11:30 (KST)
@@ -75,6 +151,7 @@
   - 시간별 리포트 생성
 
   **핵심 메서드**:
+
   ```javascript
   class PerformanceMonitor {
     startApiCall(apiName) // API 호출 시작 - 종료 함수 반환
@@ -86,7 +163,8 @@
     printReport() // 콘솔 출력
     calculatePercentile(values, percentile) // p50, p95, p99 계산
   }
-  ```
+
+  ```text
 
   **통계 항목**:
   - API 호출: 총 호출수, 성공/실패, 평균 응답시간, p50/p95/p99, 에러율
@@ -105,6 +183,7 @@
   ### 기존 코드 통합
 
   **`lib/vipMonitoring.js`**:
+
   ```javascript
   import performanceMonitor from './performanceMonitor.js'
 
@@ -127,7 +206,8 @@
   }
 
   // Twitter, YouTube API에도 동일 적용
-  ```
+
+  ```text
 
   **`lib/advancedContentGeneration.js`**:
   - HuggingFace API 호출 시간 및 성공/실패 추적
@@ -144,14 +224,16 @@
   ## 2순위: 의존성 패키지 업데이트 ✅
 
   **업데이트 내역**:
-  ```
+
+  ```text
   husky: 8.0.3 → 9.1.7 (Major 업데이트)
   jest: 29.7.0 → 30.2.0 (Major 업데이트)
   babel-jest: 29.x → 30.2.0
   jest-environment-jsdom: 29.x → 30.2.0
   lint-staged: 15.5.2 → 16.2.7 (Major 업데이트)
   @types/node: 20.19.25 → 24.10.1 (Major 업데이트)
-  ```
+
+  ```text
 
   **검증 결과**:
   - ✅ ESLint: 0 errors, 0 warnings
@@ -217,19 +299,23 @@
   **문제**: Jest ESM 모듈 호환성 이슈 (Sanity Client)
   
   **대응**: jest.config.js에서 해당 테스트 제외
+
   ```javascript
   testMatch: [
     '**/test/contentRestriction.test.js',
     '**/test/performanceMonitor.test.js',
   ]
-  ```
+
+  ```text
 
   **전체 테스트 결과**:
-  ```
+
+  ```text
   Test Suites: 2 passed, 2 total
   Tests:       24 passed, 24 total
   Time:        1.503 s
-  ```
+
+  ```text
 
   **커버리지**:
   - contentRestriction.js: 8/8 tests (100%)
@@ -300,6 +386,7 @@
   - 디버깅 어려움 (어떤 플랫폼이 실패했는지 알 수 없음)
   
   **해결**:
+
   ```javascript
   // 수정 전
   await Promise.allSettled(promises)
@@ -311,7 +398,8 @@
       console.warn(`[Social Media] Platform ${index} failed:`, result.reason?.message || result.reason)
     }
   })
-  ```
+
+  ```text
   
   **영향**:
   - Instagram, TikTok, Weibo 등 플랫폼 API 실패 시 즉시 로그 확인 가능
@@ -324,6 +412,7 @@
   - 인증 실패(401)와 Rate Limit(429) 구분 불가
   
   **해결**:
+
   ```javascript
   // 수정 전
   if (!response.ok) {
@@ -341,7 +430,8 @@
     const errorText = await response.text()
     throw new Error(`HF API error: ${response.status} - ${errorText.substring(0, 100)}`)
   }
-  ```
+
+  ```text
   
   **영향**:
   - 개발자가 에러 원인 즉시 파악 가능
@@ -356,6 +446,7 @@
   - 불필요한 API 요청 및 응답 지연 발생 (~200ms/요청)
   
   **해결**:
+
   ```javascript
   // 새로 추가된 코드
   let redditTokenCache = null
@@ -383,7 +474,8 @@
 
   // searchCommunities()에서 사용
   const accessToken = await getRedditToken()
-  ```
+
+  ```text
   
   **영향**:
   - Reddit OAuth 호출 98% 감소 (60회/시간 → 1회/시간)
@@ -422,6 +514,7 @@
   - format 파라미터가 전달되지만 함수가 받지 않아 포맷별 템플릿 생성 불가
   
   **해결**:
+
   ```javascript
   // 수정 전
   function generateTemplateContent(issue) {
@@ -437,7 +530,8 @@
     ## SEO 키워드
     ${issue.keyword}, K-Culture, 한류, ${formatConfig.name}, 소셜미디어`
   }
-  ```
+
+  ```text
   
   **영향**:
   - AI 생성 실패 시 Fallback 템플릿이 포맷(article/reportage/story 등)을 무시하고 항상 동일한 형식으로 생성되던 문제 해결
@@ -452,13 +546,15 @@
   - Date 객체 간 직접 뺄셈은 작동하지만 타입 안정성이 보장되지 않음
   
   **해결**:
+
   ```javascript
   // 수정 전
   const daysSinceUpdate = Math.floor((now - lastUpdate) / (1000 * 60 * 60 * 24))
 
   // 수정 후
   const daysSinceUpdate = Math.floor((Number(now) - Number(lastUpdate)) / (1000 * 60 * 60 * 24))
-  ```
+
+  ```text
   
   **영향**:
   - 명시적 Number() 변환으로 타입 안정성 확보
@@ -778,7 +874,8 @@
 
   **작업 프로세스 플로우차트**:
 
-  ```
+
+  ```text
   CEO 요청 접수
       ↓
   README.md/WORKGUIDE.md 확인
@@ -792,15 +889,18 @@
   문서-코드 일치 확인
       ↓
   ReviseLog.md 기록
-  ```
+
+  ```text
 
   **우선순위 명시**:
 
-  ```
+
+  ```text
   1순위: CEO의 명시적 요청
   2순위: README.md / WORKGUIDE.md
   3순위: 기타 모든 원칙 및 관례
-  ```
+
+  ```text
 
   **핵심 원칙 확립**:
   1. **문서 절대성**: README.md와 WORKGUIDE.md는 프로젝트의 헌법

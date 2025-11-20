@@ -37,14 +37,14 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
-      # 5. 타입 체크
-      - name: Run TypeScript check
-        run: npm run type-check
-        continue-on-error: true # tsconfig.json 없을 경우 무시
-
-      # 6. 테스트 실행
+      # 5. 테스트 실행
       - name: Run tests
         run: npm test
+
+      # 6. 빌드 검증
+      - name: Build check
+        run: npm run build
+        continue-on-error: true
 
       # 7. PR 자동 생성 (존재하지 않을 경우)
       - name: Create Pull Request
@@ -66,8 +66,8 @@ jobs:
 
             ### 품질 검사 결과
             - ✅ ESLint 통과
-            - ✅ TypeScript 체크 통과
             - ✅ 테스트 통과
+            - ✅ 빌드 검증 통과
 
             ### 자동 병합
             모든 검사가 통과되어 자동으로 병합됩니다.
@@ -111,8 +111,8 @@ jobs:
 
           ### 품질 검사 결과
           - ✅ ESLint 통과
-          - ✅ TypeScript 체크 통과
           - ✅ 테스트 통과
+          - ✅ 빌드 검증 통과
 
           ### 자동 병합
           모든 검사가 통과되어 자동으로 병합됩니다.

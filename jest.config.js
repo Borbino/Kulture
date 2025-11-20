@@ -11,9 +11,7 @@ const config = {
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
   },
-  transformIgnorePatterns: [
-    '/node_modules/(?!(nanoid|@sanity|uuid|@testing-library)/)',
-  ],
+  transformIgnorePatterns: ['/node_modules/(?!(nanoid|@sanity|uuid|@testing-library)/)'],
   collectCoverageFrom: [
     'components/**/*.{js,jsx,ts,tsx}',
     'lib/**/*.{js,jsx,ts,tsx}',
@@ -24,6 +22,7 @@ const config = {
   testMatch: [
     '**/test/contentRestriction.test.js',
     '**/test/performanceMonitor.test.js',
+    '**/test/rateLimiter.test.js',
   ],
 }
 

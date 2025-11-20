@@ -1,15 +1,16 @@
 /**
  * [설명] 성능 모니터링 리포트 Cron Job
  * [실행주기] 1시간마다
- * [목적] API 호출 통계, 캐시 히트율, 에러율 집계 및 Sanity 저장
+ * [목적] API 성능 지표 수집 및 분석
  */
 
-import performanceMonitor from '../../../lib/performanceMonitor.js'
-// import sanity from '../../../lib/sanityClient.js' // 추후 performanceReport 스키마 추가 시 사용
+import performanceMonitor from '../../../lib/performanceMonitor'
+import sanity from '../../../lib/sanityClient.js'
+import { isValidCronRequest } from '../../../lib/rateLimiter'
 
 export default async function handler(req, res) {
   // Cron Secret 검증
-  if (req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!isValidCronRequest(req)) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
 
@@ -20,18 +21,18 @@ export default async function handler(req, res) {
     // 콘솔 출력
     performanceMonitor.printReport()
 
-    // Sanity에 저장 (선택사항 - 스키마 추가 필요)
-    // await sanity.create({
-    //   _type: 'performanceReport',
-    //   period: report.period,
-    //   summary: report.summary,
-    //   apis: report.apis,
-    //   caches: report.caches,
-    //   errors: report.errors,
-    //   timestamp: new Date().toISOString(),
-    // })
+    // Sanity에 저장
+    await sanity.create({
+      _type: 'performanceReport',
+      period: report.period,
+      summary: report.summary,
+      apis: report.apis,
+      caches: report.caches,
+      errors: report.errors,
+      timestamp: new Date().toISOString(),
+    })
 
-    console.log(`[Performance Report] Generated at ${new Date().toISOString()}`)
+    console.log(`[Performance Report] Saved to Sanity at ${new Date().toISOString()}`)
 
     // 메트릭 초기화 (다음 시간 집계 준비)
     performanceMonitor.reset()

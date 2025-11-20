@@ -4,6 +4,7 @@
  */
 
 import sanity from '../../lib/sanityClient.js'
+import rateLimitMiddleware from '../../lib/rateLimiter.js'
 
 /**
  * Hugging Face Inference API (100% 무료, 제한 없음)
@@ -230,6 +231,10 @@ async function analyzeFeedbackPatterns() {
 }
 
 export default async function handler(req, res) {
+  // Rate limiting: 60회/분
+  const rateLimitResult = rateLimitMiddleware('api')(req, res, () => {})
+  if (rateLimitResult !== undefined) return rateLimitResult
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
