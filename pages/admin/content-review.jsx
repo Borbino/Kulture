@@ -6,6 +6,7 @@
 
 import { useState, useEffect } from 'react'
 import sanity from '../../lib/sanityClient'
+import OptimizedImage from '../../components/OptimizedImage'
 import styles from './content-review.module.css'
 
 export default function ContentReview() {
@@ -344,7 +345,13 @@ export default function ContentReview() {
 
               {selectedPost.image?.url && (
                 <div className={styles.imagePreview}>
-                  <img src={selectedPost.image.url} alt={selectedPost.title} />
+                  <OptimizedImage
+                    src={selectedPost.image.url}
+                    alt={selectedPost.title}
+                    width={800}
+                    height={450}
+                    priority={true}
+                  />
                 </div>
               )}
 
