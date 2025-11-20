@@ -93,6 +93,151 @@ ReviseLog.md 기록
 
 ---
 
+## 0-1. Git 워크플로우 원칙 (필수)
+
+**🚨 중요: 모든 변경사항은 Pull Request(PR) 방식으로 관리합니다.**
+
+### PR 기반 개발 워크플로우
+
+**절대 규칙**:
+- ❌ **main 브랜치에 직접 커밋/푸시 금지**
+- ✅ **모든 변경은 feature 브랜치 → PR → 병합 순서로만 진행**
+
+**표준 워크플로우**:
+
+```bash
+# 1. 최신 main 브랜치로 업데이트
+git checkout main
+git pull origin main
+
+# 2. 새 feature 브랜치 생성
+git checkout -b feature/새기능명
+# 또는
+git checkout -b fix/버그명
+
+# 3. 작업 수행 및 테스트
+# ... 코드 작성 ...
+npm test
+npm run lint
+
+# 4. 변경사항 커밋
+git add .
+git commit -m "feat: 새 기능 추가 설명"
+
+# 5. 원격 저장소에 푸시
+git push origin feature/새기능명
+
+# 6. GitHub에서 Pull Request 생성
+# - Base: main
+# - Compare: feature/새기능명
+# - 제목: 커밋 메시지 규칙 준수
+# - 설명: 변경 이유, 테스트 결과, 스크린샷 등
+
+# 7. 코드 리뷰 및 승인 대기
+
+# 8. 병합 완료 후 로컬 정리
+git checkout main
+git pull origin main
+git branch -d feature/새기능명
+```
+
+### 브랜치 네이밍 규칙
+
+| 타입 | 형식 | 예시 | 설명 |
+|------|------|------|------|
+| 기능 추가 | `feature/기능명` | `feature/social-login` | 새로운 기능 개발 |
+| 버그 수정 | `fix/버그명` | `fix/comment-bug` | 버그 수정 |
+| 문서 업데이트 | `docs/문서명` | `docs/update-readme` | README, 가이드 등 문서 변경 |
+| 리팩토링 | `refactor/대상` | `refactor/api-structure` | 코드 구조 개선 (기능 변경 없음) |
+| 테스트 | `test/테스트명` | `test/unit-tests` | 테스트 코드 추가/수정 |
+| 스타일 | `style/대상` | `style/css-modules` | 코드 포맷팅, CSS 변경 |
+| 빌드/설정 | `chore/작업명` | `chore/update-deps` | 의존성 업데이트, 설정 변경 |
+
+### 커밋 메시지 규칙 (Conventional Commits)
+
+**형식**: `<type>: <subject>`
+
+**타입**:
+- `feat:` 새 기능 추가
+- `fix:` 버그 수정
+- `docs:` 문서만 변경
+- `style:` 코드 의미에 영향 없는 변경 (포맷팅 등)
+- `refactor:` 버그 수정이나 기능 추가가 아닌 코드 변경
+- `test:` 테스트 추가 또는 수정
+- `chore:` 빌드 프로세스, 도구 설정 변경
+
+**예시**:
+```bash
+feat: add Google OAuth login functionality
+fix: resolve comment display issue on mobile
+docs: update API documentation for v2.0
+refactor: simplify contentRestriction logic
+test: add unit tests for settings component
+chore: upgrade Next.js to 16.0.3
+```
+
+### PR 생성 가이드
+
+**PR 제목**:
+- 커밋 메시지 규칙 준수
+- 명확하고 간결하게 (50자 이내 권장)
+
+**PR 설명 템플릿**:
+```markdown
+## 변경 사항
+- 무엇을 변경했는지 요약
+
+## 변경 이유
+- 왜 이 변경이 필요한지 설명
+
+## 테스트 결과
+- [ ] ESLint 통과
+- [ ] Jest 테스트 통과
+- [ ] 로컬 환경 테스트 완료
+
+## 스크린샷 (UI 변경 시)
+- 변경 전/후 비교
+
+## 참조
+- 관련 이슈 번호: #123
+- ReviseLog ID: RL-20251120-05
+```
+
+### 코드 리뷰 체크리스트
+
+**리뷰어 확인 사항**:
+- [ ] 코드가 원칙 v14.0을 준수하는가?
+- [ ] 모든 테스트가 통과하는가?
+- [ ] ESLint 에러가 없는가?
+- [ ] 문서가 업데이트되었는가?
+- [ ] ReviseLog.md에 기록되었는가?
+- [ ] 보안 취약점이 없는가?
+- [ ] 성능 이슈가 없는가?
+
+### 긴급 수정 (Hotfix) 프로세스
+
+긴급한 프로덕션 버그 수정 시:
+
+```bash
+# 1. main에서 hotfix 브랜치 생성
+git checkout main
+git pull origin main
+git checkout -b hotfix/긴급버그명
+
+# 2. 수정 및 테스트
+# ... 버그 수정 ...
+
+# 3. 커밋 및 푸시
+git commit -m "fix: 긴급 버그 수정 설명"
+git push origin hotfix/긴급버그명
+
+# 4. PR 생성 (라벨: hotfix 추가)
+
+# 5. 신속 리뷰 및 병합
+```
+
+---
+
 ## 1. 프로젝트 비전 및 전략적 목표
 
 - 대한민국 K-Culture(Drama, K-Pop, Movie, Beauty 등)의 실시간/자동/고품질 글로벌 공유

@@ -84,6 +84,56 @@
 - 모든 코드는 기능 단위로 나누어 단계별로 제공하며, 즉시 복사하여 사용할 수 있도록 완전한 형태로 제시한다.
 - 모든 답변은 비전문가인 CEO가 이해할 수 있도록 명확하고 친절한 어조를 유지한다.
 
+### 11-1. Git 워크플로우 원칙 (필수)
+
+**모든 변경사항은 Pull Request(PR) 방식으로 관리합니다.**
+
+**워크플로우**:
+1. **브랜치 생성**: `feature/기능명` 또는 `fix/버그명` 형식으로 생성
+2. **작업 및 커밋**: 해당 브랜치에서 작업 후 커밋
+3. **원격 푸시**: `git push origin 브랜치명`
+4. **PR 생성**: GitHub에서 Pull Request 생성
+5. **코드 리뷰**: 변경사항 검토 (자동 또는 수동)
+6. **병합**: 승인 후 main 브랜치에 병합
+7. **브랜치 삭제**: 병합 완료 후 feature 브랜치 삭제
+
+**브랜치 네이밍 규칙**:
+- `feature/기능명`: 새 기능 추가 (예: `feature/admin-dashboard`)
+- `fix/버그명`: 버그 수정 (예: `fix/comment-display`)
+- `docs/문서명`: 문서 업데이트 (예: `docs/update-readme`)
+- `refactor/대상`: 코드 리팩토링 (예: `refactor/api-structure`)
+- `test/테스트명`: 테스트 추가/수정 (예: `test/add-unit-tests`)
+
+**커밋 메시지 규칙** (Conventional Commits):
+- `feat:` 새 기능 추가
+- `fix:` 버그 수정
+- `docs:` 문서 변경
+- `style:` 코드 포맷팅 (기능 변경 없음)
+- `refactor:` 코드 리팩토링
+- `test:` 테스트 추가/수정
+- `chore:` 빌드/설정 변경
+
+**예시**:
+```bash
+# 1. 새 브랜치 생성
+git checkout -b feature/social-login
+
+# 2. 작업 후 커밋
+git add .
+git commit -m "feat: add social login with Google and Kakao"
+
+# 3. 원격 푸시
+git push origin feature/social-login
+
+# 4. GitHub에서 PR 생성 → 리뷰 → 병합
+```
+
+**주의사항**:
+- ❌ main 브랜치에 직접 푸시 금지
+- ✅ 모든 변경은 PR을 통해서만 병합
+- ✅ PR 제목은 커밋 메시지 규칙 준수
+- ✅ PR 설명에 변경 이유 및 테스트 결과 명시
+
 ### 11-1. 변경 이력 관리 원칙 (필수)
 
 **ReviseLog.md는 이 프로젝트의 공식 패치로그입니다.**
