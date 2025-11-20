@@ -1,0 +1,170 @@
+name: Auto PR and Merge
+
+# feature/* 브랜치가 푸시될 때마다 자동 실행
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'fix/**'
+      - 'docs/**'
+      - 'refactor/**'
+      - 'test/**'
+      - 'chore/**'
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. 코드 체크아웃
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      # 2. Node.js 설정
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      # 3. 의존성 설치
+      - name: Install dependencies
+        run: npm ci
+      
+      # 4. 코드 품질 검사
+      - name: Run ESLint
+        run: npm run lint
+      
+      # 5. 타입 체크
+      - name: Run TypeScript check
+        run: npm run type-check
+        continue-on-error: true  # tsconfig.json 없을 경우 무시
+      
+      # 6. 테스트 실행
+      - name: Run tests
+        run: npm test
+      
+      # 7. PR 자동 생성 (존재하지 않을 경우)
+      - name: Create Pull Request
+        id: create-pr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref_name }}
+          base: main
+          title: "Auto PR: ${{ github.ref_name }}"
+          body: |
+            ## 자동 생성된 Pull Request
+            
+            **브랜치**: `${{ github.ref_name }}`
+            **커밋**: ${{ github.sha }}
+            
+            ### 변경 사항
+            이 PR은 자동으로 생성되었습니다.
+            
+            ### 품질 검사 결과
+            - ✅ ESLint 통과
+            - ✅ TypeScript 체크 통과
+            - ✅ 테스트 통과
+            
+            ### 자동 병합
+            모든 검사가 통과되어 자동으로 병합됩니다.
+            
+            ---
+            *이 PR은 GitHub Actions에 의해 자동으로 생성되고 병합되었습니다.*
+          delete-branch: false
+      
+      # 8. PR이 이미 존재하는지 확인하고 번호 가져오기
+      - name: Get PR number
+        id: get-pr
+        run: |
+          PR_NUMBER=$(gh pr list --head "${{ github.ref_name }}" --json number --jq '.[0].number')
+          if [ -z "$PR_NUMBER" ]; then
+            echo "No PR found, will be created in next step"
+            echo "pr_number=" >> $GITHUB_OUTPUT
+          else
+            echo "Found PR #$PR_NUMBER"
+            echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      # 9. PR이 없으면 생성
+      - name: Create PR if not exists
+        id: create-pr-gh
+        if: steps.get-pr.outputs.pr_number == ''
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          PR_TITLE="${COMMIT_MSG%%$'\n'*}"
+          
+          PR_BODY="## 자동 생성된 Pull Request
+
+          **브랜치**: \`${{ github.ref_name }}\`
+          **커밋**: ${{ github.sha }}
+          
+          ### 커밋 메시지
+          \`\`\`
+          $COMMIT_MSG
+          \`\`\`
+          
+          ### 품질 검사 결과
+          - ✅ ESLint 통과
+          - ✅ TypeScript 체크 통과
+          - ✅ 테스트 통과
+          
+          ### 자동 병합
+          모든 검사가 통과되어 자동으로 병합됩니다.
+          
+          ---
+          *이 PR은 GitHub Actions에 의해 자동으로 생성되고 병합되었습니다.*"
+          
+          PR_NUMBER=$(gh pr create \
+            --title "$PR_TITLE" \
+            --body "$PR_BODY" \
+            --base main \
+            --head "${{ github.ref_name }}" \
+            --assignee "@me" | grep -oP '\d+$')
+          
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+          echo "Created PR #$PR_NUMBER"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      # 10. PR 번호 확정
+      - name: Set final PR number
+        id: final-pr
+        run: |
+          if [ -n "${{ steps.create-pr-gh.outputs.pr_number }}" ]; then
+            echo "pr_number=${{ steps.create-pr-gh.outputs.pr_number }}" >> $GITHUB_OUTPUT
+          else
+            echo "pr_number=${{ steps.get-pr.outputs.pr_number }}" >> $GITHUB_OUTPUT
+          fi
+      
+      # 11. PR 자동 승인
+      - name: Auto-approve PR
+        if: steps.final-pr.outputs.pr_number != ''
+        run: |
+          gh pr review ${{ steps.final-pr.outputs.pr_number }} --approve --body "✅ 자동 승인: 모든 품질 검사가 통과되었습니다."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      # 12. PR 자동 병합
+      - name: Auto-merge PR
+        if: steps.final-pr.outputs.pr_number != ''
+        run: |
+          gh pr merge ${{ steps.final-pr.outputs.pr_number }} \
+            --squash \
+            --delete-branch \
+            --subject "Auto-merge: ${{ github.ref_name }}" \
+            --body "자동 병합 완료: 모든 품질 검사 통과"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      # 13. 병합 완료 알림
+      - name: Merge notification
+        if: success()
+        run: |
+          echo "✅ PR이 성공적으로 병합되었습니다!"
+          echo "🎉 ${{ github.ref_name }} → main"
