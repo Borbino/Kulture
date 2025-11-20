@@ -57,7 +57,7 @@ jobs:
         run: |
           # 기존 PR 확인
           PR_NUMBER=$(gh pr list --head "${{ github.ref_name }}" --json number --jq '.[0].number')
-          
+
           if [ -z "$PR_NUMBER" ]; then
             echo "No existing PR found, creating new PR"
             
@@ -96,7 +96,7 @@ jobs:
           else
             echo "Found existing PR #$PR_NUMBER"
           fi
-          
+
           echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
