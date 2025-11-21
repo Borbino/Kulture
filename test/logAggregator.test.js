@@ -29,9 +29,17 @@ describe('LogAggregator', () => {
         aggregator.logError('test', new Error(`Error ${i}`))
       }
 
+      // 5개 도달 시 1번만 알림
+      expect(consoleSpy).toHaveBeenCalledTimes(1)
       expect(consoleSpy).toHaveBeenCalledWith(
         expect.stringContaining('[Log Aggregator Alert]'),
       )
+      
+      // 추가 에러는 알림 없음 (중복 방지)
+      consoleSpy.mockClear()
+      aggregator.logError('test', new Error('Error 6'))
+      expect(consoleSpy).not.toHaveBeenCalled()
+      
       consoleSpy.mockRestore()
     })
   })
@@ -203,6 +211,18 @@ describe('LogAggregator', () => {
 
       expect(aggregator.errors).toHaveLength(0)
       expect(aggregator.warnings).toHaveLength(0)
+    })
+
+    it('메모리 제한을 초과하면 오래된 로그를 삭제해야 함', () => {
+      // maxLogs는 1000개로 설정되어 있음
+      for (let i = 0; i < 1005; i++) {
+        aggregator.logError('test', new Error(`Error ${i}`))
+      }
+
+      expect(aggregator.errors).toHaveLength(1000)
+      // 가장 오래된 로그(0-4)는 삭제되고 최근 1000개만 유지
+      expect(aggregator.errors[0].message).toBe('Error 5')
+      expect(aggregator.errors[aggregator.errors.length - 1].message).toBe('Error 1004')
     })
   })
 

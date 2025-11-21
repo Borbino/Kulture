@@ -160,7 +160,11 @@ describe('Performance Analyzer', () => {
 
   describe('analyzeTrend', () => {
     test('데이터 부족 시 insufficient_data', () => {
-      const reports = [{ apis: [{ latency: { p95: 1000 } }] }]
+      const reports = [
+        { apis: [{ latency: { p95: 1000 } }] },
+        { apis: [{ latency: { p95: 1100 } }] },
+        { apis: [{ latency: { p95: 1200 } }] },
+      ]
 
       const result = analyzeTrend(reports)
 

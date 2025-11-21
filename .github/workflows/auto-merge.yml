@@ -109,7 +109,6 @@ jobs:
 
       - name: Build check
         run: npm run build
-        continue-on-error: true
 
   auto-merge:
     needs: [lint, test, build]

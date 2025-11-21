@@ -25,6 +25,19 @@ describe('API Key Manager', () => {
       expect(manager.getUsage('youtube')).toBe(1)
     })
 
+    test('알 수 없는 서비스도 추적해야 함', () => {
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation()
+
+      manager.trackUsage('unknown-service', 100)
+
+      expect(manager.getUsage('unknown-service')).toBe(100)
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Unknown service: unknown-service'),
+      )
+
+      consoleWarnSpy.mockRestore()
+    })
+
     test('90% 도달 시 경고 로그', () => {
       const warnSpy = jest.spyOn(console, 'warn').mockImplementation()
 
