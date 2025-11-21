@@ -1,0 +1,131 @@
+/* Container */
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.content {
+  max-width: 600px;
+  width: 100%;
+  background: white;
+  border-radius: 1rem;
+  padding: 3rem;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* Icon */
+.icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Title */
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+/* Message */
+.message {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Details */
+.details {
+  text-align: left;
+  margin-bottom: 2rem;
+  background: #f9fafb;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.errorStack {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.button,
+.buttonSecondary {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.buttonSecondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.buttonSecondary:hover {
+  background: #e5e7eb;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .content {
+    padding: 2rem 1.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .message {
+    font-size: 1rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .button,
+  .buttonSecondary {
+    width: 100%;
+  }
+}

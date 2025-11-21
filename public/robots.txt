@@ -1,0 +1,46 @@
+# https://www.robotstxt.org/robotstxt.html
+
+# 모든 검색엔진 허용
+User-agent: *
+Allow: /
+
+# 관리자 페이지 차단
+Disallow: /admin/
+
+# API 엔드포인트 차단
+Disallow: /api/
+
+# 에러 페이지 차단
+Disallow: /404
+Disallow: /500
+
+# Sitemap 위치
+Sitemap: https://yoursite.com/sitemap.xml
+
+# 크롤링 속도 제한 (선택사항)
+Crawl-delay: 1
+
+# Google Bot 설정
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Bing Bot 설정
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Naver Bot 설정
+User-agent: Yeti
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# 악의적인 봇 차단
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /

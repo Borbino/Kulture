@@ -3,6 +3,7 @@
  */
 
 import { APIKeyManager, getAPIKeyManager } from '../lib/apiKeyManager.js'
+import { logger } from '../lib/logger.js'
 
 describe('API Key Manager', () => {
   let manager
@@ -26,37 +27,40 @@ describe('API Key Manager', () => {
     })
 
     test('알 수 없는 서비스도 추적해야 함', () => {
-      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation()
+      const warnSpy = jest.spyOn(logger, 'warn').mockImplementation()
 
       manager.trackUsage('unknown-service', 100)
 
       expect(manager.getUsage('unknown-service')).toBe(100)
-      expect(consoleWarnSpy).toHaveBeenCalledWith(
+      expect(warnSpy).toHaveBeenCalledWith(
+        'APIKeyManager',
         expect.stringContaining('Unknown service: unknown-service'),
       )
 
-      consoleWarnSpy.mockRestore()
+      warnSpy.mockRestore()
     })
 
     test('90% 도달 시 경고 로그', () => {
-      const warnSpy = jest.spyOn(console, 'warn').mockImplementation()
+      const warnSpy = jest.spyOn(logger, 'warn').mockImplementation()
 
       manager.trackUsage('youtube', 9100) // 91% (10000의 91%)
 
       expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('[API Quota] youtube is at 91%')
+        'APIKeyManager',
+        expect.stringContaining('youtube is at 91%')
       )
 
       warnSpy.mockRestore()
     })
 
     test('100% 도달 시 에러 로그', () => {
-      const errorSpy = jest.spyOn(console, 'error').mockImplementation()
+      const errorSpy = jest.spyOn(logger, 'error').mockImplementation()
 
       manager.trackUsage('youtube', 10000)
 
       expect(errorSpy).toHaveBeenCalledWith(
-        expect.stringContaining('[API Quota] youtube has reached its daily limit')
+        'APIKeyManager',
+        expect.stringContaining('youtube has reached its daily limit')
       )
 
       errorSpy.mockRestore()

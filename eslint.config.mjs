@@ -51,6 +51,7 @@ export default [
         alert: 'readonly',
         confirm: 'readonly',
         prompt: 'readonly',
+        IntersectionObserver: 'readonly',
       },
     },
     rules: {
