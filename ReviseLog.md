@@ -20,6 +20,67 @@
 
 ## 예시(초기 항목)
 
+### [ID: RL-20251121-06]
+
+- 날짜: 2025-11-21 (KST)
+- 작성자: GitHub Copilot (Phase 3-4 완료)
+- 변경 유형: 코드
+- 변경 대상 파일/경로:
+  - `docs/VERCEL_DEPLOYMENT.md` (NEW)
+  - `docs/SANITY_SCHEMA_DEPLOYMENT.md` (NEW)
+  - `.env.template` (NEW)
+  - `.vercelignore` (NEW)
+  - `pages/admin/monitoring.jsx` (NEW)
+  - `pages/admin/monitoring.module.css` (NEW)
+  - `pages/api/monitoring/stats.js` (NEW)
+  - `pages/index.jsx` (NEW)
+  - `styles/Home.module.css` (NEW)
+- 변경 요약: Phase 3-4 완료 - 운영 준비 및 프론트엔드 기초 구축
+- 변경 상세 설명:
+  - **목적**: 실제 배포 환경 준비 및 사용자 인터페이스 구현
+  - **Phase 3: 운영 준비**:
+    - **Vercel 배포 가이드** (docs/VERCEL_DEPLOYMENT.md):
+      - 환경변수 설정 절차 (11개 필수 환경변수)
+      - Cron Jobs 검증 방법
+      - 무료 플랜 최적화 (233회/일 실행)
+      - 트러블슈팅 가이드
+    - **Sanity Studio 배포** (docs/SANITY_SCHEMA_DEPLOYMENT.md):
+      - 11개 스키마 배포 절차
+      - Studio UI 커스터마이징
+      - 권한 설정 및 테스트 데이터
+    - **모니터링 대시보드** (pages/admin/monitoring.jsx):
+      - API 성능 모니터링 (P95 latency, 에러율)
+      - API Quota 사용량 실시간 표시
+      - 에러 로그 집계 (최근 5개 표시)
+      - 시스템 리소스 (메모리, CPU)
+      - 30초 자동 갱신
+  - **Phase 4-1: 메인 페이지**:
+    - **홈페이지 구현** (pages/index.jsx):
+      - Hero Section with gradient background
+      - Hot Issues (실시간 급상승 이슈, Top 3)
+      - Trending Topics (탭 필터링: 전체/급상승/VIP Only)
+      - VIP Spotlight (VIP 아티스트 최신 활동)
+      - Recent Posts (최근 게시물)
+      - SSR (Server Side Rendering) 적용
+      - SEO 메타 태그 최적화
+    - **반응형 디자인**:
+      - Desktop: 3-column grid
+      - Tablet: 2-column grid
+      - Mobile: 1-column stack
+      - CSS Modules로 스타일 격리
+  - **파일 구조**:
+    - 배포 가이드: 2개 (Vercel, Sanity)
+    - 프론트엔드: 4개 (2 pages + 2 styles)
+    - API: 1개 (monitoring stats)
+    - 설정: 2개 (.env.template, .vercelignore)
+  - **영향**:
+    - ESLint: 11 warnings (prop-types 관련, 기능상 무해)
+    - 새 라우트: `/admin/monitoring`, `/`
+    - 커밋: 3개 (091be9c Phase 3, 86a982c Phase 4-1, 현재)
+    - 총 코드: 1,652 insertions
+  - **다음 단계**: Phase 4-2 (게시물 상세 페이지), Phase 5 (Logger + 성능), Phase 6 (Analytics + SEO)
+  - **관련 커밋**: RL-20251121-04 (코드 리뷰 개선)
+
 ### [ID: RL-20251121-04]
 
 - 날짜: 2025-11-21 (KST)
