@@ -20,6 +20,34 @@
 
 ## 예시(초기 항목)
 
+### [ID: RL-20251121-09]
+
+- 날짜: 2025-11-21 14:45 (KST)
+- 작성자: GitHub Copilot
+- 변경 유형: 기능 추가
+- 변경 대상 파일/경로:
+  - `sanity.config.js` (NEW)
+  - `scripts/seed-sample-data.js` (NEW)
+  - `docs/SANITY_SETUP.md` (NEW)
+  - `docs/VERCEL_QUICK_START.md` (NEW)
+  - `pages/api/search.js` (NEW)
+  - `components/Search.jsx` (NEW)
+  - `components/Search.module.css` (NEW)
+  - `lib/schemas/comment.js` (NEW)
+  - `lib/schemas/index.js` (MODIFIED)
+  - `package.json` (MODIFIED)
+  - `vercel.json` (MODIFIED)
+- 변경 요약: Phase 7-9 완료 - Sanity CMS 설정, Vercel 배포 준비, 검색 & 댓글 기능
+- 변경 상세 설명:
+  - Sanity CMS: Studio 설정, 12개 스키마 (comment 추가), 샘플 데이터 생성 스크립트
+  - Vercel: 배포 설정 강화 (env, headers, redirects), 빠른 시작 가이드
+  - 검색 기능: /api/search 엔드포인트, Search 컴포넌트, 실시간 검색 UI
+  - 댓글 시스템: comment 스키마, 승인 시스템, 대댓글 지원
+  - 문서: Sanity 설정 가이드, Vercel 빠른 배포 가이드
+- 관련 PR/이슈: 우선순위 1-6 완료
+
+---
+
 ### [ID: RL-20251121-08]
 
 - 날짜: 2025-11-21 14:20 (KST)
