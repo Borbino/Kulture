@@ -64,7 +64,7 @@ export default [
       eqeqeq: ['error', 'always'],
       curly: 'off',
       'no-var': 'error',
-      'prefer-arrow-callback': 'warn',
+      'prefer-arrow-callback': ['warn', { allowNamedFunctions: true }],
       'no-duplicate-imports': 'error',
     },
     settings: {

@@ -1,6 +1,5 @@
 name: Auto PR and Merge
 
-# feature/* 브랜치가 푸시될 때마다 자동 실행
 on:
   push:
     branches:
@@ -21,73 +20,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 코드 체크아웃
       - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # 2. Node.js 설정
       - name: Setup Node.js
-        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
-      # 3. 의존성 설치
       - name: Install dependencies
         run: npm ci
 
-      # 4. 코드 품질 검사
       - name: Run ESLint
         run: npm run lint
 
-      # 5. 테스트 실행
       - name: Run tests
         run: npm test
 
-      # 6. 빌드 검증
       - name: Build check
         run: npm run build
         continue-on-error: true
 
-      # 7. PR이 이미 존재하는지 확인하고 번호 가져오기
       - name: Get or create PR
         id: pr
         run: |
-          # 기존 PR 확인
           PR_NUMBER=$(gh pr list --head "${{ github.ref_name }}" --json number --jq '.[0].number')
-
+          
           if [ -z "$PR_NUMBER" ]; then
             echo "No existing PR found, creating new PR"
             
-            # 커밋 메시지에서 PR 제목 추출
             COMMIT_MSG=$(git log -1 --pretty=%B)
             PR_TITLE="${COMMIT_MSG%%$'\n'*}"
             
-            # PR 생성
             PR_URL=$(gh pr create \
               --title "$PR_TITLE" \
-              --body "## 자동 생성된 Pull Request
-
-          **브랜치**: \`${{ github.ref_name }}\`
-          **커밋**: ${{ github.sha }}
-
-          ### 커밋 메시지
-          \`\`\`
-          $COMMIT_MSG
-          \`\`\`
-
-          ### 품질 검사 결과
-          - ✅ ESLint 통과
-          - ✅ 테스트 통과
-          - ✅ 빌드 검증 통과
-
-          ### 자동 병합
-          모든 검사가 통과되어 자동으로 병합됩니다.
-
-          ___
-          *이 PR은 GitHub Actions에 의해 자동으로 생성되고 병합되었습니다.*" \
+              --body "Automated PR from ${{ github.ref_name }} - Commit: ${{ github.sha }}" \
               --base main \
               --head "${{ github.ref_name }}")
             
@@ -96,16 +66,14 @@ jobs:
           else
             echo "Found existing PR #$PR_NUMBER"
           fi
-
+          
           echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # 8. PR 자동 병합 (승인 없이 squash merge)
       - name: Auto-merge PR
         if: steps.pr.outputs.pr_number != ''
         run: |
-          # GitHub Actions는 자신이 만든 PR을 승인할 수 없으므로 --admin으로 병합
           gh pr merge ${{ steps.pr.outputs.pr_number }} \
             --squash \
             --admin \
@@ -115,7 +83,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # 9. 병합 완료 알림
       - name: Merge notification
         if: success()
         run: |

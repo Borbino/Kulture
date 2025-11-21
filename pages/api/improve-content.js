@@ -5,6 +5,7 @@
 
 import sanity from '../../lib/sanityClient.js'
 import rateLimitMiddleware from '../../lib/rateLimiter.js'
+import { withRetry, withErrorHandler } from '../../lib/apiErrorHandler.js'
 
 /**
  * Hugging Face Inference API (100% 무료, 제한 없음)
@@ -34,12 +35,10 @@ ${ceoFeedback}
 `
 
   try {
-    // Retry logic with exponential backoff
-    let lastError
-    for (let attempt = 0; attempt < 3; attempt++) {
-      try {
+    const result = await withRetry(
+      async () => {
         const controller = new AbortController()
-        const timeoutId = setTimeout(() => controller.abort(), 30000) // 30초 (HF cold start)
+        const timeoutId = setTimeout(() => controller.abort(), 30000)
 
         const response = await fetch(HF_API_URL, {
           method: 'POST',
@@ -63,11 +62,7 @@ ${ceoFeedback}
 
         if (!response.ok) {
           if (response.status === 503) {
-            // Model is loading, wait and retry
-            const delay = 5000 * Math.pow(2, attempt) // 5s, 10s, 20s
-            console.log(`[HF] Model loading, retry ${attempt + 1}/3 after ${delay}ms`)
-            await new Promise(resolve => setTimeout(resolve, delay))
-            continue
+            throw new Error('Model loading')
           }
           throw new Error(`HuggingFace API error: ${response.status}`)
         }
@@ -94,23 +89,15 @@ ${ceoFeedback}
         }
 
         return { title: improvedTitle, body: improvedBody }
-      } catch (error) {
-        lastError = error
-        if (attempt < 2) {
-          const delay = 1000 * Math.pow(2, attempt)
-          console.warn(
-            `[HF] Attempt ${attempt + 1}/3 failed: ${error.message}, retrying after ${delay}ms`
-          )
-          await new Promise(resolve => setTimeout(resolve, delay))
-        }
-      }
-    }
+      },
+      3,
+      1000,
+      '[HF]'
+    )
 
-    console.error('HuggingFace API failed after 3 attempts:', lastError)
-    // Fallback: 규칙 기반 개선
-    return applyRuleBasedImprovement(originalContent, ceoFeedback)
+    return result
   } catch (error) {
-    console.error('Unexpected error in improveWithHuggingFace:', error)
+    console.error('[HF] Failed after 3 attempts:', error)
     return applyRuleBasedImprovement(originalContent, ceoFeedback)
   }
 }
@@ -230,7 +217,7 @@ async function analyzeFeedbackPatterns() {
     .map(([keyword, count]) => ({ keyword, count }))
 }
 
-export default async function handler(req, res) {
+const handler = async function improveContentHandler(req, res) {
   // Rate limiting: 60회/분
   const rateLimitResult = rateLimitMiddleware('api')(req, res, () => {})
   if (rateLimitResult !== undefined) return rateLimitResult
@@ -239,55 +226,50 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  try {
-    const { postId, feedback, originalContent } = req.body
-
-    if (!postId || !feedback || !originalContent) {
-      return res.status(400).json({ error: 'Missing required fields' })
-    }
-
-    // 1. CEO 피드백 패턴 학습
-    const feedbackPatterns = await analyzeFeedbackPatterns()
-    console.log('[Feedback Patterns]', feedbackPatterns)
-
-    // 2. Hugging Face 무료 AI로 콘텐츠 개선
-    const improved = await improveWithHuggingFace(originalContent, feedback)
-
-    // 3. 정확성 검증
-    const verification = await verifyAccuracy(improved, originalContent)
-
-    if (!verification.verified) {
-      return res.status(400).json({
-        success: false,
-        error: verification.reason,
-      })
-    }
-
-    // 4. Sanity에 개선된 콘텐츠 업데이트
-    await sanity
-      .patch(postId)
-      .set({
-        title: improved.title,
-        body: improved.body,
-        metadata: {
-          ...originalContent.metadata,
-          improved: true,
-          improvementCount: (originalContent.metadata?.improvementCount || 0) + 1,
-          lastImprovement: new Date().toISOString(),
-        },
-      })
-      .commit()
-
-    res.status(200).json({
-      success: true,
-      improved: {
-        title: improved.title,
-        body: improved.body,
-      },
-      feedbackPatterns,
-    })
-  } catch (error) {
-    console.error('[Improve Content Error]', error)
-    res.status(500).json({ error: error.message })
+  const { postId, feedback, originalContent } = req.body
+  if (!postId || !feedback || !originalContent) {
+    return res.status(400).json({ error: 'Missing required fields' })
   }
+
+  // 1. CEO 피드백 패턴 학습
+  const feedbackPatterns = await analyzeFeedbackPatterns()
+  console.log('[Feedback Patterns]', feedbackPatterns)
+
+  // 2. Hugging Face 무료 AI로 콘텐츠 개선
+  const improved = await improveWithHuggingFace(originalContent, feedback)
+
+  // 3. 정확성 검증
+  const verification = await verifyAccuracy(improved, originalContent)
+  if (!verification.verified) {
+    return res.status(400).json({
+      success: false,
+      error: verification.reason,
+    })
+  }
+
+  // 4. Sanity에 개선된 콘텐츠 업데이트
+  await sanity
+    .patch(postId)
+    .set({
+      title: improved.title,
+      body: improved.body,
+      metadata: {
+        ...originalContent.metadata,
+        improved: true,
+        improvementCount: (originalContent.metadata?.improvementCount || 0) + 1,
+        lastImprovement: new Date().toISOString(),
+      },
+    })
+    .commit()
+
+  res.status(200).json({
+    success: true,
+    improved: {
+      title: improved.title,
+      body: improved.body,
+    },
+    feedbackPatterns,
+  })
 }
+
+export default withErrorHandler(handler)

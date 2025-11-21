@@ -5,14 +5,9 @@
  */
 
 import sanity from '../../../lib/sanityClient'
-import { isValidCronRequest } from '../../../lib/rateLimiter'
+import { withCronAuth } from '../../../lib/cronMiddleware'
 
-export default async function handler(req, res) {
-  // Cron Secret 검증
-  if (!isValidCronRequest(req)) {
-    return res.status(401).json({ error: 'Unauthorized' })
-  }
-
+export default withCronAuth(async function dailyReportHandler(req, res) {
   try {
     const today = new Date().toISOString().split('T')[0]
     const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
@@ -105,4 +100,4 @@ export default async function handler(req, res) {
     console.error('[Daily Report Error]', error)
     res.status(500).json({ error: error.message })
   }
-}
+})

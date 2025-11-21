@@ -11,14 +11,9 @@ import {
 } from '../../../lib/trendManagement'
 import { trackIssue, TRACKING_ISSUES } from '../../../lib/vipMonitoring'
 import sanity from '../../../lib/sanityClient'
-import { isValidCronRequest } from '../../../lib/rateLimiter'
+import { withCronAuth } from '../../../lib/cronMiddleware'
 
-export default async function handler(req, res) {
-  // Cron Secret 검증
-  if (!isValidCronRequest(req)) {
-    return res.status(401).json({ error: 'Unauthorized' })
-  }
-
+export default withCronAuth(async function trendDetectionHandler(req, res) {
   try {
     const startTime = Date.now()
 
@@ -112,4 +107,4 @@ export default async function handler(req, res) {
     console.error('[Trend Detection Error]', error)
     res.status(500).json({ error: error.message, stack: error.stack })
   }
-}
+})

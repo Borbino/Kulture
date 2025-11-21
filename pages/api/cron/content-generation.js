@@ -6,14 +6,9 @@
 
 import { generateAdvancedContent } from '../../../lib/advancedContentGeneration'
 import sanity from '../../../lib/sanityClient'
-import { isValidCronRequest } from '../../../lib/rateLimiter'
+import { withCronAuth } from '../../../lib/cronMiddleware'
 
-export default async function handler(req, res) {
-  // Cron Secret 검증
-  if (!isValidCronRequest(req)) {
-    return res.status(401).json({ error: 'Unauthorized' })
-  }
-
+export default withCronAuth(async function contentGenerationHandler(req, res) {
   try {
     const startTime = Date.now()
 
@@ -164,7 +159,7 @@ export default async function handler(req, res) {
     console.error('[Content Generation Error]', error)
     res.status(500).json({ error: error.message, stack: error.stack })
   }
-}
+})
 
 /**
  * 소셜 미디어 포스트 생성

@@ -4,8 +4,9 @@
  */
 
 import rateLimitMiddleware from '../../lib/rateLimiter.js'
+import { tryCatch, withErrorHandler } from '../../lib/apiErrorHandler.js'
 
-export default async function handler(req, res) {
+const handler = async function healthHandler(req, res) {
   // Rate limiting: 60회/분
   const rateLimitResult = rateLimitMiddleware('api')(req, res, () => {})
   if (rateLimitResult !== undefined) return rateLimitResult
@@ -39,6 +40,8 @@ export default async function handler(req, res) {
   })
 }
 
+export default withErrorHandler(handler)
+
 /**
  * Twitter API 체크
  */
@@ -49,7 +52,7 @@ async function checkTwitter() {
     return { ok: false, message: 'Token not configured' }
   }
 
-  try {
+  return tryCatch(async () => {
     const response = await fetch(
       'https://api.twitter.com/2/tweets/search/recent?query=test&max_results=10',
       {
@@ -67,9 +70,7 @@ async function checkTwitter() {
     }
 
     return { ok: response.ok, message: response.ok ? 'Connected' : `Error ${response.status}` }
-  } catch (error) {
-    return { ok: false, message: error.message }
-  }
+  })
 }
 
 /**
@@ -82,7 +83,7 @@ async function checkYouTube() {
     return { ok: false, message: 'API key not configured' }
   }
 
-  try {
+  return tryCatch(async () => {
     const response = await fetch(
       `https://www.googleapis.com/youtube/v3/search?part=snippet&q=test&type=video&maxResults=1&key=${apiKey}`,
       {
@@ -98,9 +99,7 @@ async function checkYouTube() {
     }
 
     return { ok: response.ok, message: response.ok ? 'Connected' : `Error ${response.status}` }
-  } catch (error) {
-    return { ok: false, message: error.message }
-  }
+  })
 }
 
 /**
@@ -110,11 +109,11 @@ async function checkReddit() {
   const clientId = process.env.REDDIT_CLIENT_ID
   const clientSecret = process.env.REDDIT_CLIENT_SECRET
 
-  if (!clientId || !clientSecret) {
+  if (!clientId || clientId === 'your_reddit_client_id' || !clientSecret) {
     return { ok: false, message: 'Credentials not configured' }
   }
 
-  try {
+  return tryCatch(async () => {
     const authResponse = await fetch('https://www.reddit.com/api/v1/access_token', {
       method: 'POST',
       headers: {
@@ -130,9 +129,7 @@ async function checkReddit() {
     }
 
     return { ok: true, message: 'Connected' }
-  } catch (error) {
-    return { ok: false, message: error.message }
-  }
+  })
 }
 
 /**
@@ -142,11 +139,11 @@ async function checkNaver() {
   const clientId = process.env.NAVER_CLIENT_ID
   const clientSecret = process.env.NAVER_CLIENT_SECRET
 
-  if (!clientId || !clientSecret) {
+  if (!clientId || clientId === 'your_naver_client_id' || !clientSecret) {
     return { ok: false, message: 'Credentials not configured' }
   }
 
-  try {
+  return tryCatch(async () => {
     const response = await fetch(
       'https://openapi.naver.com/v1/search/news.json?query=test&display=1',
       {
@@ -159,22 +156,20 @@ async function checkNaver() {
     )
 
     return { ok: response.ok, message: response.ok ? 'Connected' : `Error ${response.status}` }
-  } catch (error) {
-    return { ok: false, message: error.message }
-  }
+  })
 }
 
 /**
  * Hugging Face API 체크
  */
 async function checkHuggingFace() {
-  const token = process.env.HUGGINGFACE_API_TOKEN
+  const token = process.env.HUGGINGFACE_API_KEY
 
-  if (!token || token.length < 10) {
-    return { ok: false, message: 'Token not configured or invalid' }
+  if (!token || token === 'your_huggingface_api_key') {
+    return { ok: false, message: 'Token not configured' }
   }
 
-  try {
+  return tryCatch(async () => {
     const response = await fetch('https://api-inference.huggingface.co/models/microsoft/phi-2', {
       method: 'POST',
       headers: {
@@ -194,9 +189,7 @@ async function checkHuggingFace() {
     }
 
     return { ok: response.ok, message: response.ok ? 'Connected' : `Error ${response.status}` }
-  } catch (error) {
-    return { ok: false, message: error.message }
-  }
+  })
 }
 
 /**
@@ -207,21 +200,23 @@ async function checkSanity() {
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET
   const token = process.env.SANITY_API_TOKEN
 
-  if (!projectId || !dataset || !token) {
-    return { ok: false, message: 'Credentials not configured' }
+  if (!projectId || !dataset) {
+    return { ok: false, message: 'Sanity not configured' }
   }
 
-  try {
+  return tryCatch(async () => {
+    const headers = {}
+    if (token) {
+      headers.Authorization = `Bearer ${token}`
+    }
     const response = await fetch(
       `https://${projectId}.api.sanity.io/v2024-01-01/data/query/${dataset}?query=*[_type == "post"][0]`,
       {
-        headers: { Authorization: `Bearer ${token}` },
+        headers,
         signal: AbortSignal.timeout(5000),
       }
     )
 
     return { ok: response.ok, message: response.ok ? 'Connected' : `Error ${response.status}` }
-  } catch (error) {
-    return { ok: false, message: error.message }
-  }
+  })
 }

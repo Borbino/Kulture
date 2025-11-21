@@ -6,14 +6,9 @@
 
 import { VIP_DATABASE, monitorVIP } from '../../../lib/vipMonitoring'
 import sanity from '../../../lib/sanityClient'
-import { isValidCronRequest } from '../../../lib/rateLimiter'
+import { withCronAuth } from '../../../lib/cronMiddleware'
 
-export default async function handler(req, res) {
-  // Cron Secret 검증
-  if (!isValidCronRequest(req)) {
-    return res.status(401).json({ error: 'Unauthorized' })
-  }
-
+export default withCronAuth(async function vipMonitoringHandler(req, res) {
   try {
     const results = []
     const alerts = [] // 긴급 알림 목록
@@ -111,4 +106,4 @@ export default async function handler(req, res) {
     console.error('[VIP Monitoring Error]', error)
     res.status(500).json({ error: error.message })
   }
-}
+})

@@ -6,14 +6,9 @@
 
 import performanceMonitor from '../../../lib/performanceMonitor'
 import sanity from '../../../lib/sanityClient.js'
-import { isValidCronRequest } from '../../../lib/rateLimiter'
+import { withCronAuth } from '../../../lib/cronMiddleware'
 
-export default async function handler(req, res) {
-  // Cron Secret 검증
-  if (!isValidCronRequest(req)) {
-    return res.status(401).json({ error: 'Unauthorized' })
-  }
-
+export default withCronAuth(async function performanceReportHandler(req, res) {
   try {
     // 성능 리포트 생성
     const report = performanceMonitor.generateReport()
@@ -45,4 +40,4 @@ export default async function handler(req, res) {
     console.error('[Performance Report Error]', error)
     res.status(500).json({ error: error.message })
   }
-}
+})

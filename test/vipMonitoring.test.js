@@ -121,4 +121,25 @@ describe('VIP Monitoring System', () => {
       })
     })
   })
+
+  describe('VIP Monitoring Map', () => {
+    test('getVIPById should return VIP object for valid id', async () => {
+      const { getVIPById } = await import('../lib/vipMonitoring.js')
+      const vip = getVIPById('bts')
+      expect(vip).toBeDefined()
+      expect(vip.name).toBe('BTS')
+    })
+
+    test('getVIPById should return null for invalid id', async () => {
+      const { getVIPById } = await import('../lib/vipMonitoring.js')
+      const vip = getVIPById('not-exist')
+      expect(vip).toBeNull()
+    })
+
+    test('VIP_MAP should contain all tier1 VIPs', async () => {
+      const { getVIPById } = await import('../lib/vipMonitoring.js')
+      expect(getVIPById('blackpink')).toBeDefined()
+      expect(getVIPById('aespa')).toBeDefined()
+    })
+  })
 })

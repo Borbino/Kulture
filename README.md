@@ -210,6 +210,7 @@ git push origin feature/social-login
 #### 15-1. 자동 검증 항목
 
 **필수 검증 (모든 작업 후 실행)**:
+
 1. **사소한 문제 탐지**:
    - ESLint 경고 0개 유지 (`npm run lint`)
    - TypeScript/JavaScript 컴파일 에러 0개
@@ -233,11 +234,13 @@ git push origin feature/social-login
 #### 15-2. 실행 시점
 
 **자동 실행**:
+
 - Git commit 전: Husky pre-commit hook
 - GitHub PR 생성 시: GitHub Actions workflow
 - Vercel 배포 전: Build-time 검증
 
 **수동 실행**:
+
 ```bash
 # 전체 코드 품질 검사
 npm run lint          # ESLint
@@ -248,10 +251,12 @@ npm run build         # Next.js 빌드 검증
 #### 15-3. 리뷰 리포트 생성
 
 **자동 생성 문서**:
+
 - `ReviseLog.md`: 모든 변경사항 및 코드 리뷰 결과 통합 기록 (단일 진실 공급원)
 - 별도의 리포트 파일(CODE_IMPROVEMENT_REPORT.md, CRITICAL_FIX_REPORT.md 등)은 생성하지 않음
 
 **리포트 내용**:
+
 - 발견된 이슈 목록 (우선순위별)
 - 개선 제안 (Before/After 코드 비교)
 - 중복 코드 목록 (추출 가능 함수 제안)
@@ -260,12 +265,14 @@ npm run build         # Next.js 빌드 검증
 #### 15-4. 자동 수정 (가능한 경우)
 
 **자동 수정 가능 항목**:
+
 - ESLint --fix로 수정 가능한 포맷팅 이슈
 - Prettier로 코드 스타일 통일
 - Unused imports 제거
 - 간단한 리팩토링 (변수명 통일 등)
 
 **수동 승인 필요 항목**:
+
 - 로직 변경이 필요한 성능 개선
 - 보안 취약점 수정
 - 중복 코드 추출 (함수 시그니처 변경)
@@ -274,12 +281,14 @@ npm run build         # Next.js 빌드 검증
 #### 15-5. 적용 대상
 
 **모든 파일 유형**:
+
 - JavaScript/JSX 파일 (`components/`, `pages/`, `lib/`)
 - 스타일 파일 (`*.module.css`)
 - 설정 파일 (`next.config.js`, `vercel.json`)
 - 문서 파일 (`README.md`, `WORKGUIDE.md`, `docs/`)
 
 **검증 제외 파일**:
+
 - `node_modules/`
 - `.next/`
 - `out/`
@@ -288,22 +297,26 @@ npm run build         # Next.js 빌드 검증
 #### 15-6. CEO 알림
 
 **주요 이슈 발견 시**:
+
 - Slack/이메일로 자동 알림
 - GitHub PR에 코멘트 추가
 - `ReviseLog.md`에 Critical 태그로 기록
 
 **정기 리포트**:
+
 - 주간 코드 품질 리포트 (매주 월요일, ReviseLog.md)
 - 월간 기술 부채 리포트 (매월 1일, ReviseLog.md)
 
 #### 15-7. 지속적 개선
 
 **학습 및 적용**:
+
 - 발견된 패턴을 ESLint 규칙으로 추가
 - 자주 발생하는 이슈를 템플릿/스니펫으로 제공
 - 팀 코딩 컨벤션 업데이트
 
 **문서 업데이트**:
+
 - 모든 코드 리뷰 결과는 `ReviseLog.md`에 기록
 - 새로운 Best Practice는 `WORKGUIDE.md`에 추가
 - 아키텍처 변경은 `README.md`에 반영
