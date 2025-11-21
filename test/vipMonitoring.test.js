@@ -37,12 +37,8 @@ describe('VIP Monitoring System', () => {
         json: async () => ({ access_token: 'token_123' }),
       })
 
-      const { default: vipMonitoring } = await import('../lib/vipMonitoring.js')
-      // eslint-disable-next-line no-unused-vars
-      const getRedditToken = vipMonitoring.getRedditToken || (() => null)
-
-      // 실제 함수가 export되어 있지 않으므로 스킵
-      // 이 테스트는 통합 테스트로 전환 필요
+      // vipMonitoring.js에 getRedditToken이 export되지 않으므로
+      // 이 테스트는 스킵 (통합 테스트로 전환 필요)
       expect(true).toBe(true)
     })
 

@@ -23,6 +23,9 @@ const config = {
     '**/test/contentRestriction.test.js',
     '**/test/performanceMonitor.test.js',
     '**/test/rateLimiter.test.js',
+    '**/test/trendManagement.test.js',
+    '**/test/vipMonitoring.test.js',
+    '**/test/imageOptimizer.test.js',
   ],
 }
 
