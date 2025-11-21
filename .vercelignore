@@ -1,0 +1,10 @@
+pages/index.jsx
+pages/posts/
+.next/
+.vercel/
+node_modules/
+.env.local
+.DS_Store
+*.log
+.vscode/
+.idea/
