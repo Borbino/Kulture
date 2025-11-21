@@ -1,5 +1,9 @@
 {
   "version": 2,
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "regions": ["icn1"],
   "crons": [
     {
       "path": "/api/cron/vip-monitoring",
@@ -31,5 +35,48 @@
       "schedule": "*/10 * * * *",
       "comment": "헬스체크 - 10분마다 (API 상태 모니터링)"
     }
+  ],
+  "env": {
+    "NEXT_PUBLIC_SANITY_PROJECT_ID": "@sanity_project_id",
+    "NEXT_PUBLIC_SANITY_DATASET": "production",
+    "SANITY_API_TOKEN": "@sanity_api_token",
+    "CRON_SECRET": "@cron_secret",
+    "NEXT_PUBLIC_GA_MEASUREMENT_ID": "@ga_measurement_id"
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/admin",
+      "destination": "/admin/monitoring",
+      "permanent": false
+    }
   ]
 }
+

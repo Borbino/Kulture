@@ -12,16 +12,22 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
     "test": "jest",
     "test:watch": "jest --watch",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "sanity:dev": "sanity dev",
+    "sanity:build": "sanity build",
+    "sanity:deploy": "sanity deploy",
+    "seed:sample-data": "node scripts/seed-sample-data.js"
   },
   "dependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@sanity/client": "^7.13.0",
+    "@sanity/image-url": "^1.2.0",
     "next": "^16.0.3",
     "next-sanity": "^11.6.8",
     "prop-types": "^15.8.1",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "sanity": "^4.17.0"
   },
   "devDependencies": {
     "@babel/core": "^7.28.5",

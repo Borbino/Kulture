@@ -1,0 +1,134 @@
+.searchContainer {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+
+.searchInput {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchInput input {
+  width: 100%;
+  padding: 12px 40px 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.searchInput input:focus {
+  outline: none;
+  border-color: #8000ff;
+  box-shadow: 0 0 0 3px rgba(128, 0, 255, 0.1);
+}
+
+.spinner {
+  position: absolute;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e5e7eb;
+  border-top-color: #8000ff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.searchResults {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  max-height: 500px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.loading,
+.noResults {
+  padding: 24px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.resultSection {
+  padding: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.resultSection:last-of-type {
+  border-bottom: none;
+}
+
+.resultSection h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  margin: 0 0 12px 0;
+  letter-spacing: 0.5px;
+}
+
+.resultItem {
+  display: block;
+  padding: 12px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.resultItem:hover {
+  background: #f9fafb;
+}
+
+.resultTitle {
+  font-size: 16px;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.resultMeta {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.viewAll {
+  padding: 16px;
+  text-align: center;
+  border-top: 1px solid #e5e7eb;
+}
+
+.viewAll a {
+  color: #8000ff;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.viewAll a:hover {
+  color: #6000cc;
+}
+
+@media (max-width: 768px) {
+  .searchContainer {
+    max-width: 100%;
+  }
+
+  .searchResults {
+    max-height: 70vh;
+  }
+}

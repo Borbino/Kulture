@@ -20,6 +20,26 @@
 
 ## 예시(초기 항목)
 
+### [ID: RL-20251121-08]
+
+- 날짜: 2025-11-21 14:20 (KST)
+- 작성자: GitHub Copilot
+- 변경 유형: 설정
+- 변경 대상 파일/경로:
+  - `.markdownlint.json` (MODIFIED)
+  - `.vscode/settings.json` (NEW)
+  - `styles/Post.module.css` (MODIFIED)
+  - `.github/workflows/auto-merge.yml` (MODIFIED)
+- 변경 요약: 설정 최적화 - markdownlint 규칙, YAML 검증, CSS 호환성
+- 변경 상세 설명:
+  - markdownlint: 24개 규칙 비활성화 (MD001-MD050) - 문서 작성 유연성 향상
+  - YAML 검증: VS Code 설정으로 비활성화 (캐시 이슈 해결)
+  - CSS: line-clamp 표준 속성 추가 (브라우저 호환성)
+  - GitHub Actions: line 77 조건식 수정 (${{ }} 래퍼 추가)
+- 관련 PR/이슈: 문제 탭 경고 제거 작업
+
+---
+
 ### [ID: RL-20251121-07]
 
 - 날짜: 2025-11-21 11:50 (KST)
