@@ -26,6 +26,9 @@ const config = {
     '**/test/trendManagement.test.js',
     '**/test/vipMonitoring.test.js',
     '**/test/imageOptimizer.test.js',
+    '**/test/performanceAnalyzer.test.js',
+    '**/test/apiKeyManager.test.js',
+    '**/test/logAggregator.test.js',
   ],
 }
 
