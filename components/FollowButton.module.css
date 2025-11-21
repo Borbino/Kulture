@@ -1,0 +1,48 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.notFollowing {
+  background: #3b82f6;
+  color: white;
+}
+
+.notFollowing:hover:not(:disabled) {
+  background: #2563eb;
+  transform: scale(1.05);
+}
+
+.following {
+  background: #e5e7eb;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.following:hover:not(:disabled) {
+  background: #fee2e2;
+  color: #dc2626;
+  border-color: #fca5a5;
+}
+
+.following:hover:not(:disabled) .icon::before {
+  content: '×';
+}
+
+.icon {
+  font-size: 16px;
+  font-weight: bold;
+}

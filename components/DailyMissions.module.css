@@ -1,0 +1,178 @@
+.container {
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.title h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.icon {
+  font-size: 32px;
+}
+
+.stats {
+  display: flex;
+  gap: 20px;
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.stat {
+  flex: 1;
+  text-align: center;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.statValue {
+  font-size: 20px;
+  font-weight: bold;
+  color: #111827;
+}
+
+.missions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mission {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6;
+  transition: all 0.2s;
+}
+
+.mission:hover {
+  background: #f3f4f6;
+  transform: translateX(4px);
+}
+
+.mission.completed {
+  border-left-color: #10b981;
+  opacity: 0.7;
+}
+
+.missionIcon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.missionContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.missionHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.missionTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.difficulty {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+}
+
+.missionDesc {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.progressBar {
+  flex: 1;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #10b981);
+  transition: width 0.3s ease;
+}
+
+.progressText {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+.reward {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.rewardPoints {
+  font-size: 16px;
+  font-weight: bold;
+  color: #f59e0b;
+}
+
+.rewardBadge {
+  font-size: 24px;
+}
+
+.completedBadge {
+  font-size: 32px;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #9ca3af;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #9ca3af;
+}
