@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Head from 'next/head'
+import PropTypes from 'prop-types'
 import styles from '../styles/Home.module.css'
 
 export default function Home({ hotIssues, trendingTopics, vipContent, recentPosts }) {
@@ -259,6 +260,13 @@ export async function getServerSideProps() {
       },
     }
   }
+}
+
+Home.propTypes = {
+  hotIssues: PropTypes.array,
+  trendingTopics: PropTypes.array,
+  vipContent: PropTypes.array,
+  recentPosts: PropTypes.array,
 }
 
 // Utility functions
