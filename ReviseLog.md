@@ -20,6 +20,35 @@
 
 ## 예시(초기 항목)
 
+### [ID: RL-20251121-10]
+
+- 날짜: 2025-11-21 15:00 (KST)
+- 작성자: GitHub Copilot
+- 변경 유형: 기능 추가
+- 변경 대상 파일/경로:
+  - `lib/schemas/user.js` (NEW)
+  - `pages/api/auth/[...nextauth].js` (NEW)
+  - `pages/api/auth/signup.js` (NEW)
+  - `pages/api/comments.js` (NEW)
+  - `pages/api/posts/interactions.js` (NEW)
+  - `components/CommentSection.jsx` (NEW)
+  - `components/CommentSection.module.css` (NEW)
+  - `docs/COMMUNITY_FEATURES.md` (NEW)
+  - `package.json` (MODIFIED)
+  - `.env.template` (MODIFIED)
+- 변경 요약: 커뮤니티 필수 기능 구현 - 인증, 댓글 CRUD, 실시간 DB 연동
+- 변경 상세 설명:
+  - 사용자 인증: NextAuth.js 통합 (이메일/Google/GitHub OAuth)
+  - 회원가입: bcrypt 해싱, 입력 검증, 이메일 중복 체크
+  - 댓글 시스템: CRUD API, 승인 시스템, 대댓글 지원
+  - 상호작용: 좋아요 토글, 조회수 실시간 증가
+  - 실시간 DB: Sanity .patch() 활용, 트랜잭션 보장
+  - 보안: JWT 세션, 역할 기반 권한, 작성자 권한 체크
+  - Dependencies: next-auth ^4.24.10, bcryptjs ^2.4.3
+- 관련 PR/이슈: 커뮤니티 플랫폼 필수 기능 구현 완료
+
+---
+
 ### [ID: RL-20251121-09]
 
 - 날짜: 2025-11-21 14:45 (KST)
@@ -590,7 +619,7 @@
   **통계 항목**:
   - API 호출: 총 호출수, 성공/실패, 평균 응답시간, p50/p95/p99, 에러율
   - 캐시: 히트/미스, 히트율, 총 접근수
-  - 에러: 소스별 에러 카운트, 최근 에러 메시지
+  - 에러: 소스별 에러 카운트, 최근 5개 에러 메시지
 
   ### `pages/api/cron/performance-report.js` (신규)
 
@@ -1201,8 +1230,6 @@
   - contentRestriction.js: 세 번째 파라미터 제거하고 `0.4` 하드코딩 복원
   - test 파일: 파라미터 제거하고 기존 테스트 복원
 
-- 관련 PR/이슈: N/A (문서-코드 동기화 작업)
-
 ---
 
 ### [ID: RL-20251120-02]
@@ -1353,10 +1380,6 @@
   - WORKGUIDE.md: MD009, MD031, MD032, MD036, MD040 경고 다수
   - 영향: 없음 (포맷 이슈)
 
-  ````
-
-- 관련 PR/이슈: N/A (프로젝트 거버넌스 강화)
-
 ---
 
 ### [ID: RL-20251119-11]
@@ -1430,8 +1453,6 @@
   - README.md: MD032 경고 1건 (리스트 전후 빈 줄)
   - WORKGUIDE.md: MD032, MD031, MD036 경고 다수
   - 영향: 없음 (코드 실행과 무관한 포맷 이슈)
-
-- 관련 PR/이슈: N/A (문서 개선)
 
 ---
 
@@ -1508,7 +1529,7 @@
   - `docs/API_KEYS_GUIDE.md` (완전 재작성 - 무료 플랜)
 - 변경 요약: **CEO 피드백 시스템 + 100% 무료 AI 적용**
 - 변경 상세 설명:
-  CEO 요청에 따라 완전 무료로 운영 가능한 시스템으로 재설계:
+  CEO 요청("에스파, BTS, 이병헌, 싸이, PSY, 손흥민 등 유명 한국인에 대한 얘기도 최대한 많이 언급이 되고 조회가 되어야 합니다. 특정 유명인물 혹은 최근에 떠오르는 한국 관련 이슈(K-pop demon hunters / huntrix 등)를 언제나 확인하도록 하고, 이에 대한 검색과 2차 창작물 제작 등의 작업도 자동화하도록 해주세요.")에 따라 완전 자동화 시스템 구현:
 
   **1. CEO 피드백 3단계 시스템**
   - **승인**: 즉시 게시 (publishedAt 설정)
