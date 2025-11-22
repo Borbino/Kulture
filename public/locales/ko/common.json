@@ -1,0 +1,59 @@
+{
+  "common": {
+    "welcome": "환영합니다",
+    "home": "홈",
+    "about": "소개",
+    "contact": "연락처",
+    "search": "검색",
+    "login": "로그인",
+    "logout": "로그아웃",
+    "signup": "회원가입",
+    "profile": "프로필",
+    "settings": "설정",
+    "language": "언어",
+    "save": "저장",
+    "cancel": "취소",
+    "submit": "제출",
+    "loading": "로딩 중...",
+    "error": "오류가 발생했습니다",
+    "success": "성공적으로 완료되었습니다",
+    "confirm": "확인",
+    "delete": "삭제",
+    "edit": "수정",
+    "create": "생성",
+    "back": "뒤로",
+    "next": "다음",
+    "previous": "이전",
+    "close": "닫기",
+    "open": "열기",
+    "more": "더보기",
+    "less": "간략히"
+  },
+  "navigation": {
+    "home": "홈",
+    "posts": "게시물",
+    "boards": "게시판",
+    "community": "커뮤니티",
+    "admin": "관리자"
+  },
+  "posts": {
+    "title": "게시물",
+    "create": "게시물 작성",
+    "edit": "게시물 수정",
+    "delete": "게시물 삭제",
+    "publish": "게시",
+    "draft": "임시저장",
+    "comments": "댓글",
+    "likes": "좋아요",
+    "share": "공유",
+    "readMore": "더 읽기"
+  },
+  "user": {
+    "profile": "프로필",
+    "username": "사용자명",
+    "email": "이메일",
+    "password": "비밀번호",
+    "bio": "소개",
+    "joined": "가입일"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "common": {
+    "welcome": "Bienvenido",
+    "home": "Inicio",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "search": "Buscar",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "signup": "Registrarse",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "language": "Idioma",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "submit": "Enviar",
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "success": "Completado con éxito",
+    "confirm": "Confirmar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "close": "Cerrar",
+    "open": "Abrir",
+    "more": "Más",
+    "less": "Menos"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "posts": "Publicaciones",
+    "boards": "Tableros",
+    "community": "Comunidad",
+    "admin": "Administrador"
+  },
+  "posts": {
+    "title": "Publicaciones",
+    "create": "Crear publicación",
+    "edit": "Editar publicación",
+    "delete": "Eliminar publicación",
+    "publish": "Publicar",
+    "draft": "Guardar borrador",
+    "comments": "Comentarios",
+    "likes": "Me gusta",
+    "share": "Compartir",
+    "readMore": "Leer más"
+  },
+  "user": {
+    "profile": "Perfil",
+    "username": "Nombre de usuario",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "bio": "Biografía",
+    "joined": "Fecha de registro"
+  }
+}

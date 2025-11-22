@@ -1,0 +1,59 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "search": "Search",
+    "login": "Login",
+    "logout": "Logout",
+    "signup": "Sign Up",
+    "profile": "Profile",
+    "settings": "Settings",
+    "language": "Language",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Successfully completed",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "open": "Open",
+    "more": "More",
+    "less": "Less"
+  },
+  "navigation": {
+    "home": "Home",
+    "posts": "Posts",
+    "boards": "Boards",
+    "community": "Community",
+    "admin": "Admin"
+  },
+  "posts": {
+    "title": "Posts",
+    "create": "Create Post",
+    "edit": "Edit Post",
+    "delete": "Delete Post",
+    "publish": "Publish",
+    "draft": "Save Draft",
+    "comments": "Comments",
+    "likes": "Likes",
+    "share": "Share",
+    "readMore": "Read More"
+  },
+  "user": {
+    "profile": "Profile",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "bio": "Bio",
+    "joined": "Joined"
+  }
+}

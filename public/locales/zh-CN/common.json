@@ -1,0 +1,59 @@
+{
+  "common": {
+    "welcome": "欢迎",
+    "home": "首页",
+    "about": "关于",
+    "contact": "联系",
+    "search": "搜索",
+    "login": "登录",
+    "logout": "退出",
+    "signup": "注册",
+    "profile": "个人资料",
+    "settings": "设置",
+    "language": "语言",
+    "save": "保存",
+    "cancel": "取消",
+    "submit": "提交",
+    "loading": "加载中...",
+    "error": "发生错误",
+    "success": "成功完成",
+    "confirm": "确认",
+    "delete": "删除",
+    "edit": "编辑",
+    "create": "创建",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "close": "关闭",
+    "open": "打开",
+    "more": "更多",
+    "less": "简略"
+  },
+  "navigation": {
+    "home": "首页",
+    "posts": "帖子",
+    "boards": "论坛",
+    "community": "社区",
+    "admin": "管理员"
+  },
+  "posts": {
+    "title": "帖子",
+    "create": "创建帖子",
+    "edit": "编辑帖子",
+    "delete": "删除帖子",
+    "publish": "发布",
+    "draft": "保存草稿",
+    "comments": "评论",
+    "likes": "点赞",
+    "share": "分享",
+    "readMore": "阅读更多"
+  },
+  "user": {
+    "profile": "个人资料",
+    "username": "用户名",
+    "email": "邮箱",
+    "password": "密码",
+    "bio": "简介",
+    "joined": "加入日期"
+  }
+}

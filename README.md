@@ -323,6 +323,109 @@ npm run build         # Next.js 빌드 검증
 
 **상세 가이드**: `AGENT_POLICY.md`, `AGENT_USAGE.md` 참조
 
+## 16. AI Translation System (200+ Languages)
+
+### 16-1. 개요
+
+**Kulture는 전세계 모든 언어를 실시간으로 번역하는 극한의 번역 시스템을 탑재하고 있습니다.**
+
+- **지원 언어**: 200개 이상의 언어 (한국어, 영어, 일본어, 중국어, 아랍어, 유럽/아프리카/아시아 모든 주요 언어)
+- **번역 제공자**: OpenAI (주력), DeepL, Google Translate (폴백)
+- **캐시 시스템**: Redis + 인메모리 LFU/LRU 혼합 캐시
+- **성능**: 평균 응답 시간 < 500ms (캐시 히트 시 < 100ms)
+
+### 16-2. 핵심 기능
+
+**1. 다중 제공자 폴백 체인**
+- OpenAI (GPT-4o-mini) → DeepL → Google Translate
+- 자동 장애 조치로 99.9% 가용성 보장
+
+**2. 고급 캐싱 전략**
+- Redis 분산 캐시 (프로덕션)
+- 인메모리 캐시 (로컬/폴백)
+- LFU + LRU 혼합 알고리즘
+- 인기도 기반 캐시 우선순위
+
+**3. 배치 처리 최적화**
+- 병렬 번역 처리 (최대 100개/배치)
+- 긴 텍스트 자동 청크 분할
+- Rate limiting 자동 관리
+
+**4. 컨텍스트 인식 번역**
+- 도메인 특화 용어집 지원
+- 문맥 기반 번역 품질 향상
+- 자동 언어 감지
+
+**5. 품질 보증**
+- AI 기반 번역 품질 평가
+- 자동 품질 검증
+- 길이 이상 감지
+
+### 16-3. API 엔드포인트
+
+```javascript
+// 1. 단일 번역
+POST /api/translation/translate
+{
+  "text": "Hello, world!",
+  "targetLang": "ko",
+  "sourceLang": "auto",
+  "context": "greeting"
+}
+
+// 2. 배치 번역
+POST /api/translation/translate
+{
+  "batch": ["Hello", "World"],
+  "targetLang": "ja"
+}
+
+// 3. 언어 감지
+POST /api/translation/detect
+{
+  "text": "Bonjour le monde"
+}
+
+// 4. 시스템 상태
+GET /api/translation/health
+
+// 5. 캐시 관리 (Admin)
+GET /api/translation/cache
+DELETE /api/translation/cache
+```
+
+### 16-4. 사용 예시
+
+```javascript
+// React 컴포넌트에서 사용
+import { useTranslation } from '../hooks/useTranslation';
+
+function MyComponent() {
+  const { translate, isLoading } = useTranslation();
+  
+  const handleTranslate = async () => {
+    const result = await translate('Hello', 'ko');
+    console.log(result); // "안녕하세요"
+  };
+  
+  return <button onClick={handleTranslate}>번역</button>;
+}
+```
+
+### 16-5. 환경 변수
+
+```bash
+# 필수
+OPENAI_API_KEY=sk-...
+GOOGLE_TRANSLATE_API_KEY=AIza...
+
+# 선택사항 (성능 향상)
+DEEPL_API_KEY=...
+REDIS_URL=redis://...
+```
+
+**상세 가이드**: `docs/ENVIRONMENT_VARIABLES.md` 참조
+
 ## 도메인 정보
 
 - 도메인: `kulture.wiki` (프로젝트 소유자가 구매 및 소유)

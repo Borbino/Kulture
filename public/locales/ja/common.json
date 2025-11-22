@@ -1,0 +1,59 @@
+{
+  "common": {
+    "welcome": "ようこそ",
+    "home": "ホーム",
+    "about": "概要",
+    "contact": "お問い合わせ",
+    "search": "検索",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "signup": "新規登録",
+    "profile": "プロフィール",
+    "settings": "設定",
+    "language": "言語",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "submit": "送信",
+    "loading": "読み込み中...",
+    "error": "エラーが発生しました",
+    "success": "正常に完了しました",
+    "confirm": "確認",
+    "delete": "削除",
+    "edit": "編集",
+    "create": "作成",
+    "back": "戻る",
+    "next": "次へ",
+    "previous": "前へ",
+    "close": "閉じる",
+    "open": "開く",
+    "more": "もっと見る",
+    "less": "簡略"
+  },
+  "navigation": {
+    "home": "ホーム",
+    "posts": "投稿",
+    "boards": "掲示板",
+    "community": "コミュニティ",
+    "admin": "管理者"
+  },
+  "posts": {
+    "title": "投稿",
+    "create": "投稿作成",
+    "edit": "投稿編集",
+    "delete": "投稿削除",
+    "publish": "公開",
+    "draft": "下書き保存",
+    "comments": "コメント",
+    "likes": "いいね",
+    "share": "共有",
+    "readMore": "続きを読む"
+  },
+  "user": {
+    "profile": "プロフィール",
+    "username": "ユーザー名",
+    "email": "メール",
+    "password": "パスワード",
+    "bio": "自己紹介",
+    "joined": "登録日"
+  }
+}
