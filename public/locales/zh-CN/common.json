@@ -16,7 +16,7 @@
     "submit": "提交",
     "loading": "加载中...",
     "error": "发生错误",
-    "success": "成功完成",
+    "success": "操作成功",
     "confirm": "确认",
     "delete": "删除",
     "edit": "编辑",
@@ -27,18 +27,25 @@
     "close": "关闭",
     "open": "打开",
     "more": "更多",
-    "less": "简略"
+    "less": "收起",
+    "refresh": "刷新",
+    "upload": "上传",
+    "download": "下载"
   },
   "navigation": {
     "home": "首页",
     "posts": "帖子",
-    "boards": "论坛",
+    "boards": "版块",
     "community": "社区",
-    "admin": "管理员"
+    "admin": "管理",
+    "trending": "热门",
+    "vip": "VIP监控",
+    "notifications": "通知",
+    "messages": "消息"
   },
   "posts": {
     "title": "帖子",
-    "create": "创建帖子",
+    "create": "发帖",
     "edit": "编辑帖子",
     "delete": "删除帖子",
     "publish": "发布",
@@ -46,7 +53,20 @@
     "comments": "评论",
     "likes": "点赞",
     "share": "分享",
-    "readMore": "阅读更多"
+    "readMore": "阅读更多",
+    "showLess": "收起",
+    "anonymous": "匿名",
+    "pinned": "置顶",
+    "report": "举报",
+    "translate": "翻译",
+    "showOriginal": "显示原文",
+    "relatedPosts": "相关帖子",
+    "trendingPosts": "热门帖子",
+    "latestPosts": "最新帖子",
+    "views": "浏览",
+    "author": "作者",
+    "createdAt": "创建时间",
+    "publishedAt": "发布时间"
   },
   "user": {
     "profile": "个人资料",
@@ -54,6 +74,66 @@
     "email": "邮箱",
     "password": "密码",
     "bio": "简介",
-    "joined": "加入日期"
+    "joined": "加入时间",
+    "name": "姓名",
+    "confirmPassword": "确认密码",
+    "rememberMe": "记住我",
+    "forgotPassword": "忘记密码？"
+  },
+  "comments": {
+    "write": "写评论",
+    "writeComment": "请输入评论",
+    "reply": "回复",
+    "replyTo": "回复 {{author}}",
+    "showReplies": "显示 {{count}} 条回复",
+    "hideReplies": "隐藏回复",
+    "pending": "待审核",
+    "approved": "已通过",
+    "rejected": "已拒绝"
+  },
+  "social": {
+    "follow": "关注",
+    "following": "已关注",
+    "unfollow": "取消关注",
+    "followers": "粉丝",
+    "followersCount": "{{count}} 位粉丝",
+    "followingCount": "关注 {{count}} 人",
+    "reaction": "表情",
+    "love": "喜欢",
+    "like": "点赞",
+    "laugh": "哈哈",
+    "wow": "哇",
+    "sad": "难过",
+    "angry": "生气",
+    "activityFeed": "动态"
+  },
+  "missions": {
+    "dailyMissions": "每日任务",
+    "completedMissions": "已完成",
+    "streak": "连续签到",
+    "streakDays": "连续 {{count}} 天",
+    "points": "积分",
+    "totalPoints": "总计 {{count}} 分",
+    "earnedToday": "今日获得",
+    "rewards": "奖励",
+    "badges": "徽章",
+    "level": "等级",
+    "progress": "进度",
+    "easy": "简单",
+    "medium": "中等",
+    "hard": "困难",
+    "completed": "已完成"
+  },
+  "time": {
+    "justNow": "刚刚",
+    "minutesAgo": "{{count}} 分钟前",
+    "hoursAgo": "{{count}} 小时前",
+    "daysAgo": "{{count}} 天前",
+    "weeksAgo": "{{count}} 周前",
+    "monthsAgo": "{{count}} 个月前",
+    "yearsAgo": "{{count}} 年前",
+    "today": "今天",
+    "yesterday": "昨天",
+    "tomorrow": "明天"
   }
 }

@@ -27,14 +27,21 @@
     "close": "닫기",
     "open": "열기",
     "more": "더보기",
-    "less": "간략히"
+    "less": "간략히",
+    "refresh": "새로고침",
+    "upload": "업로드",
+    "download": "다운로드"
   },
   "navigation": {
     "home": "홈",
     "posts": "게시물",
     "boards": "게시판",
     "community": "커뮤니티",
-    "admin": "관리자"
+    "admin": "관리자",
+    "trending": "트렌딩",
+    "vip": "VIP 모니터링",
+    "notifications": "알림",
+    "messages": "메시지"
   },
   "posts": {
     "title": "게시물",
@@ -46,7 +53,20 @@
     "comments": "댓글",
     "likes": "좋아요",
     "share": "공유",
-    "readMore": "더 읽기"
+    "readMore": "더 읽기",
+    "showLess": "접기",
+    "anonymous": "익명",
+    "pinned": "고정됨",
+    "report": "신고",
+    "translate": "번역",
+    "showOriginal": "원문 보기",
+    "relatedPosts": "관련 게시글",
+    "trendingPosts": "인기 게시글",
+    "latestPosts": "최신 게시글",
+    "views": "조회수",
+    "author": "작성자",
+    "createdAt": "작성일",
+    "publishedAt": "게시일"
   },
   "user": {
     "profile": "프로필",
@@ -54,6 +74,66 @@
     "email": "이메일",
     "password": "비밀번호",
     "bio": "소개",
-    "joined": "가입일"
+    "joined": "가입일",
+    "name": "이름",
+    "confirmPassword": "비밀번호 확인",
+    "rememberMe": "로그인 상태 유지",
+    "forgotPassword": "비밀번호 찾기"
+  },
+  "comments": {
+    "write": "댓글 작성",
+    "writeComment": "댓글을 입력하세요",
+    "reply": "답글",
+    "replyTo": "{{author}}님에게 답글",
+    "showReplies": "답글 {{count}}개 보기",
+    "hideReplies": "답글 숨기기",
+    "pending": "승인 대기 중",
+    "approved": "승인됨",
+    "rejected": "거부됨"
+  },
+  "social": {
+    "follow": "팔로우",
+    "following": "팔로잉",
+    "unfollow": "언팔로우",
+    "followers": "팔로워",
+    "followersCount": "팔로워 {{count}}명",
+    "followingCount": "팔로잉 {{count}}명",
+    "reaction": "반응",
+    "love": "좋아요",
+    "like": "추천",
+    "laugh": "웃겨요",
+    "wow": "놀라워요",
+    "sad": "슬퍼요",
+    "angry": "화나요",
+    "activityFeed": "활동 피드"
+  },
+  "missions": {
+    "dailyMissions": "일일 미션",
+    "completedMissions": "완료한 미션",
+    "streak": "연속 출석",
+    "streakDays": "{{count}}일 연속",
+    "points": "포인트",
+    "totalPoints": "총 {{count}}pt",
+    "earnedToday": "오늘 획득",
+    "rewards": "보상",
+    "badges": "뱃지",
+    "level": "레벨",
+    "progress": "진행도",
+    "easy": "쉬움",
+    "medium": "보통",
+    "hard": "어려움",
+    "completed": "완료"
+  },
+  "time": {
+    "justNow": "방금 전",
+    "minutesAgo": "{{count}}분 전",
+    "hoursAgo": "{{count}}시간 전",
+    "daysAgo": "{{count}}일 전",
+    "weeksAgo": "{{count}}주 전",
+    "monthsAgo": "{{count}}개월 전",
+    "yearsAgo": "{{count}}년 전",
+    "today": "오늘",
+    "yesterday": "어제",
+    "tomorrow": "내일"
   }
 }
