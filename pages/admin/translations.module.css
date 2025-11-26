@@ -4,13 +4,13 @@
   padding: 2rem;
 }
 
-h1 {
+.title {
   font-size: 2rem;
   margin-bottom: 2rem;
   color: #333;
 }
 
-h2 {
+.subtitle {
   font-size: 1.5rem;
   margin-bottom: 1rem;
   color: #555;
@@ -34,7 +34,7 @@ h2 {
   text-align: center;
 }
 
-.statCard h3 {
+.statCard .statTitle {
   font-size: 0.875rem;
   color: #777;
   margin-bottom: 0.5rem;

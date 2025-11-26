@@ -3,7 +3,7 @@
  * /sitemap.xml 경로로 동적 Sitemap 생성
  */
 
-import { getSanityClient } from '../../lib/sanityClient'
+import { getSanityClient } from '../lib/sanityClient'
 
 function generateSiteMap(posts) {
   const baseUrl = 'https://yoursite.com' // 실제 도메인으로 변경

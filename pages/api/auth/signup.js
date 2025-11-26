@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs'
-import { getSanityClient } from '../../lib/sanityClient'
+import { getSanityClient } from '../../../lib/sanityClient'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

@@ -1,17 +1,10 @@
 import '../styles/globals.css';
 import { appWithTranslation } from 'next-i18next';
 import { useEffect } from 'react';
-import { initializeRedis } from '../lib/translationCache';
 import ErrorBoundary from '../components/ErrorBoundary';
-import logger from '../lib/logger';
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
-    // Redis 캐시 초기화 (선택적)
-    initializeRedis().catch(err => {
-      logger.warn('Redis initialization failed, using memory cache:', err);
-    });
-
     // 사용자 선호 언어 로드
     const preferredLanguage = localStorage.getItem('preferredLanguage');
     if (preferredLanguage && window.location.pathname.indexOf(`/${preferredLanguage}`) !== 0) {

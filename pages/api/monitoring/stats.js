@@ -1,5 +1,5 @@
-import { getAPIKeyManager } from '@/lib/apiKeyManager'
-import { getLogAggregator } from '@/lib/logAggregator'
+import { getAPIKeyManager } from '../../../lib/apiKeyManager'
+import { getLogAggregator } from '../../../lib/logAggregator'
 
 /**
  * 모니터링 통계 API

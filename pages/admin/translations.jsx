@@ -69,29 +69,29 @@ export default function TranslationsAdminPage() {
         <title>Translation Admin Dashboard</title>
       </Head>
 
-      <h1>Translation System Dashboard</h1>
+      <h1 className={styles.title}>Translation System Dashboard</h1>
 
       {/* Stats Section */}
       <section className={styles.statsSection}>
-        <h2>System Stats</h2>
+        <h2 className={styles.subtitle}>System Stats</h2>
         {stats ? (
           <div className={styles.statsGrid}>
             <div className={styles.statCard}>
-              <h3>Status</h3>
+              <div className={styles.statTitle}>Status</div>
               <p className={stats.ok ? styles.statusOk : styles.statusError}>
                 {stats.ok ? '✓ Operational' : '✗ Issues Detected'}
               </p>
             </div>
             <div className={styles.statCard}>
-              <h3>Supported Languages</h3>
+              <div className={styles.statTitle}>Supported Languages</div>
               <p>{stats.languageCount || 'N/A'}</p>
             </div>
             <div className={styles.statCard}>
-              <h3>Cache Size</h3>
+              <div className={styles.statTitle}>Cache Size</div>
               <p>{stats.cache?.size || 0} entries</p>
             </div>
             <div className={styles.statCard}>
-              <h3>Cache Hit Rate</h3>
+              <div className={styles.statTitle}>Cache Hit Rate</div>
               <p>{stats.cache?.hitRate ? `${(stats.cache.hitRate * 100).toFixed(1)}%` : 'N/A'}</p>
             </div>
           </div>
@@ -102,7 +102,7 @@ export default function TranslationsAdminPage() {
 
       {/* Suggestions Queue Section */}
       <section className={styles.queueSection}>
-        <h2>Community Translation Suggestions</h2>
+        <h2 className={styles.subtitle}>Community Translation Suggestions</h2>
 
         {!authenticated ? (
           <form onSubmit={handleAuth} className={styles.authForm}>

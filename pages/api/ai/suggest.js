@@ -1,5 +1,5 @@
 import { getSession } from 'next-auth/react';
-import { suggestTags, suggestCategories } from '../../lib/aiRecommendation';
+import { suggestTags, suggestCategories } from '../../../lib/aiRecommendation';
 
 /**
  * AI 자동 태그/카테고리 추천 API

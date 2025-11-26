@@ -3,7 +3,7 @@
  * Generates dynamic sitemap.xml with all languages
  */
 
-import { SUPPORTED_LANGUAGES } from '../../../lib/aiTranslation.js';
+import { SUPPORTED_LANGUAGES } from '../../lib/aiTranslation';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://kulture.com';
 
