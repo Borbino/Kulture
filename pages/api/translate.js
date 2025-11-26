@@ -85,7 +85,7 @@ async function handleTranslate(req, res) {
 
     // 캐시 확인
     let translation = await getCachedTranslation(text, sourceLang, targetLang);
-    let fromCache = !!translation;
+    const fromCache = !!translation;
 
     // 캐시 미스 시 번역
     if (!translation) {

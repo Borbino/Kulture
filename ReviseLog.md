@@ -1,3 +1,30 @@
+RL-20251126-01
+- Fix: Lint errors for i18n UI and API
+  - components/LanguageSwitcher.module.css: replace invalid `sticky` with `position: sticky; top: 0;`
+  - components/LanguageSwitcher.jsx: guard browser-only access using `globalThis.navigator` with SSR-safe fallback
+  - pages/api/translate.js: use `const` for non-reassigned variable (`fromCache`)
+  - Verified: no errors reported by linter for the changed files
+
+RL-20251126-02
+- Improve: Env validation and API error handling
+  - lib/envValidator.js: add translation-related optional vars, provider presence check, Redis URL format validation, export `assertEnv()`
+  - lib/apiErrorHandler.js: standardized JSON error payload with status, requestId, and safe debug in non-prod
+
+RL-20251126-03
+- Improve: Rate limiter with burst + per-user keying
+  - lib/rateLimiter.js: add burst window/limits, combine identifier from IP + userId/apiKey, expose detailed X-RateLimit-* headers
+
+RL-20251126-04
+- Improve: Cron middleware, logging/analytics integration, translation context profiles, community suggestions
+  - lib/cronMiddleware.js: add `withCronWindowGuard` to prevent duplicate executions within 60s window
+  - lib/logger.js: add `translation()` method for specialized translation event logging
+  - lib/analytics.js: enhance `trackTranslationEvent` to use new logger.translation() when available
+  - lib/aiTranslation.js: expand `CONTEXT_PROFILES` with marketing, legal, casual, technical, medical; enrich `resolveContext()` with style, tone, and glossary
+  - pages/api/translation/suggest.js: accept community translation suggestions with validation and rate limiting
+  - pages/api/translation/queue.js: admin API to view and moderate suggestion queue
+  - pages/admin/translations.jsx: admin dashboard for translation stats and suggestion moderation
+  - pages/admin/translations.module.css: styling for admin dashboard
+
 # ReviseLog
 
 프로젝트의 공식 변경 이력(Revision Log) 파일입니다. 모든 코드·문서·정책 변경은 아래 템플릿에 따라 항목을 추가해야 하며, 관련 문서에는 ReviseLog 항목 번호 또는 링크를 남기세요.

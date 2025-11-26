@@ -26,7 +26,9 @@ export default function LanguageSwitcher() {
   const detectUserLanguage = async () => {
     try {
       // 브라우저 언어 감지
-      const browserLang = navigator.language.split('-')[0];
+      const browserLang = (typeof globalThis !== 'undefined' && globalThis.navigator)
+        ? globalThis.navigator.language.split('-')[0]
+        : 'en';
       if (browserLang && SUPPORTED_LANGUAGES[browserLang] && browserLang !== currentLocale) {
         setDetectedLanguage(browserLang);
       }

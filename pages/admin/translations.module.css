@@ -1,0 +1,171 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.statsSection {
+  margin-bottom: 3rem;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.statCard {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.statCard h3 {
+  font-size: 0.875rem;
+  color: #777;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.statCard p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.statusOk {
+  color: #28a745 !important;
+}
+
+.statusError {
+  color: #dc3545 !important;
+}
+
+.queueSection {
+  margin-bottom: 3rem;
+}
+
+.authForm {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.button:hover {
+  background: #0056b3;
+}
+
+.suggestionsTable {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.suggestionsTable table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.suggestionsTable th,
+.suggestionsTable td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.suggestionsTable th {
+  background: #f1f1f1;
+  font-weight: bold;
+  color: #555;
+}
+
+.textCell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.statuspending {
+  background: #ffc107;
+  color: #333;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.statusapproved {
+  background: #28a745;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.statusrejected {
+  background: #dc3545;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.approveBtn,
+.rejectBtn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  margin-right: 0.5rem;
+}
+
+.approveBtn {
+  background: #28a745;
+  color: white;
+}
+
+.approveBtn:hover {
+  background: #218838;
+}
+
+.rejectBtn {
+  background: #dc3545;
+  color: white;
+}
+
+.rejectBtn:hover {
+  background: #c82333;
+}

@@ -23,6 +23,8 @@ Kulture는 **200개 이상의 언어**를 실시간으로 번역하는 극한 �
 - 💾 **스마트 캐싱**: Redis + 인메모리 LFU/LRU 혼합
 - 📦 **배치 처리**: 최대 100개 동시 번역
 - 🎯 **품질 보증**: AI 기반 번역 품질 평가
+- 🎨 **컨텍스트 프로필**: marketing, legal, casual, technical, medical 등 전문 분야별 번역
+- 👥 **커뮤니티 참여**: 사용자 번역 제안 및 개선 기능
 
 ---
 
@@ -291,7 +293,8 @@ async function createMultilingualPost(title, content) {
   "text": "Hello, world!",
   "targetLang": "ko",
   "sourceLang": "auto",
-  "context": "greeting"
+  "context": "greeting",
+  "profile": "casual"
 }
 ```
 
@@ -300,9 +303,17 @@ async function createMultilingualPost(title, content) {
 {
   "batch": ["Hello", "World", "Welcome"],
   "targetLang": "ko",
-  "sourceLang": "en"
+  "sourceLang": "en",
+  "profile": "marketing"
 }
 ```
+
+**사용 가능한 프로필**
+- `marketing`: 설득력 있고 친근한 톤
+- `legal`: 형식적이고 정확한 법률 문서 스타일
+- `casual`: 대화체 및 편안한 톤
+- `technical`: 명확하고 간결한 기술 문서 스타일
+- `medical`: 형식적이고 공감적인 의료 문서 스타일
 
 **응답**
 ```json
@@ -375,6 +386,54 @@ async function createMultilingualPost(title, content) {
 ### DELETE /api/translation/cache (Admin)
 
 캐시 초기화
+
+### POST /api/translation/suggest
+
+커뮤니티 번역 제안 제출
+
+**요청**
+```json
+{
+  "originalText": "Hello",
+  "suggestedTranslation": "안녕",
+  "targetLang": "ko",
+  "sourceLang": "en",
+  "context": "informal greeting",
+  "reason": "More natural in casual context",
+  "submitterEmail": "user@example.com"
+}
+```
+
+**응답**
+```json
+{
+  "success": true,
+  "message": "Translation suggestion submitted for review",
+  "suggestionId": "sugg_1732608000000_abc123"
+}
+```
+
+### GET /api/translation/queue (Admin)
+
+번역 제안 큐 조회
+
+**쿼리 파라미터**
+- `secret`: Admin secret
+- `status`: pending | approved | rejected (optional)
+- `limit`: Max results (default: 100)
+
+### PATCH /api/translation/queue (Admin)
+
+번역 제안 상태 업데이트
+
+**요청**
+```json
+{
+  "id": "sugg_1732608000000_abc123",
+  "status": "approved",
+  "reviewNote": "Good suggestion"
+}
+```
 
 ---
 

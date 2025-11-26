@@ -5,7 +5,8 @@
 
 import aiTranslation from '../../../lib/aiTranslation';
 import rateLimiter from '../../../lib/rateLimiter';
-import logger from '../../../lib/logger';
+import { logger } from '../../../lib/logger.js';
+import { trackTranslationEvent } from '../../../lib/analytics.js';
 
 export default async function handler(req, res) {
   // Rate limiting
@@ -76,50 +77,52 @@ export default async function handler(req, res) {
         });
       }
 
-      result = {
-        translations: await aiTranslation.translateBatch(
+      const translations = await aiTranslation.translateBatch(
           batch,
           targetLang,
           sourceLang,
           { context }
-        ),
-        type: 'batch',
-        count: batch.length,
-      };
+        );
+      result = { translations, type: 'batch', count: batch.length };
     }
     // 단일 번역
     else {
       if (text.length > 10000) {
         // 긴 텍스트는 청크 번역
-        result = {
-          translation: await aiTranslation.translateLongText(
+        const translationLong = await aiTranslation.translateLongText(
             text,
             targetLang,
             sourceLang
-          ),
-          type: 'long-text',
-        };
+          );
+        result = { translation: translationLong, type: 'long-text' };
       } else {
-        result = {
-          translation: await aiTranslation.translate(
+        const translationSingle = await aiTranslation.translate(
             text,
             targetLang,
             sourceLang,
             { context }
-          ),
-          type: 'single',
-        };
+          );
+        result = { translation: translationSingle, type: 'single' };
       }
     }
 
     const responseTime = Date.now() - startTime;
 
-    logger.info('Translation completed', {
+    logger.info('translation', 'completed', {
       sourceLang,
       targetLang,
       type: result.type,
       responseTime,
     });
+
+    // 이벤트 추적
+    if (result.type === 'batch') {
+      trackTranslationEvent({ type: 'success', provider: result.translations?.provider, sourceLang, targetLang, durationMs: responseTime, cached: result.translations?.cached })
+    } else {
+      const t = result.translation
+      const evType = t?.cached ? 'cache-hit' : 'success'
+      trackTranslationEvent({ type: evType, provider: t?.provider, sourceLang, targetLang, durationMs: responseTime, cached: t?.cached })
+    }
 
     return res.status(200).json({
       ...result,
@@ -130,7 +133,10 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    logger.error('Translation API error:', error);
+    const src = (req.body && req.body.sourceLang) || 'auto'
+    const tgt = (req.body && req.body.targetLang) || 'unknown'
+    logger.error('translation', 'api_error', { error: String(error), sourceLang: src, targetLang: tgt });
+    trackTranslationEvent({ type: 'error', provider: error?.provider, sourceLang: src, targetLang: tgt, durationMs: 0, error })
 
     return res.status(500).json({
       error: 'Translation failed',
