@@ -26,7 +26,18 @@ export default function ReactionButton({ targetType, targetId, initialReactions 
       const data = await res.json();
       setReactions(data.counts || {});
       
-      // TODO: Get user's reaction from data.reactions
+      // 현재 사용자의 반응 찾기 (RL-20251126-10: TODO 해결)
+      if (data.reactions && Array.isArray(data.reactions)) {
+        // 현재 사용자 ID 가져오기 (세션/쿠키/로컬스토리지에서)
+        const currentUserId = typeof window !== 'undefined' 
+          ? localStorage.getItem('userId') || sessionStorage.getItem('userId')
+          : null;
+        
+        if (currentUserId) {
+          const userReactionData = data.reactions.find(r => r.userId === currentUserId);
+          setUserReaction(userReactionData?.type || null);
+        }
+      }
     } catch (error) {
       console.error('Failed to fetch reactions:', error);
     }
