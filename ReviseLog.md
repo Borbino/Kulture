@@ -30,6 +30,31 @@ RL-20251126-06
   - Removed unused SUPPORTED_LANGUAGES import in SEOHead
   - Status: 0 errors, 32 warnings (PropTypes for nested objects, minor unused vars)
   - Commit: aeba3a2, pushed to origin/main
+
+RL-20251126-07
+- Fix: Production build successful and automation added
+  - **Build Fixes (15 files)**:
+    - Fixed all import paths: sanityClient exports (sanityClient, getSanityClient), rateLimiter export
+    - Created lib/auth.js with verifyAuth, isAdmin, verifyAdmin helpers
+    - Resolved CSS module purity: replaced h1/h2/h3 tags with className in translations.jsx/.module.css
+    - Fixed Sanity projectId validation for build time (dummy-123 → dummyabc123)
+    - Removed Redis client from browser bundle (pages/_app.js - SSR issue)
+    - Fixed import paths in 5 API files (comments.js, ai/suggest.js, auth/signup.js, sitemap.xml.jsx, monitoring/stats.js)
+  - **Image Optimization**:
+    - Converted OptimizedImage to Next.js Image component with automatic WebP
+    - Added blur placeholder with shimmer SVG animation
+    - Enabled lazy loading by default, priority for above-fold images
+  - **CI/CD Pipeline**:
+    - GitHub Actions workflow: lint → test → build → deploy
+    - Automated Vercel deployment on main branch push
+    - Build artifact upload for debugging
+  - **MongoDB Scripts**:
+    - scripts/init-mongodb.js for index initialization automation
+    - Usage: `node scripts/init-mongodb.js` before production deployment
+  - Build Status: ✅ SUCCESS - 45 routes compiled (0 errors)
+  - Commit: 9041aed, pushed to origin/main
+  - Status: 0 errors, 32 warnings (PropTypes for nested objects, minor unused vars)
+  - Commit: aeba3a2, pushed to origin/main
   - lib/analytics.js: enhance `trackTranslationEvent` to use new logger.translation() when available
   - lib/aiTranslation.js: expand `CONTEXT_PROFILES` with marketing, legal, casual, technical, medical; enrich `resolveContext()` with style, tone, and glossary
   - pages/api/translation/suggest.js: accept community translation suggestions with validation and rate limiting
