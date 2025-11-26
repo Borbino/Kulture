@@ -21,21 +21,25 @@ export default async function handler(req, res) {
     const { action, ...params } = req.body;
 
     switch (action) {
-      case 'generate':
+      case 'generate': {
         const content = await generateKCultureContent(params);
         return res.status(200).json({ ok: true, ...content });
+      }
 
-      case 'generate-multilingual':
+      case 'generate-multilingual': {
         const multiContent = await generateMultilingualContent(params);
         return res.status(200).json({ ok: true, ...multiContent });
+      }
 
-      case 'ideas':
+      case 'ideas': {
         const ideas = await generateContentIdeas(params.category, params.count);
         return res.status(200).json({ ok: true, ideas });
+      }
 
-      case 'enhance':
+      case 'enhance': {
         const enhanced = await enhanceContent(params.content, params.enhancementType);
         return res.status(200).json({ ok: true, ...enhanced });
+      }
 
       default:
         return res.status(400).json({ error: 'Invalid action' });

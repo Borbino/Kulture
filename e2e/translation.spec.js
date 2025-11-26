@@ -35,7 +35,7 @@ test.describe('Translation Feature E2E Tests', () => {
     }
   });
 
-  test('should translate post content via API', async ({ page, request }) => {
+  test('should translate post content via API', async ({ request }) => {
     const response = await request.post('/api/translate', {
       data: {
         text: 'Hello, World!',
@@ -50,7 +50,7 @@ test.describe('Translation Feature E2E Tests', () => {
     expect(data.translatedText).toBeTruthy();
   });
 
-  test('should cache translations', async ({ page, request }) => {
+  test('should cache translations', async ({ request }) => {
     const text = 'Test translation for caching';
     
     // First request
@@ -69,7 +69,7 @@ test.describe('Translation Feature E2E Tests', () => {
     expect(data2.cached).toBe(true);
   });
 
-  test('should handle translation errors gracefully', async ({ page, request }) => {
+  test('should handle translation errors gracefully', async ({ request }) => {
     const response = await request.post('/api/translate', {
       data: {
         text: '',
@@ -82,7 +82,7 @@ test.describe('Translation Feature E2E Tests', () => {
     expect(data).toHaveProperty('error');
   });
 
-  test('should support batch translation', async ({ page, request }) => {
+  test('should support batch translation', async ({ request }) => {
     const response = await request.post('/api/translate', {
       data: {
         texts: ['Hello', 'World', 'Translation'],
@@ -99,7 +99,7 @@ test.describe('Translation Feature E2E Tests', () => {
     expect(data.translations.length).toBe(3);
   });
 
-  test('should detect language automatically', async ({ page, request }) => {
+  test('should detect language automatically', async ({ request }) => {
     const response = await request.post('/api/translation/detect', {
       data: {
         text: '안녕하세요, 세계!',
@@ -112,7 +112,7 @@ test.describe('Translation Feature E2E Tests', () => {
     expect(data.detectedLanguage).toBe('ko');
   });
 
-  test('should submit translation suggestion', async ({ page, request }) => {
+  test('should submit translation suggestion', async ({ request }) => {
     const response = await request.post('/api/translation/suggest', {
       data: {
         originalText: 'Hello',
@@ -141,6 +141,7 @@ test.describe('Translation Feature E2E Tests', () => {
     // Measure LCP
     const lcp = await page.evaluate(() => {
       return new Promise((resolve) => {
+        // eslint-disable-next-line no-undef
         new PerformanceObserver((entryList) => {
           const entries = entryList.getEntries();
           const lastEntry = entries[entries.length - 1];
