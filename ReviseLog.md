@@ -18,6 +18,18 @@ RL-20251126-04
 - Improve: Cron middleware, logging/analytics integration, translation context profiles, community suggestions
   - lib/cronMiddleware.js: add `withCronWindowGuard` to prevent duplicate executions within 60s window
   - lib/logger.js: add `translation()` method for specialized translation event logging
+
+RL-20251126-06
+- Fix: All lint errors resolved and PropTypes validation added
+  - Added PropTypes to 7 components: ActivityFeed, BoardList, ContributeTranslation, FollowButton, InfiniteScrollPosts, PostEditor, SEOHead
+  - Fixed regex escape character in lib/aiSentiment.js (special chars pattern)
+  - Fixed undefined 'reason' variable in pages/api/reports.js
+  - Removed useless try/catch in scripts/performance-monitor.js
+  - Fixed typo 'improved Translation' -> 'improvedTranslation' in scripts/improve-translations.js
+  - Removed unused variables: error, langName, t, i18n
+  - Removed unused SUPPORTED_LANGUAGES import in SEOHead
+  - Status: 0 errors, 32 warnings (PropTypes for nested objects, minor unused vars)
+  - Commit: aeba3a2, pushed to origin/main
   - lib/analytics.js: enhance `trackTranslationEvent` to use new logger.translation() when available
   - lib/aiTranslation.js: expand `CONTEXT_PROFILES` with marketing, legal, casual, technical, medical; enrich `resolveContext()` with style, tone, and glossary
   - pages/api/translation/suggest.js: accept community translation suggestions with validation and rate limiting
