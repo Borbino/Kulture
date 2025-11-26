@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import Link from 'next/link';
 import ReactionButton from './ReactionButton';
 import styles from './InfiniteScrollPosts.module.css';
@@ -159,3 +160,8 @@ export default function InfiniteScrollPosts({ boardId = null, categoryId = null 
     </div>
   );
 }
+
+InfiniteScrollPosts.propTypes = {
+  boardId: PropTypes.string,
+  categoryId: PropTypes.string,
+};

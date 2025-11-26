@@ -5,11 +5,11 @@
 
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { SUPPORTED_LANGUAGES } from '../lib/aiTranslation';
+import PropTypes from 'prop-types';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://kulture.com';
 
-export default function SEOHead({
+function SEOHead({
   title = 'Kulture - Global K-Culture Community',
   description = 'Discover and share K-Culture content in your language',
   image = '/images/og-image.jpg',
@@ -56,12 +56,18 @@ export default function SEOHead({
       <link rel="alternate" hrefLang="x-default" href={`${SITE_URL}${asPath === '/' ? '' : asPath}`} />
 
       {/* Language names for search engines */}
-      {locales && locales.map((lang) => {
-        const langName = SUPPORTED_LANGUAGES[lang] || lang;
-        return (
-          <meta key={`lang-${lang}`} property="og:locale:alternate" content={lang} />
-        );
-      })}
+      {locales && locales.map((lang) => (
+        <meta key={`lang-${lang}`} property="og:locale:alternate" content={lang} />
+      ))}
     </Head>
   );
 }
+
+SEOHead.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  image: PropTypes.string,
+  noindex: PropTypes.bool,
+};
+
+export default SEOHead;

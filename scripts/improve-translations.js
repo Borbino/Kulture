@@ -76,7 +76,7 @@ async function improveTranslations(languageCode, options = {}) {
 
         // If quality is below threshold, generate improved translation
         if (evaluation.score < minQualityThreshold) {
-          const improved Translation = await translateHighQuality(
+          const improvedTranslation = await translateHighQuality(
             original,
             languageCode,
             'ko',

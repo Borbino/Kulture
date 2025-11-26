@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import styles from './PostEditor.module.css';
 
 export default function PostEditor({ boardId = null, initialData = null, onSuccess }) {
@@ -146,3 +147,9 @@ export default function PostEditor({ boardId = null, initialData = null, onSucce
     </form>
   );
 }
+
+PostEditor.propTypes = {
+  boardId: PropTypes.string,
+  initialData: PropTypes.object,
+  onSuccess: PropTypes.func,
+};

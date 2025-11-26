@@ -19,7 +19,6 @@ Sentry.init({
 
     // Add custom context
     if (hint.originalException) {
-      const error = hint.originalException;
       event.contexts = {
         ...event.contexts,
         runtime: {

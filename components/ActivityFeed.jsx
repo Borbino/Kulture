@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
+import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styles from './ActivityFeed.module.css';
 
@@ -146,3 +147,8 @@ function formatTimeAgo(date) {
   
   return past.toLocaleDateString();
 }
+
+ActivityFeed.propTypes = {
+  mode: PropTypes.string,
+  userId: PropTypes.string,
+};

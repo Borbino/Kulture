@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import PropTypes from 'prop-types';
 import styles from './FollowButton.module.css';
 
 export default function FollowButton({ userId, initialFollowing = false, onFollowChange }) {
@@ -69,3 +70,9 @@ export default function FollowButton({ userId, initialFollowing = false, onFollo
     </button>
   );
 }
+
+FollowButton.propTypes = {
+  userId: PropTypes.string.isRequired,
+  initialFollowing: PropTypes.bool,
+  onFollowChange: PropTypes.func,
+};

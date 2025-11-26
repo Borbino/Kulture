@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
+import PropTypes from 'prop-types';
 import styles from './ContributeTranslation.module.css';
 
 export default function ContributeTranslation({ translationKey, originalText, currentTranslation }) {
-  const { t, i18n } = useTranslation('common');
+  const { i18n } = useTranslation('common');
   const [isOpen, setIsOpen] = useState(false);
   const [newTranslation, setNewTranslation] = useState(currentTranslation || '');
   const [feedback, setFeedback] = useState('');
@@ -140,3 +141,9 @@ export default function ContributeTranslation({ translationKey, originalText, cu
     </div>
   );
 }
+
+ContributeTranslation.propTypes = {
+  translationKey: PropTypes.string.isRequired,
+  originalText: PropTypes.string.isRequired,
+  currentTranslation: PropTypes.string,
+};

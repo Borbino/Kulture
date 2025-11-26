@@ -200,6 +200,7 @@ export default async function handler(req, res) {
       }
 
       if ((action === 'warned' || action === 'banned') && report.type === 'user' && report.targetUser?._id) {
+        const reason = report.reason || 'Multiple violations';
         const banUpdates = { isBanned: true };
         if (action === 'banned') {
           // Ban for 7 days by default

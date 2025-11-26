@@ -23,27 +23,23 @@ class PerformanceMonitor {
   async translate(text, targetLang, sourceLang = 'auto', options = {}) {
     const startTime = Date.now();
     
-    try {
-      const result = await translateHighQuality(text, targetLang, sourceLang, options);
-      const endTime = Date.now();
-      const duration = endTime - startTime;
-      
-      // Update stats
-      this.stats.totalTranslations++;
-      this.stats.totalTime += duration;
-      
-      if (result.provider) {
-        const provider = result.provider;
-        if (this.stats.providerStats[provider]) {
-          this.stats.providerStats[provider].count++;
-          this.stats.providerStats[provider].totalTime += duration;
-        }
+    const result = await translateHighQuality(text, targetLang, sourceLang, options);
+    const endTime = Date.now();
+    const duration = endTime - startTime;
+    
+    // Update stats
+    this.stats.totalTranslations++;
+    this.stats.totalTime += duration;
+    
+    if (result.provider) {
+      const provider = result.provider;
+      if (this.stats.providerStats[provider]) {
+        this.stats.providerStats[provider].count++;
+        this.stats.providerStats[provider].totalTime += duration;
       }
-      
-      return { ...result, duration };
-    } catch (error) {
-      throw error;
     }
+    
+    return { ...result, duration };
   }
 
   getStats() {

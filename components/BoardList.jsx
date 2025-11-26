@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styles from './BoardList.module.css';
 
@@ -52,3 +53,7 @@ export default function BoardList({ category = null }) {
     </div>
   );
 }
+
+BoardList.propTypes = {
+  category: PropTypes.string,
+};
