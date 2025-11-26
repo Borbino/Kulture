@@ -383,7 +383,7 @@ export default function AdminSettings() {
             <label className={styles.toggle}>
               <input
                 type="checkbox"
-                checked={formData.general.maintenanceMode}
+                checked={formData.general?.maintenanceMode ?? false}
                 onChange={e => handleChange('general', 'maintenanceMode', e.target.checked)}
               />
               <span className={styles.toggleSlider}></span>
@@ -397,12 +397,368 @@ export default function AdminSettings() {
             <label>
               점검 중 메시지
               <textarea
-                value={formData.general.maintenanceMessage}
+                value={formData.general?.maintenanceMessage ?? ''}
                 onChange={e => handleChange('general', 'maintenanceMessage', e.target.value)}
                 className={styles.textarea}
                 rows="3"
               />
             </label>
+          </div>
+        </section>
+
+        {/* 번역 시스템 설정 */}
+        <section className={styles.section}>
+          <h2>🌐 번역 시스템 (Translation System)</h2>
+          <p className={styles.description}>200+ 언어 자동 번역 기능을 제어합니다.</p>
+
+          <div className={styles.field}>
+            <label className={styles.toggle}>
+              <input
+                type="checkbox"
+                checked={formData.translationSystem?.enabled ?? true}
+                onChange={e => handleChange('translationSystem', 'enabled', e.target.checked)}
+              />
+              <span className={styles.toggleSlider}></span>
+              <span className={styles.toggleLabel}>번역 시스템 활성화</span>
+            </label>
+          </div>
+
+          <div className={styles.field}>
+            <label>
+              기본 언어
+              <select
+                value={formData.translationSystem?.defaultLanguage ?? 'ko'}
+                onChange={e => handleChange('translationSystem', 'defaultLanguage', e.target.value)}
+                className={styles.select}
+              >
+                <option value="ko">한국어</option>
+                <option value="en">English</option>
+                <option value="ja">日本語</option>
+                <option value="zh">中文</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+              </select>
+            </label>
+          </div>
+
+          <div className={styles.field}>
+            <label>번역 품질 기준: {formData.translationSystem?.qualityThreshold ?? 7}/10</label>
+            <input
+              type="range"
+              min="1"
+              max="10"
+              value={formData.translationSystem?.qualityThreshold ?? 7}
+              onChange={e => handleChange('translationSystem', 'qualityThreshold', parseInt(e.target.value, 10))}
+              className={styles.slider}
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label>
+              우선 번역 제공자
+              <select
+                value={formData.translationSystem?.primaryProvider ?? 'openai'}
+                onChange={e => handleChange('translationSystem', 'primaryProvider', e.target.value)}
+                className={styles.select}
+              >
+                <option value="openai">OpenAI (권장)</option>
+                <option value="deepl">DeepL (고품질)</option>
+                <option value="google">Google Translate</option>
+              </select>
+            </label>
+          </div>
+
+          <div className={styles.checkboxGroup}>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.translationSystem?.enableCache ?? true}
+                onChange={e => handleChange('translationSystem', 'enableCache', e.target.checked)}
+              />
+              Redis 캐시 활성화
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.translationSystem?.autoDetectLanguage ?? true}
+                onChange={e => handleChange('translationSystem', 'autoDetectLanguage', e.target.checked)}
+              />
+              언어 자동 감지
+            </label>
+          </div>
+        </section>
+
+        {/* 게임화 시스템 설정 */}
+        <section className={styles.section}>
+          <h2>🎮 게임화 시스템 (Gamification)</h2>
+          <p className={styles.description}>사용자 참여를 높이는 게임화 요소를 제어합니다.</p>
+
+          <div className={styles.field}>
+            <label className={styles.toggle}>
+              <input
+                type="checkbox"
+                checked={formData.gamification?.enabled ?? true}
+                onChange={e => handleChange('gamification', 'enabled', e.target.checked)}
+              />
+              <span className={styles.toggleSlider}></span>
+              <span className={styles.toggleLabel}>게임화 시스템 활성화</span>
+            </label>
+          </div>
+
+          <div className={styles.checkboxGroup}>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.gamification?.dailyMissionsEnabled ?? true}
+                onChange={e => handleChange('gamification', 'dailyMissionsEnabled', e.target.checked)}
+              />
+              일일 미션 시스템
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.gamification?.levelSystemEnabled ?? true}
+                onChange={e => handleChange('gamification', 'levelSystemEnabled', e.target.checked)}
+              />
+              레벨 시스템 (0-10 레벨)
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.gamification?.badgesEnabled ?? true}
+                onChange={e => handleChange('gamification', 'badgesEnabled', e.target.checked)}
+              />
+              뱃지 시스템
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.gamification?.streakBonusEnabled ?? true}
+                onChange={e => handleChange('gamification', 'streakBonusEnabled', e.target.checked)}
+              />
+              연속 활동 보너스
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.gamification?.leaderboardEnabled ?? true}
+                onChange={e => handleChange('gamification', 'leaderboardEnabled', e.target.checked)}
+              />
+              리더보드 표시
+            </label>
+          </div>
+
+          <div className={styles.field}>
+            <label>포인트 배율: {formData.gamification?.pointMultiplier ?? 1.0}x</label>
+            <input
+              type="range"
+              min="0.1"
+              max="10"
+              step="0.1"
+              value={formData.gamification?.pointMultiplier ?? 1.0}
+              onChange={e => handleChange('gamification', 'pointMultiplier', parseFloat(e.target.value))}
+              className={styles.slider}
+            />
+          </div>
+        </section>
+
+        {/* 실시간 채팅 설정 */}
+        <section className={styles.section}>
+          <h2>💬 실시간 채팅 (Real-time Chat)</h2>
+          <p className={styles.description}>WebSocket 기반 실시간 채팅 기능을 제어합니다.</p>
+
+          <div className={styles.field}>
+            <label className={styles.toggle}>
+              <input
+                type="checkbox"
+                checked={formData.realTimeChat?.enabled ?? true}
+                onChange={e => handleChange('realTimeChat', 'enabled', e.target.checked)}
+              />
+              <span className={styles.toggleSlider}></span>
+              <span className={styles.toggleLabel}>실시간 채팅 활성화</span>
+            </label>
+          </div>
+
+          <div className={styles.checkboxGroup}>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.realTimeChat?.autoTranslate ?? true}
+                onChange={e => handleChange('realTimeChat', 'autoTranslate', e.target.checked)}
+              />
+              메시지 자동 번역
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.realTimeChat?.typingIndicatorEnabled ?? true}
+                onChange={e => handleChange('realTimeChat', 'typingIndicatorEnabled', e.target.checked)}
+              />
+              타이핑 중 표시
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.realTimeChat?.requireLogin ?? true}
+                onChange={e => handleChange('realTimeChat', 'requireLogin', e.target.checked)}
+              />
+              로그인 필수
+            </label>
+          </div>
+
+          <div className={styles.field}>
+            <label>메시지 히스토리 개수: {formData.realTimeChat?.messageHistoryCount ?? 50}</label>
+            <input
+              type="range"
+              min="10"
+              max="200"
+              step="10"
+              value={formData.realTimeChat?.messageHistoryCount ?? 50}
+              onChange={e => handleChange('realTimeChat', 'messageHistoryCount', parseInt(e.target.value, 10))}
+              className={styles.slider}
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label>최대 채팅방 인원: {formData.realTimeChat?.maxRoomSize ?? 100}</label>
+            <input
+              type="range"
+              min="2"
+              max="1000"
+              step="10"
+              value={formData.realTimeChat?.maxRoomSize ?? 100}
+              onChange={e => handleChange('realTimeChat', 'maxRoomSize', parseInt(e.target.value, 10))}
+              className={styles.slider}
+            />
+          </div>
+        </section>
+
+        {/* AI 콘텐츠 생성 설정 */}
+        <section className={styles.section}>
+          <h2>🤖 AI 콘텐츠 생성 (AI Content Generation)</h2>
+          <p className={styles.description}>AI 기반 K-Culture 콘텐츠 자동 생성을 제어합니다.</p>
+
+          <div className={styles.field}>
+            <label className={styles.toggle}>
+              <input
+                type="checkbox"
+                checked={formData.aiContentGeneration?.enabled ?? true}
+                onChange={e => handleChange('aiContentGeneration', 'enabled', e.target.checked)}
+              />
+              <span className={styles.toggleSlider}></span>
+              <span className={styles.toggleLabel}>AI 콘텐츠 생성 활성화</span>
+            </label>
+          </div>
+
+          <div className={styles.checkboxGroup}>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.aiContentGeneration?.requireCeoApproval ?? true}
+                onChange={e => handleChange('aiContentGeneration', 'requireCeoApproval', e.target.checked)}
+              />
+              CEO 승인 필수
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.aiContentGeneration?.multilingualPublish ?? true}
+                onChange={e => handleChange('aiContentGeneration', 'multilingualPublish', e.target.checked)}
+              />
+              다국어 동시 발행 (200+ 언어)
+            </label>
+          </div>
+
+          <div className={styles.field}>
+            <label>생성 가능한 콘텐츠 타입</label>
+            <div className={styles.checkboxGroup}>
+              {['article', 'guide', 'review', 'news', 'tutorial'].map(type => (
+                <label key={type}>
+                  <input
+                    type="checkbox"
+                    checked={formData.aiContentGeneration?.contentTypes?.includes(type) ?? true}
+                    onChange={e => {
+                      const current = formData.aiContentGeneration?.contentTypes || []
+                      const updated = e.target.checked
+                        ? [...current, type]
+                        : current.filter(t => t !== type)
+                      handleChange('aiContentGeneration', 'contentTypes', updated)
+                    }}
+                  />
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                </label>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 소셜 기능 설정 */}
+        <section className={styles.section}>
+          <h2>👥 소셜 기능 (Social Features)</h2>
+          <p className={styles.description}>커뮤니티 소셜 네트워킹 기능을 제어합니다.</p>
+
+          <div className={styles.checkboxGroup}>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.socialFeatures?.followSystemEnabled ?? true}
+                onChange={e => handleChange('socialFeatures', 'followSystemEnabled', e.target.checked)}
+              />
+              팔로우 시스템
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.socialFeatures?.reactionsEnabled ?? true}
+                onChange={e => handleChange('socialFeatures', 'reactionsEnabled', e.target.checked)}
+              />
+              이모지 반응
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.socialFeatures?.activityFeedEnabled ?? true}
+                onChange={e => handleChange('socialFeatures', 'activityFeedEnabled', e.target.checked)}
+              />
+              활동 피드
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.socialFeatures?.userProfilesEnabled ?? true}
+                onChange={e => handleChange('socialFeatures', 'userProfilesEnabled', e.target.checked)}
+              />
+              사용자 프로필
+            </label>
+          </div>
+
+          <div className={styles.field}>
+            <label>사용 가능한 반응 타입</label>
+            <div className={styles.checkboxGroup}>
+              {[
+                { value: 'love', label: '❤️ Love' },
+                { value: 'like', label: '👍 Like' },
+                { value: 'laugh', label: '😂 Laugh' },
+                { value: 'wow', label: '😮 Wow' },
+                { value: 'sad', label: '😢 Sad' },
+                { value: 'angry', label: '😡 Angry' },
+              ].map(reaction => (
+                <label key={reaction.value}>
+                  <input
+                    type="checkbox"
+                    checked={formData.socialFeatures?.enabledReactions?.includes(reaction.value) ?? true}
+                    onChange={e => {
+                      const current = formData.socialFeatures?.enabledReactions || []
+                      const updated = e.target.checked
+                        ? [...current, reaction.value]
+                        : current.filter(r => r !== reaction.value)
+                      handleChange('socialFeatures', 'enabledReactions', updated)
+                    }}
+                  />
+                  {reaction.label}
+                </label>
+              ))}
+            </div>
           </div>
         </section>
       </div>

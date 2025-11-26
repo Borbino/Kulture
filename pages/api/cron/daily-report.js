@@ -90,7 +90,9 @@ export default withCronAuth(async function dailyReportHandler(req, res) {
       timestamp: new Date().toISOString(),
     })
 
-    console.log(`[Daily Report] ${today} - Generated`)
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[Daily Report] ${today} - Generated`)
+    }
 
     res.status(200).json({
       success: true,

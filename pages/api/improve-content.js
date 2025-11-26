@@ -233,7 +233,9 @@ const handler = async function improveContentHandler(req, res) {
 
   // 1. CEO 피드백 패턴 학습
   const feedbackPatterns = await analyzeFeedbackPatterns()
-  console.log('[Feedback Patterns]', feedbackPatterns)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[Feedback Patterns]', feedbackPatterns)
+  }
 
   // 2. Hugging Face 무료 AI로 콘텐츠 개선
   const improved = await improveWithHuggingFace(originalContent, feedback)
