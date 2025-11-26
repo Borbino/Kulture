@@ -1,10 +1,14 @@
 /**
  * Translation Suggestion Queue API (Admin only)
- * Returns pending translation suggestions
+ * Returns pending translation suggestions from MongoDB
  */
 
 import { logger } from '../../../lib/logger.js'
-import { suggestionQueue } from './suggest.js'
+import {
+  getTranslationSuggestions,
+  updateTranslationSuggestionStatus,
+} from '../../../lib/translationSuggestions.js'
+import { notifyTranslationSuggestionStatus } from '../../../lib/notificationSystem.js'
 
 export default async function handler(req, res) {
   // Simple admin auth check (should be replaced with proper auth in production)
@@ -14,49 +18,63 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'GET') {
-    // Get all suggestions with optional filtering
-    const { status, limit = 100 } = req.query
-    let suggestions = [...suggestionQueue]
+    try {
+      const { status, targetLang, limit = 50, skip = 0 } = req.query
 
-    if (status) {
-      suggestions = suggestions.filter((s) => s.status === status)
+      const result = await getTranslationSuggestions(
+        {},
+        {
+          status,
+          targetLang,
+          limit: parseInt(limit, 10),
+          skip: parseInt(skip, 10),
+        }
+      )
+
+      return res.status(200).json({
+        total: result.total,
+        suggestions: result.suggestions,
+      })
+    } catch (error) {
+      logger.error('translation-queue', 'Failed to fetch suggestions', { error: error.message })
+      return res.status(500).json({ error: 'Failed to fetch suggestions' })
     }
-
-    suggestions = suggestions.slice(-parseInt(limit, 10))
-
-    return res.status(200).json({
-      total: suggestions.length,
-      suggestions: suggestions.reverse(), // Most recent first
-    })
   }
 
   if (req.method === 'PATCH') {
-    // Update suggestion status
-    const { id, status, reviewNote } = req.body
+    try {
+      const { id, status, reviewNote, reviewedBy } = req.body
 
-    if (!id || !status) {
-      return res.status(400).json({ error: 'Missing id or status' })
+      if (!id || !status) {
+        return res.status(400).json({ error: 'Missing id or status' })
+      }
+
+      if (!['approved', 'rejected', 'pending'].includes(status)) {
+        return res.status(400).json({ error: 'Invalid status' })
+      }
+
+      const suggestion = await updateTranslationSuggestionStatus(id, status, {
+        reviewNote,
+        reviewedBy,
+      })
+
+      // Notify submitter
+      if (status !== 'pending') {
+        await notifyTranslationSuggestionStatus(suggestion, status).catch((err) => {
+          logger.error('translation-queue', 'Notification failed', { error: err.message })
+        })
+      }
+
+      logger.info('translation-queue', 'Suggestion status updated', { id, status })
+
+      return res.status(200).json({
+        success: true,
+        suggestion,
+      })
+    } catch (error) {
+      logger.error('translation-queue', 'Failed to update suggestion', { error: error.message })
+      return res.status(500).json({ error: error.message })
     }
-
-    if (!['approved', 'rejected', 'pending'].includes(status)) {
-      return res.status(400).json({ error: 'Invalid status' })
-    }
-
-    const suggestion = suggestionQueue.find((s) => s.id === id)
-    if (!suggestion) {
-      return res.status(404).json({ error: 'Suggestion not found' })
-    }
-
-    suggestion.status = status
-    suggestion.reviewNote = reviewNote
-    suggestion.reviewedAt = new Date().toISOString()
-
-    logger.info('translation-queue', 'Suggestion status updated', { id, status })
-
-    return res.status(200).json({
-      success: true,
-      suggestion,
-    })
   }
 
   return res.status(405).json({ error: 'Method not allowed' })

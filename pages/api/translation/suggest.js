@@ -5,9 +5,8 @@
 
 import { logger } from '../../../lib/logger.js'
 import rateLimitMiddleware from '../../../lib/rateLimiter.js'
-
-// In-memory queue (should be replaced with Sanity/DB in production)
-const suggestionQueue = []
+import { createTranslationSuggestion } from '../../../lib/translationSuggestions.js'
+import { notifyNewTranslationSuggestion } from '../../../lib/notificationSystem.js'
 
 export default async function handler(req, res) {
   // Apply rate limiting
@@ -42,8 +41,10 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Text too long (max 5000 characters)' })
     }
 
-    const suggestion = {
-      id: `sugg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    const submitterIp = req.headers['x-forwarded-for']?.split(',')[0] || req.connection.remoteAddress
+
+    // Store in MongoDB
+    const suggestion = await createTranslationSuggestion({
       originalText,
       suggestedTranslation,
       targetLang,
@@ -51,21 +52,16 @@ export default async function handler(req, res) {
       context,
       reason,
       submitterEmail,
-      status: 'pending', // pending | approved | rejected
-      submittedAt: new Date().toISOString(),
-      ip: req.headers['x-forwarded-for']?.split(',')[0] || req.connection.remoteAddress,
-    }
+      submitterIp,
+    })
 
-    // Store suggestion
-    suggestionQueue.push(suggestion)
-
-    // Keep only last 1000 suggestions in memory
-    if (suggestionQueue.length > 1000) {
-      suggestionQueue.shift()
-    }
+    // Send notifications
+    await notifyNewTranslationSuggestion(suggestion).catch((err) => {
+      logger.error('translation-suggest', 'Notification failed', { error: err.message })
+    })
 
     logger.info('translation-suggest', 'New suggestion received', {
-      id: suggestion.id,
+      id: suggestion._id,
       targetLang,
       sourceLang,
       textLength: originalText.length,
@@ -74,13 +70,10 @@ export default async function handler(req, res) {
     return res.status(201).json({
       success: true,
       message: 'Translation suggestion submitted for review',
-      suggestionId: suggestion.id,
+      suggestionId: suggestion._id.toString(),
     })
   } catch (error) {
     logger.error('translation-suggest', 'Failed to process suggestion', { error: error.message })
     return res.status(500).json({ error: 'Failed to submit suggestion' })
   }
 }
-
-// Export queue for admin access
-export { suggestionQueue }

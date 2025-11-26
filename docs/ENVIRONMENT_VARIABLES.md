@@ -41,6 +41,29 @@ GOOGLE_TRANSLATE_API_KEY=AIza...
 REDIS_URL=redis://...
 ```
 
+### MongoDB (Translation Suggestions)
+
+```bash
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/
+MONGODB_DB_NAME=kulture
+```
+
+### Notification System
+
+```bash
+ADMIN_EMAIL=admin@kulture.com
+EMAIL_API_KEY=your_sendgrid_api_key
+EMAIL_FROM=noreply@kulture.com
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/YOUR/WEBHOOK/URL
+```
+
+### Error Tracking (Sentry)
+
+```bash
+SENTRY_DSN=https://your-sentry-dsn@sentry.io/project-id
+NEXT_PUBLIC_SENTRY_DSN=https://your-sentry-dsn@sentry.io/project-id
+```
+
 ### Translation Provider 선택 가이드
 
 1. **DeepL** (최우선): 가장 자연스럽고 정확한 번역

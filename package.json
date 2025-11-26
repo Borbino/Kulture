@@ -23,6 +23,7 @@
     "@google-cloud/translate": "^9.3.0",
     "@sanity/client": "^7.13.0",
     "@sanity/image-url": "^1.2.0",
+    "@sentry/nextjs": "^10.27.0",
     "bcryptjs": "^3.0.3",
     "deepl-node": "^1.22.0",
     "i18next": "^25.6.3",

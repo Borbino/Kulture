@@ -15,7 +15,7 @@ Disallow: /404
 Disallow: /500
 
 # Sitemap 위치
-Sitemap: https://yoursite.com/sitemap.xml
+Sitemap: https://kulture.com/api/sitemap.xml
 
 # 크롤링 속도 제한 (선택사항)
 Crawl-delay: 1
