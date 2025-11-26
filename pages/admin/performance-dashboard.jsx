@@ -49,7 +49,7 @@ export default function PerformanceDashboard() {
 
   // 자동 새로고침
   useEffect(() => {
-    if (!autoRefresh) return
+    if (!autoRefresh) return undefined
 
     const interval = setInterval(() => {
       fetchReport()
@@ -57,7 +57,7 @@ export default function PerformanceDashboard() {
     }, 30000) // 30초마다 갱신
 
     return () => clearInterval(interval)
-  }, [autoRefresh])
+  }, [autoRefresh, fetchReport, fetchOptimizations])
 
   // 자동 최적화 적용
   const handleApplyAutoOptimizations = async () => {
