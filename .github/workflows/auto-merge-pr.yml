@@ -1,0 +1,65 @@
+name: Auto Merge PRs
+
+on:
+  workflow_run:
+    workflows: ["CI/CD Pipeline"]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: auto-merge-${{ github.event.workflow_run.id }}
+  cancel-in-progress: true
+
+jobs:
+  auto-merge:
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.pull_requests[0].head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set PR variables
+        id: pr
+        run: |
+          PR_NUMBER="${{ github.event.workflow_run.pull_requests[0].number }}"
+          PR_URL="https://github.com/${{ github.repository }}/pull/${PR_NUMBER}"
+          echo "pr_number=${PR_NUMBER}" >> "$GITHUB_OUTPUT"
+          echo "pr_url=${PR_URL}" >> "$GITHUB_OUTPUT"
+
+      - name: Verify mergeability
+        run: |
+          PR_DATA=$(gh pr view "${{ steps.pr.outputs.pr_number }}" --json isDraft,mergeable,mergeStateStatus --jq '{draft: .isDraft, mergeable: .mergeable, status: .mergeStateStatus}')
+          echo "PR_DATA=${PR_DATA}"
+
+          DRAFT=$(echo "$PR_DATA" | jq -r '.draft')
+          MERGEABLE=$(echo "$PR_DATA" | jq -r '.mergeable')
+          STATUS=$(echo "$PR_DATA" | jq -r '.status')
+
+          if [ "$DRAFT" = "true" ]; then
+            echo "PR is draft; skipping auto-merge." && exit 0
+          fi
+
+          if [ "$MERGEABLE" != "MERGEABLE" ] || [ "$STATUS" = "BLOCKED" ]; then
+            echo "PR not mergeable (status=$STATUS, mergeable=$MERGEABLE); skipping." && exit 0
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Auto merge PR
+        run: |
+          gh pr merge "${{ steps.pr.outputs.pr_number }}" \
+            --squash \
+            --delete-branch \
+            --auto \
+            --subject "Auto-merge: checks passed" \
+            --body "자동 병합: CI/CD Pipeline 성공"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Success notice
+        if: success()
+        run: |
+          echo "✅ Auto-merge triggered for ${{ steps.pr.outputs.pr_url }}"
