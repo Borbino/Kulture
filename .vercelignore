@@ -1,5 +1,3 @@
-pages/index.jsx
-pages/posts/
 .next/
 .vercel/
 node_modules/
