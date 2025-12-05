@@ -1,0 +1,146 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.content {
+  max-width: 500px;
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.content h1 {
+  margin: 0 0 10px 0;
+  font-size: 2rem;
+  color: #333;
+}
+
+.content > p {
+  margin: 0 0 20px 0;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.description {
+  margin-bottom: 30px !important;
+  line-height: 1.6;
+  color: #666;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.retryBtn,
+.homeBtn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.retryBtn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.retryBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.homeBtn {
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.homeBtn:hover {
+  background: #f5f5f5;
+}
+
+.tips {
+  text-align: left;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+}
+
+.tips h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.tips ul {
+  margin: 0;
+  padding: 0 0 0 20px;
+  list-style: none;
+}
+
+.tips li {
+  margin-bottom: 8px;
+  color: #666;
+  position: relative;
+  padding-left: 20px;
+}
+
+.tips li:before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #667eea;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 30px 20px;
+  }
+
+  .content h1 {
+    font-size: 1.5rem;
+  }
+
+  .icon {
+    font-size: 3rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .retryBtn,
+  .homeBtn {
+    width: 100%;
+  }
+}

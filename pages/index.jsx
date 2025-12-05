@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { useSiteSettings } from '../lib/settings.js'
 import InfiniteScrollPosts from '../components/InfiniteScrollPosts'
 import PostEditor from '../components/PostEditor'
 import ActivityFeed from '../components/ActivityFeed'
@@ -11,12 +12,14 @@ import LanguageSwitcher from '../components/LanguageSwitcher'
 import Search from '../components/Search'
 import RecommendationWidget from '../components/RecommendationWidget'
 import DailyMissions from '../components/DailyMissions'
+import TrendSpotlight from '../components/TrendSpotlight'
 import Toast from '../components/Toast'
 import styles from '../styles/CommunityFeed.module.css'
 
 export default function Home() {
   const { data: session, status } = useSession()
   const router = useRouter()
+  const { settings } = useSiteSettings()
   const [activeTab, setActiveTab] = useState('feed')
   const [showPostEditor, setShowPostEditor] = useState(false)
   const [toastMessage, setToastMessage] = useState(null)
@@ -81,7 +84,7 @@ export default function Home() {
                   onClick={handleLogout}
                   style={{
                     padding: '8px 16px',
-                    background: '#667eea',
+                    background: '#00c7a8',
                     color: 'white',
                     border: 'none',
                     borderRadius: '6px',
@@ -97,7 +100,7 @@ export default function Home() {
                   <button
                     style={{
                       padding: '8px 16px',
-                      background: '#667eea',
+                      background: '#00c7a8',
                       color: 'white',
                       border: 'none',
                       borderRadius: '6px',
@@ -144,6 +147,15 @@ export default function Home() {
             </Link>
             <Link href="/chat" className={`${styles.navTab}`}>
               💬 채팅
+            </Link>
+            <Link href="/missions" className={`${styles.navTab}`}>
+              🎯 미션
+            </Link>
+            <Link href="/leaderboard" className={`${styles.navTab}`}>
+              🏆 랭킹
+            </Link>
+            <Link href="/badges" className={`${styles.navTab}`}>
+              🏅 배지
             </Link>
             {session?.user?.role === 'admin' && (
               <Link href="/admin" className={`${styles.navTab}`}>
@@ -238,6 +250,29 @@ export default function Home() {
                 <li>
                   <Link href="/marketplace">🛍️ 마켓플레이스</Link>
                 </li>
+                {settings?.trends?.enabled && settings?.trends?.trendHubEnabled && (
+                  <li>
+                    <Link href="/trends">🌐 트렌드 허브</Link>
+                  </li>
+                )}
+                {settings?.gamification?.enabled && settings?.gamification?.dailyMissionsEnabled && (
+                  <li>
+                    <Link href="/missions">🎯 미션</Link>
+                  </li>
+                )}
+                {settings?.gamification?.enabled && settings?.gamification?.leaderboardEnabled && (
+                  <li>
+                    <Link href="/leaderboard">🏆 리더보드</Link>
+                  </li>
+                )}
+                {settings?.gamification?.enabled && settings?.gamification?.badgesEnabled && (
+                  <li>
+                    <Link href="/badges">🏅 배지</Link>
+                  </li>
+                )}
+                <li>
+                  <Link href="/admin/translation-dashboard">🌐 번역 대시보드</Link>
+                </li>
               </ul>
             </div>
           </aside>
@@ -281,10 +316,7 @@ export default function Home() {
             {activeTab === 'trends' && (
               <div className={styles.feedContent}>
                 <h2 className={styles.contentTitle}>📈 트렌드 분석</h2>
-                <div className={styles.trendsPlaceholder}>
-                  <p>📊 실시간 K-Culture 트렌드 분석</p>
-                  <p style={{ fontSize: '0.9em', marginTop: '10px', opacity: 0.7 }}>곧 업데이트될 예정입니다.</p>
-                </div>
+                <TrendSpotlight />
               </div>
             )}
           </section>
@@ -332,6 +364,13 @@ export default function Home() {
                 <strong>89</strong>
               </div>
             </div>
+
+            {/* Community Translation */}
+            <ContributeTranslation
+              translationKey="home.subtitle"
+              originalText="한국 문화를 사랑하는 글로벌 커뮤니티. K-POP, K-드라마, K-뷰티, K-음식 등 모든 K-Culture를 공유하세요."
+              currentTranslation="Share everything about K-Culture with the world."
+            />
           </aside>
         </main>
       </div>

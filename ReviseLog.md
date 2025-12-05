@@ -1,3 +1,65 @@
+RL-20251205-04
+- 날짜: 2025-12-05 19:00-19:45 (KST)
+- 작성자: GitHub Copilot
+- 변경 유형: 코드 강화 (프로젝트 원칙 12 이행)
+- 변경 대상: lib/settings.js, pages/admin/settings.jsx, components/TrendSpotlight.jsx, pages/leaderboard.jsx, pages/badges.jsx, pages/missions.jsx, pages/trends.jsx, pages/index.jsx, pages/api/gamification/leaderboard.js, pages/api/gamification/badges.js, pages/api/gamification/missions.js, pages/api/gamification/claim-reward.js, pages/api/trends.js, pages/api/vip/top.js, ReviseLog.md, IMPLEMENTATION_STATUS_20251205.md, FINAL_VERIFICATION_CHECKLIST_20251205.md
+- 변경 요약: 모든 신규 기능(트렌드/VIP/게이미피케이션)에 대한 관리자 설정 토글 추가 및 3계층 제어 구조(UI/API/설정) 구현으로 원칙 12 완전 이행
+- 변경 상세 설명:
+  - **설정 시스템 강화 (lib/settings.js)**
+    - DEFAULT_SETTINGS에 trends 섹션 추가: enabled, trendWidgetEnabled, trendHubEnabled, vipMonitoringEnabled, hotIssueEnabled, updateFrequencyMinutes=60, hotIssueMentionThreshold=1000
+    - getSiteSettings() 에서 모든 설정 섹션 병합 로직 확장 (누락 필드 기본값 폴백)
+  - **관리자 UI 확장 (pages/admin/settings.jsx)**
+    - "📊 트렌드 & VIP 모니터링" 섹션 신설 (게이미피케이션 바로 앞)
+    - 토글: trends.enabled (주 스위치)
+    - 체크박스 4개: 위젯/허브/VIP/핫이슈 개별 제어
+    - 슬라이더 2개: 감지 빈도(15~480분), 임계값(100~10000)
+  - **페이지 레벨 접근 제어**
+    - pages/trends.jsx: trends.enabled && trendHubEnabled 체크 → 비활성화 시 404 페이지
+    - pages/leaderboard/badges/missions.jsx: gamification 설정 체크 → 비활성화 시 404 페이지
+  - **컴포넌트 레벨 조건부 렌더링**
+    - components/TrendSpotlight.jsx: trends.enabled && trendWidgetEnabled 체크 → 비활성화 시 null 반환
+  - **네비게이션 조건부 표시 (pages/index.jsx)**
+    - 사이드바 링크 4개(/trends, /missions, /leaderboard, /badges)를 각 기능 설정 기반으로 조건부 렌더링
+  - **API 백엔드 보안**
+    - 6개 API(leaderboard/badges/missions/claim-reward/trends/vip) 모두에 getSiteSettings 호출 및 설정 검증 추가
+    - 비활성화된 기능 호출 시 403 Forbidden 응답 (데이터 반환하지 않음)
+  - **문서화**
+    - ReviseLog.md: RL-20251205-04 엔트리 추가 (상세 변경 기록)
+    - IMPLEMENTATION_STATUS_20251205.md: 새로 생성 (전체 구현 상태 보고서)
+    - FINAL_VERIFICATION_CHECKLIST_20251205.md: 새로 생성 (배포 전 검증 체크리스트)
+- 핵심 기능:
+  - CEO가 /admin/settings 페이지에서 모든 신규 기능의 On/Off 즉시 제어 가능
+  - Sanity siteSettings 변경 → useSiteSettings 훅 감지 → 프론트엔드 자동 갱신 (캐싱 없음)
+  - 3계층 제어: UI(링크 숨김 + 404) + API(403 Forbidden) + 설정(Sanity 중앙 제어)
+  - 초기 로드: DEFAULT_SETTINGS로 모든 기능 활성화 (Sanity 로드 후 업데이트)
+  - 에러 처리: Sanity 조회 실패 시 DEFAULT_SETTINGS 폴백
+- 관련 PR/이슈: 프로젝트 원칙 12 완전 이행, CRITICAL_VIOLATIONS_REPORT.md 해결
+
+RL-20251205-02
+- 날짜: 2025-12-05 18:00 (KST)
+- 작성자: GitHub Copilot
+- 변경 유형: 코드/UI
+- 변경 대상: pages/index.jsx, styles/CommunityFeed.module.css, pages/leaderboard.jsx, styles/Leaderboard.module.css, pages/badges.jsx, styles/Badges.module.css, pages/missions.jsx, styles/Missions.module.css, pages/api/gamification/leaderboard.js, pages/api/gamification/badges.js, pages/api/gamification/claim-reward.js, pages/offline.jsx, styles/Offline.module.css, pages/posts/[slug].jsx, styles/PostDetail.module.css
+- 변경 요약: 프론트엔드 누락 기능(리더보드/배지/미션/오프라인 폴백/투표 섹션)을 추가하고 홈 네비게이션·번역 기여 위젯을 연계, 테마를 위버스 풍 민트 톤으로 갱신
+- 변경 상세 설명: 
+  - 홈 내비게이션과 퀵링크에 미션/리더보드/배지/번역 대시보드 경로 추가, 번역 기여 위젯 배치
+  - 커뮤니티 피드 및 인증 버튼 컬러를 민트 톤으로 변경해 Weverse 레퍼런스 반영
+  - 리더보드/배지/미션 전용 페이지와 대응 API 추가, 미션 보상 API의 빈 progress 문서 처리 및 안전한 보상 지급 보완
+  - 게시글 상세에 PollComponent 삽입 및 스타일 추가, 서비스워커 오프라인 폴백 페이지 신설
+- 관련 PR/이슈: N/A
+
+RL-20251205-03
+- 날짜: 2025-12-05 18:30 (KST)
+- 작성자: GitHub Copilot
+- 변경 유형: 코드/UI
+- 변경 대상: pages/api/trends.js, pages/api/vip/top.js, components/TrendSpotlight.jsx, styles/TrendSpotlight.module.css, pages/index.jsx, pages/trends.jsx, styles/Trends.module.css
+- 변경 요약: 트렌드/핫이슈/VIP 모니터링 데이터를 프론트에서 실시간 노출하도록 API와 트렌드 섹션·전용 페이지 추가
+- 변경 상세 설명:
+  - Sanity 기반 트렌드 스냅샷·핫이슈 조회 API와 VIP 최신 모니터링 집계 API 생성
+  - 홈 트렌드 탭에 TrendSpotlight, 전용 `/trends` 페이지로 라이브 트렌드 허브 제공
+  - 민트-청록 테마의 카드/배지 스타일 정의 및 트렌드 허브 CTA/카테고리 그리드 추가
+- 관련 PR/이슈: N/A
+
 RL-20251205-01
 - Change: Vercel cron schedule reduced for Hobby plan compatibility
   - vercel.json: removed high-frequency crons and kept a single daily job (/api/cron/daily-report at 10:00 KST) to allow deployment on free tier

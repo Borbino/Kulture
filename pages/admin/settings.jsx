@@ -488,6 +488,95 @@ export default function AdminSettings() {
           </div>
         </section>
 
+        {/* 트렌드 및 VIP 모니터링 */}
+        <section className={styles.section}>
+          <h2>📊 트렌드 & VIP 모니터링 (Trends & VIP Monitoring)</h2>
+          <p className={styles.description}>
+            실시간 K-culture 트렌드 및 유명인사 모니터링 기능을 제어합니다.
+          </p>
+
+          <div className={styles.field}>
+            <label className={styles.toggle}>
+              <input
+                type="checkbox"
+                checked={formData.trends?.enabled ?? true}
+                onChange={e => handleChange('trends', 'enabled', e.target.checked)}
+              />
+              <span className={styles.toggleSlider}></span>
+              <span className={styles.toggleLabel}>트렌드 모니터링 활성화</span>
+            </label>
+          </div>
+
+          <div className={styles.checkboxGroup}>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.trends?.trendWidgetEnabled ?? true}
+                onChange={e => handleChange('trends', 'trendWidgetEnabled', e.target.checked)}
+              />
+              홈 페이지 트렌드 위젯 표시
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.trends?.trendHubEnabled ?? true}
+                onChange={e => handleChange('trends', 'trendHubEnabled', e.target.checked)}
+              />
+              전용 트렌드 허브 페이지 활성화
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.trends?.vipMonitoringEnabled ?? true}
+                onChange={e => handleChange('trends', 'vipMonitoringEnabled', e.target.checked)}
+              />
+              VIP 모니터링 (K-pop 아티스트 등)
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.trends?.hotIssueEnabled ?? true}
+                onChange={e => handleChange('trends', 'hotIssueEnabled', e.target.checked)}
+              />
+              핫이슈 감지 & 표시
+            </label>
+          </div>
+
+          <div className={styles.field}>
+            <label>
+              트렌드 감지 빈도: {formData.trends?.updateFrequencyMinutes ?? 60}분
+            </label>
+            <input
+              type="range"
+              min="15"
+              max="480"
+              step="15"
+              value={formData.trends?.updateFrequencyMinutes ?? 60}
+              onChange={e =>
+                handleChange('trends', 'updateFrequencyMinutes', parseInt(e.target.value, 10))
+              }
+              className={styles.slider}
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label>
+              핫이슈 언급 임계값: {formData.trends?.hotIssueMentionThreshold ?? 1000}
+            </label>
+            <input
+              type="range"
+              min="100"
+              max="10000"
+              step="100"
+              value={formData.trends?.hotIssueMentionThreshold ?? 1000}
+              onChange={e =>
+                handleChange('trends', 'hotIssueMentionThreshold', parseInt(e.target.value, 10))
+              }
+              className={styles.slider}
+            />
+          </div>
+        </section>
+
         {/* 게임화 시스템 설정 */}
         <section className={styles.section}>
           <h2>🎮 게임화 시스템 (Gamification)</h2>

@@ -7,6 +7,7 @@ import CommentSection from '../../components/CommentSection'
 import ReactionButton from '../../components/ReactionButton'
 import FollowButton from '../../components/FollowButton'
 import Toast from '../../components/Toast'
+import PollComponent from '../../components/PollComponent'
 import styles from '../../styles/PostDetail.module.css'
 
 export default function Post() {
@@ -17,6 +18,8 @@ export default function Post() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [toastMessage, setToastMessage] = useState('')
+  const [poll, setPoll] = useState(null)
+  const [pollLoading, setPollLoading] = useState(true)
 
   useEffect(() => {
     if (!slug) return
@@ -41,6 +44,33 @@ export default function Post() {
 
     fetchPost()
   }, [slug])
+
+  useEffect(() => {
+    const fetchPoll = async () => {
+      setPollLoading(true)
+      try {
+        const res = await fetch('/api/polls?limit=1')
+        const data = await res.json()
+        setPoll(data?.polls?.[0] || null)
+      } catch (err) {
+        console.error('투표 로드 실패', err)
+      } finally {
+        setPollLoading(false)
+      }
+    }
+
+    fetchPoll()
+  }, [])
+
+  const handlePollVote = async () => {
+    try {
+      const res = await fetch('/api/polls?limit=1')
+      const data = await res.json()
+      setPoll(data?.polls?.[0] || null)
+    } catch (err) {
+      console.error('투표 갱신 실패', err)
+    }
+  }
 
   if (loading) {
     return <div style={{ padding: '40px', textAlign: 'center' }}>로딩 중...</div>
@@ -192,6 +222,14 @@ export default function Post() {
             ))}
           </div>
         )}
+          {/* Poll */}
+          {!pollLoading && poll && (
+            <section className={styles.pollSection}>
+              <h2 className={styles.sectionTitle}>커뮤니티 투표</h2>
+              <PollComponent poll={poll} onVote={handlePollVote} />
+            </section>
+          )}
+
 
         {/* Share Buttons */}
         <div className={styles.shareButtons}>

@@ -1,5 +1,6 @@
 import { sanityClient } from '../../../lib/sanityClient';
 import { getSession } from 'next-auth/react';
+import { getSiteSettings } from '../../../lib/settings';
 
 /**
  * Daily Missions API
@@ -12,6 +13,15 @@ export default async function handler(req, res) {
 
   if (!session) {
     return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  // 미션 기능 활성화 여부 확인
+  const settings = await getSiteSettings();
+  if (!settings?.gamification?.enabled || !settings?.gamification?.dailyMissionsEnabled) {
+    return res.status(403).json({ 
+      error: '미션 기능이 현재 비활성화되었습니다',
+      missions: []
+    });
   }
 
   const today = new Date().toISOString().split('T')[0];

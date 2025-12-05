@@ -1,6 +1,8 @@
 .container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: radial-gradient(circle at 20% 20%, rgba(0, 199, 168, 0.12), transparent 35%),
+    radial-gradient(circle at 80% 10%, rgba(0, 122, 255, 0.1), transparent 35%),
+    linear-gradient(135deg, #f6fffb 0%, #e6f4ff 100%);
 }
 
 /* Header */
@@ -67,9 +69,9 @@
 }
 
 .navTab.active {
-  color: #667eea;
-  border-bottom-color: #667eea;
-  background: #f0f4ff;
+  color: #00c7a8;
+  border-bottom-color: #00c7a8;
+  background: #e8faf6;
 }
 
 /* Main Content */
@@ -170,7 +172,7 @@
   display: block;
   font-size: 18px;
   font-weight: bold;
-  color: #667eea;
+  color: #00bfa6;
 }
 
 .editProfileBtn {
