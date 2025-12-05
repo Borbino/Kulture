@@ -1,0 +1,133 @@
+.pollContainer {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+.pollHeader {
+  margin-bottom: 20px;
+}
+
+.pollTitle {
+  font-family: 'Jua', sans-serif;
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #111827;
+}
+
+.pollDescription {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.optionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.optionItem {
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.optionItem:hover {
+  border-color: #667eea;
+}
+
+.optionItem.selected {
+  border-color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.optionBar {
+  position: relative;
+  height: 40px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.optionFill {
+  position: absolute;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transition: width 0.3s ease;
+  min-width: 2px;
+}
+
+.optionContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  z-index: 1;
+}
+
+.optionTitle {
+  flex: 1;
+}
+
+.optionStats {
+  font-size: 12px;
+  color: #6b7280;
+  margin-left: 12px;
+  white-space: nowrap;
+}
+
+.pollFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #9ca3af;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.totalVotes {
+  flex: 1;
+}
+
+.hasVoted {
+  color: #10b981;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .pollContainer {
+    padding: 16px;
+  }
+
+  .optionBar {
+    height: 36px;
+  }
+
+  .pollTitle {
+    font-size: 16px;
+  }
+
+  .optionContent {
+    font-size: 12px;
+  }
+
+  .optionStats {
+    font-size: 11px;
+  }
+}

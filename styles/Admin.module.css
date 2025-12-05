@@ -122,6 +122,138 @@
   justify-content: flex-start;
 }
 
+/* Moderation */
+.filterButtons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.filterBtn {
+  padding: 10px 16px;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.filterBtn:hover {
+  border-color: #667eea;
+}
+
+.filterBtn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: transparent;
+}
+
+.reportsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.reportCard {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.reportHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 12px;
+}
+
+.reportHeader h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #111827;
+}
+
+.statusBadge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+}
+
+.statusBadge.pending {
+  background: #f97316;
+}
+
+.statusBadge.resolved {
+  background: #10b981;
+}
+
+.statusBadge.dismissed {
+  background: #6b7280;
+}
+
+.reportContent {
+  margin-bottom: 12px;
+}
+
+.reportContent p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+.reportContent strong {
+  color: #111827;
+}
+
+.reportContent small {
+  color: #9ca3af;
+}
+
+.reportActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.actionBtn,
+.dismissBtn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.actionBtn {
+  background: #ef4444;
+  color: white;
+}
+
+.actionBtn:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+.dismissBtn {
+  background: #6b7280;
+  color: white;
+}
+
+.dismissBtn:hover {
+  background: #4b5563;
+  transform: translateY(-2px);
+}
+
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
