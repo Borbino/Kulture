@@ -133,6 +133,15 @@ export default function Home() {
             >
               📈 트렌드
             </button>
+            <Link href="/communities" className={`${styles.navTab}`}>
+              👥 커뮤니티
+            </Link>
+            <Link href="/events" className={`${styles.navTab}`}>
+              📅 이벤트
+            </Link>
+            <Link href="/marketplace" className={`${styles.navTab}`}>
+              🛍️ 마켓
+            </Link>
             <Link href="/chat" className={`${styles.navTab}`}>
               💬 채팅
             </Link>
@@ -216,6 +225,18 @@ export default function Home() {
                 </li>
                 <li>
                   <Link href="/category/ktourism">🗼 K-여행</Link>
+                </li>
+              </ul>
+              <h4 style={{ marginTop: '20px' }}>✨ 더보기</h4>
+              <ul>
+                <li>
+                  <Link href="/communities">👥 커뮤니티</Link>
+                </li>
+                <li>
+                  <Link href="/events">📅 이벤트</Link>
+                </li>
+                <li>
+                  <Link href="/marketplace">🛍️ 마켓플레이스</Link>
                 </li>
               </ul>
             </div>
