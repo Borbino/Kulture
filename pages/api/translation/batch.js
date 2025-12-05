@@ -4,7 +4,7 @@
  * [목적] 대량 텍스트 병렬 번역으로 성능 10배 향상
  */
 
-import { translateText } from '../../../lib/aiTranslation.js';
+import { translate } from '../../../lib/aiTranslation.js';
 import { translationMonitor } from '../../../lib/translationPerformanceMonitor.js';
 import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
 import rateLimitMiddleware from '../../../lib/rateLimiter.js';
@@ -46,10 +46,7 @@ async function handler(req, res) {
       texts.map(async (text, index) => {
         try {
           const context = translationMonitor.startRequest('batch', sourceLang, targetLang);
-          const result = await translateText(text, targetLang, {
-            sourceLang,
-            ...options,
-          });
+          const result = await translate(text, targetLang, sourceLang, options);
           translationMonitor.endRequest(context, true, result.fromCache);
           
           return {
