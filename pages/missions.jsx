@@ -44,11 +44,14 @@ export default function Missions() {
       const res = await fetch('/api/gamification/missions')
       const data = await res.json()
 
-      if (data.missions) {
-        setMissions(data.missions)
-      }
-      if (data.stats) {
-        setStats(data.stats)
+      if (data.data?.missions) {
+        setMissions(data.data.missions)
+        setStats({
+          totalCompleted: 0,
+          todayCompleted: data.data.missions.filter(m => m.isCompleted).length,
+          streak: data.data.streak || 0,
+          totalRewards: 0
+        })
       }
     } catch (error) {
       console.error('Failed to fetch missions:', error)

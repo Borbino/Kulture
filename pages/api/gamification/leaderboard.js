@@ -81,10 +81,12 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       success: true,
-      leaderboard: processedLeaderboard,
-      timeframe,
-      category,
-      totalUsers: processedLeaderboard.length
+      data: {
+        leaderboard: processedLeaderboard,
+        timeframe,
+        category,
+        totalUsers: processedLeaderboard.length,
+      },
     })
   } catch (error) {
     console.error('Error fetching leaderboard:', error)

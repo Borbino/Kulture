@@ -29,14 +29,14 @@ export default function TrendSpotlight() {
         const trendData = await trendRes.json()
         const vipData = await vipRes.json()
 
-        if (trendData?.success) {
-          setTrends(trendData.snapshot?.trends || [])
-          setSnapshotTime(trendData.snapshot?.timestamp || null)
-          setHotIssues(trendData.hotIssues || [])
+        if (trendData?.success && trendData?.data) {
+          setTrends(trendData.data.snapshot?.trends || [])
+          setSnapshotTime(trendData.data.snapshot?.timestamp || null)
+          setHotIssues(trendData.data.hotIssues || [])
         }
 
-        if (vipData?.success) {
-          setVip(vipData.vip || [])
+        if (vipData?.success && vipData?.data) {
+          setVip(vipData.data.vip || [])
         }
       } catch (err) {
         setError('트렌드 데이터를 불러오지 못했습니다')

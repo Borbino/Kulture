@@ -36,10 +36,10 @@ export default function Badges() {
       const res = await fetch('/api/gamification/badges')
       const data = await res.json()
       
-      if (data.badges) {
-        setBadges(data.badges)
+      if (data.data?.badges) {
+        setBadges(data.data.badges)
         if (session) {
-          setUserBadges(data.userBadges || [])
+          setUserBadges(data.data.userBadges || [])
         }
       }
     } catch (error) {

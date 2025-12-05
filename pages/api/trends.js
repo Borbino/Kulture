@@ -42,8 +42,10 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       success: true,
-      snapshot: snapshot || { trends: [], timestamp: null },
-      hotIssues: hotIssues || [],
+      data: {
+        snapshot: snapshot || { trends: [], timestamp: null },
+        hotIssues: hotIssues || [],
+      },
     })
   } catch (error) {
     console.error('[API /trends] error:', error)

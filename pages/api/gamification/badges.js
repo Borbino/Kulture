@@ -98,10 +98,12 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       success: true,
-      badges: badgesWithProgress,
-      userBadges,
-      totalBadges: badges.length,
-      earnedBadges: userBadges.length
+      data: {
+        badges: badgesWithProgress,
+        userBadges,
+        totalBadges: badges.length,
+        earnedBadges: userBadges.length
+      }
     })
   } catch (error) {
     console.error('Error fetching badges:', error)

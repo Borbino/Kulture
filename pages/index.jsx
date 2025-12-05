@@ -13,6 +13,7 @@ import Search from '../components/Search'
 import RecommendationWidget from '../components/RecommendationWidget'
 import DailyMissions from '../components/DailyMissions'
 import TrendSpotlight from '../components/TrendSpotlight'
+import ContributeTranslation from '../components/ContributeTranslation'
 import Toast from '../components/Toast'
 import styles from '../styles/CommunityFeed.module.css'
 
@@ -148,15 +149,24 @@ export default function Home() {
             <Link href="/chat" className={`${styles.navTab}`}>
               💬 채팅
             </Link>
-            <Link href="/missions" className={`${styles.navTab}`}>
-              🎯 미션
-            </Link>
-            <Link href="/leaderboard" className={`${styles.navTab}`}>
-              🏆 랭킹
-            </Link>
-            <Link href="/badges" className={`${styles.navTab}`}>
-              🏅 배지
-            </Link>
+            {settings?.gamification?.enabled && (
+              <>
+                <Link href="/missions" className={`${styles.navTab}`}>
+                  🎯 미션
+                </Link>
+                <Link href="/leaderboard" className={`${styles.navTab}`}>
+                  🏆 랭킹
+                </Link>
+                <Link href="/badges" className={`${styles.navTab}`}>
+                  🏅 배지
+                </Link>
+              </>
+            )}
+            {settings?.trends?.enabled && settings?.trends?.trendHubEnabled && (
+              <Link href="/trends" className={`${styles.navTab}`}>
+                📈 트렌드 허브
+              </Link>
+            )}
             {session?.user?.role === 'admin' && (
               <Link href="/admin" className={`${styles.navTab}`}>
                 ⚙️ 관리

@@ -85,9 +85,12 @@ export default async function handler(req, res) {
       const streak = await calculateStreak(userId);
 
       return res.status(200).json({
-        missions: missionsWithProgress,
-        streak,
-        date: today,
+        success: true,
+        data: {
+          missions: missionsWithProgress,
+          streak,
+          date: today,
+        },
       });
     } catch (error) {
       console.error('Error getting missions:', error);
@@ -190,9 +193,12 @@ export default async function handler(req, res) {
       }
 
       return res.status(200).json({
-        progress: newProgress,
-        isCompleted,
-        mission,
+        success: true,
+        data: {
+          progress: newProgress,
+          isCompleted,
+          mission,
+        },
       });
     } catch (error) {
       console.error('Error updating mission progress:', error);

@@ -41,8 +41,10 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       success: true,
-      vip: vipList,
-      generatedAt: new Date().toISOString(),
+      data: {
+        vip: vipList,
+        generatedAt: new Date().toISOString(),
+      },
     })
   } catch (error) {
     console.error('[API /vip/top] error:', error)

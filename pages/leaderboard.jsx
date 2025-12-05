@@ -35,8 +35,8 @@ export default function Leaderboard() {
     try {
       const res = await fetch(`/api/gamification/leaderboard?timeframe=${timeframe}&category=${category}`)
       const data = await res.json()
-      if (data.leaderboard) {
-        setLeaderboard(data.leaderboard)
+      if (data.data?.leaderboard) {
+        setLeaderboard(data.data.leaderboard)
       }
     } catch (error) {
       console.error('Failed to fetch leaderboard:', error)
