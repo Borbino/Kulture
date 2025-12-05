@@ -1,3 +1,8 @@
+RL-20251205-01
+- Change: Vercel cron schedule reduced for Hobby plan compatibility
+  - vercel.json: removed high-frequency crons and kept a single daily job (/api/cron/daily-report at 10:00 KST) to allow deployment on free tier
+  - Rationale: Hobby accounts permit only once-per-day cron executions; previous schedules (*/30, */2, hourly, etc.) blocked deployment
+
 RL-20251126-10
 - Critical: 프로젝트 원칙 위반 사항 발견 및 보고
   - **Git 워크플로우 원칙 중대 위반 (CRITICAL)**:
