@@ -12,23 +12,7 @@
     }
   ],
   "env": {
-    "NEXT_PUBLIC_SANITY_PROJECT_ID": {
-      "type": "secret",
-      "value": "sanity_project_id"
-    },
-    "NEXT_PUBLIC_SANITY_DATASET": "production",
-    "SANITY_API_TOKEN": {
-      "type": "secret",
-      "value": "sanity_api_token"
-    },
-    "CRON_SECRET": {
-      "type": "secret",
-      "value": "cron_secret"
-    },
-    "NEXT_PUBLIC_GA_MEASUREMENT_ID": {
-      "type": "secret",
-      "value": "ga_measurement_id"
-    }
+    "NEXT_PUBLIC_SANITY_DATASET": "production"
   },
   "headers": [
     {
