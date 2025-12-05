@@ -1,291 +1,319 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Head from 'next/head'
-import PropTypes from 'prop-types'
-import styles from '../styles/Home.module.css'
+import Link from 'next/link'
+import { useSession, signOut } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import InfiniteScrollPosts from '../components/InfiniteScrollPosts'
+import PostEditor from '../components/PostEditor'
+import ActivityFeed from '../components/ActivityFeed'
+import NotificationBell from '../components/NotificationBell'
+import LanguageSwitcher from '../components/LanguageSwitcher'
+import Search from '../components/Search'
+import RecommendationWidget from '../components/RecommendationWidget'
+import DailyMissions from '../components/DailyMissions'
+import Toast from '../components/Toast'
+import styles from '../styles/CommunityFeed.module.css'
 
-export default function Home({ hotIssues, trendingTopics, vipContent, recentPosts }) {
-  const [activeTab, setActiveTab] = useState('all')
+export default function Home() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
+  const [activeTab, setActiveTab] = useState('feed')
+  const [showPostEditor, setShowPostEditor] = useState(false)
+  const [toastMessage, setToastMessage] = useState(null)
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const handlePostSuccess = () => {
+    setShowPostEditor(false)
+    setToastMessage('✅ 게시글이 등록되었습니다!')
+    setTimeout(() => setToastMessage(null), 3000)
+  }
+
+  const handleSearch = (query) => {
+    setSearchQuery(query)
+    router.push(`/search?q=${encodeURIComponent(query)}`)
+  }
+
+  const handleLogout = async () => {
+    await signOut({ redirect: false })
+    router.push('/')
+  }
+
+  if (status === 'loading') {
+    return (
+      <div className={styles.container}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>로딩 중...</div>
+      </div>
+    )
+  }
 
   return (
     <>
       <Head>
-        <title>Kulture - K-POP 트렌드 & VIP 소식</title>
+        <title>Kulture - K-Culture 글로벌 커뮤니티</title>
         <meta
           name="description"
-          content="실시간 K-POP 트렌드 분석과 VIP 아티스트 소식을 한 곳에서"
+          content="한국 문화를 사랑하는 글로벌 커뮤니티. K-POP, K-드라마, K-뷰티, K-음식 등 모든 K-Culture를 공유하세요."
         />
-        <meta name="keywords" content="K-POP, 트렌드, VIP, 아이돌, 뉴스, 엔터테인먼트" />
-        <meta property="og:title" content="Kulture - K-POP 트렌드 & VIP 소식" />
-        <meta
-          property="og:description"
-          content="실시간 K-POP 트렌드 분석과 VIP 아티스트 소식"
-        />
+        <meta name="keywords" content="K-문화, K-POP, K-드라마, K-뷰티, K-음식, 커뮤니티" />
+        <meta property="og:title" content="Kulture - K-Culture 글로벌 커뮤니티" />
+        <meta property="og:description" content="한국 문화를 사랑하는 글로벌 커뮤니티" />
         <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://yoursite.com/" />
+        <link rel="canonical" href="https://kulture.wiki/" />
       </Head>
 
+      {toastMessage && <Toast message={toastMessage} />}
+
       <div className={styles.container}>
-        {/* Hero Section */}
-        <section className={styles.hero}>
-          <h1 className={styles.heroTitle}>
-            K-POP 트렌드를
-            <br />
-            <span className={styles.highlight}>실시간</span>으로
-          </h1>
-          <p className={styles.heroSubtitle}>
-            AI가 분석하는 VIP 아티스트 소식과 최신 트렌드
-          </p>
-        </section>
-
-        {/* Hot Issues */}
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>
-            🔥 Hot Issues
-            <span className={styles.badge}>실시간</span>
-          </h2>
-          <div className={styles.hotIssuesGrid}>
-            {hotIssues?.map((issue, idx) => (
-              <div key={idx} className={styles.hotIssueCard}>
-                <div className={styles.hotIssueRank}>#{idx + 1}</div>
-                <h3 className={styles.hotIssueTitle}>{issue.issue}</h3>
-                <div className={styles.hotIssueMeta}>
-                  <span className={styles.mentions}>🔥 {issue.mentions} mentions</span>
-                  <span className={styles.platform}>{issue.platform}</span>
-                </div>
-                {issue.relatedVIP && (
-                  <div className={styles.relatedVIP}>관련: {issue.relatedVIP}</div>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Trending Topics */}
-        <section className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>📈 실시간 트렌드</h2>
-            <div className={styles.tabs}>
-              <button
-                className={`${styles.tab} ${activeTab === 'all' ? styles.tabActive : ''}`}
-                onClick={() => setActiveTab('all')}
-              >
-                전체
-              </button>
-              <button
-                className={`${styles.tab} ${activeTab === 'rising' ? styles.tabActive : ''}`}
-                onClick={() => setActiveTab('rising')}
-              >
-                급상승
-              </button>
-              <button
-                className={`${styles.tab} ${activeTab === 'vip' ? styles.tabActive : ''}`}
-                onClick={() => setActiveTab('vip')}
-              >
-                VIP Only
-              </button>
+        {/* Header */}
+        <header className={styles.header}>
+          <div className={styles.headerTop}>
+            <div className={styles.logo}>
+              <Link href="/">
+                <h1>🌏 Kulture</h1>
+              </Link>
+            </div>
+            <div className={styles.headerActions}>
+              <Search onSearch={handleSearch} />
+              {session && <NotificationBell />}
+              <LanguageSwitcher />
+              {session ? (
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    padding: '8px 16px',
+                    background: '#667eea',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                  }}
+                >
+                  로그아웃
+                </button>
+              ) : (
+                <Link href="/auth/login">
+                  <button
+                    style={{
+                      padding: '8px 16px',
+                      background: '#667eea',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontSize: '14px',
+                      fontWeight: '600',
+                    }}
+                  >
+                    로그인
+                  </button>
+                </Link>
+              )}
             </div>
           </div>
-          <div className={styles.trendGrid}>
-            {trendingTopics
-              ?.filter(trend => activeTab === 'all' || trend.category === activeTab)
-              .map((trend, idx) => (
-                <div key={idx} className={styles.trendCard}>
-                  <div className={styles.trendHeader}>
-                    <h3 className={styles.trendKeyword}>{trend.keyword}</h3>
-                    {trend.trend === 'rising' && (
-                      <span className={styles.trendBadge}>🔺 급상승</span>
+
+          {/* Navigation Tabs */}
+          <nav className={styles.nav}>
+            <button
+              className={`${styles.navTab} ${activeTab === 'feed' ? styles.active : ''}`}
+              onClick={() => setActiveTab('feed')}
+            >
+              🏠 피드
+            </button>
+            <button
+              className={`${styles.navTab} ${activeTab === 'activity' ? styles.active : ''}`}
+              onClick={() => setActiveTab('activity')}
+            >
+              📊 활동
+            </button>
+            <button
+              className={`${styles.navTab} ${activeTab === 'trends' ? styles.active : ''}`}
+              onClick={() => setActiveTab('trends')}
+            >
+              📈 트렌드
+            </button>
+            <Link href="/chat" className={`${styles.navTab}`}>
+              💬 채팅
+            </Link>
+            {session?.user?.role === 'admin' && (
+              <Link href="/admin" className={`${styles.navTab}`}>
+                ⚙️ 관리
+              </Link>
+            )}
+          </nav>
+        </header>
+
+        {/* Main Content */}
+        <main className={styles.main}>
+          {/* Sidebar - Left */}
+          <aside className={styles.sidebarLeft}>
+            {session ? (
+              <>
+                {/* User Profile Card */}
+                <div className={styles.userCard}>
+                  <div className={styles.userAvatar}>
+                    {session.user?.image ? (
+                      <img src={session.user.image} alt={session.user.name} />
+                    ) : (
+                      <div className={styles.avatarPlaceholder}>
+                        {session.user?.name?.charAt(0).toUpperCase()}
+                      </div>
                     )}
                   </div>
-                  <div className={styles.trendSources}>
-                    {trend.sources?.map((source, i) => (
-                      <span key={i} className={styles.source}>
-                        {source}
-                      </span>
-                    ))}
+                  <h3 className={styles.userName}>{session.user?.name}</h3>
+                  <p className={styles.userEmail}>{session.user?.email}</p>
+                  <div className={styles.userStats}>
+                    <div className={styles.stat}>
+                      <span className={styles.statLabel}>팔로워</span>
+                      <span className={styles.statValue}>0</span>
+                    </div>
+                    <div className={styles.stat}>
+                      <span className={styles.statLabel}>팔로잉</span>
+                      <span className={styles.statValue}>0</span>
+                    </div>
+                    <div className={styles.stat}>
+                      <span className={styles.statLabel}>게시글</span>
+                      <span className={styles.statValue}>0</span>
+                    </div>
                   </div>
-                  <div className={styles.trendMentions}>{trend.mentions} mentions</div>
+                  <Link href={`/profile/${session.user?.email}`}>
+                    <button className={styles.editProfileBtn}>프로필 보기</button>
+                  </Link>
                 </div>
-              ))}
-          </div>
-        </section>
 
-        {/* VIP Content */}
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>⭐ VIP Spotlight</h2>
-          <div className={styles.vipGrid}>
-            {vipContent?.map((vip, idx) => (
-              <div key={idx} className={styles.vipCard}>
-                <div className={styles.vipHeader}>
-                  <div className={styles.vipAvatar}>{vip.name[0]}</div>
-                  <div>
-                    <h3 className={styles.vipName}>{vip.name}</h3>
-                    <p className={styles.vipPlatform}>{vip.platform}</p>
-                  </div>
-                </div>
-                <p className={styles.vipActivity}>{vip.latestActivity}</p>
-                <div className={styles.vipMeta}>
-                  <span>{vip.activityCount} activities</span>
-                  <span className={styles.vipTime}>{formatTime(vip.lastChecked)}</span>
+                {/* Daily Missions */}
+                <DailyMissions />
+              </>
+            ) : (
+              <div className={styles.loginCard}>
+                <h3>Kulture에 참여하세요!</h3>
+                <p>한국 문화를 사랑하는 글로벌 커뮤니티에 가입하세요.</p>
+                <Link href="/auth/login">
+                  <button className={styles.loginBtn}>로그인 / 회원가입</button>
+                </Link>
+              </div>
+            )}
+
+            {/* Quick Links */}
+            <div className={styles.quickLinks}>
+              <h4>🌟 카테고리</h4>
+              <ul>
+                <li>
+                  <Link href="/category/kpop">🎤 K-POP</Link>
+                </li>
+                <li>
+                  <Link href="/category/kdrama">🎬 K-드라마</Link>
+                </li>
+                <li>
+                  <Link href="/category/kfood">🍜 K-음식</Link>
+                </li>
+                <li>
+                  <Link href="/category/kbeauty">💄 K-뷰티</Link>
+                </li>
+                <li>
+                  <Link href="/category/kfashion">👗 K-패션</Link>
+                </li>
+                <li>
+                  <Link href="/category/ktourism">🗼 K-여행</Link>
+                </li>
+              </ul>
+            </div>
+          </aside>
+
+          {/* Center Feed */}
+          <section className={styles.feed}>
+            {/* Post Editor */}
+            {session && (
+              <div className={styles.postEditorWrapper}>
+                <button
+                  className={styles.openEditorBtn}
+                  onClick={() => setShowPostEditor(true)}
+                >
+                  💭 무엇을 공유하고 싶으신가요?
+                </button>
+              </div>
+            )}
+
+            {showPostEditor && (
+              <PostEditor
+                onClose={() => setShowPostEditor(false)}
+                onSuccess={handlePostSuccess}
+              />
+            )}
+
+            {/* Tabs Content */}
+            {activeTab === 'feed' && (
+              <div className={styles.feedContent}>
+                <h2 className={styles.contentTitle}>📱 최신 게시글</h2>
+                {session ? <InfiniteScrollPosts /> : <div style={{ padding: '40px', textAlign: 'center', color: '#9ca3af' }}>로그인 후 게시글을 확인하세요.</div>}
+              </div>
+            )}
+
+            {activeTab === 'activity' && (
+              <div className={styles.feedContent}>
+                <h2 className={styles.contentTitle}>📊 활동 피드</h2>
+                {session ? <ActivityFeed /> : <div style={{ padding: '40px', textAlign: 'center', color: '#9ca3af' }}>로그인 후 활동을 확인하세요.</div>}
+              </div>
+            )}
+
+            {activeTab === 'trends' && (
+              <div className={styles.feedContent}>
+                <h2 className={styles.contentTitle}>📈 트렌드 분석</h2>
+                <div className={styles.trendsPlaceholder}>
+                  <p>📊 실시간 K-Culture 트렌드 분석</p>
+                  <p style={{ fontSize: '0.9em', marginTop: '10px', opacity: 0.7 }}>곧 업데이트될 예정입니다.</p>
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
+            )}
+          </section>
 
-        {/* Recent Posts */}
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>📝 최근 포스트</h2>
-          <div className={styles.postsGrid}>
-            {recentPosts?.map((post, idx) => (
-              <article key={idx} className={styles.postCard}>
-                {post.mainImage && (
-                  <div className={styles.postImage}>
-                    <img src={post.mainImage} alt={post.title} />
-                  </div>
-                )}
-                <div className={styles.postContent}>
-                  <div className={styles.postCategory}>{post.category}</div>
-                  <h3 className={styles.postTitle}>{post.title}</h3>
-                  <p className={styles.postExcerpt}>{post.excerpt}</p>
-                  <div className={styles.postMeta}>
-                    <span>{post.author}</span>
-                    <span>{formatDate(post.publishedAt)}</span>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
+          {/* Sidebar - Right */}
+          <aside className={styles.sidebarRight}>
+            <RecommendationWidget />
+
+            {/* Popular Categories */}
+            <div className={styles.categoriesWidget}>
+              <h4>🔥 인기 카테고리</h4>
+              <div className={styles.categoryTags}>
+                <Link href="/category/kpop">
+                  <span className={styles.categoryTag}>#K-POP</span>
+                </Link>
+                <Link href="/category/kdrama">
+                  <span className={styles.categoryTag}>#K-드라마</span>
+                </Link>
+                <Link href="/category/kbeauty">
+                  <span className={styles.categoryTag}>#K-뷰티</span>
+                </Link>
+                <Link href="/category/kfood">
+                  <span className={styles.categoryTag}>#K-음식</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Community Stats */}
+            <div className={styles.statsWidget}>
+              <h4>📊 커뮤니티 통계</h4>
+              <div className={styles.widgetStat}>
+                <span>전체 게시글</span>
+                <strong>1,234</strong>
+              </div>
+              <div className={styles.widgetStat}>
+                <span>활성 사용자</span>
+                <strong>567</strong>
+              </div>
+              <div className={styles.widgetStat}>
+                <span>총 댓글</span>
+                <strong>5,678</strong>
+              </div>
+              <div className={styles.widgetStat}>
+                <span>오늘 활동</span>
+                <strong>89</strong>
+              </div>
+            </div>
+          </aside>
+        </main>
       </div>
     </>
   )
-}
-
-// 서버 사이드 데이터 페칭
-export async function getServerSideProps() {
-  try {
-    // Hot Issues
-    const hotIssues = [
-      {
-        issue: 'G-DRAGON 컴백 소식',
-        mentions: 15420,
-        platform: 'Twitter',
-        relatedVIP: 'G-DRAGON',
-      },
-      {
-        issue: 'BTS 지민 솔로 앨범',
-        mentions: 12350,
-        platform: 'Instagram',
-        relatedVIP: 'BTS',
-      },
-      {
-        issue: 'BLACKPINK 월드투어',
-        mentions: 9840,
-        platform: 'YouTube',
-        relatedVIP: 'BLACKPINK',
-      },
-    ]
-
-    // Trending Topics
-    const trendingTopics = [
-      {
-        keyword: 'K-POP 패션',
-        mentions: 5420,
-        trend: 'rising',
-        sources: ['Twitter', 'Instagram'],
-        category: 'all',
-      },
-      {
-        keyword: '아이돌 챌린지',
-        mentions: 4320,
-        trend: 'stable',
-        sources: ['TikTok', 'YouTube'],
-        category: 'all',
-      },
-      {
-        keyword: '신곡 발매',
-        mentions: 3890,
-        trend: 'rising',
-        sources: ['YouTube', 'Spotify'],
-        category: 'rising',
-      },
-    ]
-
-    // VIP Content
-    const vipContent = [
-      {
-        name: 'G-DRAGON',
-        platform: 'Instagram',
-        latestActivity: '새로운 앨범 티저 공개',
-        activityCount: 5,
-        lastChecked: new Date().toISOString(),
-      },
-      {
-        name: 'IU',
-        platform: 'Twitter',
-        latestActivity: '콘서트 일정 발표',
-        activityCount: 3,
-        lastChecked: new Date().toISOString(),
-      },
-    ]
-
-    // Recent Posts (실제로는 Sanity에서 가져옴)
-    const recentPosts = [
-      {
-        title: 'K-POP 트렌드 분석: 2025년 상반기',
-        excerpt: 'AI가 분석한 올해 가장 핫한 K-POP 트렌드를 살펴봅니다.',
-        category: 'Analysis',
-        author: 'Kulture AI',
-        publishedAt: new Date().toISOString(),
-        mainImage: null,
-      },
-    ]
-
-    return {
-      props: {
-        hotIssues,
-        trendingTopics,
-        vipContent,
-        recentPosts,
-      },
-    }
-  } catch (error) {
-    console.error('[Home SSR] Error:', error)
-    return {
-      props: {
-        hotIssues: [],
-        trendingTopics: [],
-        vipContent: [],
-        recentPosts: [],
-      },
-    }
-  }
-}
-
-Home.propTypes = {
-  hotIssues: PropTypes.array,
-  trendingTopics: PropTypes.array,
-  vipContent: PropTypes.array,
-  recentPosts: PropTypes.array,
-}
-
-// Utility functions
-function formatTime(isoString) {
-  const date = new Date(isoString)
-  const now = new Date()
-  const diffMs = now - date
-  const diffMins = Math.floor(diffMs / 60000)
-
-  if (diffMins < 60) return `${diffMins}분 전`
-  if (diffMins < 1440) return `${Math.floor(diffMins / 60)}시간 전`
-  return `${Math.floor(diffMins / 1440)}일 전`
-}
-
-function formatDate(isoString) {
-  const date = new Date(isoString)
-  return date.toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
 }

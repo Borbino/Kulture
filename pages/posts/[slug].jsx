@@ -1,17 +1,60 @@
-import Head from 'next/head'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import PropTypes from 'prop-types'
-import styles from '../../styles/Post.module.css'
+import { useSession } from 'next-auth/react'
+import Head from 'next/head'
+import Link from 'next/link'
+import CommentSection from '../../components/CommentSection'
+import ReactionButton from '../../components/ReactionButton'
+import FollowButton from '../../components/FollowButton'
+import Toast from '../../components/Toast'
+import styles from '../../styles/PostDetail.module.css'
 
-export default function Post({ post, relatedPosts }) {
+export default function Post() {
   const router = useRouter()
+  const { slug } = router.query
+  const { data: session } = useSession()
+  const [post, setPost] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [toastMessage, setToastMessage] = useState('')
 
-  if (router.isFallback) {
-    return <div className={styles.loading}>로딩 중...</div>
+  useEffect(() => {
+    if (!slug) return
+
+    const fetchPost = async () => {
+      try {
+        const res = await fetch(`/api/posts?search=${slug}`)
+        const data = await res.json()
+
+        if (data.posts && data.posts.length > 0) {
+          setPost(data.posts[0])
+        } else {
+          setError('게시글을 찾을 수 없습니다')
+        }
+      } catch (err) {
+        setError('게시글 로드 실패')
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPost()
+  }, [slug])
+
+  if (loading) {
+    return <div style={{ padding: '40px', textAlign: 'center' }}>로딩 중...</div>
   }
 
-  if (!post) {
-    return <div className={styles.error}>게시물을 찾을 수 없습니다.</div>
+  if (error || !post) {
+    return (
+      <div className={styles.errorBox}>
+        <h2>⚠️ {error || '게시글을 찾을 수 없습니다'}</h2>
+        <Link href="/">
+          <button className={styles.backBtn}>홈으로 돌아가기</button>
+        </Link>
+      </div>
+    )
   }
 
   const publishedDate = new Date(post.publishedAt).toLocaleDateString('ko-KR', {

@@ -1,0 +1,79 @@
+.errorContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.errorContent {
+  background: white;
+  border-radius: 16px;
+  padding: 60px 40px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+}
+
+.errorCode {
+  font-family: 'Jua', sans-serif;
+  margin: 0 0 16px;
+  font-size: 96px;
+  color: #667eea;
+  font-weight: bold;
+}
+
+.errorTitle {
+  font-family: 'Jua', sans-serif;
+  margin: 0 0 12px;
+  font-size: 28px;
+  color: #111827;
+}
+
+.errorMessage {
+  margin: 0 0 30px;
+  font-size: 16px;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.homeBtn {
+  padding: 12px 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Jua', sans-serif;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.homeBtn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(102, 126, 234, 0.4);
+}
+
+@media (max-width: 768px) {
+  .errorContent {
+    padding: 40px 24px;
+  }
+
+  .errorCode {
+    font-size: 72px;
+  }
+
+  .errorTitle {
+    font-size: 24px;
+  }
+
+  .errorMessage {
+    font-size: 14px;
+  }
+
+  .homeBtn {
+    width: 100%;
+  }
+}
