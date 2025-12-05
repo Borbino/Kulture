@@ -7,8 +7,7 @@
   "crons": [
     {
       "path": "/api/cron/daily-report",
-      "schedule": "0 1 * * *",
-      "comment": "Hobby 플랜 호환: 일 1회 실행 (매일 10:00 KST)"
+      "schedule": "0 1 * * *"
     }
   ],
   "env": {
