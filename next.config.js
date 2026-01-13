@@ -5,13 +5,11 @@ const nextConfig = {
   i18n,
   reactStrictMode: true,
   // Performance optimizations
-  swcMinify: true,
   compress: true,
   poweredByHeader: false,
   
   // Code splitting configuration
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['@sanity/client', 'next-auth', 'socket.io-client'],
   },
   

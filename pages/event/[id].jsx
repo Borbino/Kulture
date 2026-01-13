@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/react'
-import SEOHead from '../../../components/SEOHead'
-import Toast from '../../../components/Toast'
-import styles from '../../../styles/EventDetail.module.css'
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
+import SEOHead from '../../components/SEOHead';
+import Toast from '../../components/Toast';
+import styles from '../../styles/EventDetail.module.css';
 
 export default function EventDetailPage() {
   const router = useRouter()

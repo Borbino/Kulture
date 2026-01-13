@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import InfiniteScrollPosts from '../components/InfiniteScrollPosts'
-import styles from '../styles/Category.module.css'
+import InfiniteScrollPosts from '../../components/InfiniteScrollPosts';
+import styles from '../../styles/Category.module.css';
 
 const CATEGORIES = {
   kpop: { name: 'K-POP', icon: '🎤', description: '케이팝 음악, 아이돌, 콘서트' },

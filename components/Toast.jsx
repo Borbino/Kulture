@@ -106,3 +106,5 @@ Toast.propTypes = {
   type: PropTypes.oneOf(['success', 'error', 'warning', 'info']).isRequired,
   onRemove: PropTypes.func.isRequired,
 }
+
+export default ToastContainer

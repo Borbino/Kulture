@@ -6,7 +6,7 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import styles from './LanguageSwitcher.module.css';
-import { SUPPORTED_LANGUAGES } from '../lib/aiTranslation';
+import { SUPPORTED_LANGUAGES } from '../lib/languages';
 
 export default function LanguageSwitcher() {
   const router = useRouter();

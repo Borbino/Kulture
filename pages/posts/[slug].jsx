@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
+import PropTypes from 'prop-types'
 import Head from 'next/head'
 import Link from 'next/link'
 import CommentSection from '../../components/CommentSection'

@@ -3,8 +3,8 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
-import Toast from '../components/Toast'
-import styles from '../styles/Admin.module.css'
+import Toast from '../../components/Toast';
+import styles from '../../styles/Admin.module.css';
 
 function ModerationSection() {
   const [reports, setReports] = useState([])

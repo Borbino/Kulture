@@ -3,10 +3,10 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import Head from 'next/head'
 import Link from 'next/link'
-import FollowButton from '../components/FollowButton'
-import InfiniteScrollPosts from '../components/InfiniteScrollPosts'
-import Toast from '../components/Toast'
-import styles from '../styles/Profile.module.css'
+import FollowButton from '../../components/FollowButton'
+import InfiniteScrollPosts from '../../components/InfiniteScrollPosts'
+import Toast from '../../components/Toast'
+import styles from '../../styles/Profile.module.css'
 
 export default function Profile() {
   const router = useRouter()

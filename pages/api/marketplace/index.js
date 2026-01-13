@@ -1,9 +1,10 @@
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from './auth/[...nextauth]'
-import sanityClient from '../../lib/sanityClient'
+import { authOptions } from '../auth/[...nextauth]'
+import { getSanityClient } from '../../../lib/sanityClient'
 
 export default async function handler(req, res) {
   const session = await getServerSession(req, res, authOptions)
+  const sanityClient = getSanityClient()
 
   // GET: Fetch marketplace products
   if (req.method === 'GET') {
