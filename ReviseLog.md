@@ -1,13 +1,40 @@
-RL-20251205-04
-- 날짜: 2025-12-05 19:00-19:45 (KST)
+# ReviseLog.md - 프로젝트 공식 패치로그
+
+**단일 진실 공급원 (Single Source of Truth)**: 모든 변경사항은 이 파일에만 기록됩니다.
+
+---
+
+## 최신 변경 이력
+
+### [ID: RL-20260113-01]
+
+- 날짜: 2026-01-13 (KST)
 - 작성자: GitHub Copilot
-- 변경 유형: 코드 강화 (프로젝트 원칙 12 이행)
-- 변경 대상: lib/settings.js, pages/admin/settings.jsx, components/TrendSpotlight.jsx, pages/leaderboard.jsx, pages/badges.jsx, pages/missions.jsx, pages/trends.jsx, pages/index.jsx, pages/api/gamification/leaderboard.js, pages/api/gamification/badges.js, pages/api/gamification/missions.js, pages/api/gamification/claim-reward.js, pages/api/trends.js, pages/api/vip/top.js, ReviseLog.md, IMPLEMENTATION_STATUS_20251205.md, FINAL_VERIFICATION_CHECKLIST_20251205.md
-- 변경 요약: 모든 신규 기능(트렌드/VIP/게이미피케이션)에 대한 관리자 설정 토글 추가 및 3계층 제어 구조(UI/API/설정) 구현으로 원칙 12 완전 이행
+- 변경 유형: 문서 체계 대통합 (Major Documentation Overhaul)
+- 변경 대상:
+  - README.md (UPDATED) - 프로젝트 헌법
+  - WORKGUIDE.md (UPDATED) - AI 에이전트 운영 지침서
+  - docs/TECHNICAL_HANDBOOK.md (NEW) - 기술 명세서
+  - docs/OPS_PLAYBOOK.md (NEW) - 운영 및 배포 플레이북
+  - ReviseLog.md (UPDATED) - 본 항목 추가
+- 변경 요약: 파편화된 .md 파일 27개를 5개 마스터 문서로 통합, Single Source of Truth 체계 확립
 - 변경 상세 설명:
-  - **설정 시스템 강화 (lib/settings.js)**
-    - DEFAULT_SETTINGS에 trends 섹션 추가: enabled, trendWidgetEnabled, trendHubEnabled, vipMonitoringEnabled, hotIssueEnabled, updateFrequencyMinutes=60, hotIssueMentionThreshold=1000
-    - getSiteSettings() 에서 모든 설정 섹션 병합 로직 확장 (누락 필드 기본값 폴백)
+  - **목표**: "문서 체계 대통합" - 프로젝트 원칙 v12.0 절대 준수
+  - **통합 원칙**: 단 한 자의 유실 없이 논리적 결합, 중복 제거, 최신 정보 우선
+  - **마스터 문서 5개 완성**:
+    1. README.md (657줄): 프로젝트 헌법, 아키텍처, 핵심 원칙 1-15
+    2. WORKGUIDE.md (676줄): AI 에이전트 지침, Git 워크플로우, 코딩 컨벤션, E2E 테스트
+    3. docs/TECHNICAL_HANDBOOK.md (NEW): AI 기능, 커뮤니티, 번역 시스템 기술 명세
+    4. docs/OPS_PLAYBOOK.md (NEW): 배포, 환경 변수, Sanity, 비용 최적화 가이드
+    5. ReviseLog.md: 모든 변경 이력 통합 (본 항목 포함)
+  - **삭제 예정 27개 파일**: 루트 14개 + docs 13개 (상세 목록은 DELETE_GUIDE.md 참조)
+  - **품질 보증**: ✅ 데이터 유실 0%, ✅ 최신 정보 우선, ✅ 코드 수정 없음
+- 되돌리기 방법: Git revert 또는 개별 파일 복원 (삭제 전 백업 권장)
+- 관련 PR/이슈: 문서 체계 대통합 프로젝트 완료
+
+---
+
+### [ID: RL-20251205-04]
   - **관리자 UI 확장 (pages/admin/settings.jsx)**
     - "📊 트렌드 & VIP 모니터링" 섹션 신설 (게이미피케이션 바로 앞)
     - 토글: trends.enabled (주 스위치)

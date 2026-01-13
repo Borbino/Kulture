@@ -1,10 +1,22 @@
-# Kulture — 프로젝트 원칙 v12.0 및 무결점 글로벌 커뮤니티/플랫폼 작업지침서 + 완전무결 적용/실전 매뉴얼화판
+# Kulture — AI 에이전트 운영 지침서 (WORKGUIDE.md)
+
+> **프로젝트 원칙 v14.0 실무 매뉴얼 | Git 워크플로우 | 코딩 컨벤션 | 품질 관리**  
+> 문서 통합 완료: 2025-01-13
+
+---
+
+## 📘 문서 구조
+
+이 문서는 다음 내용을 통합합니다:
+- **AGENT_POLICY.md**: AI 에이전트 권한 및 승인 정책
+- **AGENT_USAGE.md**: 에이전트 사용 가이드 및 워크플로우
+- **PR_TEMPLATE.md**: Pull Request 작성 템플릿
+- **E2E_TEST_SCENARIOS.md**: E2E 테스트 시나리오 (76개)
+- **코딩 컨벤션**: React, CSS, API 표준
 
 ---
 
 ## 🚨 최우선 절대 원칙 (CRITICAL PRIORITY)
-
-**이 섹션의 원칙들은 모든 다른 규칙에 우선하며, 절대 위반할 수 없습니다.**
 
 ### 문서 기반 개발 철칙
 
@@ -51,7 +63,7 @@ ReviseLog.md 기록
 
 ---
 
-## 0. 필수 준수 사항: ReviseLog.md 패치로그 관리
+## 📝 Section 1: ReviseLog.md 패치로그 관리
 
 **🚨 중요: ReviseLog.md는 이 프로젝트의 공식 패치로그입니다.**
 
@@ -296,6 +308,346 @@ git push origin hotfix/긴급버그명
 상세: `docs/CRAWLER_POLICY.md`
 
 ---
+
+## Section 2: AI 에이전트 권한 및 승인 정책
+
+### 역할과 책임
+
+- **CEO(승인자)**: 권한 부여 및 주요 변경(정책·인프라·보안 관련)의 최종 승인
+- **Agent(자동화)**: 지정된 권한 범위 내에서 작업 수행. 변경 시 ReviseLog 항목을 반드시 작성
+- **개발자/리뷰어**: 변경 검토, 테스트 실행, 보안 점검 수행
+- **시스템(자동화 도구)**: CI 실행·보안 스캔 수행 및 결과 보고
+
+### 권한 레벨
+
+1. **Read-Only**: 코드·문서 조회만 가능. 기본 권한으로 모든 Agent는 이 수준에서 시작
+2. **Suggest (제안)**: 파일 수정 제안(patch/PR) 생성 가능. 직접 커밋하지 않고 PR을 생성
+3. **Commit (제한적 자동 커밋)**: 자동으로 커밋 및(옵션) 자동 병합 가능. 다만 아래의 안전 체크를 모두 통과해야 함
+4. **Admin**: 저장소 설정 변경 등 고위험 작업. 매우 제한적으로 부여하며 CEO의 사전 승인 필요
+
+### 자동 커밋/병합 허용 조건
+
+- ReviseLog 항목이 존재하고, 커밋 메시지 또는 PR 본문에 ReviseLog ID를 포함해야 합니다
+- 모든 CI 작업(lint, unit tests, security scan)이 성공적으로 통과해야 합니다
+- 변경이 민감한 파일(예: `/lib`, `/auth`, 인프라 설정 파일, `secrets` 관련 파일)을 건드리지 않아야 합니다
+- 변경 범위 임계값을 초과하지 않아야 함
+
+### 변경 범위 임계값
+
+자동 병합이 가능한 변경은 다음 조건을 모두 만족해야 합니다:
+- 수정 파일 수 <= 5
+- 총 변경 라인 수(추가+삭제) <= 200
+- 변경 대상 경로에 `/lib`, `/auth`, CI workflow, 또는 `*.key`, `*.pem` 파일이 포함되지 않음
+
+위 임계값을 초과하면 Agent는 PR을 생성하되 CEO의 수동 승인(리뷰+머지)이 필요합니다.
+
+### 보안 및 비밀(Secrets) 정책
+
+- **절대 금지**: 시크릿·API 키·개인정보를 코드나 문서에 직접 커밋하지 않습니다
+- Agent가 시크릿을 필요로 하는 작업은 환경변수·시크릿 매니저(예: GitHub Secrets)를 사용하고, 절대 ReviseLog나 PR 본문에 평문으로 기록하지 않습니다
+
+### 비상 롤백 절차
+
+1. CI 실패 또는 심각한 오류 발생 시 자동으로 롤백 스크립트 실행
+2. 즉시 CEO와 관련 담당자에게 알림(이메일/채널) 발송
+3. ReviseLog에 롤백 이유 및 조치 내역 기록
+
+---
+
+## Section 3: Pull Request 템플릿 및 표준
+
+### PR 제목 형식
+
+예시: `RL-YYYYMMDD-NN: [타입] 요약` (예: `RL-20251119-02: 문서 - 도메인 정보 추가`)
+
+### PR 설명 템플릿
+
+```markdown
+## ReviseLog ID
+RL-YYYYMMDD-NN (필수)
+
+## 변경 유형
+[ ] 문서
+[ ] 코드
+[ ] 정책
+[ ] 기타
+
+## 변경 요약
+한 줄 요약
+
+## 변경 상세 설명
+무엇을, 왜 변경했는지, 영향 범위, 되돌리기 방법(있다면)
+
+## 테스트 결과
+- [ ] ESLint 통과
+- [ ] Jest 테스트 통과
+- [ ] 로컬 빌드 성공
+- [ ] 수동 테스트 완료
+
+## 스크린샷/첨부 자료
+(UI 변경 시 필수)
+
+## 체크리스트 (검토자 확인)
+- [ ] ReviseLog 항목이 작성되었고 ID가 PR 제목/본문에 포함되어 있는가?
+- [ ] CI(lint/tests/security) 통과 여부 확인됨
+- [ ] 민감정보(시크릿/API 키 등)이 커밋에 포함되어 있지 않은가?
+- [ ] 변경 파일 수와 라인 수가 정책 임계값을 초과하지 않는가?
+- [ ] 변경이 인프라/보안/인증 관련이라면 담당자 승인 완료
+```
+
+---
+
+## Section 4: 코딩 컨벤션 및 표준
+
+### React 컴포넌트 규칙
+
+```javascript
+// ✅ 올바른 예시
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import styles from './MyComponent.module.css';
+
+/**
+ * MyComponent - 간단한 설명
+ * @param {Object} props - 컴포넌트 props
+ * @returns {JSX.Element}
+ */
+function MyComponent({ title, data }) {
+  const [state, setState] = useState(null);
+  
+  useEffect(() => {
+    // 사이드 이펙트
+  }, [data]);
+  
+  return (
+    <div className={styles.container}>
+      <h1>{title}</h1>
+    </div>
+  );
+}
+
+MyComponent.propTypes = {
+  title: PropTypes.string.isRequired,
+  data: PropTypes.array,
+};
+
+export default MyComponent;
+```
+
+**필수 규칙**:
+- ✅ 함수형 컴포넌트만 사용
+- ✅ PropTypes 검증 필수
+- ✅ CSS Modules로 스타일링
+- ✅ JSDoc 주석 추가
+- ❌ Class 컴포넌트 금지
+- ❌ inline 스타일 최소화
+
+### API 엔드포인트 규칙
+
+```javascript
+// pages/api/example.js
+import { withErrorHandler } from '../../lib/apiErrorHandler';
+import { getSiteSettings } from '../../lib/settings';
+import { rateLimiter } from '../../lib/rateLimiter';
+
+async function handler(req, res) {
+  // 1. Rate limiting
+  await rateLimiter(req, res);
+  
+  // 2. 설정 확인
+  const settings = await getSiteSettings();
+  if (!settings?.feature?.enabled) {
+    return res.status(403).json({ 
+      success: false, 
+      message: '기능이 비활성화되었습니다' 
+    });
+  }
+  
+  // 3. 메서드 검증
+  if (req.method !== 'GET') {
+    return res.status(405).json({ 
+      success: false, 
+      message: 'Method not allowed' 
+    });
+  }
+  
+  // 4. 비즈니스 로직
+  const data = await fetchData();
+  
+  // 5. 표준 응답
+  return res.status(200).json({ 
+    success: true, 
+    data 
+  });
+}
+
+export default withErrorHandler(handler);
+```
+
+**필수 규칙**:
+- ✅ `withErrorHandler` 래퍼 사용
+- ✅ Rate limiting 적용
+- ✅ 설정 기반 접근 제어
+- ✅ 메서드 검증
+- ✅ 표준 응답 형식: `{ success, data?, message? }`
+
+### 파일 및 폴더 구조
+
+```
+/workspaces/Kulture/
+├── components/          # React 컴포넌트
+│   ├── Component.jsx
+│   └── Component.module.css
+├── pages/              # Next.js 페이지
+│   ├── api/           # API 엔드포인트
+│   └── [dynamic].jsx
+├── lib/               # 유틸리티 함수
+│   ├── schemas/       # Sanity 스키마
+│   └── helpers.js
+├── styles/            # 글로벌 스타일
+├── public/            # 정적 파일
+├── docs/              # 문서
+├── test/              # 테스트
+└── scripts/           # 자동화 스크립트
+```
+
+---
+
+## Section 5: E2E 테스트 시나리오 (통합)
+
+### 개요
+
+- **총 76개 E2E 테스트 케이스**
+- **대상**: 게이미피케이션, 트렌드/VIP 모니터링, 3계층 제어
+- **도구**: Playwright (Chrome, Firefox, Safari, Mobile)
+- **참조**: [E2E_TEST_SCENARIOS.md](E2E_TEST_SCENARIOS.md) - 상세 테스트 절차
+
+### 주요 테스트 섹션
+
+1. **게이미피케이션 시스템** (8개 테스트)
+   - 리더보드 기본 기능 + 필터링
+   - 배지 기본 기능 + 필터링
+   - 미션 진행률 업데이트 + 보상 청구
+   - Settings 토글 검증
+
+2. **트렌드 & VIP 모니터링** (6개 테스트)
+   - 트렌드 허브 페이지 로드
+   - TrendSpotlight 위젯 데이터 표시
+   - API 에러 처리
+   - Settings 토글 검증
+
+3. **3계층 제어 검증** (3개 테스트)
+   - UI Layer: 조건부 렌더링
+   - API Layer: 403 응답
+   - Admin Layer: 설정 UI
+
+4. **크로스 브라우저** (3개 테스트)
+5. **성능 테스트** (2개 테스트)
+6. **보안 테스트** (2개 테스트)
+
+### 테스트 실행
+
+```bash
+# Playwright 설치
+npm install --save-dev @playwright/test
+
+# 모든 브라우저 설치
+npx playwright install
+
+# 테스트 실행
+npx playwright test
+
+# UI 모드
+npx playwright test --ui
+
+# 특정 브라우저만
+npx playwright test --project=chromium
+```
+
+---
+
+## Section 6: 자동 코드 리뷰 및 품질 관리
+
+**🚨 필수: 모든 작업 완료 시 자동 코드 리뷰를 의무적으로 실시합니다.**
+
+### 자동 검증 체크리스트
+
+**사소한 문제 탐지** (Zero Tolerance):
+
+- [ ] ESLint 경고 0개 (`npm run lint`)
+- [ ] TypeScript/JavaScript 컴파일 에러 0개
+- [ ] 미사용 변수/import 제거
+- [ ] 콘솔 로그 제거 (프로덕션 코드)
+- [ ] 주석 처리된 코드 제거
+- [ ] TODO/FIXME 주석 처리 (이슈 번호 포함)
+
+**개선 및 고도화 기회**:
+
+- [ ] 성능 병목 분석 (O(n²) 알고리즘, 불필요한 re-render)
+- [ ] 접근성(a11y) 개선 (ARIA 속성, 키보드 네비게이션)
+- [ ] SEO 최적화 (meta 태그, Open Graph, 구조화된 데이터)
+- [ ] 보안 취약점 (XSS, CSRF, SQL Injection 방지)
+- [ ] 코드 가독성 (복잡한 로직 단순화, 명확한 변수명)
+- [ ] 에러 핸들링 (try-catch, 사용자 친화적 에러 메시지)
+
+**중복 코드 제거**:
+
+- [ ] 동일/유사 로직 3회 이상 반복 → 함수/Hook 추출
+- [ ] 공통 유틸리티 함수 통합 (`lib/` 디렉토리)
+- [ ] 중복 스타일링 제거 (CSS Modules 활용)
+- [ ] 중복 API 호출 최소화 (캐싱 적용)
+- [ ] 반복되는 컴포넌트 로직 → Custom Hook 추출
+
+### 실행 명령어
+
+**로컬 검증**:
+
+```bash
+# 전체 코드 품질 검사
+npm run lint          # ESLint (자동 수정: npm run lint -- --fix)
+npm test              # Jest 테스트 (커버리지: npm test -- --coverage)
+npm run build         # Next.js 빌드 검증
+```
+
+**Git Hook 자동 실행**:
+
+```bash
+# Husky pre-commit hook (자동 실행)
+# - ESLint 검사
+# - Prettier 포맷팅
+# - Jest 유닛 테스트
+git commit -m "feat: add new feature"
+```
+
+**CI/CD 자동 실행**:
+
+- GitHub Actions workflow (PR 생성 시)
+- Vercel 배포 전 검증
+
+---
+
+## Section 7: 실무 FAQ
+
+**Q: AI 에이전트에게 바로 Commit 권한을 줘도 되나요?**
+A: 권장하지 않습니다. 신뢰를 쌓은 후 단계적으로 권한을 늘리세요.
+
+**Q: ReviseLog 기록을 잊었습니다. 어떻게 하나요?**
+A: 즉시 사후 기록하고, PR에 ReviseLog ID를 추가하세요. 기록 없는 변경은 무효입니다.
+
+**Q: main 브랜치에 직접 푸시했습니다. 어떻게 하나요?**
+A: 1) 즉시 롤백 (git revert), 2) feature 브랜치 생성, 3) PR 생성, 4) 정상 프로세스로 재작업
+
+**Q: E2E 테스트가 실패합니다. 어떻게 하나요?**
+A: 1) 로컬에서 재현, 2) 실패 원인 파악, 3) 수정 후 재테스트, 4) ReviseLog 기록
+
+**Q: 설정 토글이 작동하지 않습니다. 어떻게 하나요?**
+A: 1) Sanity siteSettings 문서 확인, 2) lib/settings.js 기본값 확인, 3) useSiteSettings 훅 확인
+
+---
+
+**마지막 업데이트**: 2025-01-13  
+**통합 문서**: AGENT_POLICY.md, AGENT_USAGE.md, PR_TEMPLATE.md, E2E_TEST_SCENARIOS.md  
+**상태**: 완료
 
 ## 2. 이해관계자별 실전 시나리오 + 직접 경험 매뉴얼
 
