@@ -388,6 +388,49 @@ sanity start
    - **Administrator**: 모든 권한
 5. 토큰 복사 후 환경 변수에 저장
 
+### 3-6. 초기 데이터 셋업 상세 (참조)
+
+**Site Settings 필수 필드 구성**:
+```javascript
+// Content > siteSettings > settings
+{
+  "gamification": {
+    "enabled": true,
+    "enableDailyMissions": true,
+    "enableLevelSystem": true,
+    "enableBadges": true,
+    "pointMultiplier": 1.0
+  },
+  "trends": {
+    "enabled": true,
+    "enableTrendWidget": true,
+    "enableTrendHubPage": true,
+    "enableVipMonitoring": true,
+    "updateInterval": 30,
+    "trackingCategories": ["K-Pop", "K-Drama", "K-Movie", "K-Fashion", "K-Beauty", "K-Food", "K-Gaming", "K-Art"]
+  },
+  "translationSystem": {
+    "enabled": true,
+    "defaultLanguage": "ko",
+    "primaryProvider": "openai",
+    "enableCache": true
+  }
+}
+```
+
+**테스트 배지 예시**:
+1. **First Post** (Type: achievement, Icon: ✍️, Color: Gold)
+   - Requirement: `{ posts: 1, type: "posts" }`
+2. **Comment Master** (Type: achievement, Icon: 💬, Color: Mint)
+   - Requirement: `{ comments: 10, type: "comments" }`
+3. **Level 5** (Type: rank, Icon: 🎖️, Color: Red)
+   - Requirement: `{ level: 5, type: "level" }`
+
+**테스트 미션 예시**:
+1. **Daily Login** (Type: daily_login, Reward: 5pts)
+2. **Comment Writer** (Type: write_comment, Target: 3, Reward: 10pts)
+3. **Like Enthusiast** (Type: like_posts, Target: 5, Reward: 15pts)
+
 ---
 
 ## 💰 Section 4: 비용 최적화 가이드
@@ -399,7 +442,7 @@ sanity start
 | **Vercel** | 100GB 대역폭/월, Serverless 100GB-hrs | $20/월~ | 이미지 최적화, CDN 캐싱 |
 | **Sanity** | 3 users, 100K API requests/day | $0 (Community) | READ 최적화, 캐싱 |
 | **MongoDB Atlas** | 512MB M0 | $0 | Index 최적화 |
-| **OpenAI** | $5 credit (첫 3개월) | $0.075/1K토큰 | 캐싱, 배치 처리 |
+| **OpenAI** | $5 credit (첫 3개월) | $0.075/1K토큰 + $0.06/1K출력 | 캐싱, 배치 처리 |
 | **DeepL** | 500K chars/월 | $5.49/월~ | 폴백으로 사용 |
 | **Google Translate** | 500K chars/월 | $20/1M chars | 최종 폴백 |
 | **Redis (Upstash)** | 10K requests/day | $0.2/100K | 번역 캐싱 |
@@ -653,6 +696,32 @@ npm audit fix --force
 # GitHub Dependabot 활성화
 # .github/dependabot.yml 생성
 ```
+
+### 6-4. 보안 취약점 해결 및 마이그레이션 전략
+
+**주요 보안 취약점 유형**:
+- **Command Injection**: `glob` 패키지 관련 (CLI 도구에서 주로 발생)
+- **DOM Clobbering**: `prismjs` 관련 (Sanity Studio 내 사용)
+
+**단계적 업그레이드 전략**:
+
+**Option 1: 전체 업그레이드 (권장)**
+1. 현재 상태 백업 (`git commit`)
+2. `next-sanity@latest` 설치
+3. `npm audit fix --force` 실행
+4. 전체 테스트 수행 (`npm test`, `npm run build`)
+
+**Option 2: 단계적 업그레이드**
+1. 새 브랜치 생성 (`git checkout -b upgrade/next-sanity`)
+2. 패키지 업데이트 및 로컬 테스트
+3. Breaking changes 확인 (Sanity 릴리스 노트 참조)
+4. Vercel Preview 배포 후 검증
+5. Main 브랜치 병합
+
+**보안 권장사항**:
+- `.env.local` 사용하여 환경변수 보호
+- `CRON_SECRET` 등 민감 정보 주기적 교체 (openssl rand -base64 32)
+- Dependabot 설정으로 의존성 자동 업데이트
 
 ---
 
