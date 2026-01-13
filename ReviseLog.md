@@ -6,6 +6,16 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260113-02]
+- **날짜**: 2026-01-13 23:20 (KST)
+- **작성자**: Gems & GitHub Copilot
+- **변경 유형**: 최종 문서 정제 및 잔여 파일 정리
+- **변경 요약**: 4개의 잔여 파일 삭제 및 README 로드맵 보강
+- **변경 상세 설명**:
+  - `SANITY_INITIALIZATION_GUIDE.md`, `UPGRADE_GUIDE.md` 내용을 `OPS_PLAYBOOK.md`로 완전 이식 후 삭제.
+  - `FOUNDATION_TASKS_RECOMMENDATIONS.md` 내용을 `README.md` 로드맵으로 이식 후 삭제.
+  - `DELETE_GUIDE.md` 삭제 완료.
+
 ### [ID: RL-20260113-01]
 
 - 날짜: 2026-01-13 (KST)
