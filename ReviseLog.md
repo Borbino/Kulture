@@ -6,6 +6,13 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260113-04]
+- **날짜**: 2026-01-13 (KST)
+- **작성자**: Gems & GitHub Copilot
+- **변경 유형**: VIP 모니터링 로직 고도화 (수익 엔진)
+- **변경 요약**: 국가별 RPM 가중치를 적용한 AI 초안 생성 우선순위(Priority) 정렬 로직 구현
+- **변경 상세 설명**: `lib/vipMonitoring.js`에서 `siteSettings`의 `revenueWeights`를 연동함. 아티스트의 주 활동 지역에 따라 예상 수익 점수(`priorityScore`)를 산출하고, 북미/유럽 등 고가치 트래픽을 유발하는 콘텐츠가 1순위로 생성되도록 배열 정렬 로직을 추가함.
+
 ### [ID: RL-20260113-03]
 - **날짜**: 2026-01-13 (KST)
 - **작성자**: Gems & GitHub Copilot
@@ -1835,8 +1842,8 @@ RL-20251126-05
   - 프로젝트 관리 체계 강화
 
   **마크다운 린트 경고**:
-  - README.md: MD032 경고 1건 (리스트 전후 빈 줄)
-  - WORKGUIDE.md: MD032, MD031, MD036 경고 다수
+  - README.md: MD032 경고 1건
+  - WORKGUIDE.md: MD032, MD031, MD036, MD040 경고 다수
   - 영향: 없음 (코드 실행과 무관한 포맷 이슈)
 
 ---
@@ -2093,7 +2100,7 @@ RL-20251126-05
 - 날짜: 2025-11-19 14:00 ~ 14:15 (KST)
 - 작성자: 시스템(자동) + CEO 요청
 - 변경 유형: 코드 + 문서
-- 변경 대상 파일/경로: `lib/schemas/siteSettings.js`, `lib/settings.js`, `pages/admin/settings.jsx`, `pages/admin/settings.module.css`, `components/ContentBlur.jsx`, `components/ContentBlur.module.css`, `docs/ADMIN_SETTINGS.md`
+- 변경 대상 파일/경로: `lib/schemas/siteSettings.js`, `lib/settings.js`, `pages/admin/settings.jsx`, `pages/admin/settings.module.css`, `components/ContentBlur.jsx`, `components/ContentBlur.module.css`, `components/CommentList.jsx`, `components/CommentList.module.css`, `test/contentRestriction.test.js`, `docs/CONTENT_RESTRICTION.md`
 - 변경 요약: 관리자 설정 시스템 구축 - CEO가 모든 기능을 On/Off 및 조정 가능
 - 변경 상세 설명: CEO 요청에 따라 관리자 페이지에서 모든 기능을 직접 제어할 수 있는 설정 시스템 구축. Sanity CMS에 siteSettings 스키마 추가 (콘텐츠 제한 비율 10~100%, 광고 시청 시간 5~120초, 세션 시간 10~1440분, 댓글/인증/일반 설정 등), 설정 관리 API/Hook (getSiteSettings, updateSiteSettings, useSiteSettings), 관리자 페이지 UI (토글/슬라이더/체크박스, 비밀번호 인증), 기존 컴포넌트 동적 연동 (ContentBlur, CommentList). 신규 기능도 동일 패턴으로 추가 가능하도록 확장성 확보. 관리자 페이지 URL: /admin/settings, 기본 비밀번호: kulture2025 (환경변수로 변경 가능).
 - 관련 PR/이슈: [#2](https://github.com/Borbino/Kulture/pull/2)
