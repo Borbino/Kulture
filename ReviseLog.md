@@ -6,6 +6,13 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260227-09]
+- **날짜**: 2026-02-27 13:30 (KST)
+- **작성자**: Gems & GitHub Copilot
+- **변경 유형**: 트래픽 부스터 (SNS 자동 확성기) 다각화
+- **변경 요약**: Facebook Page 자동 포스팅 모듈 통합 및 배포 로직 개선
+- **변경 상세 설명**: X(Twitter)에만 국한되던 자동 포스팅 엔진(`socialAutoPoster.js`)을 확장하여 Facebook Graph API를 연동함. 통합 배포 함수(`distributeToSocialMedia`)를 통해 하나의 기사가 여러 메이저 SNS에 동시 다발적으로 자동 퍼블리싱되는 구조를 확립함. (향후 IG/TikTok 확장을 위한 구조적 기반 마련)
+
 ### [ID: RL-20260227-08]
 - **날짜**: 2026-02-27 13:00 (KST)
 - **작성자**: Gems & GitHub Copilot
