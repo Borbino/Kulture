@@ -46,6 +46,15 @@ export default function ContentBlur({ children, isAuthenticated }) {
     } else if (isWatchingAd && adTimer === 0) {
       // 광고 시청 완료 - 관리자가 설정한 세션 시간 적용 (분 단위로 전달)
       adSession.markAdWatched(sessionDuration)
+      
+      // [Task 1] GA4 이벤트 전송 (광고 시청 완료)
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', 'content_unlocked', {
+          method: 'ad_watch_complete',
+          content_type: 'article'
+        })
+      }
+      
       setIsWatchingAd(false)
       setShowPrompt(false)
     }
@@ -55,6 +64,24 @@ export default function ContentBlur({ children, isAuthenticated }) {
     setShowAdOption(false)
     setIsWatchingAd(true)
     setAdTimer(adDuration) // 관리자 설정의 adDuration 사용
+  }
+
+  // [Task 1] 스폰서 링크 확인 핸들러
+  const handleCheckSponsor = () => {
+    // 스폰서 링크 열기 (예: 구글 검색)
+    window.open('https://www.google.com/search?q=k-culture+merch', '_blank')
+    
+    // GA4 이벤트 전송
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'content_unlocked', {
+        method: 'sponsor_link_click',
+        content_type: 'article'
+      })
+    }
+
+    // 즉시 블러 해제
+    adSession.markAdWatched(sessionDuration)
+    setShowPrompt(false)
   }
 
   // 설정 로딩 중이면 대기
@@ -168,14 +195,25 @@ export default function ContentBlur({ children, isAuthenticated }) {
                   <li>{sessionDuration}분 무료 이용</li>
                   <li>회원가입 불필요</li>
                 </ul>
-                <button
-                  className={styles.watchAdBtn}
-                  onClick={() => setShowAdOption(true)}
-                  type="button"
-                  aria-label="광고 보고 계속 읽기"
-                >
-                  광고 보고 계속 읽기
-                </button>
+                <div className={styles.buttons}>
+                  <button
+                    className={styles.watchAdBtn}
+                    onClick={() => setShowAdOption(true)}
+                    type="button"
+                    aria-label="광고 시청하기 (Unlock with Ad)"
+                  >
+                    광고 시청하기 (Unlock with Ad)
+                  </button>
+                  <button
+                    className={styles.watchAdBtn}
+                    onClick={handleCheckSponsor}
+                    type="button"
+                    style={{ marginTop: '0.5rem', backgroundColor: '#4CAF50' }}
+                    aria-label="스폰서 링크 확인 (Check Sponsor)"
+                  >
+                    스폰서 링크 확인 (Check Sponsor)
+                  </button>
+                </div>
               </div>
             </div>
           </div>
