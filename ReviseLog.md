@@ -6,6 +6,13 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260227-05]
+- **날짜**: 2026-02-27 12:15 (KST)
+- **작성자**: Gems & GitHub Copilot
+- **변경 유형**: 핫픽스 (경고 수정 및 파일 정리)
+- **변경 요약**: Next.js `_document` 중복 라우팅 경고 해결
+- **변경 상세 설명**: 개발 서버 실행 시 발생하는 `Duplicate page detected` 경고를 해결하기 위해, 불필요한 `pages/_document.js` 파일을 삭제하고 K-Culture 글로벌 설정이 포함된 `pages/_document.jsx`를 단일 진실 공급원(SSoT)으로 유지함.
+
 ### [ID: RL-20260227-04]
 - **날짜**: 2026-02-27 12:00 (KST)
 - **작성자**: Gems & GitHub Copilot
