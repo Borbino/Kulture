@@ -46,6 +46,7 @@
     "sharp": "^0.34.5",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
+    "twitter-api-v2": "^1.29.0",
     "ws": "^8.18.3"
   },
   "devDependencies": {
