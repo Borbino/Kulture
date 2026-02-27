@@ -44,7 +44,10 @@ export default function ContentReview() {
           image,
           socialPosts,
           metadata,
-          createdAt
+          createdAt,
+          priorityScore,
+          pollData,
+          modelLog
         }
       `)
       setPendingPosts(posts)
@@ -221,6 +224,31 @@ export default function ContentReview() {
                   onClick={() => setSelectedPost(post)}
                 >
                   <div className={styles.postItem}>
+                    <div className={styles.badgeContainer}>
+                      {post.priorityScore >= 8 ? (
+                        <span className={`${styles.badge} ${styles.badgeHighRevenue}`}>
+                          🔥 고수익 예상 (Score: {post.priorityScore})
+                        </span>
+                      ) : post.priorityScore <= 7 ? (
+                        <span className={`${styles.badge} ${styles.badgeStableRevenue}`}>
+                          안정적 수익 (Score: {post.priorityScore})
+                        </span>
+                      ) : null}
+                      {post.pollData && (
+                        <span className={`${styles.badge} ${styles.badgePoll}`}>
+                          📊 투표(Poll) 장착됨
+                        </span>
+                      )}
+                      {post.modelLog ? (
+                        <span className={`${styles.badge} ${styles.badgeEconomy}`}>
+                          💰 절약 모드 생성
+                        </span>
+                      ) : (
+                        <span className={`${styles.badge} ${styles.badgePremium}`}>
+                          💎 프리미엄 생성
+                        </span>
+                      )}
+                    </div>
                     <h3>{post.title}</h3>
                     <div className={styles.postMeta}>
                       <span className={styles.trustScore}>
@@ -245,10 +273,10 @@ export default function ContentReview() {
                 <div className={styles.actions}>
                   <button
                     onClick={() => approvePost(selectedPost._id)}
-                    className={styles.approveButton}
+                    className={styles.approveButtonOneClick}
                     disabled={isProcessing}
                   >
-                    ✓ 승인
+                    ✓ 원클릭 승인 (Publish)
                   </button>
                   <button
                     onClick={() => {
