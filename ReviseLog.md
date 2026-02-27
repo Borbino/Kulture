@@ -6,6 +6,13 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260227-07]
+- **날짜**: 2026-02-27 12:45 (KST)
+- **작성자**: Gems & GitHub Copilot
+- **변경 유형**: 글로벌 SEO 인프라 고도화
+- **변경 요약**: 다국어 검색 최적화를 위한 동적 `hreflang` 및 `canonical` 태그 삽입 로직 구현
+- **변경 상세 설명**: `components/SEOHead.jsx`에서 `useRouter`를 통해 지원하는 모든 언어(`locales`)의 대체 URL을 자동 생성함. 구글 등 검색 엔진이 국가 및 언어별로 가장 적합한 콘텐츠를 매칭하여 노출할 수 있도록 `x-default` 및 `hreflang` 규격을 완벽히 준수함.
+
 ### [ID: RL-20260227-06]
 - **날짜**: 2026-02-27 12:30 (KST)
 - **작성자**: Gems & GitHub Copilot

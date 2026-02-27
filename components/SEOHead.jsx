@@ -7,7 +7,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://kulture.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://kulture.net'; // Ensure .net domain
 
 function SEOHead({
   title = 'Kulture - Global K-Culture Community',
@@ -16,10 +16,20 @@ function SEOHead({
   noindex = false,
 }) {
   const router = useRouter();
-  const { locale, locales, asPath } = router;
+  // defaultLocale added to destructuring
+  const { locale, locales, defaultLocale, asPath } = router;
 
-  // 현재 페이지의 정규 URL
-  const canonical = `${SITE_URL}/${locale}${asPath === '/' ? '' : asPath}`;
+  // Clean path to avoid double slashes
+  const cleanPath = asPath.split('?')[0];
+  const queryString = asPath.split('?')[1] ? `?${asPath.split('?')[1]}` : '';
+
+  // Canonical URL construction (Current Page)
+  // If current locale is default, do not append locale to URL if strategy is prefix-except-default (Next.js default)
+  // But for explicit canonicals, it's often safer to be consistent. 
+  // Let's assume standard Next.js routing: / (default), /ko, /ja
+  const canonical = locale === defaultLocale
+    ? `${SITE_URL}${cleanPath}${queryString}`
+    : `${SITE_URL}/${locale}${cleanPath}${queryString}`;
 
   return (
     <Head>
@@ -36,7 +46,7 @@ function SEOHead({
       <meta property="og:url" content={canonical} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={`${SITE_URL}${image}`} />
+      <meta property="og:image" content={image.startsWith('http') ? image : `${SITE_URL}${image}`} />
       <meta property="og:locale" content={locale} />
 
       {/* Twitter Card */}
@@ -44,20 +54,40 @@ function SEOHead({
       <meta name="twitter:url" content={canonical} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={`${SITE_URL}${image}`} />
+      <meta name="twitter:image" content={image.startsWith('http') ? image : `${SITE_URL}${image}`} />
 
-      {/* hreflang Tags for Multilingual SEO */}
+      {/* Dynamic hreflang Tags for Multilingual SEO */}
       {locales && locales.map((lang) => {
-        const langUrl = `${SITE_URL}/${lang}${asPath === '/' ? '' : asPath}`;
-        return <link key={lang} rel="alternate" hrefLang={lang} href={langUrl} />;
+        // Construct URL for each locale
+        // If lang is defaultLocale, URL is just SITE_URL + path (usually)
+        // Adjust logic based on Next.js i18n config. Assuming subpath routing.
+        let hrefLangUrl;
+        if (lang === defaultLocale) {
+            hrefLangUrl = `${SITE_URL}${cleanPath}${queryString}`;
+        } else {
+            hrefLangUrl = `${SITE_URL}/${lang}${cleanPath}${queryString}`;
+        }
+        
+        return (
+            <link 
+                key={lang} 
+                rel="alternate" 
+                hrefLang={lang} 
+                href={hrefLangUrl} 
+            />
+        );
       })}
       
-      {/* x-default for language selection */}
-      <link rel="alternate" hrefLang="x-default" href={`${SITE_URL}${asPath === '/' ? '' : asPath}`} />
+      {/* x-default: Fallback for unmatched languages. Usually points to the default locale page */}
+      <link 
+        rel="alternate" 
+        hrefLang="x-default" 
+        href={`${SITE_URL}${cleanPath}${queryString}`} 
+      />
 
-      {/* Language names for search engines */}
-      {locales && locales.map((lang) => (
-        <meta key={`lang-${lang}`} property="og:locale:alternate" content={lang} />
+      {/* Open Graph Alternate Locales */}
+      {locales && locales.filter(l => l !== locale).map((lang) => (
+        <meta key={`og-lang-${lang}`} property="og:locale:alternate" content={lang} />
       ))}
     </Head>
   );
