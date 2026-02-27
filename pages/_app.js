@@ -1,9 +1,10 @@
 import '../styles/globals.css';
+import { SessionProvider } from 'next-auth/react';
 import { appWithTranslation } from 'next-i18next';
 import { useEffect } from 'react';
 import ErrorBoundary from '../components/ErrorBoundary';
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   useEffect(() => {
     // 사용자 선호 언어 로드
     const preferredLanguage = localStorage.getItem('preferredLanguage');
@@ -14,9 +15,11 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <ErrorBoundary>
-      <Component {...pageProps} />
-    </ErrorBoundary>
+    <SessionProvider session={session}>
+      <ErrorBoundary>
+        <Component {...pageProps} />
+      </ErrorBoundary>
+    </SessionProvider>
   );
 }
 

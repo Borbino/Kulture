@@ -6,6 +6,13 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260227-04]
+- **날짜**: 2026-02-27 12:00 (KST)
+- **작성자**: Gems & GitHub Copilot
+- **변경 유형**: 핫픽스 (버그 수정)
+- **변경 요약**: NextAuth 런타임 에러 해결 (`SessionProvider` 추가)
+- **변경 상세 설명**: 메인 페이지 렌더링 시 발생하는 `useSession` 관련 에러를 해결하기 위해, `pages/_app.js` 최상위에 `next-auth/react`의 `SessionProvider`를 래핑하여 전역 인증 컨텍스트를 공급함.
+
 ### [ID: RL-20260227-03]
 - **날짜**: 2026-02-27 11:30 (KST)
 - **작성자**: Gems & GitHub Copilot
