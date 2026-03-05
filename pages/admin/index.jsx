@@ -162,6 +162,7 @@ export default function AdminPage() {
   const [toastMessage, setToastMessage] = useState('')
   const [activeTab, setActiveTab] = useState('dashboard')
   const [stats, setStats] = useState(null)
+  const [financeStats, setFinanceStats] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -177,6 +178,7 @@ export default function AdminPage() {
   useEffect(() => {
     if (session?.user?.role === 'admin') {
       fetchStats()
+      fetchFinanceStats()
     }
   }, [session])
 
@@ -190,6 +192,27 @@ export default function AdminPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const fetchFinanceStats = async () => {
+    try {
+      const res = await fetch('/api/admin/finance-stats')
+      const data = await res.json()
+      if (res.ok) {
+        setFinanceStats(data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch finance stats:', error)
+    }
+  }
+
+  const formatCurrency = value => {
+    const amount = Number(value || 0)
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 2,
+    }).format(amount)
   }
 
   if (status === 'loading' || loading) {
@@ -256,6 +279,25 @@ export default function AdminPage() {
           {activeTab === 'dashboard' && (
             <div className={styles.dashboard}>
               <h2>📊 대시보드</h2>
+
+              <section className={styles.financeSection}>
+                <h3>💰 일일 재무 관제탑 (Today's ROI)</h3>
+                <div className={styles.financeGrid}>
+                  <div className={`${styles.financeCard} ${styles.revenueCard}`}>
+                    <p className={styles.financeLabel}>📈 예상 수익 (Estimated Revenue)</p>
+                    <p className={styles.financeValue}>{formatCurrency(financeStats?.estimatedRevenue)}</p>
+                  </div>
+                  <div className={`${styles.financeCard} ${styles.costCard}`}>
+                    <p className={styles.financeLabel}>💸 API 사용 비용 (API Cost)</p>
+                    <p className={styles.financeValue}>{formatCurrency(financeStats?.apiCost)}</p>
+                  </div>
+                  <div className={`${styles.financeCard} ${styles.marginCard}`}>
+                    <p className={styles.financeLabel}>🚀 순수익 마진 (Net Margin)</p>
+                    <p className={styles.financeValue}>{formatCurrency(financeStats?.netMargin)}</p>
+                  </div>
+                </div>
+              </section>
+
               <div className={styles.statsGrid}>
                 <div className={styles.statCard}>
                   <h3>전체 사용자</h3>

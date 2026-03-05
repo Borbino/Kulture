@@ -114,6 +114,60 @@
   font-family: 'Jua', sans-serif;
 }
 
+.financeSection {
+  margin-bottom: 28px;
+  padding: 18px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+  border: 1px solid #e5e7eb;
+}
+
+.financeSection h3 {
+  margin: 0 0 14px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.financeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.financeCard {
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.12);
+}
+
+.financeLabel {
+  margin: 0 0 8px;
+  color: #f9fafb;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.financeValue {
+  margin: 0;
+  color: #ffffff;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.revenueCard {
+  background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+}
+
+.costCard {
+  background: linear-gradient(135deg, #9a3412 0%, #f97316 100%);
+}
+
+.marginCard {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+}
+
 /* Section */
 .section {
   min-height: 400px;
@@ -284,5 +338,13 @@
 
   .content {
     padding: 20px;
+  }
+
+  .financeGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .financeValue {
+    font-size: 26px;
   }
 }

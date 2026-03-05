@@ -6,6 +6,13 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260227-10]
+- **날짜**: 2026-02-27 14:10 (KST)
+- **작성자**: Gems & GitHub Copilot
+- **변경 유형**: 재무 관제탑(Analytics Dashboard) 구축
+- **변경 요약**: AI 자동화 시스템의 일일 예상 수익 및 API 비용 모니터링 UI 추가
+- **변경 상세 설명**: `pages/api/admin/finance-stats.js`를 통해 예상 수익 데이터와 `costMonitor` 데이터를 결합하여 일일 재무 상태를 집계함. 관리자 메인 대시보드(`pages/admin/index.jsx`) 상단에 이를 시각화하는 위젯을 배치하여, CEO가 시스템의 ROI(투자 대비 수익률)를 직관적으로 파악할 수 있는 계기판을 완성함.
+
 ### [ID: RL-20260227-09]
 - **날짜**: 2026-02-27 13:30 (KST)
 - **작성자**: Gems & GitHub Copilot
