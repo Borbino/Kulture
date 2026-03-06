@@ -6,6 +6,7 @@
 import sanity from '../../lib/sanityClient'
 import { getSiteSettings } from '../../lib/settings'
 import { withErrorHandler } from '../../lib/apiErrorHandler'
+import { getAffiliateLinksForContent } from '../../lib/revenueEngine'
 
 async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ message: 'Method not allowed' })
@@ -41,11 +42,17 @@ async function handler(req, res) {
       sanity.fetch(hotIssuesQuery),
     ])
 
+    // 상위 트렌드 주제 기반 제휴 링크 자동 생성
+    const topTopic = hotIssues?.[0]?.keyword || snapshot?.trends?.[0]?.keyword || 'K-Pop'
+    const affiliateLinks = getAffiliateLinksForContent(topTopic)
+
     return res.status(200).json({
       success: true,
       data: {
         snapshot: snapshot || { trends: [], timestamp: null },
         hotIssues: hotIssues || [],
+        affiliateLinks,
+        topTopic,
       },
     })
   } catch (error) {

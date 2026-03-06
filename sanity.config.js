@@ -51,6 +51,15 @@ export default defineConfig({
               .child(S.documentTypeList('vipMonitoring').title('VIP Monitoring')),
             S.divider(),
 
+            // 이머징 트렌드 자동 발굴
+            S.listItem()
+              .title('🔍 Emerging Trends')
+              .child(S.documentTypeList('emergingTrend').title('Emerging Trends')),
+            S.listItem()
+              .title('🚨 Emerging Alerts')
+              .child(S.documentTypeList('emergingAlert').title('Emerging Alerts')),
+            S.divider(),
+
             // 리포트 & 피드백
             S.listItem()
               .title('Daily Reports')
@@ -61,6 +70,18 @@ export default defineConfig({
             S.listItem()
               .title('Performance Reports')
               .child(S.documentTypeList('performanceReport').title('Performance Reports')),
+            S.divider(),
+
+            // 수익화
+            S.listItem()
+              .title('💌 Newsletter Subscribers')
+              .child(S.documentTypeList('newsletterSubscriber').title('Newsletter Subscribers')),
+            S.listItem()
+              .title('⚡ Premium Members')
+              .child(S.documentTypeList('premiumMember').title('Premium Members')),
+            S.listItem()
+              .title('📄 Data Licensing (B2B)')
+              .child(S.documentTypeList('dataLicensingRequest').title('Data Licensing Requests')),
             S.divider(),
 
             // 설정

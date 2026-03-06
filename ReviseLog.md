@@ -6,6 +6,95 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260306-16]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 + 인프라
+- **변경 대상**: `.env.template`
+- **변경 요약**: 섹션 13-16 추가 (Stripe, Toss Payments, SendGrid, B2B 문의 이메일)
+- **변경 상세**: STRIPE_SECRET_KEY/WEBHOOK_SECRET/PRICE_IDs(3개), Toss TOSS_SECRET_KEY/CLIENT_KEY, SendGrid EMAIL_API_KEY/FROM, B2B_CONTACT_EMAIL 총 12개 환경 변수 문서화. 프리미엄 멤버십 + 뉴스레터 + 데이터 라이선싱 운영에 필요한 전체 설정 안내.
+
+---
+
+### [ID: RL-20260306-15]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 (신규 파일 5개)
+- **변경 대상**: `pages/api/data/licensing.js`, `pages/api/data/export.js`, `lib/schemas/dataLicensingRequest.js`
+- **변경 요약**: Phase C-3 — 데이터 라이선싱 B2B API 구현
+- **변경 상세**:
+  - `DATA_PLANS`: Starter($99)/Professional($299)/Enterprise($499) 3단계 플랜
+  - `/api/data/licensing`: GET 플랜 안내, POST API 키 발급 신청 (관리자 승인 방식)
+  - `/api/data/export`: API 키 인증, 플랜별 접근 제어, 월간 요청 한도 관리, 6개 데이터 타입 (trends/hotIssues/vip/emerging/sentiment/forecast)
+  - `computeForecast()`: 최근 데이터의 언급 velocity 기반 rising/falling/breakout 예측
+  - `dataLicensingRequest` Sanity 스키마 + `schemas/index.js` + `sanity.config.js` 등록
+  - `vercel.json`에 뉴스레터 발송 cron 추가 (월·목 09:00)
+- **예상 효과**: 미디어/에이전시/K-Culture 리서치 기업 대상 B2B 수익 채널 개통 (월 $99-499/고객)
+
+---
+
+### [ID: RL-20260306-14]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 수정
+- **변경 대상**: `lib/aiSentiment.js`
+- **변경 요약**: Phase C-2 — 다국어 감성 분석 일본어/중국어 확장
+- **변경 상세**:
+  - `SENTIMENT_DICT`: 긍정/부정/독성 사전을 ko/en/ja/zh 4개 언어 구조로 재편
+  - `detectLanguage(text)`: 유니코드 범위 기반 빠른 언어 감지 (한글/일본어/중국어/영어)
+  - `analyzeSentiment(text, langHint)`: 감지된 언어 + 영어 공통 사전 동시 검사, 반환값에 `detectedLanguage` 필드 추가
+  - K-Culture 특성상 일본·중국 팬덤 댓글 정확도 대폭 향상 예상
+
+---
+
+### [ID: RL-20260306-13]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 수정 (마이그레이션)
+- **변경 대상**: `lib/vipMonitoring.js`
+- **변경 요약**: Phase C-1 — Twitter/X v2 raw fetch → `twitter-api-v2` SDK 마이그레이션
+- **변경 상세**:
+  - `import { TwitterApi } from 'twitter-api-v2'` 추가 (패키지 기설치)
+  - `searchTwitter()` 함수: raw fetch + 수동 타임아웃/레이트리밋 처리 → `twitterClient.v2.searchRecent()` SDK 호출로 교체
+  - SDK 장점: 자동 레이트리밋 추적, 페이지네이션 내장, `public_metrics` 자동 파싱, 에러 코드 정확도 향상
+  - 쿼리에 `-is:retweet` 필터 추가로 리트윗 제외, 노이즈 감소
+
+---
+
+### [ID: RL-20260306-12]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 (신규 파일 3개 + 수정 2개)
+- **변경 대상**: `pages/admin/emerging.jsx`, `pages/api/admin/emerging-trends.js`, `lib/premiumMembership.js`, `pages/api/premium/subscribe.js`, `pages/api/premium/status.js`, `pages/api/premium/webhook.js`
+- **변경 요약**: Phase B-2/B-3 — 프리미엄 멤버십 결제 흐름 + 이머징 트렌드 관리 대시보드
+- **변경 상세**:
+  - `lib/premiumMembership.js`: PLANS 3종(월간/연간/평생), Stripe 체크아웃 세션, Toss Payments 결제 준비/승인, 멤버십 상태 조회, 자동 만료 처리
+  - `pages/api/premium/subscribe.js`: Stripe/Toss 세션 생성 (provider 선택)
+  - `pages/api/premium/status.js`: 현재 사용자 멤버십 상태 + 전체 플랜 목록 반환
+  - `pages/api/premium/webhook.js`: Stripe 웹훅 서명 검증 (HMAC-SHA256, 타이밍 공격 방어)
+  - `pages/admin/emerging.jsx`: 이머징 엔티티 테이블 + 알림 탭 + VIP 승격/무시 액션 + 상세 모달 (완전한 관리 UI)
+  - `pages/api/admin/emerging-trends.js`: 조회/상태변경 API (관리자 인증 필수)
+  - `lib/schemas/premiumMember.js`: 멤버십 Sanity 스키마 (5가지 상태, Stripe/Toss 필드)
+
+---
+
+### [ID: RL-20260306-11]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 (신규 파일 2개)
+- **변경 대상**: `lib/newsletter.js`, `pages/api/newsletter/subscribe.js`, `pages/api/newsletter/send.js`, `lib/schemas/newsletterSubscriber.js`
+- **변경 요약**: Phase B-1 — 이메일 뉴스레터 구독 + 발송 시스템 완전 구현
+- **변경 상세**:
+  - `lib/newsletter.js`: 이중 옵트인 방식 구독 등록, 수신거부 처리, K-Culture 트렌드 기반 HTML 뉴스레터 자동 생성, SendGrid 배치 발송 (100명씩, 레이트리밋 준수)
+  - `subscribeToNewsletter()`: 중복 체크, 재활성화, GDPR 준수 이중 옵트인
+  - `sendTrendNewsletter()`: 다국어(ko/en/ja/zh) 제목 + HTML 템플릿 자동 생성
+  - `/api/newsletter/subscribe`: IP 기반 레이트리밋 (3회/분), 입력 검증
+  - `/api/newsletter/send`: 관리자/cron 트리거, 테스트 모드 지원
+  - `newsletterSubscriber` Sanity 스키마 (이중 옵트인 상태 추적)
+  - `vercel.json`에 뉴스레터 cron 등록 (월·목 09:00 UTC)
+
+---
+
 ### [ID: RL-20260306-10]
 - **날짜**: 2026-03-06 (KST)
 - **작성자**: AI Agent (GitHub Copilot)

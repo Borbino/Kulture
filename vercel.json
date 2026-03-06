@@ -24,6 +24,10 @@
     {
       "path": "/api/cron/trend-detection",
       "schedule": "0 */2 * * *"
+    },
+    {
+      "path": "/api/newsletter/send",
+      "schedule": "0 9 * * 1,4"
     }
   ],
   "env": {

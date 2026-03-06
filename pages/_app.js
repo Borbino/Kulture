@@ -2,7 +2,12 @@ import '../styles/globals.css';
 import { SessionProvider } from 'next-auth/react';
 import { appWithTranslation } from 'next-i18next';
 import { useEffect } from 'react';
+import Head from 'next/head';
+import Script from 'next/script';
 import ErrorBoundary from '../components/ErrorBoundary';
+import { getAdSenseConfig } from '../lib/revenueEngine';
+
+const adSenseConfig = getAdSenseConfig();
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   useEffect(() => {
@@ -16,6 +21,21 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 
   return (
     <SessionProvider session={session}>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+
+      {/* Google AdSense AutoAds — 게시자 ID가 설정된 경우에만 활성화 */}
+      {adSenseConfig.publisherId && (
+        <Script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adSenseConfig.publisherId}`}
+          crossOrigin="anonymous"
+          strategy="lazyOnload"
+          onError={(e) => console.warn('[AdSense] Script load failed:', e)}
+        />
+      )}
+
       <ErrorBoundary>
         <Component {...pageProps} />
       </ErrorBoundary>
