@@ -6,6 +6,38 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260306-28]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 전면 코드베이스 일관성 감사 2차 (Deep Consistency Audit)
+- **변경 대상**:
+  - `lib/logger.js` (module.exports → ESM export)
+  - 30개 파일 logger import 통일 (`import logger` → `import { logger }`)
+  - 13개 파일 .js 확장자 누락 수정
+  - 8개 파일 console.* → logger 변환
+  - `lib/aiTranslation.js` health check 잔여 참조 수정
+  - `pages/api/translation/contribute.js`, `approve.js` require → import 변환
+- **변경 요약**: logger.js가 `module.exports`를 사용하는 CJS 방식으로 남아있어 ESM `import logger from './logger.js'` 호출이 잘못된 객체를 받는 근본 버그를 수정. 전체 logger 호출을 `import { logger }`(named import) 방식으로 통일.
+---
+
+**[쉬운 설명]**
+
+**발견된 근본 버그**: `logger.js`가 `module.exports = { logger, Logger }` (CJS) 방식으로 내보냈는데, 28개 파일이 `import logger from './logger.js'` (ESM default) 방식으로 가져오고 있었음. webpack CJS interop에 의해 `logger` 변수가 LoggerInstance가 아닌 전체 객체가 됨 → `logger.info(...)` 호출 시 `undefined is not a function` 에러 가능성.
+
+**수정 내용**: `logger.js` ESM 변환, 모든 파일 `import { logger }` 통일, `.js` 확장자 13개 추가, `console.*` → `logger` 8개 파일 교체, `pages/api` require → import 변환
+
+---
+
+- **변경 상세**:
+
+  - `lib/logger.js`: `module.exports` → `export { logger, Logger }; export default logger`
+  - **logger named import 통일**: 30개 파일 `import logger from` → `import { logger } from`
+  - **.js 확장자 추가**: 13개 위치 (logger, sanityClient, analytics 등)
+  - **console.* → logger**: mongodb, autoOptimizer, aiRecommendation, settings, advancedContentGeneration, imageOptimizer, rateLimiter + pages/api/translation 2개
+  - `lib/aiTranslation.js`: health check `translateWithOpenAI` 잔여 참조 → `translateWithAI`
+
+---
+
 ### [ID: RL-20260306-27]
 - **날짜**: 2026-03-06 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)

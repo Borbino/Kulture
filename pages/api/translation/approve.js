@@ -3,8 +3,9 @@
  * POST /api/translation/approve
  */
 
-import { connectToDatabase } from '../../../lib/mongodb';
+import { connectToDatabase } from '../../../lib/mongodb.js';
 import { ObjectId } from 'mongodb';
+import { logger } from '../../../lib/logger.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -43,16 +44,16 @@ export default async function handler(req, res) {
     
     res.status(200).json({ success: true, message: 'Translation approved' });
   } catch (error) {
-    console.error('Approve API error:', error);
+    logger.error('[TranslationApprove]', `API error: ${error.message}`);
     res.status(500).json({ error: 'Failed to approve translation' });
   }
 }
 
 async function updateTranslationFile(translation) {
-  const fs = require('fs').promises;
-  const path = require('path');
+  const { promises: fs } = await import('fs');
+  const { join } = await import('path');
   
-  const filePath = path.join(
+  const filePath = join(
     process.cwd(),
     'public',
     'locales',
@@ -77,6 +78,6 @@ async function updateTranslationFile(translation) {
     
     await fs.writeFile(filePath, JSON.stringify(translations, null, 2), 'utf8');
   } catch (error) {
-    console.error('Failed to update translation file:', error);
+    logger.error('[TranslationApprove]', `Failed to update translation file: ${error.message}`);
   }
 }
