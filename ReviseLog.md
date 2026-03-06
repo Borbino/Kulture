@@ -6,6 +6,57 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260306-26]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: AI 모델 선택 방식 전면 개편 (하드코딩 완전 제거)
+- **변경 대상**:
+  - `lib/aiModelManager.js` (Dynamic Discovery Engine v3.0 재작성)
+  - `lib/aiModelCrawler.js` (invalidateDiscoveryCache 연동)
+- **변경 요약**: 하드코딩된 모델 목록을 완전히 제거하고, 각 AI 회사의 `/models` API를 실시간 호출하여 현재 존재하는 모든 모델을 자동 발견·점수화·순위화하는 방식으로 전환. gemini-11, claude-5 같은 미래 모델도 자동 반영됨.
+
+---
+
+**[쉬운 설명]**
+
+**이전 방식 (v2.0):** `gemini-2.0-flash`, `claude-opus-4-5` 등 모델명을 코드에 직접 적어뒀음 → gemini-11이 나와도 코드 수정 전까지 사용 불가
+
+**새 방식 (v3.0):** AI 호출 전 먼저 각 회사 API에 "지금 있는 모델 목록 다 줘" 요청 → 응답 받은 목록에서 버전번호/크기/품질 등으로 점수 계산 → 점수 높은 순(최신·최고)부터 자동 시도 → gemini-11이 나오면 코드 수정 없이 자동으로 사용됨
+
+---
+
+- **변경 상세**:
+
+  - `lib/aiModelManager.js` (v3.0, 764줄):
+    - 기존 `models: []` 하드코딩 배열 완전 제거
+    - 각 제공자에 `discover()` 함수 추가:
+      - Google: `GET /v1beta/models?key=...` → generateContent 지원 모델 필터
+      - Groq: `GET /openai/v1/models` → active 모델 필터
+      - OpenRouter: `GET /api/v1/models` → 무료(:free) 텍스트 모델 필터
+      - Anthropic: OpenRouter에서 `anthropic/*` 발견 후 네이티브 ID 변환 (Anthropic 공개 목록 API 없음)
+      - Cohere: `GET /v1/models` → chat/generate 엔드포인트 모델 필터
+      - HuggingFace: `GET /api/models?pipeline_tag=text-generation&sort=trending` → 비게이티드+고인기 모델
+      - OpenAI: `GET /v1/models` → gpt-*/o숫자* 채팅 모델 필터
+    - `scoreModelCapability(modelId, meta)`: 하드코딩 없이 이름에서 능력 추론
+      - 버전번호(2.0>1.5>1.0 등) × 10점
+      - 파라미터 크기(70B>13B>7B) → log₂ 스케일
+      - 품질 키워드(ultra/opus/pro/sonnet/flash/haiku/mini 등) 계층 점수
+      - 날짜 접미사(20250219 등 → 최신일수록 +점수)
+      - 컨텍스트 창 크기 보너스
+      - 무료 티어 +20점 (비용 효율 우선)
+    - `discoverAndRankModels(provider)`: 1시간 캐시로 성능 최적화
+    - `invalidateDiscoveryCache(providerId)`: 신모델 감지 시 즉시 재발견 트리거
+    - `generateWithBestModel()`: 동적 발견 목록 기반으로 최고→하향 자동 선택
+
+  - `lib/aiModelCrawler.js`:
+    - 신모델 감지 시 `prependModelToCatalog()` 후 `invalidateDiscoveryCache()` 추가 호출
+    - 다음 AI 호출 시 해당 제공자 모델 목록 즉시 재발견
+
+- **전체 ESLint 오류**: 0개
+- **관련 PR/이슈**: -
+
+---
+
 ### [ID: RL-20260306-25]
 - **날짜**: 2026-03-06 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)
