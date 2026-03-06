@@ -7,7 +7,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://kulture.net'; // Ensure .net domain
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.kulture.wiki';
 
 function SEOHead({
   title = 'Kulture - Global K-Culture Community',

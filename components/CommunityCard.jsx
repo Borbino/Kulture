@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
-import styles from '../styles/CommunityCard.module.css'
+import PropTypes from 'prop-types'
+import styles from '../styles/CommunityCard.module.css.js'
 
 export default function CommunityCard({ community, onJoin }) {
   const { data: session } = useSession()
@@ -31,7 +32,6 @@ export default function CommunityCard({ community, onJoin }) {
         onJoin && onJoin()
       }
     } catch (error) {
-      console.error(error)
       alert('커뮤니티 참여 실패')
     } finally {
       setLoading(false)
@@ -81,4 +81,21 @@ export default function CommunityCard({ community, onJoin }) {
       </div>
     </div>
   )
+}
+
+CommunityCard.propTypes = {
+  community: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    image: PropTypes.string,
+    memberCount: PropTypes.number,
+    postCount: PropTypes.number,
+    isPrivate: PropTypes.bool,
+    owner: PropTypes.shape({
+      name: PropTypes.string,
+      image: PropTypes.string,
+    }),
+  }).isRequired,
+  onJoin: PropTypes.func,
 }

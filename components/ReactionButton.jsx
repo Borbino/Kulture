@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import styles from './ReactionButton.module.css';
 
 const REACTIONS = [
@@ -143,4 +144,10 @@ export default function ReactionButton({ targetType, targetId, initialReactions 
       )}
     </div>
   );
+}
+
+ReactionButton.propTypes = {
+  targetType: PropTypes.string.isRequired,
+  targetId: PropTypes.string.isRequired,
+  initialReactions: PropTypes.objectOf(PropTypes.number),
 }

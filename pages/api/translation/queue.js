@@ -9,11 +9,13 @@ import {
   updateTranslationSuggestionStatus,
 } from '../../../lib/translationSuggestions.js'
 import { notifyTranslationSuggestionStatus } from '../../../lib/notificationSystem.js'
+import { verifyAdmin } from '../../../lib/auth.js'
 
 export default async function handler(req, res) {
-  // Simple admin auth check (should be replaced with proper auth in production)
-  const adminSecret = req.headers['x-admin-secret'] || req.query.secret
-  if (adminSecret !== process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
+  // 관리자 세션 기반 인증
+  try {
+    await verifyAdmin(req, res)
+  } catch {
     return res.status(401).json({ error: 'Unauthorized' })
   }
 

@@ -5,17 +5,40 @@
 
 import { getSanityClient } from '../lib/sanityClient'
 
-function generateSiteMap(posts) {
-  const baseUrl = 'https://yoursite.com' // 실제 도메인으로 변경
-
+function generateSiteMap(posts, baseUrl) {
   return `<?xml version="1.0" encoding="UTF-8"?>
-   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+           xmlns:xhtml="http://www.w3.org/1999/xhtml">
      <!-- Static Pages -->
      <url>
        <loc>${baseUrl}</loc>
        <lastmod>${new Date().toISOString()}</lastmod>
        <changefreq>daily</changefreq>
        <priority>1.0</priority>
+     </url>
+     <url>
+       <loc>${baseUrl}/trends</loc>
+       <lastmod>${new Date().toISOString()}</lastmod>
+       <changefreq>hourly</changefreq>
+       <priority>0.9</priority>
+     </url>
+     <url>
+       <loc>${baseUrl}/premium</loc>
+       <lastmod>${new Date().toISOString()}</lastmod>
+       <changefreq>weekly</changefreq>
+       <priority>0.8</priority>
+     </url>
+     <url>
+       <loc>${baseUrl}/leaderboard</loc>
+       <lastmod>${new Date().toISOString()}</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.8</priority>
+     </url>
+     <url>
+       <loc>${baseUrl}/communities</loc>
+       <lastmod>${new Date().toISOString()}</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.8</priority>
      </url>
      <url>
        <loc>${baseUrl}/admin/monitoring</loc>
@@ -54,6 +77,10 @@ function generateSiteMap(posts) {
 }
 
 export async function getServerSideProps({ res }) {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
+    ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')
+    : 'https://kulture.app'
+
   try {
     const client = getSanityClient()
 
@@ -67,7 +94,7 @@ export async function getServerSideProps({ res }) {
     `)
 
     // Sitemap 생성
-    const sitemap = generateSiteMap(posts)
+    const sitemap = generateSiteMap(posts, baseUrl)
 
     res.setHeader('Content-Type', 'text/xml')
     res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate')

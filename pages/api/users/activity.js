@@ -1,17 +1,21 @@
-import { sanityClient } from '../../../lib/sanityClient';
-import { getSession } from 'next-auth/react';
+import { sanityClient } from '../../../lib/sanityClient.js'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../../../lib/auth/[...nextauth]'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { logger } from '../../../lib/logger.js';
+
 
 /**
  * User Activity API
  * Update user points, level, and badges based on activity
  */
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions)
 
   if (!session) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -66,7 +70,7 @@ export default async function handler(req, res) {
       earnedPoints: points,
     });
   } catch (error) {
-    console.error('Error updating user activity:', error);
+    logger.error('Error updating user activity:', error);
     return res.status(500).json({ error: 'Failed to update user activity' });
   }
 }
@@ -119,6 +123,8 @@ async function checkBadgeAchievements(userId, user, action) {
       }
     }
   } catch (error) {
-    console.error('Error checking badge achievements:', error);
+    logger.error('Error checking badge achievements:', error);
   }
 }
+
+export default withErrorHandler(handler)

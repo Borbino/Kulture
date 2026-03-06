@@ -1,0 +1,52 @@
+{
+  "appId": "app.kulture.global",
+  "appName": "Kulture",
+  "webDir": "out",
+  "server": {
+    "androidScheme": "https",
+    "iosScheme": "ionic",
+    "hostname": "kulture.app"
+  },
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false,
+    "backgroundColor": "#667eea",
+    "buildOptions": {
+      "keystorePath": "kulture.keystore",
+      "keystoreAlias": "kulture"
+    }
+  },
+  "ios": {
+    "scheme": "Kulture",
+    "backgroundColor": "#667eea",
+    "contentInset": "always",
+    "preferredContentMode": "mobile"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "launchShowDuration": 2000,
+      "backgroundColor": "#667eea",
+      "androidSplashResourceName": "splash",
+      "iosSplashFilename": "Default",
+      "showSpinner": false
+    },
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    },
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_icon_config_sample",
+      "iconColor": "#667eea"
+    },
+    "Keyboard": {
+      "resize": "body",
+      "style": "dark",
+      "resizeOnFullScreen": true
+    },
+    "StatusBar": {
+      "style": "light",
+      "backgroundColor": "#667eea"
+    }
+  }
+}

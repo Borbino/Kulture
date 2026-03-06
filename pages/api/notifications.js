@@ -1,5 +1,9 @@
-import { sanityClient } from '../../lib/sanityClient';
-import { getSession } from 'next-auth/react';
+import { sanityClient } from '../../lib/sanityClient.js'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../../lib/auth/[...nextauth]'
+import { withErrorHandler } from '../../lib/apiErrorHandler.js'
+import { logger } from '../../lib/logger.js';
+
 
 /**
  * Notifications API
@@ -8,8 +12,8 @@ import { getSession } from 'next-auth/react';
  * - PATCH: Mark notification as read
  */
 
-export default async function handler(req, res) {
-  const session = await getSession({ req });
+async function handler(req, res) {
+  const session = await getServerSession(req, res, authOptions)
 
   if (!session) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -70,7 +74,7 @@ export default async function handler(req, res) {
         },
       });
     } catch (error) {
-      console.error('Error fetching notifications:', error);
+      logger.error('Error fetching notifications:', error);
       return res.status(500).json({ error: 'Failed to fetch notifications' });
     }
   }
@@ -112,7 +116,7 @@ export default async function handler(req, res) {
 
       return res.status(201).json({ notification });
     } catch (error) {
-      console.error('Error creating notification:', error);
+      logger.error('Error creating notification:', error);
       return res.status(500).json({ error: 'Failed to create notification' });
     }
   }
@@ -165,10 +169,12 @@ export default async function handler(req, res) {
 
       return res.status(200).json({ notification: updatedNotification });
     } catch (error) {
-      console.error('Error updating notification:', error);
+      logger.error('Error updating notification:', error);
       return res.status(500).json({ error: 'Failed to update notification' });
     }
   }
 
   return res.status(405).json({ error: 'Method not allowed' });
 }
+
+export default withErrorHandler(handler)

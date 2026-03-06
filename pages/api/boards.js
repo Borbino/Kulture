@@ -1,5 +1,8 @@
-import { sanityClient } from '../../lib/sanityClient';
-import { getSession } from 'next-auth/react';
+import { sanityClient } from '../../lib/sanityClient.js';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './auth/[...nextauth]';
+import { withErrorHandler } from '../../lib/apiErrorHandler.js';
+import { logger } from '../../lib/logger.js';
 
 /**
  * Boards API
@@ -9,6 +12,7 @@ import { getSession } from 'next-auth/react';
  */
 
 export default async function handler(req, res) {
+  const session = await getServerSession(req, res, authOptions);
   if (req.method === 'GET') {
     try {
       const { type, categoryId, activeOnly = 'true' } = req.query;
@@ -52,14 +56,12 @@ export default async function handler(req, res) {
 
       return res.status(200).json({ boards });
     } catch (error) {
-      console.error('Error fetching boards:', error);
+      logger.error('Error fetching boards:', error);
       return res.status(500).json({ error: 'Failed to fetch boards' });
     }
   }
 
   if (req.method === 'POST') {
-    const session = await getSession({ req });
-
     if (!session || session.user.role !== 'admin') {
       return res.status(403).json({ error: 'Forbidden' });
     }
@@ -107,14 +109,12 @@ export default async function handler(req, res) {
 
       return res.status(201).json({ board });
     } catch (error) {
-      console.error('Error creating board:', error);
+      logger.error('Error creating board:', error);
       return res.status(500).json({ error: 'Failed to create board' });
     }
   }
 
   if (req.method === 'PATCH') {
-    const session = await getSession({ req });
-
     if (!session) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -154,7 +154,7 @@ export default async function handler(req, res) {
 
       return res.status(200).json({ board: updatedBoard });
     } catch (error) {
-      console.error('Error updating board:', error);
+      logger.error('Error updating board:', error);
       return res.status(500).json({ error: 'Failed to update board' });
     }
   }

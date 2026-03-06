@@ -1,5 +1,5 @@
 import Script from 'next/script'
-import { GA_MEASUREMENT_ID } from '../lib/analytics'
+import { GA_MEASUREMENT_ID } from '../lib/analytics.js'
 
 export default function Analytics() {
   // GA4가 설정되지 않은 경우 렌더링하지 않음

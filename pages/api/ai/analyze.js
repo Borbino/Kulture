@@ -1,17 +1,22 @@
-import { getSession } from 'next-auth/react';
-import { analyzeSentiment, detectSpam, analyzeCommentQuality, analyzePostQuality } from '../../../lib/aiSentiment';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/[...nextauth]';
+import { analyzeSentiment, detectSpam, analyzeCommentQuality, analyzePostQuality } from '../../../lib/aiSentiment.js';
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
+import rateLimitMiddleware from '../../../lib/rateLimiter.js';
+import { logger } from '../../../lib/logger.js';
 
 /**
  * AI 감정/품질 분석 API
  * - POST: 텍스트 감정 분석, 스팸 감지, 품질 분석
  */
 
-export default async function handler(req, res) {
+async function handler(req, res) {
+  rateLimitMiddleware('api')(req, res, () => {});
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
 
   if (!session) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -28,7 +33,7 @@ export default async function handler(req, res) {
 
     switch (type) {
       case 'sentiment':
-        result = analyzeSentiment(text);
+        result = await analyzeSentiment(text);
         break;
 
       case 'spam':
@@ -36,11 +41,11 @@ export default async function handler(req, res) {
         break;
 
       case 'comment':
-        result = analyzeCommentQuality(text, postContent);
+        result = await analyzeCommentQuality(text, postContent);
         break;
 
       case 'post':
-        result = analyzePostQuality(title, content, tags);
+        result = await analyzePostQuality(title, content, tags);
         break;
 
       default:
@@ -52,7 +57,9 @@ export default async function handler(req, res) {
       analysis: result,
     });
   } catch (error) {
-    console.error('Error analyzing content:', error);
+    logger.error('Error analyzing content', { error: error.message });
     return res.status(500).json({ error: 'Failed to analyze content' });
   }
 }
+
+export default withErrorHandler(handler);

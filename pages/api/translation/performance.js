@@ -6,6 +6,7 @@
 
 import { translationMonitor } from '../../../lib/translationPerformanceMonitor.js';
 import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
+import { verifyAdmin } from '../../../lib/auth.js';
 
 async function handler(req, res) {
   if (req.method === 'GET') {
@@ -16,11 +17,7 @@ async function handler(req, res) {
 
   if (req.method === 'POST' && req.body.action === 'reset') {
     // 통계 초기화 (관리자 전용)
-    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'kulture2025';
-    
-    if (req.body.password !== adminPassword) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
+    try { await verifyAdmin(req, res) } catch { return res.status(401).json({ error: 'Unauthorized' }); }
 
     translationMonitor.reset();
     return res.status(200).json({ message: 'Statistics reset successfully' });

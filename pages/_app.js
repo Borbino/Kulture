@@ -2,7 +2,14 @@ import '../styles/globals.css';
 import { SessionProvider } from 'next-auth/react';
 import { appWithTranslation } from 'next-i18next';
 import { useEffect } from 'react';
-import ErrorBoundary from '../components/ErrorBoundary';
+import Head from 'next/head';
+import Script from 'next/script';
+import ErrorBoundary from '../components/ErrorBoundary.js';
+import BottomNavigation from '../components/BottomNavigation.js';
+import { getAdSenseConfig } from '../lib/revenueEngine.js';
+import { logger } from '../../lib/logger.js';
+
+const adSenseConfig = getAdSenseConfig();
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   useEffect(() => {
@@ -16,8 +23,29 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 
   return (
     <SessionProvider session={session}>
+      <Head>
+        {/* 모바일 최적화 뷰포트: viewport-fit=cover 로 노치/홈인디케이터 safe area 활성화 */}
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+      </Head>
+
+      {/* Google AdSense AutoAds — 게시자 ID가 설정된 경우에만 활성화 */}
+      {adSenseConfig.publisherId && (
+        <Script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adSenseConfig.publisherId}`}
+          crossOrigin="anonymous"
+          strategy="lazyOnload"
+          onError={(e) => logger.warn('[AdSense] Script load failed:', e)}
+        />
+      )}
+
       <ErrorBoundary>
         <Component {...pageProps} />
+        {/* 모바일 하단 탭바 — 모든 페이지 공통 */}
+        <BottomNavigation />
       </ErrorBoundary>
     </SessionProvider>
   );

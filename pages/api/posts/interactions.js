@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../auth/[...nextauth]'
-import { getSanityClient } from '../../../lib/sanityClient'
+import { getSanityClient } from '../../../lib/sanityClient.js'
 
 export default async function handler(req, res) {
   const client = getSanityClient()

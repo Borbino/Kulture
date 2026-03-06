@@ -3,7 +3,8 @@
  * GET /api/translation/stats
  */
 
-import { connectToDatabase } from '../../../lib/mongodb';
+import { connectToDatabase } from '../../../lib/mongodb.js';
+import { logger } from '../../../lib/logger.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -55,7 +56,7 @@ export default async function handler(req, res) {
       topContributors,
     });
   } catch (error) {
-    console.error('Stats API error:', error);
+    logger.error('Stats API error:', error);
     res.status(500).json({ error: 'Failed to fetch statistics' });
   }
 }

@@ -1,10 +1,12 @@
-import sanity from '../../../lib/sanityClient'
-import { getCostMonitor } from '../../../lib/costMonitor'
-import { verifyAdmin } from '../../../lib/auth'
+import sanity from '../../../lib/sanityClient.js'
+import { getCostMonitor } from '../../../lib/costMonitor.js'
+import { verifyAdmin } from '../../../lib/auth.js'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { logger } from '../../../lib/logger.js';
 
 const REVENUE_PER_PRIORITY_POINT = 0.5
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
@@ -30,7 +32,7 @@ export default async function handler(req, res) {
         }
       )
     } catch (sanityError) {
-      console.error('Finance stats Sanity fetch failed, using mock fallback:', sanityError.message)
+      logger.error('Finance stats Sanity fetch failed, using mock fallback:', sanityError.message)
       scores = [
         { priorityScore: 8 },
         { priorityScore: 6 },
@@ -57,9 +59,10 @@ export default async function handler(req, res) {
       unitRevenuePerScore: REVENUE_PER_PRIORITY_POINT,
     })
   } catch (error) {
-    console.error('Finance stats API error:', error)
+    logger.error('Finance stats API error:', error)
     return res.status(error.message === 'Forbidden: Admin access required' ? 403 : 500).json({
       error: error.message || 'Internal server error',
     })
   }
 }
+export default withErrorHandler(handler);

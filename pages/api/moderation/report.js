@@ -1,5 +1,8 @@
-import { sanityClient } from '../../../lib/sanityClient'
-import { getSession } from 'next-auth/react'
+import { sanityClient } from '../../../lib/sanityClient.js'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../auth/[...nextauth]'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { logger } from '../../../lib/logger.js';
 
 /**
  * Moderation Reports API
@@ -8,8 +11,8 @@ import { getSession } from 'next-auth/react'
  * - PATCH: Update report status (admin only)
  */
 
-export default async function handler(req, res) {
-  const session = await getSession({ req })
+async function handler(req, res) {
+  const session = await getServerSession(req, res, authOptions)
 
   if (req.method === 'GET') {
     if (!session || session.user.role !== 'admin') {
@@ -64,7 +67,7 @@ export default async function handler(req, res) {
         },
       })
     } catch (error) {
-      console.error('Error fetching reports:', error)
+      logger.error('Error fetching reports:', error)
       return res.status(500).json({ error: 'Failed to fetch reports' })
     }
   }
@@ -113,7 +116,7 @@ export default async function handler(req, res) {
 
       return res.status(201).json({ report })
     } catch (error) {
-      console.error('Error creating report:', error)
+      logger.error('Error creating report:', error)
       return res.status(500).json({ error: 'Failed to create report' })
     }
   }
@@ -147,10 +150,12 @@ export default async function handler(req, res) {
 
       return res.status(200).json({ report })
     } catch (error) {
-      console.error('Error updating report:', error)
+      logger.error('Error updating report:', error)
       return res.status(500).json({ error: 'Failed to update report' })
     }
   }
 
   return res.status(405).json({ error: 'Method not allowed' })
 }
+
+export default withErrorHandler(handler)

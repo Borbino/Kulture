@@ -1,0 +1,374 @@
+/* ============================================================
+   Premium Membership Page Styles
+   ============================================================ */
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #667eea;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 0 0 16px;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 17px;
+  color: #555;
+  line-height: 1.7;
+  margin: 0 0 28px;
+}
+
+/* ── Gateway Switch ── */
+.gatewaySwitch {
+  display: inline-flex;
+  background: #f0f0f0;
+  border-radius: 12px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.gatewayBtn,
+.gatewayActive {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.gatewayBtn {
+  background: transparent;
+  color: #666;
+}
+
+.gatewayBtn:hover {
+  color: #333;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.gatewayActive {
+  background: #fff;
+  color: #667eea;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* ── Error Banner ── */
+.errorBanner {
+  background: #fff1f0;
+  border: 1px solid #ffa39e;
+  color: #cf1322;
+  border-radius: 8px;
+  padding: 14px 20px;
+  margin-bottom: 28px;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ── Plan Cards ── */
+.plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 24px;
+  margin-bottom: 48px;
+  align-items: start;
+}
+
+.card {
+  background: #fff;
+  border: 2px solid #e8e8e8;
+  border-radius: 20px;
+  padding: 32px 28px 36px;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+.highlighted {
+  border-color: #667eea;
+  background: linear-gradient(180deg, #f0f3ff 0%, #fff 30%);
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.2);
+}
+
+.badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 16px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.planEmoji {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.planName {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 16px;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.price {
+  font-size: 40px;
+  font-weight: 800;
+  color: #1a1a2e;
+  line-height: 1;
+}
+
+.period {
+  font-size: 15px;
+  color: #888;
+  font-weight: 500;
+}
+
+.perMonth {
+  font-size: 13px;
+  color: #667eea;
+  font-weight: 600;
+  margin: 0 0 20px;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: #444;
+  line-height: 1.5;
+}
+
+.check {
+  color: #52c41a;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── CTA Buttons ── */
+.cta,
+.ctaHighlight {
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cta {
+  background: #f5f5f5;
+  color: #333;
+  border: 2px solid #ddd;
+}
+
+.cta:hover:not(:disabled) {
+  background: #e8e8e8;
+}
+
+.ctaHighlight {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+}
+
+.ctaHighlight:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(102, 126, 234, 0.5);
+}
+
+.cta:disabled,
+.ctaHighlight:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.loadingSpinner::after {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Trust Signals ── */
+.trust {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 28px;
+  margin-bottom: 64px;
+  padding: 20px;
+  background: #f8f9ff;
+  border-radius: 16px;
+}
+
+.trustItem {
+  font-size: 14px;
+  color: #555;
+  font-weight: 600;
+}
+
+/* ── FAQ ── */
+.faq {
+  margin-bottom: 60px;
+}
+
+.faqTitle {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1a1a2e;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.faqGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.faqItem {
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.faqQ {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 10px;
+}
+
+.faqA {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── Page Footer ── */
+.pageFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 32px;
+  border-top: 1px solid #eee;
+}
+
+.backLink {
+  font-size: 14px;
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.support {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+}
+
+.supportLink {
+  color: #667eea;
+  text-decoration: none;
+}
+
+.supportLink:hover {
+  text-decoration: underline;
+}
+
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  .plans {
+    grid-template-columns: 1fr;
+  }
+
+  .trust {
+    gap: 16px;
+  }
+
+  .gatewaySwitch {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .gatewayBtn,
+  .gatewayActive {
+    width: 100%;
+    text-align: center;
+  }
+
+  .pageFooter {
+    flex-direction: column;
+    text-align: center;
+  }
+}

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ReportModal from './ReportModal'
-import styles from '../styles/ContextMenu.module.css'
+import PropTypes from 'prop-types'
+import styles from '../styles/ContextMenu.module.css.js'
 
 export default function ContextMenu({ targetType, targetId, onReport }) {
   const [showReportModal, setShowReportModal] = useState(false)
@@ -52,4 +53,10 @@ export default function ContextMenu({ targetType, targetId, onReport }) {
       )}
     </>
   )
+}
+
+ContextMenu.propTypes = {
+  targetType: PropTypes.string.isRequired,
+  targetId: PropTypes.string.isRequired,
+  onReport: PropTypes.func,
 }

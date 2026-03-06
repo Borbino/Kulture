@@ -1,17 +1,21 @@
-import { sanityClient } from '../../../lib/sanityClient';
-import { getSession } from 'next-auth/react';
+import { sanityClient } from '../../../lib/sanityClient.js'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../../../lib/auth/[...nextauth]'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { logger } from '../../../lib/logger.js';
+
 
 /**
  * Activity Feed API
  * - GET: Get activity feed (user's + following users' activities)
  */
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions)
 
   if (!session) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -80,7 +84,9 @@ export default async function handler(req, res) {
       limit: parseInt(limit),
     });
   } catch (error) {
-    console.error('Error getting activity feed:', error);
+    logger.error('Error getting activity feed:', error);
     return res.status(500).json({ error: 'Failed to get activity feed' });
   }
 }
+
+export default withErrorHandler(handler)

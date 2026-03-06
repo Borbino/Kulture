@@ -3,13 +3,15 @@
  * [목적] 모든 외부 API 연결 상태 확인 (stub 함수 탐지)
  */
 
-import rateLimitMiddleware from '../../lib/rateLimiter.js'
+import { checkRateLimit } from '../../lib/rateLimiter.js'
 import { tryCatch, withErrorHandler } from '../../lib/apiErrorHandler.js'
 
 const handler = async function healthHandler(req, res) {
   // Rate limiting: 60회/분
-  const rateLimitResult = rateLimitMiddleware('api')(req, res, () => {})
-  if (rateLimitResult !== undefined) return rateLimitResult
+  const rateLimitResult = await checkRateLimit(req, 'api')
+  if (!rateLimitResult.success) {
+    return res.status(429).json({ error: 'Too Many Requests', retryAfter: rateLimitResult.retryAfter })
+  }
 
   const checks = {
     twitter: checkTwitter(),

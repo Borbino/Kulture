@@ -6,6 +6,9 @@
 import sanity from '../../lib/sanityClient.js'
 import rateLimitMiddleware from '../../lib/rateLimiter.js'
 import { withRetry, withErrorHandler } from '../../lib/apiErrorHandler.js'
+import { getServerSession } from 'next-auth';
+import { authOptions } from './auth/[...nextauth]';
+import { logger } from '../../lib/logger.js';
 
 /**
  * Hugging Face Inference API (100% 무료, 제한 없음)
@@ -16,7 +19,7 @@ async function improveWithHuggingFace(originalContent, ceoFeedback) {
   const HF_TOKEN = process.env.HUGGINGFACE_API_TOKEN
 
   if (!HF_TOKEN || HF_TOKEN.length < 10) {
-    console.warn('[Improve Content] Invalid HF token, using fallback')
+    logger.warn('[Improve Content] Invalid HF token, using fallback')
     return null
   }
 
@@ -97,7 +100,7 @@ ${ceoFeedback}
 
     return result
   } catch (error) {
-    console.error('[HF] Failed after 3 attempts:', error)
+    logger.error('[HF] Failed after 3 attempts:', error)
     return applyRuleBasedImprovement(originalContent, ceoFeedback)
   }
 }
@@ -222,6 +225,12 @@ const handler = async function improveContentHandler(req, res) {
   const rateLimitResult = rateLimitMiddleware('api')(req, res, () => {})
   if (rateLimitResult !== undefined) return rateLimitResult
 
+  // 인증 검증 (로그인 사용자만)
+  const session = await getServerSession(req, res, authOptions);
+  if (!session) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
@@ -234,7 +243,7 @@ const handler = async function improveContentHandler(req, res) {
   // 1. CEO 피드백 패턴 학습
   const feedbackPatterns = await analyzeFeedbackPatterns()
   if (process.env.NODE_ENV === 'development') {
-    console.log('[Feedback Patterns]', feedbackPatterns)
+    logger.info('[Feedback Patterns]', feedbackPatterns)
   }
 
   // 2. Hugging Face 무료 AI로 콘텐츠 개선

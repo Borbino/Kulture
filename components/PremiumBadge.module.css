@@ -1,0 +1,63 @@
+/* ============================================================
+   PremiumBadge Component Styles
+   ============================================================ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 20px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* ── Sizes ── */
+.xs {
+  font-size: 10px;
+  padding: 2px 8px;
+}
+
+.sm {
+  font-size: 11px;
+  padding: 3px 10px;
+}
+
+.md {
+  font-size: 13px;
+  padding: 5px 14px;
+}
+
+.emoji {
+  line-height: 1;
+}
+
+.label {
+  line-height: 1;
+}
+
+/* ── Types ── */
+.monthly {
+  background: linear-gradient(135deg, #e8f0fe, #c9d8fb);
+  color: #3050b0;
+  border: 1px solid #a8beee;
+}
+
+.annual {
+  background: linear-gradient(135deg, #fff7e0, #ffe7a0);
+  color: #a06000;
+  border: 1px solid #ffd060;
+}
+
+.lifetime {
+  background: linear-gradient(135deg, #f0e8ff, #ddc8fe);
+  color: #5b20a0;
+  border: 1px solid #c4a0f0;
+}
+
+.founder {
+  background: linear-gradient(135deg, #1a1a2e, #2d2d4e);
+  color: #bb99ff;
+  border: 1px solid #4a4a70;
+}
