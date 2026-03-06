@@ -8,7 +8,8 @@
 }
 
 .inline {
-  /* minimal, used inside articles / footers */
+  display: block;
+  /* inline variant: 기사 하단/푸터 삽입용 */
 }
 
 .card {

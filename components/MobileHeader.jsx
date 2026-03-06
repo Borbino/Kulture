@@ -8,6 +8,7 @@
  *   <MobileHeader title="커뮤니티" action={<NotificationBell />} />
  */
 
+import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import styles from './MobileHeader.module.css'
@@ -83,4 +84,12 @@ export default function MobileHeader({
       </div>
     </header>
   )
+}
+
+MobileHeader.propTypes = {
+  title: PropTypes.string,
+  showBack: PropTypes.bool,
+  backHref: PropTypes.string,
+  action: PropTypes.node,
+  transparent: PropTypes.bool,
 }

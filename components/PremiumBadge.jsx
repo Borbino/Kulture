@@ -4,6 +4,7 @@
  * [사용법] <PremiumBadge type="monthly" size="sm" />
  */
 
+import PropTypes from 'prop-types'
 import styles from './PremiumBadge.module.css'
 
 const BADGE_CONFIG = {
@@ -48,4 +49,10 @@ export default function PremiumBadge({ type = 'monthly', size = 'sm', showLabel 
       {showLabel && <span className={styles.label}>{config.label}</span>}
     </span>
   )
+}
+
+PremiumBadge.propTypes = {
+  type: PropTypes.oneOf(['monthly', 'annual', 'lifetime', 'founder']),
+  size: PropTypes.oneOf(['xs', 'sm', 'md']),
+  showLabel: PropTypes.bool,
 }

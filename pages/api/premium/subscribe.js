@@ -7,7 +7,7 @@
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
 import { withErrorHandler } from '../../../lib/apiErrorHandler';
-import { PLANS, createStripeCheckout, createTossPayment } from '../../../lib/premiumMembership';
+import { createStripeCheckout, createTossPayment } from '../../../lib/premiumMembership';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://kulture.wiki';
 

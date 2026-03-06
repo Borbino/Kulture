@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
@@ -24,7 +24,6 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState('feed')
   const [showPostEditor, setShowPostEditor] = useState(false)
   const [toastMessage, setToastMessage] = useState(null)
-  const [searchQuery, setSearchQuery] = useState('')
 
   const handlePostSuccess = () => {
     setShowPostEditor(false)
@@ -33,7 +32,6 @@ export default function Home() {
   }
 
   const handleSearch = (query) => {
-    setSearchQuery(query)
     router.push(`/search?q=${encodeURIComponent(query)}`)
   }
 

@@ -56,7 +56,7 @@ export default function EmergingDashboard() {
       const alertsData = await alertsRes.json()
       setTrends(trendsData.trends || [])
       setAlerts(alertsData.alerts || [])
-    } catch (err) {
+    } catch {
       showToast('❌ 데이터 로드 실패')
     } finally {
       setLoading(false)

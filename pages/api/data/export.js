@@ -140,7 +140,7 @@ async function handler(req, res) {
         );
         break;
 
-      case 'forecast':
+      case 'forecast': {
         // Enterprise 전용: 간단한 트렌드 예측 (최근 7일 velocity 기반)
         const recentTrends = await sanity.fetch(
           `*[_type == "hotIssue"] | order(timestamp desc)[0...100]{
@@ -150,6 +150,7 @@ async function handler(req, res) {
         // 키워드별 증가율 계산
         data = computeForecast(recentTrends);
         break;
+      }
 
       default:
         return res.status(400).json({ success: false, message: '알 수 없는 type입니다.' });

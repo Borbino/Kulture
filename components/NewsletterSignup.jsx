@@ -4,6 +4,7 @@
  * [사용법] <NewsletterSignup variant="inline" /> | variant: "inline" | "card" | "banner"
  */
 
+import PropTypes from 'prop-types'
 import { useState } from 'react'
 import styles from './NewsletterSignup.module.css'
 
@@ -119,4 +120,9 @@ export default function NewsletterSignup({ variant = 'inline', locale = 'ko' }) 
       </form>
     </div>
   )
+}
+
+NewsletterSignup.propTypes = {
+  variant: PropTypes.oneOf(['inline', 'card', 'banner']),
+  locale: PropTypes.string,
 }

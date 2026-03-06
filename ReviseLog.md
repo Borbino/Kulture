@@ -6,6 +6,72 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260306-23]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 코드 추가 + 문서 업그레이드 (핵심 시스템 고도화)
+- **변경 대상**: `lib/copyrightChecker.js` (신규), `lib/contentReviewSystem.js` (신규), `lib/autonomousScraper.js`, `lib/advancedContentGeneration.js`, `docs/COPYRIGHT_POLICY.md`
+- **변경 요약**: 크롤링·기사 작성·저작권 핵심 파이프라인 정밀 고도화 — 저작권 자동검증 + 콘텐츠 검토 시스템 신규 구축 + 소스 신뢰도 체계화
+- **변경 상세**:
+  - `lib/copyrightChecker.js` (신규, 240줄):
+    - `checkCopyrightSafety()`: 직접복사 패턴 감지, Fair Use 지시자 검사, 출처표기 확인, 인용 길이 제한 — 100점 감점식 종합 점수 산출
+    - `generateSourceAttribution()`: 참조 소스 기반 출처 표기 마크다운 자동 생성 (플랫폼별 정책 반영)
+    - `detectDirectCopy()`: Jaccard 유사도 기반 직접 복사 감지 (8단어 이상 연속 일치 감지)
+    - `isFairUse()`: 비평/분석/해설 표현 3개 이상 포함 여부 확인
+    - `generateCopyrightNotice()`: CC BY-SA 4.0 기반 저작권 고지문 자동 생성
+    - `getPlatformPolicy()`: YouTube/Instagram/Twitter/Reddit/RSS 플랫폼별 저작권 정책 조회
+  - `lib/contentReviewSystem.js` (신규, 220줄):
+    - `scoreContentQuality()`: 분량(20)+구조화(20)+팩트체크(20)+출처표기(20)+저작권(20) 5개 차원 100점 종합 평가
+    - `checkFactualIndicators()`: 날짜 패턴·수치 근거·출처 인용 표현 정규식 검사
+    - `checkPlagiarism()`: Jaccard similarity로 기존 발행 콘텐츠와 70% 이상 유사 시 중복 판정
+    - `generateReviewReport()`: 관리자 검토용 전체 리포트 (status: auto_approve/review_required/rejected)
+    - `isPublishable()`: 발행 가능 여부 빠른 판단 함수
+  - `lib/autonomousScraper.js` (개선):
+    - `SOURCE_RELIABILITY` 신규 추가 — 소스별 신뢰도 점수(1-10), 라이선스 유형, robots.txt 준수 현황 문서화
+    - `fetchRssFeed()` 개선: `sourceCategory` 파라미터 추가, 수집 아이템에 `reliabilityScore`·`licenseType`·`sourceCategory` 메타데이터 포함
+    - `scrapeFreeSources()`: 모든 fetchRssFeed 호출에 카테고리 전달
+  - `lib/advancedContentGeneration.js` (개선):
+    - imports 추가: `generateReviewReport`, `generateCopyrightNotice` 연동
+    - `generateAdvancedContent()` 개선:
+      - 기존 5단계에서 7단계 파이프라인으로 확장
+      - 6단계 신규 추가: `generateReviewReport()` 호출 (저작권 안전성 + 팩트체크 + 품질 검사)
+      - 출처 표기 자동 부착 (생성된 body에 attribution 텍스트 삽입)
+      - 저작권 고지 자동 생성 (`content.copyrightNotice`)
+      - 반환값에 `reviewReport`, `publishable` 플래그 추가
+  - `docs/COPYRIGHT_POLICY.md` (초안→v2.0 완전 업그레이드):
+    - 11개 섹션 구조화: 정책 목적, 콘텐츠 유형별 권리, Fair Use 기준, 플랫폼별 정책, AI 콘텐츠 저작권, DMCA 절차, UGC 정책, 경고 단계, 크롤링 정책, 라이선스, 연락처
+    - DMCA 512조 필수 제출 정보 + 5단계 처리 절차 상세화
+    - 플랫폼별 표 (YouTube/Instagram/TikTok/Twitter/Reddit/Naver)
+    - AI 생성 콘텐츠 발행 전 심사 기준 표 (5개 지표)
+    - Fair Use 4요소 판단 기준 + Kulture 운영 기준 명확화
+    - 저작권 침해 4단계 경고 체계 + 항소 절차
+    - CC BY-SA 4.0 라이선스 귀속 정의
+
+---
+
+### [ID: RL-20260306-22]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 버그 수정 + 코드 품질 (37개 lint/compile 오류 전체 해결)
+- **변경 대상**: `eslint.config.mjs`, `components/MobileHeader.jsx`, `components/PremiumBadge.jsx`, `components/NewsletterSignup.jsx`, `components/NewsletterSignup.module.css`, `components/BottomNavigation.jsx`, `pages/index.jsx`, `lib/newsletter.js`, `pages/api/premium/subscribe.js`, `pages/admin/emerging.jsx`, `pages/api/data/export.js`, `ReviseLog.md`, `docs/TECHNICAL_HANDBOOK.md`
+- **변경 요약**: 터미널 문제 탭 37개 오류 전체 해결 — 재발 방지를 위해 eslint.config.mjs 브라우저 globals 완전 구비
+- **변경 상세**:
+  - `eslint.config.mjs`: globals에 `navigator`, `Notification`, `getComputedStyle`, `caches`, `self`, `Event`, `CustomEvent`, `performance`, `matchMedia`, `requestAnimationFrame`, `cancelAnimationFrame`, `MutationObserver`, `ResizeObserver`, `crypto` 추가 → mobileUtils.js 13개 오류 해결
+  - `components/MobileHeader.jsx`: PropTypes 선언 추가 (title/showBack/backHref/action/transparent)
+  - `components/PremiumBadge.jsx`: PropTypes 선언 추가 (type/size/showLabel)
+  - `components/NewsletterSignup.jsx`: PropTypes 선언 추가 (variant/locale)
+  - `components/NewsletterSignup.module.css`: `.inline {}` 빈 룰셋 → `display: block` 추가
+  - `components/BottomNavigation.jsx`: 검색 탭 아이콘 `(active) =>` → `(_active) =>` (미사용 파라미터)
+  - `pages/index.jsx`: 미사용 `useEffect` import 제거, 미사용 `searchQuery` state 및 `setSearchQuery` 호출 제거
+  - `lib/newsletter.js`: `buildNewsletterHtml` 파라미터 `language` → `_language`
+  - `pages/api/premium/subscribe.js`: 미사용 `PLANS` import 제거
+  - `pages/admin/emerging.jsx`: `catch (err)` → `catch` (err 미사용)
+  - `pages/api/data/export.js`: `case 'forecast':` 블록 `{}` 중괄호 추가 (lexical declaration 오류)
+  - `ReviseLog.md`: MD005 들여쓰기 오류 2건 수정, MD037 강조 내 공백 오류 1건 수정 (*/30 → \`*/30\`)
+  - `docs/TECHNICAL_HANDBOOK.md`: 테이블 구분선에 공백 추가 `|--------|` → `| -------- |` (MD060 table style)
+
+---
+
 ### [ID: RL-20260306-21]
 - **날짜**: 2026-03-06 (KST)
 - **작성자**: 시스템(자동)
@@ -474,13 +540,15 @@
     - ReviseLog.md: RL-20251205-04 엔트리 추가 (상세 변경 기록)
     - IMPLEMENTATION_STATUS_20251205.md: 새로 생성 (전체 구현 상태 보고서)
     - FINAL_VERIFICATION_CHECKLIST_20251205.md: 새로 생성 (배포 전 검증 체크리스트)
-- 핵심 기능:
+
+  - 핵심 기능:
   - CEO가 /admin/settings 페이지에서 모든 신규 기능의 On/Off 즉시 제어 가능
   - Sanity siteSettings 변경 → useSiteSettings 훅 감지 → 프론트엔드 자동 갱신 (캐싱 없음)
   - 3계층 제어: UI(링크 숨김 + 404) + API(403 Forbidden) + 설정(Sanity 중앙 제어)
   - 초기 로드: DEFAULT_SETTINGS로 모든 기능 활성화 (Sanity 로드 후 업데이트)
   - 에러 처리: Sanity 조회 실패 시 DEFAULT_SETTINGS 폴백
-- 관련 PR/이슈: 프로젝트 원칙 12 완전 이행, CRITICAL_VIOLATIONS_REPORT.md 해결
+
+  - 관련 PR/이슈: 프로젝트 원칙 12 완전 이행, CRITICAL_VIOLATIONS_REPORT.md 해결
 
 RL-20251205-02
 - 날짜: 2025-12-05 18:00 (KST)
@@ -510,7 +578,7 @@ RL-20251205-03
 RL-20251205-01
 - Change: Vercel cron schedule reduced for Hobby plan compatibility
   - vercel.json: removed high-frequency crons and kept a single daily job (/api/cron/daily-report at 10:00 KST) to allow deployment on free tier
-  - Rationale: Hobby accounts permit only once-per-day cron executions; previous schedules (*/30, */2, hourly, etc.) blocked deployment
+  - Rationale: Hobby accounts permit only once-per-day cron executions; previous schedules (`*/30`, `*/2`, hourly, etc.) blocked deployment
 
 RL-20251126-10
 - Critical: 프로젝트 원칙 위반 사항 발견 및 보고
