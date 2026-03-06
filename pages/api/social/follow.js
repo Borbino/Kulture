@@ -1,5 +1,8 @@
-import { sanityClient } from '../../../lib/sanityClient';
-import { getSession } from 'next-auth/react';
+import { sanityClient } from '../../../lib/sanityClient'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../../../lib/auth/[...nextauth]'
+import { withErrorHandler } from '../../../lib/apiErrorHandler'
+
 
 /**
  * Follow API
@@ -8,8 +11,8 @@ import { getSession } from 'next-auth/react';
  * - DELETE: Unfollow user
  */
 
-export default async function handler(req, res) {
-  const session = await getSession({ req });
+async function handler(req, res) {
+  const session = await getServerSession(req, res, authOptions)
 
   if (!session) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -165,3 +168,5 @@ export default async function handler(req, res) {
 
   return res.status(405).json({ error: 'Method not allowed' });
 }
+
+export default withErrorHandler(handler)

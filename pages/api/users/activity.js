@@ -1,17 +1,20 @@
-import { sanityClient } from '../../../lib/sanityClient';
-import { getSession } from 'next-auth/react';
+import { sanityClient } from '../../../lib/sanityClient'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../../../lib/auth/[...nextauth]'
+import { withErrorHandler } from '../../../lib/apiErrorHandler'
+
 
 /**
  * User Activity API
  * Update user points, level, and badges based on activity
  */
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions)
 
   if (!session) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -122,3 +125,5 @@ async function checkBadgeAchievements(userId, user, action) {
     console.error('Error checking badge achievements:', error);
   }
 }
+
+export default withErrorHandler(handler)

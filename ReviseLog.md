@@ -6,6 +6,61 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260306-10]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 인프라 (Cron + 환경변수)
+- **변경 대상 파일**: `vercel.json`, `.env.template`
+- **변경 요약**: vercel.json에 Cron Job 5개 등록, .env.template에 수익화/신규SNS/이머징트렌드 변수 추가
+- **변경 상세 설명**: `vercel.json`의 crons 섹션에 `emerging-trend-scan`(3시간마다), `vip-monitoring`(30분마다), `trend-detection`(2시간마다) 3개를 추가(기존 2개 포함 총 5개). `.env.template`에 섹션 10-12 추가: 수익화(AdSense Publisher ID, 슬롯, Coupang Partners, Amazon Associates), 신규 SNS(VK.com, Mastodon), 이머징트렌드(AUTO_TRACK_THRESHOLD, ALERT_THRESHOLD) 총 12개 변수 추가.
+- **관련 RL**: RL-20260306-07~09
+
+---
+
+### [ID: RL-20260306-09]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 신규 기능
+- **변경 대상 파일**: `pages/api/cron/emerging-trend-scan.js` (신규)
+- **변경 요약**: 이머징 트렌드 자동 발굴 Cron Job — 3시간마다 실행
+- **변경 상세 설명**: `scrapeFreeSources`(31개 무료 소스)로 글로벌 데이터 수집 → `runEmergingTrendScan`으로 미지정 엔티티 탐지 → velocity score >= 100이면 `emergingAlert` 타입으로 Sanity에 즉시 저장 → 관리자 대시보드에서 승인/거부 처리. `withCronAuth` 래퍼로 인증 보호.
+- **관련 RL**: RL-20260306-07, RL-20260306-08
+
+---
+
+### [ID: RL-20260306-08]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 신규 기능
+- **변경 대상 파일**: `lib/revenueEngine.js` (신규)
+- **변경 요약**: 수익 극대화 엔진 — AdSense, Coupang, Amazon, 프리미엄, 뉴스레터 통합
+- **변경 상세 설명**: 8개 수익 채널 자동화: (1)Google AdSense RPM 카테고리별 최적화($2-9.2), (2)Coupang Partners 제휴링크 빌더(5-12% 커미션), (3)Amazon Associates 글로벌 K-상품 링크(3-10%), (4)프리미엄 멤버십 $4.99/월 설정, (5)뉴스레터 RPM 수익 계산($2/1000), (6)SEO 고RPM 키워드 목록(K-Beauty 최고 $9.2), (7)콘텐츠 수익성 우선순위 점수(`calculateRevenuePriority`), (8)월간 수익 예측 리포트(`generateRevenueReport`). CEO 코드 수정 없이 admin dashboard에서 수익률 조회 가능 구조.
+- **영향 범위**: 전체 콘텐츠 생성 파이프라인의 수익 최적화, 제휴 링크 자동 삽입 준비
+
+---
+
+### [ID: RL-20260306-07]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 신규 기능
+- **변경 대상 파일**: `lib/emergingTrendDetector.js` (신규)
+- **변경 요약**: Zero-Prior-Knowledge 이머징 트렌드 탐지 엔진
+- **변경 상세 설명**: 관리자가 지정하지 않은 신규 인물/그룹/이슈를 자동 발굴하는 엔진. NLP 규칙 기반 엔티티 추출(K-Pop 그룹 패턴, 한국인 이름, 로마자 표기, 해시태그), 크로스소스 빈도 분석, 속도(Velocity) 점수 산정, VIP_MAP + TRACKING_ISSUES 대조로 미지정 엔티티 필터. velocity >= 50이면 Sanity `emergingTrend` 문서로 자동 저장, >= 100이면 `emergingAlert`로 즉시 알림. 환경변수로 임계값 조정 가능(`EMERGING_TREND_AUTO_TRACK_THRESHOLD`, `EMERGING_TREND_ALERT_THRESHOLD`).
+- **영향 범위**: 원칙 14 완전 준수 — VIP 미지정 인물도 트래픽·SNS 기반 자동 탐지
+
+---
+
+### [ID: RL-20260306-06]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 기능 확장 + 코드 품질
+- **변경 대상 파일**: `lib/autonomousScraper.js`, `lib/socialMediaIntegration.js`, `lib/trendManagement.js`
+- **변경 요약**: autonomousScraper 글로벌 31개 소스 확장, socialMediaIntegration Mastodon/VK 추가, 전 파일 console → logger 변환
+- **변경 상세 설명**: `autonomousScraper.js` 전면 재작성(v2.0): 기존 Reddit 3개 + Google Trends KR 1개 → Reddit 18개(kpop, hallyu, bangtan, blackpink, TWICE, aespa, NewJeans, IVE, EXO, SEVENTEEN, NCT, Stray Kids, LE SSERAFIM, 기타) + Google Trends 6개 지역(global/KR/US/JP/TW/GB) + YouTube RSS 3채널(SM/YG/JYP) + Tumblr 태그 3개 + Mastodon 3개 + Naver 1개 = **총 31개** 무료 소스. K-Culture 신호어 30개 기반 1차 필터 추가. `socialMediaIntegration.js`에 Mastodon 공개 타임라인 API(`fetchMastodonHashtag`) + VK.com 뉴스피드 검색(`fetchVKData`) + PLATFORM_CONFIG에 두 플랫폼 메타데이터 추가. `trendManagement.js`, `autonomousScraper.js`의 모든 console.log/error → logger.info/error 변환.
+- **영향 범위**: 트렌드 수집 범위 10배 확장(2→31 소스), 동유럽/러시아/Fediverse 트래픽 포착
+
+---
+
 ### [ID: RL-20260306-05]
 - **날짜**: 2026-03-06 (KST)
 - **작성자**: AI Agent (GitHub Copilot)
