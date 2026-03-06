@@ -6,6 +6,86 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260306-24]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 핵심 시스템 전면 고도화 (AI단 + K-Culture 범위 + 개인화)
+- **변경 대상**: `lib/aiModelManager.js` (신규), `lib/kCultureSignals.js` (신규), `lib/contentPersonalization.js` (신규), `pages/api/admin/ai-status.js` (신규), `lib/autonomousScraper.js`, `lib/aiContentGenerator.js`, `lib/advancedContentGeneration.js`
+- **변경 요약**: 하드코딩된 AI 모델명 완전 제거 + K-Culture 범위 K-Pop/드라마 너머로 대폭 확장 + 지역별 콘텐츠 개인화 엔진 신규 도입
+
+---
+
+**[쉬운 설명]** 이번 업데이트의 핵심을 쉽게 비유하면:
+
+🤖 **AI 자동 선택** — 예전에는 "항상 GPT-4를 써라"처럼 AI가 고정되어 있었습니다.  
+이제는 "지금 가장 좋은 무료 AI가 뭔지 알아서 골라서 써라"로 바뀌었습니다.  
+Gemini Flash가 안 되면 Groq, Groq가 안 되면 HuggingFace… 이런 식으로 자동 대체됩니다.
+
+🌏 **K-Culture 확장** — 예전에는 K-Pop 아이돌, K-드라마만 추적했습니다.  
+이제는 손흥민·LCK e스포츠·삼성 반도체·웹툰·한의학·제주 여행·TOPIK 한국어학습까지  
+한국에 관심 갖는 모든 분야를 감지합니다.
+
+📡 **소스 확장** — 예전에는 31개 소스(K-Pop 편향).  
+이제는 70개+ 소스 (스포츠, 기술, 여행, 언어학습, 전문 K-Culture 미디어 포함).
+
+🎯 **지역별 맞춤** — 브라질 방문자에게는 K-Pop/드라마,  
+유럽 방문자에게는 K-뷰티/역사/드라마를 우선 보여주는 개인화 엔진 추가.
+
+---
+
+- **변경 상세**:
+
+  - `lib/aiModelManager.js` (신규, 400줄):
+    - 7개 AI 제공자 자동 순환 레지스트리: Gemini 2.0 Flash → Gemini 1.5 Pro → Groq LPU → HuggingFace → OpenRouter Free → Cohere → OpenAI
+    - `generateWithBestModel(prompt, options)`: 환경변수에 키가 있는 무료 제공자부터 순서대로 시도. 실패 시 자동 다음 제공자로 폴백
+    - Rate limit 쿨다운 관리 (모델 실패 시 자동 10분 대기 후 재시도)
+    - 호출 성공률·평균 응답속도 자동 추적
+    - `getModelStatus()`: 관리자 대시보드용 전체 모델 상태 스냅샷
+    - `getRecommendedProvider(task)`: 태스크별(generate/filter/translate) 최적 모델 추천
+
+  - `lib/kCultureSignals.js` (신규, 300줄):
+    - 14개 카테고리, 600개+ 시그널 키워드로 K-Culture 감지 범위 대폭 확장
+    - 기존: K-Pop 아이돌명 위주 34개 키워드
+    - 확장 후: kpop/kdrama/kbeauty/kfood/kfashion/kwebtoon/kgaming/ksports/kheritage/klanguage/ktech/ktravel/kwellness/hallyu/ksociety 14개 카테고리
+    - `categorizeContent(text)`: 텍스트가 어떤 K-Culture 카테고리인지 자동 분류
+    - `isKCultureContent(text)`: K-Culture 여부 빠른 판별
+    - `REGION_INTERESTS`: 지역별 관심 카테고리 맵핑 (북미/남미/유럽/동남아/일본/중동/오세아니아)
+
+  - `lib/contentPersonalization.js` (신규, 180줄):
+    - `detectRegion(req)`: 방문자 지역 자동 감지 (Cloudflare 헤더 → Vercel 헤더 → Accept-Language 순 폴백)
+    - 35개 국가코드 → 8개 지역 매핑
+    - `personalizeForRegion(posts, region)`: 지역 관심 카테고리와 일치하는 포스트에 점수 보정 (+2점/카테고리 일치), 재정렬
+    - `getRegionConfig(region)`: 지역별 환영 메시지·언어 설정 (한국어/일본어/스페인어/아랍어 등)
+
+  - `pages/api/admin/ai-status.js` (신규):
+    - `GET /api/admin/ai-status`: 관리자가 현재 어떤 AI가 살아있는지, 어떤 AI가 쿨다운 중인지 즉시 확인
+    - 응답: 사용 가능 AI 목록·성공률·평균 응답속도, 불가 AI 목록·사유, 전체 호출 통계
+    - ADMIN_API_KEY 헤더 인증 보호
+
+  - `lib/autonomousScraper.js` (대규모 개선):
+    - 소스 31개 → 70개+로 확장
+    - Reddit: 18개 → 35개 서브레딧 (스포츠/게임/기술/역사/언어/여행/웹툰 추가)
+    - Google Trends: 6개 → 10개 지역 (프랑스/브라질/인도네시아/독일/호주 추가)
+    - YouTube: 3개 → 10개 채널 (HYBE공식/SBS뉴스/KBS World/Maangchi/TTMIK/Arirang/1theK)
+    - 전문 K-Culture 뉴스 6개 신규 (allkpop/Soompi/Korea Times/JoongAng Daily/Koreaboo/HelloKpop)
+    - K-스포츠(K-League, ESPN), K-테크(ETNews, ZDNet Korea), K-여행(VisitKorea), K-언어(TTMIK 블로그), K-웹툰 소스 추가
+    - `K_CULTURE_SIGNALS` 하드코딩 배열 → `kCultureSignals.js`의 `isKCultureContent()` 함수 사용으로 교체
+    - 아이템에 `kCultureCategories` 태그 자동 부착 (`categorizeContent()` 연동)
+
+  - `lib/aiContentGenerator.js` (핵심 교체):
+    - 하드코딩 제거: `new OpenAI({apiKey: ...})`, `new GoogleGenerativeAI(...)`, `genAI.getGenerativeModel({ model: "gemini-pro" })` 전체 제거
+    - `filterTrendWithGemini()` → `filterTrendWithAI()` 리네임 + aiModelManager 위임
+    - `generateKCultureContent()`: OpenAI 직접 호출 → `generateWithBestModel()` 단일 호출로 교체
+    - 반환값에 `aiProvider`, `aiModel` 필드 추가 (어떤 AI가 생성했는지 추적 가능)
+
+  - `lib/advancedContentGeneration.js` (핵심 교체):
+    - `AI_MODELS` 하드코딩 객체 (`microsoft/phi-2`, `anthropic/claude-instant-1`) 제거
+    - `callHuggingFace()`, `callOpenRouter()` 두 함수 → `callBestAI()` 하나로 통합
+    - `callBestAI()` 내부: `generateWithBestModel()` 호출 → aiModelManager가 최적 AI 선택
+    - 생성 메타데이터에 `aiProvider`, `aiModel` 실제 사용 AI 기록
+
+---
+
 ### [ID: RL-20260306-23]
 - **날짜**: 2026-03-06 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)
