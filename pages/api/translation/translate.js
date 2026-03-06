@@ -4,17 +4,13 @@
  */
 
 import aiTranslation from '../../../lib/aiTranslation.js';
-import rateLimiter from '../../../lib/rateLimiter.js';
+import { checkRateLimit } from '../../../lib/rateLimiter.js';
 import { logger } from '../../../lib/logger.js';
 import { trackTranslationEvent } from '../../../lib/analytics.js';
 
 export default async function handler(req, res) {
   // Rate limiting
-  const rateLimitResult = await rateLimiter(req, res, {
-    interval: 60 * 1000, // 1분
-    uniqueTokenPerInterval: 500,
-    maxRequests: 100, // 사용자당 분당 100회
-  });
+  const rateLimitResult = await checkRateLimit(req, 'api', { maxRequests: 100, windowMs: 60000 });
 
   if (!rateLimitResult.success) {
     return res.status(429).json({

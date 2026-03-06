@@ -4,13 +4,16 @@
  */
 
 import { translate, translateBatch, detectLanguage, SUPPORTED_LANGUAGES } from '../../lib/aiTranslation.js';
-import { getCachedTranslation, setCachedTranslation, getCacheStatistics } from '../../lib/translationCache.js';
-import { rateLimiter } from '../../lib/rateLimiter.js';
+import { getCachedTranslation, setCachedTranslation, getCacheStatistics, initializeRedis } from '../../lib/translationCache.js';
+import { checkRateLimit } from '../../lib/rateLimiter.js';
 import { logger } from '../../lib/logger.js';
+
+// 서버 시작 시 Redis L2 캐시 초기화 (REDIS_URL 미설정 시 메모리 캐시로 폴백)
+initializeRedis().catch(() => {});
 
 export default async function handler(req, res) {
   // Rate limiting
-  const limiterResult = await rateLimiter(req, 'translation', { maxRequests: 100, windowMs: 60000 });
+  const limiterResult = await checkRateLimit(req, 'translation', { maxRequests: 100, windowMs: 60000 });
   if (!limiterResult.success) {
     return res.status(429).json({
       error: 'Too many requests',

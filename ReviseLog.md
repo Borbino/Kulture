@@ -6,6 +6,48 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260306-30]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 12개 태스크 전면 품질 고도화 (Security, Testing, Infrastructure)
+- **변경 대상**:
+  - `lib/rateLimiter.js` — `checkRateLimit()` async 함수 추가
+  - `lib/vipMonitoring.js` — `searchReddit()` / `searchTikTok()` 구현
+  - `lib/schemas/siteSettings.js` — AI 제공자 목록 현행화
+  - `pages/api/translate.js` — `checkRateLimit` + `initializeRedis` 연동
+  - `pages/api/translation/detect.js`, `translate.js` — `checkRateLimit` 교체
+  - `pages/api/newsletter/subscribe.js` — `checkRateLimit` 교체
+  - `pages/api/health.js` — `checkRateLimit` 교체 + 비동기 안전 처리
+  - `pages/api/admin/emerging-trends.js` — `verifyAdmin` 교체, `adminUser.email` 참조
+  - `pages/api/admin/ai-status.js` — ADMIN_API_KEY 헤더 방식 → `verifyAdmin` 교체
+  - `test/gamification.test.js` — 신규 (24개 테스트)
+  - `test/contentPersonalization.test.js` — 신규 (20개 테스트)
+  - `test/auth.test.js` — 신규 (13개 테스트)
+  - `test/translationCache.test.js` — 신규 (9개 테스트)
+  - `jest.config.js` — 4개 신규 테스트 파일 등록
+  - `e2e/api-health-security.spec.js` — 신규 E2E 테스트 (14개)
+
+- **변경 요약**:
+  1. **gamification/contentPersonalization 테스트 (Task #5)**: `calculateLevel`, `checkBadges`, `generateLeaderboard` 24개 테스트; `detectRegion`, `personalizeForRegion`, `getRegionConfig` 20개 테스트 작성.
+  2. **admin verifyAdmin 일관성 (Task #6)**: `emerging-trends.js` — `getServerSession/role != admin` → `verifyAdmin` 교체, `session.user.email` → `adminUser.email` 참조 수정. `ai-status.js` — ADMIN_API_KEY 헤더 방식 → `verifyAdmin` 세션 기반 교체.
+  3. **vipMonitoring Reddit/TikTok 실구현 (Task #7)**: `searchReddit()` — 멀티서브레딧(kpop+koreanmusic+kdrama) OAuth Reddit API. `searchTikTok()` — TikTok 공개 API 부재로 YouTube "[keyword] tiktok" 프록시 방식. `trackIssue()`의 placeholder `Promise.resolve({ count: 0 })` 대체.
+  4. **translationCache Redis L2 활성화 (Task #8)**: `pages/api/translate.js`에 `initializeRedis()` 서버 시작 시 호출 추가.
+  5. **siteSettings AI 제공자 현행화 (Task #9)**: `primaryProvider` 목록에 `자동 선택(auto, 기본값)`, `Anthropic Claude` 추가. `initialValue: 'openai'` → `'auto'` 변경.
+  6. **테스트 커버리지 확장 (Task #10)**: `auth.test.js` 13개 — `verifyAuth`/`isAdmin`/`verifyAdmin` 전 경로. `translationCache.test.js` 9개 — L1 메모리 캐시 전 경로. 총 +22개 테스트.
+  7. **health.js + rateLimiter 버그 수정 (Task #11)**: `rateLimitMiddleware('api')(req, res, () => {})` 동기 미들웨어 방식 → `await checkRateLimit(req, 'api')` async 방식으로 교체. `translation/detect.js`, `translation/translate.js`, `newsletter/subscribe.js`도 동일 수정. `lib/rateLimiter.js`에 `checkRateLimit()` 공개 async 함수 추가.
+  8. **E2E 테스트 확장 (Task #12)**: `e2e/api-health-security.spec.js` — `/api/health` 응답 구조, Admin API 미인증 401/403, 잘못된 메서드 4xx, Rate Limit 헤더, translation/health 검증 14개 케이스.
+
+- **보안 수정 요약**:
+  - `emerging-trends.js`: `session.user?.role !== 'admin'` → `verifyAdmin()` (ADMIN_EMAILS 포함)
+  - `ai-status.js`: `x-admin-api-key` 헤더 직접 비교 (브루트포스 공격 가능) → 세션 기반 `verifyAdmin`
+
+- **테스트 현황**:
+  - 이전: 187개 통과
+  - 이후: **253개 통과** (66개 신규 추가)
+  - 전체 테스트 스위트: 15개
+
+---
+
 ### [ID: RL-20260306-29]
 - **날짜**: 2026-03-06 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)

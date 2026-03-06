@@ -6,6 +6,8 @@
 import sanity from '../../lib/sanityClient.js'
 import rateLimitMiddleware from '../../lib/rateLimiter.js'
 import { withRetry, withErrorHandler } from '../../lib/apiErrorHandler.js'
+import { getServerSession } from 'next-auth';
+import { authOptions } from './auth/[...nextauth]';
 import { logger } from '../../lib/logger.js';
 
 /**
@@ -222,6 +224,12 @@ const handler = async function improveContentHandler(req, res) {
   // Rate limiting: 60회/분
   const rateLimitResult = rateLimitMiddleware('api')(req, res, () => {})
   if (rateLimitResult !== undefined) return rateLimitResult
+
+  // 인증 검증 (로그인 사용자만)
+  const session = await getServerSession(req, res, authOptions);
+  if (!session) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })

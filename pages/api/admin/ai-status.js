@@ -10,6 +10,7 @@
  */
 
 import { getModelStatus } from '../../../lib/aiModelManager.js';
+import { verifyAdmin } from '../../../lib/auth.js';
 
 export default async function handler(req, res) {
   // GET 요청만 허용
@@ -17,10 +18,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  // 관리자 키 검증
-  const adminKey = req.headers['x-admin-api-key'];
-  if (!adminKey || adminKey !== process.env.ADMIN_API_KEY) {
-    return res.status(401).json({ error: '인증 실패 — 관리자 키가 필요합니다.' });
+  // 관리자 세션 검증
+  try {
+    await verifyAdmin(req, res);
+  } catch {
+    return res.status(401).json({ error: '인증 실패 — 관리자 권한이 필요합니다.' });
   }
 
   try {

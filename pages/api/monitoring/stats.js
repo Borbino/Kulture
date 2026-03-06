@@ -1,10 +1,11 @@
 import { getAPIKeyManager } from '../../../lib/apiKeyManager.js'
 import { getLogAggregator } from '../../../lib/logAggregator.js'
 import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { verifyAdmin } from '../../../lib/auth.js'
 import { logger } from '../../../lib/logger.js';
 
 /**
- * 모니터링 통계 API
+ * 모니터링 통계 API (어드민 전용)
  * 실시간 시스템 상태 및 성능 지표 제공
  */
 async function handler(req, res) {
@@ -13,6 +14,8 @@ async function handler(req, res) {
   }
 
   try {
+    await verifyAdmin(req, res);
+
     // API Quota 정보
     const apiKeyManager = getAPIKeyManager()
     const quotaStats = apiKeyManager.getAllUsage()
@@ -22,46 +25,30 @@ async function handler(req, res) {
     const logStats = logAggregator.getStats()
     const errorReport = logAggregator.generateErrorReport()
 
-    // 성능 정보 (시뮬레이션 - 실제로는 Performance Analyzer에서 가져옴)
+    // 성능 정보 (logAggregator 실데이터 기반)
     const performanceStats = {
-      apis: [
-        {
-          api: '/api/cron/vip-monitoring',
-          latency: { p50: 500, p95: 1200, p99: 2000 },
-          calls: { total: 48, failed: 0, success: 48 },
-        },
-        {
-          api: '/api/cron/trend-detection',
-          latency: { p50: 800, p95: 2500, p99: 3500 },
-          calls: { total: 12, failed: 1, success: 11 },
-        },
-        {
-          api: '/api/cron/content-generation',
-          latency: { p50: 3000, p95: 7000, p99: 9000 },
-          calls: { total: 4, failed: 0, success: 4 },
-        },
-      ],
-      caches: [
-        {
-          cache: 'sanity-query',
-          hitRate: 75,
-          hits: 300,
-          misses: 100,
-        },
-      ],
+      errorRate: logStats.totalErrors > 0
+        ? Math.round((logStats.totalErrors / Math.max(logStats.totalLogs || 1, 1)) * 100)
+        : 0,
+      recentErrors: errorReport?.recentErrors?.slice(0, 5) || [],
     }
 
-    // 시스템 리소스 (시뮬레이션 - 실제로는 서버 메트릭에서 가져옴)
+    // 시스템 리소스 (Node.js 실데이터)
+    const memUsage = process.memoryUsage()
+    const totalMemMB = Math.round(memUsage.heapTotal / 1024 / 1024)
+    const usedMemMB = Math.round(memUsage.heapUsed / 1024 / 1024)
     const systemStats = {
       memory: {
-        total: 512, // MB
-        used: 256,
-        free: 256,
-        usagePercent: 50,
+        heapTotalMB: totalMemMB,
+        heapUsedMB: usedMemMB,
+        externalMB: Math.round(memUsage.external / 1024 / 1024),
+        rssMB: Math.round(memUsage.rss / 1024 / 1024),
+        usagePercent: Math.round((usedMemMB / Math.max(totalMemMB, 1)) * 100),
       },
-      cpu: {
-        cores: 1,
-        usagePercent: 35,
+      process: {
+        uptimeSeconds: Math.round(process.uptime()),
+        nodeVersion: process.version,
+        pid: process.pid,
       },
     }
 

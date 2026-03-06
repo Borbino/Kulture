@@ -5,16 +5,17 @@
  * PATCH /api/admin/emerging-trends
  */
 
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../auth/[...nextauth]';
 import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
+import { verifyAdmin } from '../../../lib/auth.js';
 import sanity from '../../../lib/sanityClient.js';
 import { logger } from '../../../lib/logger.js';
 
 async function handler(req, res) {
-  // 관리자 인증 확인
-  const session = await getServerSession(req, res, authOptions);
-  if (!session || session.user?.role !== 'admin') {
+  // 관리자 인증 확인 (role 또는 ADMIN_EMAILS 기반)
+  let adminUser;
+  try {
+    adminUser = await verifyAdmin(req, res);
+  } catch {
     return res.status(403).json({ success: false, message: '관리자 권한이 필요합니다.' });
   }
 
@@ -59,9 +60,9 @@ async function handler(req, res) {
       await sanity.patch(alertId).set({
         resolved: true,
         resolvedAt: new Date().toISOString(),
-        resolvedBy: resolvedBy || session.user.email,
+        resolvedBy: resolvedBy || adminUser.email,
       }).commit();
-      logger.info('[admin]', 'Emerging alert resolved', { alertId, by: session.user.email });
+      logger.info('[admin]', 'Emerging alert resolved', { alertId, by: adminUser.email });
       return res.status(200).json({ success: true, action: 'alert_resolved' });
     }
 
@@ -78,20 +79,20 @@ async function handler(req, res) {
       await sanity.patch(trendId).set({
         status: 'promoted_to_vip',
         promotedToVip: true,
-        adminNote: adminNote || `VIP 승격 by ${session.user.email} at ${new Date().toISOString()}`,
+        adminNote: adminNote || `VIP 승격 by ${adminUser.email} at ${new Date().toISOString()}`,
       }).commit();
-      logger.info('[admin]', 'Emerging entity promoted to VIP', { trendId, by: session.user.email });
+      logger.info('[admin]', 'Emerging entity promoted to VIP', { trendId, by: adminUser.email });
       // TODO: vipMonitoring.js VIP_MAP에 자동 추가 기능 (다음 Phase)
     } else if (action === 'dismiss') {
       await sanity.patch(trendId).set({
         status: 'dismissed',
-        adminNote: adminNote || `Dismissed by ${session.user.email} at ${new Date().toISOString()}`,
+        adminNote: adminNote || `Dismissed by ${adminUser.email} at ${new Date().toISOString()}`,
       }).commit();
-      logger.info('[admin]', 'Emerging entity dismissed', { trendId, by: session.user.email });
+      logger.info('[admin]', 'Emerging entity dismissed', { trendId, by: adminUser.email });
     } else if (action === 'track') {
       await sanity.patch(trendId).set({
         status: 'tracking',
-        adminNote: adminNote || `Tracking started by ${session.user.email}`,
+        adminNote: adminNote || `Tracking started by ${adminUser.email}`,
       }).commit();
     }
 

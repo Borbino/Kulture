@@ -12,14 +12,13 @@ import {
   confirmSubscription,
   unsubscribeFromNewsletter,
 } from '../../../lib/newsletter.js';
-import { rateLimiter } from '../../../lib/rateLimiter.js';
+import { rateLimiter, checkRateLimit } from '../../../lib/rateLimiter.js';
 
 async function handler(req, res) {
   if (req.method === 'POST') {
     // 레이트 리밋: IP당 분당 3회
-    const rateKey = `newsletter_sub_${req.headers['x-forwarded-for'] || 'unknown'}`;
-    const limited = await rateLimiter(rateKey, 3, 60);
-    if (limited) {
+    const limited = await checkRateLimit(req, 'api', { maxRequests: 3, windowMs: 60000 });
+    if (!limited.success) {
       return res.status(429).json({ success: false, message: '잠시 후 다시 시도해주세요.' });
     }
 
