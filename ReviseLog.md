@@ -6,6 +6,77 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260306-25]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: AI 엔진 고도화 + 문화 번역 시스템 구축 + 콘텐츠 품질 강화
+- **변경 대상**:
+  - `lib/aiModelManager.js` (전면 재작성 — Graceful Degradation v2.0)
+  - `lib/aiModelCrawler.js` (신규 — AI 모델 출시 자동 감지)
+  - `lib/culturalTranslationEngine.js` (신규 — 8-35세 대상 문화 맥락 번역)
+  - `lib/kCultureSignals.js` (페미니즘 차단 필터 추가)
+  - `lib/autonomousScraper.js` (isBlockedContent 연동)
+- **변경 요약**: AI 모델을 하드코딩 없이 항상 최신·최적 모델을 자동 선택하는 점진적 하향 알고리즘 구현. 8~35세 북미/남미/유럽/동남아 타겟 문화 맥락 번역 엔진 신규 구축. 페미니즘 관련 콘텐츠 절대 차단 필터 추가.
+
+---
+
+**[쉬운 설명]**
+
+🤖 **AI 모델 자동 갱신 시스템** — Claude 4.6이 안 되면 4.5, 4.5도 안 되면 그 아래… 항상 사용 가능한 최선을 자동으로 선택합니다. 새 모델이 나오면 크롤러가 감지해 목록 앞에 자동 추가합니다.
+
+🌍 **지역별 자연스러운 번역** — 미국 10대에게는 Gen-Z 슬랭으로, 브라질 유저에게는 브라질식 은어로, 인도네시아 유저에게는 자카르타 젊은이 말투로 번역합니다. Reddit/TikTok에서 6시간마다 최신 슬랭을 자동 수집합니다.
+
+⛔ **페미니즘 콘텐츠 완전 차단** — 영어·한국어 관련 키워드 40여 개를 차단 목록에 등록. 크롤링 단계부터 필터링하여 해당 콘텐츠는 수집·생성 모두 차단됩니다.
+
+---
+
+- **변경 상세**:
+
+  - `lib/aiModelManager.js` (전면 재작성, 479줄):
+    - 구 `AI_PROVIDERS` 배열의 하드코딩 방식 완전 제거
+    - `PROVIDER_REGISTRY`: 7개 제공자 × 각 3~6개 모델 (최신→구형 순 배열)
+      - Google: gemini-2.0-flash-exp → gemini-2.0-flash → gemini-1.5-flash → gemini-1.5-pro → gemini-pro
+      - Groq: llama-3.3-70b → llama-3.1-70b → llama-3.1-8b → mixtral → gemma2
+      - Anthropic: claude-opus-4-5 → claude-3-7-sonnet → claude-3-5-haiku → claude-3-haiku
+      - OpenRouter: llama-3.3:free → llama-3.1:free → gemma-2-27b:free → mistral:free → qwen:free
+      - HuggingFace: Mistral-7B → Phi-3-mini → zephyr-7b → falcon-7b
+      - Cohere: command-r-plus → command-r → command
+      - OpenAI: gpt-4.1 → gpt-4o → gpt-4o-mini → gpt-3.5-turbo
+    - 모델 없음(404) 감지 → 24시간 쿨다운 후 자동 하향
+    - 레이트 리밋(429) 감지 → 3분 쿨다운 후 다음 모델
+    - `prependModelToCatalog()`: 크롤러 신모델 감지 시 배열 앞 자동 삽입
+    - `workingModelCache`: 성공한 모델을 30분 캐시해 반복 시도 비용 0
+    - ESLint 오류 0개 확인
+
+  - `lib/aiModelCrawler.js` (신규, 210줄):
+    - 24시간 주기 자동 크롤링 (startModelCrawler() / stopModelCrawler())
+    - 소스: Groq API 모델 목록, OpenRouter 모델 목록, HuggingFace 트렌딩, Google AI 블로그, Anthropic 뉴스, OpenAI 뉴스 (정규식 파싱)
+    - 신규 모델 발견 → prependModelToCatalog() 자동 호출
+    - 상태를 /tmp/kulture_ai_model_catalog.json에 영속 저장
+    - ESLint 오류 0개 확인
+
+  - `lib/culturalTranslationEngine.js` (신규, 350줄):
+    - 타겟 로케일 16개: en-US, en-CA, es-MX, pt-BR, es-AR, es-CO, fr, de, es-ES, it, id, th, vi, tl, ms + 확장 가능
+    - 세대별 톤 3단: child(8-13) / teen(14-24) / adult(25-35)
+    - 정적 용어집(REGIONAL_CONFIG.examples) + 동적 슬랭(Reddit RSS 6시간 주기 자동 수집)
+    - translateWithCulturalContext() / translateToAllTargetRegions() / verifyTranslationQuality()
+    - 슬랭 크롤링은 startSlangCrawler()로 관리자 없이 자율 운영
+    - ESLint 오류 0개 확인
+
+  - `lib/kCultureSignals.js`:
+    - `BLOCKED_SIGNALS` 배열 추가 (영어·한국어 페미니즘 관련 42개 키워드)
+    - `isBlockedContent(text)` 함수 추가 (차단 여부 즉시 판별)
+    - `default` export에 BLOCKED_SIGNALS, isBlockedContent 포함
+
+  - `lib/autonomousScraper.js`:
+    - isKCultureRelated() 함수에 isBlockedContent() 연동
+    - 차단 대상 아이템은 K-Culture 판별 전 단계에서 이미 필터링
+
+- **전체 ESLint 오류 검증**: 0개 (Problems 탭 확인 완료)
+- **관련 PR/이슈**: -
+
+---
+
 ### [ID: RL-20260306-24]
 - **날짜**: 2026-03-06 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)
