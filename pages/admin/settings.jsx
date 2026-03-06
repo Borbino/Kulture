@@ -5,17 +5,20 @@
  */
 
 import { useState, useEffect, useRef } from 'react'
+import { useSession, signIn, signOut } from 'next-auth/react'
 import { useSiteSettings, updateSiteSettings } from '../../lib/settings.js'
 import styles from './settings.module.css'
 
 export default function AdminSettings() {
+  const { data: session, status } = useSession()
   const { settings, loading, error, refresh } = useSiteSettings()
   const [formData, setFormData] = useState(settings)
   const [saving, setSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState('')
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [password, setPassword] = useState('')
   const saveMessageTimerRef = useRef(null)
+
+  const isAdmin = session?.user?.role === 'admin' ||
+    (process.env.NEXT_PUBLIC_ADMIN_EMAILS || '').split(',').includes(session?.user?.email || '')
 
   useEffect(() => {
     setFormData(settings)
@@ -29,33 +32,6 @@ export default function AdminSettings() {
       }
     }
   }, [])
-
-  // 간단한 비밀번호 인증 (환경변수 기반)
-  const handleAuth = e => {
-    e.preventDefault()
-    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'kulture2025'
-    if (password === adminPassword) {
-      setIsAuthenticated(true)
-      sessionStorage.setItem('admin_auth', 'true')
-    } else {
-      alert('비밀번호가 올바르지 않습니다.')
-    }
-  }
-
-  // 세션 확인
-  useEffect(() => {
-    const auth = sessionStorage.getItem('admin_auth')
-    if (auth === 'true') {
-      setIsAuthenticated(true)
-    }
-  }, [])
-
-  // 로그아웃
-  const handleLogout = () => {
-    setIsAuthenticated(false)
-    sessionStorage.removeItem('admin_auth')
-    setPassword('')
-  }
 
   // 입력 변경 핸들러
   const handleChange = (section, field, value) => {
@@ -88,26 +64,20 @@ export default function AdminSettings() {
     }
   }
 
-  // 인증되지 않은 경우 로그인 화면
-  if (!isAuthenticated) {
+  // 미인증 시 로그인 화면
+  if (status === 'loading') {
+    return <div className={styles.loading}>⏳ 세션 점검 중...</div>
+  }
+
+  if (!session || !isAdmin) {
     return (
       <div className={styles.loginContainer}>
         <div className={styles.loginBox}>
           <h1>🔐 관리자 인증</h1>
-          <p>관리자 페이지에 접근하려면 비밀번호를 입력하세요.</p>
-          <form onSubmit={handleAuth}>
-            <input
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="관리자 비밀번호"
-              className={styles.passwordInput}
-              autoFocus
-            />
-            <button type="submit" className={styles.loginBtn}>
-              로그인
-            </button>
-          </form>
+          <p>관리자 계정으로 로그인이 필요합니다.</p>
+          <button onClick={() => signIn()} className={styles.loginBtn}>
+            로그인
+          </button>
         </div>
       </div>
     )
@@ -126,7 +96,7 @@ export default function AdminSettings() {
       <header className={styles.header}>
         <h1>⚙️ Kulture 관리자 설정</h1>
         <div className={styles.headerActions}>
-          <button onClick={handleLogout} className={styles.logoutBtn}>
+          <button onClick={() => signOut()} className={styles.logoutBtn}>
             로그아웃
           </button>
         </div>

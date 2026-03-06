@@ -6,6 +6,7 @@
 
 import autoOptimizer from '../../../lib/autoOptimizer.js'
 import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { verifyAdmin } from '../../../lib/auth.js'
 
 async function handler(req, res) {
   const { method } = req
@@ -46,11 +47,10 @@ async function handleGet(req, res) {
  * POST: 자동 최적화 적용
  */
 async function handlePost(req, res) {
-  const { action, password } = req.body
-
-  // 관리자 권한 체크
-  const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'kulture2025'
-  if (password !== adminPassword) {
+  // 관리자 세션 기반 인증
+  try {
+    await verifyAdmin(req, res)
+  } catch {
     return res.status(401).json({ error: 'Unauthorized' })
   }
 

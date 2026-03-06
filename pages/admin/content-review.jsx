@@ -5,31 +5,25 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useSession, signIn } from 'next-auth/react'
 import sanity from '../../lib/sanityClient'
 import OptimizedImage from '../../components/OptimizedImage'
 import styles from './content-review.module.css'
 
 export default function ContentReview() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [password, setPassword] = useState('')
+  const { data: session, status } = useSession()
   const [pendingPosts, setPendingPosts] = useState([])
   const [selectedPost, setSelectedPost] = useState(null)
   const [loading, setLoading] = useState(false)
 
+  const isAdmin = session?.user?.role === 'admin' ||
+    (process.env.NEXT_PUBLIC_ADMIN_EMAILS || '').split(',').includes(session?.user?.email || '')
+
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAdmin) {
       loadPendingPosts()
     }
-  }, [isAuthenticated])
-
-  const handleLogin = e => {
-    e.preventDefault()
-    if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
-      setIsAuthenticated(true)
-    } else {
-      alert('비밀번호가 틀렸습니다.')
-    }
-  }
+  }, [isAdmin])
 
   const loadPendingPosts = async () => {
     setLoading(true)
@@ -175,22 +169,20 @@ export default function ContentReview() {
     }
   }
 
-  if (!isAuthenticated) {
+  if (status === 'loading') {
+    return <div className={styles.loginContainer}><p>로딩 중...</p></div>
+  }
+
+  if (!session || !isAdmin) {
     return (
       <div className={styles.loginContainer}>
-        <form onSubmit={handleLogin} className={styles.loginForm}>
+        <div className={styles.loginForm}>
           <h1>CEO 콘텐츠 승인 대시보드</h1>
-          <input
-            type="password"
-            placeholder="관리자 비밀번호"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            className={styles.passwordInput}
-          />
-          <button type="submit" className={styles.loginButton}>
+          <p>관리자 계정으로 로그인이 필요합니다.</p>
+          <button onClick={() => signIn()} className={styles.loginButton}>
             로그인
           </button>
-        </form>
+        </div>
       </div>
     )
   }
