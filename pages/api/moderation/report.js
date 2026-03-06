@@ -1,5 +1,7 @@
 import { sanityClient } from '../../../lib/sanityClient'
-import { getSession } from 'next-auth/react'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../auth/[...nextauth]'
+import { withErrorHandler } from '../../../lib/apiErrorHandler'
 
 /**
  * Moderation Reports API
@@ -8,8 +10,8 @@ import { getSession } from 'next-auth/react'
  * - PATCH: Update report status (admin only)
  */
 
-export default async function handler(req, res) {
-  const session = await getSession({ req })
+async function handler(req, res) {
+  const session = await getServerSession(req, res, authOptions)
 
   if (req.method === 'GET') {
     if (!session || session.user.role !== 'admin') {
@@ -154,3 +156,5 @@ export default async function handler(req, res) {
 
   return res.status(405).json({ error: 'Method not allowed' })
 }
+
+export default withErrorHandler(handler)

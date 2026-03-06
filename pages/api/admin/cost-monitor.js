@@ -5,8 +5,9 @@
 
 import { getCostMonitor } from '../../../lib/costMonitor';
 import { verifyAdmin } from '../../../lib/auth';
+import { withErrorHandler } from '../../../lib/apiErrorHandler';
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   try {
     // Admin only
     await verifyAdmin(req, res);
@@ -47,3 +48,5 @@ export default async function handler(req, res) {
     });
   }
 }
+
+export default withErrorHandler(handler);

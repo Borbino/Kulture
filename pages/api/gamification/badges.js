@@ -3,11 +3,13 @@
  * [목적] 배지 목록 및 사용자 배지 진행 상황 제공
  */
 
-import { getSession } from 'next-auth/react'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../auth/[...nextauth]'
 import { sanityClient } from '../../../lib/sanityClient'
 import { getSiteSettings } from '../../../lib/settings'
+import { withErrorHandler } from '../../../lib/apiErrorHandler'
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ message: 'Method not allowed' })
   }
@@ -23,7 +25,7 @@ export default async function handler(req, res) {
       })
     }
 
-    const session = await getSession({ req })
+    const session = await getServerSession(req, res, authOptions)
 
     // Get all badges
     const badges = await sanityClient.fetch(
@@ -114,3 +116,5 @@ export default async function handler(req, res) {
     })
   }
 }
+
+export default withErrorHandler(handler)

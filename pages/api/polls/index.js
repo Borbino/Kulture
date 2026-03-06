@@ -1,5 +1,8 @@
 import { sanityClient } from '../../../lib/sanityClient'
-import { getSession } from 'next-auth/react'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../auth/[...nextauth]'
+import { withErrorHandler } from '../../../lib/apiErrorHandler'
+import rateLimitMiddleware from '../../../lib/rateLimiter'
 
 /**
  * Polls API
@@ -8,8 +11,9 @@ import { getSession } from 'next-auth/react'
  * - PATCH: Vote on poll
  */
 
-export default async function handler(req, res) {
-  const session = await getSession({ req })
+async function handler(req, res) {
+  rateLimitMiddleware('api')(req, res, () => {})
+  const session = await getServerSession(req, res, authOptions)
 
   if (req.method === 'GET') {
     try {
@@ -173,3 +177,5 @@ export default async function handler(req, res) {
 
   return res.status(405).json({ error: 'Method not allowed' })
 }
+
+export default withErrorHandler(handler)

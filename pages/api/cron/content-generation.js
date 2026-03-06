@@ -7,12 +7,13 @@
 import { generateAdvancedContent } from '../../../lib/advancedContentGeneration'
 import sanity from '../../../lib/sanityClient'
 import { withCronAuth } from '../../../lib/cronMiddleware'
+import logger from '../../../lib/logger'
 
 export default withCronAuth(async function contentGenerationHandler(req, res) {
   try {
     const startTime = Date.now()
 
-    console.log('[Content Generation] Starting advanced content generation...')
+    logger.info('[cron]', '[Content Generation] Starting advanced content generation...')
 
     // 관리자 설정 확인
     const settings = await sanity.fetch(`*[_type == "siteSettings"][0]`)
@@ -68,7 +69,7 @@ export default withCronAuth(async function contentGenerationHandler(req, res) {
       }
     })
 
-    console.log(`[Content Generation] ${uniqueIssues.length} unique issues to process`)
+    logger.info('[cron]', `[Content Generation] ${uniqueIssues.length} unique issues to process`)
 
     const generatedContent = []
     const formats = ['article', 'reportage', 'story', 'retrospective', 'interview']
@@ -79,13 +80,13 @@ export default withCronAuth(async function contentGenerationHandler(req, res) {
         // 포맷 랜덤 선택 (다양성)
         const format = formats[Math.floor(Math.random() * formats.length)]
 
-        console.log(`[Content Generation] Generating ${format} for "${issue.keyword}"...`)
+        logger.info('[cron]', `[Content Generation] Generating ${format} for "${issue.keyword}"...`)
 
         // 고급 AI 콘텐츠 생성
         const result = await generateAdvancedContent(issue, format)
 
         if (!result.success) {
-          console.error(`[Content Generation] Failed for "${issue.keyword}":`, result.error)
+          logger.error('[cron]', `[Content Generation] Failed for "${issue.keyword}":`, result.error)
           continue
         }
 
@@ -93,7 +94,7 @@ export default withCronAuth(async function contentGenerationHandler(req, res) {
 
         // 품질 점수가 70점 이상만 저장
         if (qualityCheck.score < 70) {
-          console.warn(
+          logger.warn('[cron]', 
             `[Content Generation] Low quality (${qualityCheck.score}/100) for "${issue.keyword}", skipping`
           )
           continue
@@ -131,22 +132,18 @@ export default withCronAuth(async function contentGenerationHandler(req, res) {
           qualityScore: qualityCheck.score,
         })
 
-        console.log(
-          `[Content Generated] ${issue.keyword} -> ${draft._id} (Quality: ${qualityCheck.score}/100)`
-        )
+        logger.info('[cron]', `[Content Generated] ${issue.keyword} -> ${draft._id} (Quality: ${qualityCheck.score}/100)`)
 
         // Rate Limit 방지 (HF API)
         await new Promise(resolve => setTimeout(resolve, 5000)) // 5초 대기
       } catch (error) {
-        console.error(`[Content Generation] Error for "${issue.keyword}":`, error.message)
+        logger.error('[cron]', `[Content Generation] Error for "${issue.keyword}":`, error.message)
       }
     }
 
     const elapsed = Date.now() - startTime
 
-    console.log(
-      `[Content Generation] Completed in ${elapsed}ms. Generated ${generatedContent.length} contents.`
-    )
+    logger.info('[cron]', `[Content Generation] Completed in ${elapsed}ms. Generated ${generatedContent.length} contents.`)
 
     res.status(200).json({
       success: true,
@@ -156,7 +153,7 @@ export default withCronAuth(async function contentGenerationHandler(req, res) {
       executionTime: elapsed,
     })
   } catch (error) {
-    console.error('[Content Generation Error]', error)
+    logger.error('[cron]', '[Content Generation Error]', { error: error.message })
     res.status(500).json({ error: error.message, stack: error.stack })
   }
 })

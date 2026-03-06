@@ -5,8 +5,9 @@
 
 import sanity from '../../lib/sanityClient'
 import { getSiteSettings } from '../../lib/settings'
+import { withErrorHandler } from '../../lib/apiErrorHandler'
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ message: 'Method not allowed' })
 
   try {
@@ -52,3 +53,5 @@ export default async function handler(req, res) {
     return res.status(500).json({ success: false, message: 'Failed to fetch trends', error: error.message })
   }
 }
+
+export default withErrorHandler(handler);

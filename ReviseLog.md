@@ -6,6 +6,83 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260306-05]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 품질 개선 (로깅 + 아키텍처)
+- **변경 대상 파일**: `lib/trendManagement.js`, `pages/api/cron/trend-detection.js`, `pages/api/cron/vip-monitoring.js`, `pages/api/cron/content-generation.js`, `pages/api/cron/daily-report.js`, `pages/api/cron/performance-report.js`, `pages/_document.jsx`, `components/RealtimeChat.jsx`, `components/CommunityCard.jsx`, `components/RecommendationWidget.jsx`
+- **변경 요약**: Sanity 단일 인스턴스 원칙 적용 + console.log → logger 변환 (cron 5개) + 기타 console 정리
+- **변경 상세 설명**: `lib/trendManagement.js`에서 `createClient`를 직접 호출하는 코드를 `import sanityClient from './sanityClient.js'`로 교체해 Sanity 단일 인스턴스 원칙(WORKGUIDE 참고) 준수. cron 5개 파일(`trend-detection`, `vip-monitoring`, `content-generation`, `daily-report`, `performance-report`)에서 `console.log/error/warn` 총 26개를 `lib/logger`의 `logger.info/warn/error('[cron]', ...)` 호출로 교체해 프로덕션 환경에서 구조화된 로그가 출력되도록 개선. 그 외 `_document.jsx` SW 등록 log 2개 제거, `RealtimeChat.jsx` 연결 상태 log 2개 제거, `CommunityCard.jsx` catch 블록 error log 제거, `RecommendationWidget.jsx` error log → 유지 주석으로 교체.
+- **영향 범위**: 프로덕션 로그 품질, Sanity 클라이언트 중복 인스턴스 방지, 운영 모니터링 가시성
+
+---
+
+### [ID: RL-20260306-04]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 코드 품질 (런타임 타입 안전성)
+- **변경 대상 파일**: `components/CommunityCard.jsx`, `components/ContextMenu.jsx`, `components/OptimizedImage.jsx`, `components/PollComponent.jsx`, `components/ReactionButton.jsx`, `components/RecommendationWidget.jsx`, `components/ReportModal.jsx`
+- **변경 요약**: 7개 컴포넌트 PropTypes 추가 + OptimizedImage eslint-disable 제거
+- **변경 상세 설명**: 전체 컴포넌트 디렉토리 감사에서 12개 컴포넌트 중 props를 받는 7개에 PropTypes 선언이 누락되어 있음을 확인. 각 컴포넌트의 실제 사용 패턴을 분석해 필수값(`.isRequired`)과 선택값, 정확한 타입(shape, oneOf, objectOf(number) 등)을 지정. `OptimizedImage.jsx`에서는 기존에 있던 `/* eslint-disable react/prop-types */` 주석도 함께 제거해 ESLint 규칙이 정상 작동하도록 복원. `ReportModal.jsx`는 `targetType: oneOf(['post','comment','user'])`처럼 허용값을 명시해 잘못된 값 전달 시 경고가 표시되도록 강화.
+- **영향 범위**: 개발 환경 런타임 타입 경고, ESLint 정적 분석 품질
+
+---
+
+### [ID: RL-20260306-03]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 보안 + 코드 표준화
+- **변경 대상 파일**: `pages/api/posts.js`, `pages/api/recommendations.js`, `pages/api/reports.js`, `pages/api/messages.js`, `pages/api/trends.js`, `pages/api/boards.js`, `pages/api/polls/index.js`, `pages/api/communities/index.js`, `pages/api/gamification/claim-reward.js`, `pages/api/gamification/leaderboard.js`, `pages/api/gamification/missions.js`, `pages/api/gamification/badges.js`, `pages/api/admin/cost-monitor.js`, `pages/api/admin/key-rotation.js`, `pages/api/admin/finance-stats.js`, `pages/api/ai/content-generator.js`, `pages/api/ai/suggest.js`, `pages/api/ai/analyze.js`, `pages/api/vip/top.js`, `pages/api/events/index.js`, `pages/api/marketplace/index.js`, `pages/api/moderation/report.js`, `pages/api/monitoring/stats.js`
+- **변경 요약**: 23개 API 파일에 withErrorHandler + rateLimitMiddleware + getServerSession 일괄 적용
+- **변경 상세 설명**: 전체 API 라우트 감사에서 `lib/apiErrorHandler.js`의 `withErrorHandler` 래퍼, `lib/rateLimiter.js`의 `rateLimitMiddleware`, 그리고 서버사이드 세션 조회를 위한 `next-auth`의 `getServerSession`이 적용되지 않은 API가 다수 발견. `getSession`(클라이언트 전용)을 서버 측에서 사용하는 보안 안티패턴도 함께 수정. 23개 파일에 공통 패턴(`import → async function handler → export default withErrorHandler(handler)`)을 적용해 예외 처리 누락, Rate Limit 미적용, 세션 조회 오류의 세 가지 문제를 일괄 해소. `marketplace/index.js`는 `next-auth/next` 임포트 경로 오류도 함께 수정.
+- **영향 범위**: API 전체 에러 핸들링 일관성, DDoS/브루트포스 방어, 서버사이드 인증 보안
+
+---
+
+### [ID: RL-20260306-02]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 문서화
+- **변경 대상 파일**: `README.md`, `.env.template`
+- **변경 요약**: README 버전 통일·Phase 서술 현행화·기술스택 버전 업데이트, .env.template 전면 재작성
+- **변경 상세 설명**: `README.md`에서 v12.0/v14.0이 혼재하던 버전 표기를 v14.0으로 통일하고, Phase 0 중심의 구시대 서술을 "Phase 1~6 완료, Phase 7 준비 중"으로 현행화. 기술 스택 버전도 React 19.2.0, NextAuth.js 4.24.13, Sanity.io v7.13.0 (Sanity Studio v4)으로 package.json 실제값과 일치시킴. `.env.template`은 기존 미입력 항목 외에 9개 섹션(기본·DB·AI·SNS·결제·이메일·모니터링·보안·Sanity)으로 구조화하고 22개 이상의 누락 변수(SNS 키, AI 키, Sentry DSN, Cost Monitor 임계값 등)를 주석과 함께 추가해 신규 팀원이 처음 설정 시 누락 없이 완성할 수 있도록 개선.
+- **영향 범위**: 신규 팀원 온보딩, 환경변수 누락으로 인한 배포 실패 예방, 문서 신뢰도
+
+---
+
+### [ID: RL-20260306-01]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 보안
+- **변경 대상 파일**: `next.config.js`
+- **변경 요약**: HTTP 보안 헤더 4개 추가 (HSTS, Referrer-Policy, Permissions-Policy, CSP)
+- **변경 상세 설명**: `next.config.js`의 `headers()` 설정에 프로덕션 배포 시 필수적인 보안 헤더 4개를 추가. `Strict-Transport-Security`(HSTS, max-age 1년 + includeSubDomains + preload)로 HTTPS 강제 적용, `Referrer-Policy: strict-origin-when-cross-origin`으로 외부 요청 시 referrer 정보 최소화, `Permissions-Policy`로 미사용 브라우저 API(camera, microphone, geolocation 등) 차단, `Content-Security-Policy`로 XSS 방어(default-src self, script-src self unsafe-eval unsafe-inline, img-src self data: blob: https:, 개발 환경 script-src에 localhost 허용) 설정. OWASP Top 10 A05(보안 설정 오류) 항목 대응.
+- **영향 범위**: 모든 페이지 HTTP 응답 헤더, XSS 방어, MITM 방어, 브라우저 API 접근 제한
+
+---
+
+### [ID: RL-20260305-02]
+- **날짜**: 2026-03-05 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 설정
+- **변경 대상 파일**: `.env.template`
+- **변경 요약**: 누락된 SNS / AI / 관리자 환경변수 추가
+- **변경 상세 설명**: 전체 코드베이스 감사 결과, `.env.template`에 `lib/socialAutoPoster.js`가 의존하는 X(Twitter) 읽기+쓰기 키 4개(`X_API_KEY`, `X_API_SECRET`, `X_ACCESS_TOKEN`, `X_ACCESS_SECRET`)와 Facebook 키 2개(`FB_PAGE_ID`, `FB_PAGE_ACCESS_TOKEN`), Gemini AI 키(`GOOGLE_GEMINI_API_KEY`), 사이트 도메인(`NEXT_PUBLIC_SITE_URL`), 관리자 이메일(`ADMIN_EMAILS`), 발신 이메일 주소(`EMAIL_FROM`) 총 10개 변수가 누락되어 있음을 확인. 프로덕션 환경(Vercel)에 신규 키를 설정할 수 있도록 `.env.template`에 주석과 함께 추가. SNS 자동 포스터(`distributeToSocialMedia`)가 silently fail하는 문제를 배포 전에 막는 유일한 가이드.
+- **관련 RL**: RL-20260305-01
+
+---
+
+### [ID: RL-20260305-01]
+- **날짜**: 2026-03-05 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 버그 수정 (보안 + SEO)
+- **변경 대상 파일**: `pages/index.jsx`, `pages/api/sitemap.xml.js`, `lib/advancedContentGeneration.js`, `lib/securityMiddleware.js`, `lib/openapi.js`, `lib/notificationSystem.js`
+- **변경 요약**: 도메인 SSoT 복원 — 전 파일 `www.kulture.wiki` 단일화
+- **변경 상세 설명**: 전체 코드베이스 감사에서 `kulture.wiki`, `kulture.com` 2개 도메인이 혼재함을 발견. 올바른 도메인은 `www.kulture.wiki`(CEO 확인). `pages/api/sitemap.xml.js`, `lib/securityMiddleware.js`(CORS + CSP), `lib/openapi.js`, `lib/notificationSystem.js`, `components/SEOHead.jsx`, `lib/socialAutoPoster.js` 6개 파일을 `https://www.kulture.wiki` 기준으로 통일. `NEXT_PUBLIC_SITE_URL` 환경변수 미설정 시에도 올바른 기본값 보장.
+- **영향 범위**: SEO canonical 신호, CORS 보안 정책, API 문서, SNS 포스팅 링크, 이메일 발신자 주소
+
+---
+
 ### [ID: RL-20260227-10]
 - **날짜**: 2026-02-27 14:10 (KST)
 - **작성자**: Gems & GitHub Copilot

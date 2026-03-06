@@ -49,10 +49,10 @@ class MyDocument extends Document {
                   window.addEventListener('load', function() {
                     navigator.serviceWorker.register('/sw.js').then(
                       function(registration) {
-                        console.log('SW registered: ', registration);
+                        // SW registered
                       },
                       function(err) {
-                        console.log('SW registration failed: ', err);
+                        // SW registration failed
                       }
                     );
                   });

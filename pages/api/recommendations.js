@@ -1,18 +1,22 @@
 import { sanityClient } from '../../lib/sanityClient';
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './auth/[...nextauth]';
 import { getPersonalizedRecommendations, getSimilarPosts, getTrendingPosts } from '../../lib/aiRecommendation';
+import { withErrorHandler } from '../../lib/apiErrorHandler';
+import rateLimitMiddleware from '../../lib/rateLimiter';
 
 /**
  * AI 추천 API
  * - GET: 개인화 추천, 유사 게시글, 트렌딩
  */
 
-export default async function handler(req, res) {
+async function handler(req, res) {
+  rateLimitMiddleware('api')(req, res, () => {});
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
   const { type = 'personalized', postId, timeRange = '24h', limit = 10 } = req.query;
 
   try {
@@ -58,3 +62,5 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Failed to get recommendations' });
   }
 }
+
+export default withErrorHandler(handler);

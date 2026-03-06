@@ -1,5 +1,7 @@
 import { sanityClient } from '../../lib/sanityClient';
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './auth/[...nextauth]';
+import { withErrorHandler } from '../../lib/apiErrorHandler';
 
 /**
  * Boards API
@@ -9,6 +11,7 @@ import { getSession } from 'next-auth/react';
  */
 
 export default async function handler(req, res) {
+  const session = await getServerSession(req, res, authOptions);
   if (req.method === 'GET') {
     try {
       const { type, categoryId, activeOnly = 'true' } = req.query;
@@ -58,8 +61,6 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    const session = await getSession({ req });
-
     if (!session || session.user.role !== 'admin') {
       return res.status(403).json({ error: 'Forbidden' });
     }
@@ -113,8 +114,6 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'PATCH') {
-    const session = await getSession({ req });
-
     if (!session) {
       return res.status(401).json({ error: 'Unauthorized' });
     }

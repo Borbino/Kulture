@@ -1,17 +1,21 @@
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/[...nextauth]';
 import { analyzeSentiment, detectSpam, analyzeCommentQuality, analyzePostQuality } from '../../../lib/aiSentiment';
+import { withErrorHandler } from '../../../lib/apiErrorHandler';
+import rateLimitMiddleware from '../../../lib/rateLimiter';
 
 /**
  * AI 감정/품질 분석 API
  * - POST: 텍스트 감정 분석, 스팸 감지, 품질 분석
  */
 
-export default async function handler(req, res) {
+async function handler(req, res) {
+  rateLimitMiddleware('api')(req, res, () => {});
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
 
   if (!session) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -56,3 +60,5 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Failed to analyze content' });
   }
 }
+
+export default withErrorHandler(handler);

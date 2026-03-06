@@ -1,5 +1,8 @@
 import { sanityClient } from '../../lib/sanityClient';
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './auth/[...nextauth]';
+import { withErrorHandler } from '../../lib/apiErrorHandler';
+import rateLimitMiddleware from '../../lib/rateLimiter';
 
 /**
  * Posts API
@@ -9,8 +12,10 @@ import { getSession } from 'next-auth/react';
  * - DELETE: Delete post
  */
 
-export default async function handler(req, res) {
-  const session = await getSession({ req });
+async function handler(req, res) {
+  const rateLimitResult = rateLimitMiddleware('api')(req, res, () => {});
+  if (rateLimitResult === false) return;
+  const session = await getServerSession(req, res, authOptions);
 
   if (req.method === 'GET') {
     try {
@@ -298,3 +303,5 @@ export default async function handler(req, res) {
 
   return res.status(405).json({ error: 'Method not allowed' });
 }
+
+export default withErrorHandler(handler);

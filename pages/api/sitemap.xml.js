@@ -5,7 +5,7 @@
 
 import { SUPPORTED_LANGUAGES } from '../../lib/aiTranslation';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://kulture.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.kulture.wiki';
 
 /**
  * 정적 페이지 목록

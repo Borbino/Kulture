@@ -1,8 +1,9 @@
-import { getServerSession } from 'next-auth/next'
+import { getServerSession } from 'next-auth'
 import { authOptions } from '../auth/[...nextauth]'
 import { getSanityClient } from '../../../lib/sanityClient'
+import { withErrorHandler } from '../../../lib/apiErrorHandler'
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   const session = await getServerSession(req, res, authOptions)
   const sanityClient = getSanityClient()
 
@@ -258,3 +259,5 @@ export default async function handler(req, res) {
     res.status(405).json({ error: 'Method not allowed' })
   }
 }
+
+export default withErrorHandler(handler)

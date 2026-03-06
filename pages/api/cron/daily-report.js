@@ -6,6 +6,7 @@
 
 import sanity from '../../../lib/sanityClient'
 import { withCronAuth } from '../../../lib/cronMiddleware'
+import logger from '../../../lib/logger'
 
 export default withCronAuth(async function dailyReportHandler(req, res) {
   try {
@@ -91,7 +92,7 @@ export default withCronAuth(async function dailyReportHandler(req, res) {
     })
 
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[Daily Report] ${today} - Generated`)
+      logger.info('[cron]', `[Daily Report] ${today} - Generated`)
     }
 
     res.status(200).json({
@@ -99,7 +100,7 @@ export default withCronAuth(async function dailyReportHandler(req, res) {
       report,
     })
   } catch (error) {
-    console.error('[Daily Report Error]', error)
+    logger.error('[cron]', '[Daily Report Error]', { error: error.message })
     res.status(500).json({ error: error.message })
   }
 })

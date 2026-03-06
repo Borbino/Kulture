@@ -1,11 +1,12 @@
 import { getAPIKeyManager } from '../../../lib/apiKeyManager'
 import { getLogAggregator } from '../../../lib/logAggregator'
+import { withErrorHandler } from '../../../lib/apiErrorHandler'
 
 /**
  * 모니터링 통계 API
  * 실시간 시스템 상태 및 성능 지표 제공
  */
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
@@ -88,3 +89,5 @@ export default async function handler(req, res) {
     })
   }
 }
+
+export default withErrorHandler(handler)

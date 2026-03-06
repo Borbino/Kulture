@@ -7,6 +7,7 @@
 import performanceMonitor from '../../../lib/performanceMonitor'
 import sanity from '../../../lib/sanityClient.js'
 import { withCronAuth } from '../../../lib/cronMiddleware'
+import logger from '../../../lib/logger'
 
 export default withCronAuth(async function performanceReportHandler(req, res) {
   try {
@@ -27,7 +28,7 @@ export default withCronAuth(async function performanceReportHandler(req, res) {
       timestamp: new Date().toISOString(),
     })
 
-    console.log(`[Performance Report] Saved to Sanity at ${new Date().toISOString()}`)
+    logger.info('[cron]', `[Performance Report] Saved to Sanity at ${new Date().toISOString()}`)
 
     // 메트릭 초기화 (다음 시간 집계 준비)
     performanceMonitor.reset()
@@ -37,7 +38,7 @@ export default withCronAuth(async function performanceReportHandler(req, res) {
       report,
     })
   } catch (error) {
-    console.error('[Performance Report Error]', error)
+    logger.error('[cron]', '[Performance Report Error]', { error: error.message })
     res.status(500).json({ error: error.message })
   }
 })

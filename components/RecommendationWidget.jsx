@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 import styles from './RecommendationWidget.module.css';
 
 export default function RecommendationWidget({ type = 'personalized', postId = null, limit = 5 }) {
@@ -23,7 +24,7 @@ export default function RecommendationWidget({ type = 'personalized', postId = n
       const data = await res.json();
       setPosts(data.posts || []);
     } catch (error) {
-      console.error('Failed to fetch recommendations:', error);
+      // recommendations fetch failed
     } finally {
       setLoading(false);
     }
@@ -96,4 +97,10 @@ export default function RecommendationWidget({ type = 'personalized', postId = n
       </div>
     </div>
   );
+}
+
+RecommendationWidget.propTypes = {
+  type: PropTypes.oneOf(['personalized', 'similar', 'trending']),
+  postId: PropTypes.string,
+  limit: PropTypes.number,
 }

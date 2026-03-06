@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
+import PropTypes from 'prop-types'
 import styles from '../styles/ReportModal.module.css'
 
 export default function ReportModal({ targetType, targetId, onClose, onSuccess }) {
@@ -121,4 +122,11 @@ export default function ReportModal({ targetType, targetId, onClose, onSuccess }
       </div>
     </div>
   )
+}
+
+ReportModal.propTypes = {
+  targetType: PropTypes.oneOf(['post', 'comment', 'user']).isRequired,
+  targetId: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSuccess: PropTypes.func,
 }

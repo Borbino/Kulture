@@ -1,5 +1,8 @@
 import { sanityClient } from '../../lib/sanityClient';
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './auth/[...nextauth]';
+import { withErrorHandler } from '../../lib/apiErrorHandler';
+import rateLimitMiddleware from '../../lib/rateLimiter';
 
 /**
  * Messages (DM) API
@@ -9,8 +12,9 @@ import { getSession } from 'next-auth/react';
  * - DELETE: Delete message
  */
 
-export default async function handler(req, res) {
-  const session = await getSession({ req });
+async function handler(req, res) {
+  rateLimitMiddleware('api')(req, res, () => {});
+  const session = await getServerSession(req, res, authOptions);
 
   if (!session) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -219,3 +223,5 @@ export default async function handler(req, res) {
 
   return res.status(405).json({ error: 'Method not allowed' });
 }
+
+export default withErrorHandler(handler);

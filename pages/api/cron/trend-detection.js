@@ -12,26 +12,25 @@ import {
 import { trackIssue, TRACKING_ISSUES } from '../../../lib/vipMonitoring'
 import sanity from '../../../lib/sanityClient'
 import { withCronAuth } from '../../../lib/cronMiddleware'
+import logger from '../../../lib/logger'
 
 export default withCronAuth(async function trendDetectionHandler(req, res) {
   try {
     const startTime = Date.now()
 
-    console.log('[Trend Detection] Starting dynamic trend detection...')
+    logger.info('[cron]', '[Trend Detection] Starting dynamic trend detection...')
 
     // 1. 기존 트렌드 생명주기 체크 (오래된 트렌드 제거)
     const lifecycleResult = await checkTrendLifecycle()
-    console.log(`[Trend Detection] Lifecycle check: ${lifecycleResult.removed} trends removed`)
+    logger.info('[cron]', `[Trend Detection] Lifecycle check: ${lifecycleResult.removed} trends removed`)
 
     // 2. 다중 소스에서 새 트렌드 수집
     const newTrends = await collectAllTrends()
-    console.log(`[Trend Detection] Collected ${newTrends.length} new trends`)
+    logger.info('[cron]', `[Trend Detection] Collected ${newTrends.length} new trends`)
 
     // 3. 트렌드 데이터베이스 업데이트
     const updateResult = await updateTrendDatabase(newTrends)
-    console.log(
-      `[Trend Detection] Database updated: ${updateResult.added} added, ${updateResult.updated} updated`
-    )
+    logger.info('[cron]', `[Trend Detection] Database updated: ${updateResult.added} added, ${updateResult.updated} updated`)
 
     // 4. 특정 이슈 추적 (기존 시스템 유지)
     const issueResults = []
@@ -55,10 +54,10 @@ export default withCronAuth(async function trendDetectionHandler(req, res) {
             timestamp: new Date().toISOString(),
           })
 
-          console.log(`[Hot Issue] ${data.issue} - ${data.mentions} mentions`)
+          logger.info('[cron]', `[Hot Issue] ${data.issue} - ${data.mentions} mentions`)
         }
       } catch (error) {
-        console.error(`[Trend Detection] Failed to track issue "${issue.keyword}":`, error.message)
+        logger.error('[cron]', `[Trend Detection] Failed to track issue "${issue.keyword}":`, error.message)
       }
     }
 
@@ -72,17 +71,14 @@ export default withCronAuth(async function trendDetectionHandler(req, res) {
           const customData = await trackIssue(keyword)
           issueResults.push(customData)
         } catch (error) {
-          console.error(
-            `[Trend Detection] Failed to track custom keyword "${keyword}":`,
-            error.message
-          )
+          logger.error('[cron]', `[Trend Detection] Failed to track custom keyword "${keyword}":`, { error: error.message })
         }
       }
     }
 
     const elapsed = Date.now() - startTime
 
-    console.log(`[Trend Detection] Completed in ${elapsed}ms`)
+    logger.info('[cron]', `[Trend Detection] Completed in ${elapsed}ms`)
 
     res.status(200).json({
       success: true,
@@ -104,7 +100,7 @@ export default withCronAuth(async function trendDetectionHandler(req, res) {
       executionTime: elapsed,
     })
   } catch (error) {
-    console.error('[Trend Detection Error]', error)
-    res.status(500).json({ error: error.message, stack: error.stack })
+    logger.error('[cron]', '[Trend Detection Error]', { error: error.message })
+    res.status(500).json({ error: error.message })
   }
 })

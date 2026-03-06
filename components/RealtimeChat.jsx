@@ -23,7 +23,6 @@ export default function RealtimeChat({ roomId, userLanguage = 'en', userName = '
     });
 
     socketInstance.on('connect', () => {
-      console.log('Connected to chat server');
       setIsConnected(true);
       
       // Set user language
@@ -34,7 +33,6 @@ export default function RealtimeChat({ roomId, userLanguage = 'en', userName = '
     });
 
     socketInstance.on('disconnect', () => {
-      console.log('Disconnected from chat server');
       setIsConnected(false);
     });
 

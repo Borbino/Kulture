@@ -7,6 +7,7 @@
 import { VIP_DATABASE, monitorVIP } from '../../../lib/vipMonitoring'
 import sanity from '../../../lib/sanityClient'
 import { withCronAuth } from '../../../lib/cronMiddleware'
+import logger from '../../../lib/logger'
 
 export default withCronAuth(async function vipMonitoringHandler(req, res) {
   try {
@@ -80,16 +81,11 @@ export default withCronAuth(async function vipMonitoringHandler(req, res) {
       }
     }
 
-    console.log(`[VIP Monitoring] ${results.length} VIPs monitored at ${new Date().toISOString()}`)
+    logger.info('[cron]', `[VIP Monitoring] ${results.length} VIPs monitored at ${new Date().toISOString()}`)
 
     // 긴급 알림 로깅
     if (alerts.length > 0) {
-      console.log('🚨 [VIP ALERT] Trending VIPs detected:')
-      alerts.forEach(alert => {
-        console.log(
-          `  - ${alert.vip}: ${alert.mentions} mentions (${alert.changePercent > 0 ? '+' : ''}${alert.changePercent}%) [${alert.alertLevel.toUpperCase()}]`
-        )
-      })
+      logger.warn('[cron]', '🚨 [VIP ALERT] Trending VIPs detected:', { alerts })
     }
 
     res.status(200).json({
@@ -103,7 +99,7 @@ export default withCronAuth(async function vipMonitoringHandler(req, res) {
       })),
     })
   } catch (error) {
-    console.error('[VIP Monitoring Error]', error)
+    logger.error('[cron]', '[VIP Monitoring Error]', { error: error.message })
     res.status(500).json({ error: error.message })
   }
 })
