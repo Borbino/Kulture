@@ -1,7 +1,8 @@
-import { sanityClient } from '../../lib/sanityClient'
+import { sanityClient } from '../../lib/sanityClient.js'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../lib/auth/[...nextauth]'
-import { withErrorHandler } from '../../lib/apiErrorHandler'
+import { withErrorHandler } from '../../lib/apiErrorHandler.js'
+import { logger } from '../../lib/logger.js';
 
 
 /**
@@ -73,7 +74,7 @@ async function handler(req, res) {
         },
       });
     } catch (error) {
-      console.error('Error fetching notifications:', error);
+      logger.error('Error fetching notifications:', error);
       return res.status(500).json({ error: 'Failed to fetch notifications' });
     }
   }
@@ -115,7 +116,7 @@ async function handler(req, res) {
 
       return res.status(201).json({ notification });
     } catch (error) {
-      console.error('Error creating notification:', error);
+      logger.error('Error creating notification:', error);
       return res.status(500).json({ error: 'Failed to create notification' });
     }
   }
@@ -168,7 +169,7 @@ async function handler(req, res) {
 
       return res.status(200).json({ notification: updatedNotification });
     } catch (error) {
-      console.error('Error updating notification:', error);
+      logger.error('Error updating notification:', error);
       return res.status(500).json({ error: 'Failed to update notification' });
     }
   }

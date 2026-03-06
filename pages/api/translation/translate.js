@@ -3,8 +3,8 @@
  * Provides real-time AI translation for all supported languages
  */
 
-import aiTranslation from '../../../lib/aiTranslation';
-import rateLimiter from '../../../lib/rateLimiter';
+import aiTranslation from '../../../lib/aiTranslation.js';
+import rateLimiter from '../../../lib/rateLimiter.js';
 import { logger } from '../../../lib/logger.js';
 import { trackTranslationEvent } from '../../../lib/analytics.js';
 

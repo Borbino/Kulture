@@ -8,11 +8,11 @@ import {
   collectAllTrends,
   checkTrendLifecycle,
   updateTrendDatabase,
-} from '../../../lib/trendManagement'
-import { trackIssue, TRACKING_ISSUES } from '../../../lib/vipMonitoring'
-import sanity from '../../../lib/sanityClient'
-import { withCronAuth } from '../../../lib/cronMiddleware'
-import logger from '../../../lib/logger'
+} from '../../../lib/trendManagement.js'
+import { trackIssue, TRACKING_ISSUES } from '../../../lib/vipMonitoring.js'
+import sanity from '../../../lib/sanityClient.js'
+import { withCronAuth } from '../../../lib/cronMiddleware.js'
+import { logger } from '../../../lib/logger.js'
 
 export default withCronAuth(async function trendDetectionHandler(req, res) {
   try {

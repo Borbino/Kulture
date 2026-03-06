@@ -4,9 +4,9 @@
  * POST /api/premium/webhook
  */
 
-import { withErrorHandler } from '../../../lib/apiErrorHandler';
-import { handleStripeWebhook } from '../../../lib/premiumMembership';
-import logger from '../../../lib/logger';
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
+import { handleStripeWebhook } from '../../../lib/premiumMembership.js';
+import { logger } from '../../../lib/logger.js';
 
 export const config = { api: { bodyParser: false } };
 

@@ -1,6 +1,6 @@
-import { runAutonomousDiscovery } from '../../../lib/autonomousScraper'
-import { withCronAuth } from '../../../lib/cronMiddleware'
-import logger from '../../../lib/logger'
+import { runAutonomousDiscovery } from '../../../lib/autonomousScraper.js'
+import { withCronAuth } from '../../../lib/cronMiddleware.js'
+import { logger } from '../../../lib/logger.js'
 
 export default withCronAuth(async function autonomousDiscoveryHandler(req, res) {
   try {

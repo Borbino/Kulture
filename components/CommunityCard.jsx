@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import PropTypes from 'prop-types'
-import styles from '../styles/CommunityCard.module.css'
+import styles from '../styles/CommunityCard.module.css.js'
 
 export default function CommunityCard({ community, onJoin }) {
   const { data: session } = useSession()

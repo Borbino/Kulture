@@ -2,9 +2,9 @@
  * Language Detection API Endpoint
  */
 
-import aiTranslation from '../../../lib/aiTranslation';
-import rateLimiter from '../../../lib/rateLimiter';
-import logger from '../../../lib/logger';
+import aiTranslation from '../../../lib/aiTranslation.js';
+import rateLimiter from '../../../lib/rateLimiter.js';
+import { logger } from '../../../lib/logger.js';
 
 export default async function handler(req, res) {
   const rateLimitResult = await rateLimiter(req, res, {

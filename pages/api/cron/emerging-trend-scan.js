@@ -5,11 +5,11 @@
  * [원칙 14] VIP 미지정이어도 트래픽·SNS 기반 급부상 엔티티 자동 등록
  */
 
-import { scrapeFreeSources } from '../../../lib/autonomousScraper';
-import { runEmergingTrendScan } from '../../../lib/emergingTrendDetector';
-import { withCronAuth } from '../../../lib/cronMiddleware';
-import sanity from '../../../lib/sanityClient';
-import logger from '../../../lib/logger';
+import { scrapeFreeSources } from '../../../lib/autonomousScraper.js';
+import { runEmergingTrendScan } from '../../../lib/emergingTrendDetector.js';
+import { withCronAuth } from '../../../lib/cronMiddleware.js';
+import sanity from '../../../lib/sanityClient.js';
+import { logger } from '../../../lib/logger.js';
 
 export default withCronAuth(async function emergingTrendScanHandler(req, res) {
   const startTime = Date.now();

@@ -8,6 +8,7 @@ import { translate } from '../../../lib/aiTranslation.js';
 import { translationMonitor } from '../../../lib/translationPerformanceMonitor.js';
 import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
 import rateLimitMiddleware from '../../../lib/rateLimiter.js';
+import { logger } from '../../../lib/logger.js';
 
 async function handler(req, res) {
   // Rate limiting
@@ -86,7 +87,7 @@ async function handler(req, res) {
       },
     });
   } catch (error) {
-    console.error('[Batch Translation Error]', error);
+    logger.error('[Batch Translation Error]', error);
     return res.status(500).json({ error: 'Batch translation failed', message: error.message });
   }
 }

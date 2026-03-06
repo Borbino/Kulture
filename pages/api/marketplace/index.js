@@ -1,7 +1,8 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../auth/[...nextauth]'
-import { getSanityClient } from '../../../lib/sanityClient'
-import { withErrorHandler } from '../../../lib/apiErrorHandler'
+import { getSanityClient } from '../../../lib/sanityClient.js'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { logger } from '../../../lib/logger.js';
 
 async function handler(req, res) {
   const session = await getServerSession(req, res, authOptions)
@@ -87,7 +88,7 @@ async function handler(req, res) {
         limit: parseInt(limit),
       })
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       res.status(500).json({ error: 'Failed to fetch products' })
     }
   }
@@ -139,7 +140,7 @@ async function handler(req, res) {
 
       res.status(201).json(product)
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       res.status(500).json({ error: 'Failed to create product' })
     }
   }
@@ -250,7 +251,7 @@ async function handler(req, res) {
 
       res.status(400).json({ error: 'Invalid action' })
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       res.status(500).json({ error: 'Failed to update' })
     }
   }

@@ -6,13 +6,13 @@
  * GET  /api/newsletter/unsubscribe?token=...
  */
 
-import { withErrorHandler } from '../../../lib/apiErrorHandler';
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
 import {
   subscribeToNewsletter,
   confirmSubscription,
   unsubscribeFromNewsletter,
-} from '../../../lib/newsletter';
-import { rateLimiter } from '../../../lib/rateLimiter';
+} from '../../../lib/newsletter.js';
+import { rateLimiter } from '../../../lib/rateLimiter.js';
 
 async function handler(req, res) {
   if (req.method === 'POST') {

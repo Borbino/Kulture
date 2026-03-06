@@ -1,8 +1,9 @@
-import { sanityClient } from '../../../lib/sanityClient';
+import { sanityClient } from '../../../lib/sanityClient.js';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
-import { getSiteSettings } from '../../../lib/settings';
-import { withErrorHandler } from '../../../lib/apiErrorHandler';
+import { getSiteSettings } from '../../../lib/settings.js';
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
+import { logger } from '../../../lib/logger.js';
 
 /**
  * Daily Missions API
@@ -95,7 +96,7 @@ async function handler(req, res) {
         },
       });
     } catch (error) {
-      console.error('Error getting missions:', error);
+      logger.error('Error getting missions:', error);
       return res.status(500).json({ error: 'Failed to get missions' });
     }
   }
@@ -203,7 +204,7 @@ async function handler(req, res) {
         },
       });
     } catch (error) {
-      console.error('Error updating mission progress:', error);
+      logger.error('Error updating mission progress:', error);
       return res.status(500).json({ error: 'Failed to update mission progress' });
     }
   }
@@ -246,7 +247,7 @@ async function calculateStreak(userId) {
 
     return streak;
   } catch (error) {
-    console.error('Error calculating streak:', error);
+    logger.error('Error calculating streak:', error);
     return 0;
   }
 }

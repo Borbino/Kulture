@@ -4,10 +4,10 @@
  * [목적] BTS, aespa, PSY, 손흥민, 이병헌 등 자동 추적
  */
 
-import { VIP_DATABASE, monitorVIP } from '../../../lib/vipMonitoring'
-import sanity from '../../../lib/sanityClient'
-import { withCronAuth } from '../../../lib/cronMiddleware'
-import logger from '../../../lib/logger'
+import { VIP_DATABASE, monitorVIP } from '../../../lib/vipMonitoring.js'
+import sanity from '../../../lib/sanityClient.js'
+import { withCronAuth } from '../../../lib/cronMiddleware.js'
+import { logger } from '../../../lib/logger.js'
 
 export default withCronAuth(async function vipMonitoringHandler(req, res) {
   try {

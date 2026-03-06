@@ -4,8 +4,8 @@
  * [목적] AI 기반 성능 최적화 제안 및 자동 적용
  */
 
-import autoOptimizer from '../../../lib/autoOptimizer'
-import { withErrorHandler } from '../../../lib/apiErrorHandler'
+import autoOptimizer from '../../../lib/autoOptimizer.js'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
 
 async function handler(req, res) {
   const { method } = req

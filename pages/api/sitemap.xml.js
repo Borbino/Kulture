@@ -3,7 +3,8 @@
  * Generates dynamic sitemap.xml with all languages
  */
 
-import { SUPPORTED_LANGUAGES } from '../../lib/aiTranslation';
+import { SUPPORTED_LANGUAGES } from '../../lib/aiTranslation.js';
+import { logger } from '../../lib/logger.js';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.kulture.wiki';
 
@@ -70,7 +71,7 @@ export default function handler(req, res) {
     res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate');
     res.status(200).send(sitemap);
   } catch (error) {
-    console.error('Sitemap generation error:', error);
+    logger.error('Sitemap generation error:', error);
     res.status(500).json({ error: 'Failed to generate sitemap' });
   }
 }

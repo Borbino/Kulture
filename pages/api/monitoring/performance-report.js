@@ -4,8 +4,8 @@
  * [목적] 실시간 성능 메트릭 및 최적화 제안 제공
  */
 
-import performanceMonitor from '../../../lib/performanceMonitoringEnhanced'
-import { withErrorHandler } from '../../../lib/apiErrorHandler'
+import performanceMonitor from '../../../lib/performanceMonitoringEnhanced.js'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
 
 async function handler(req, res) {
   const { method } = req

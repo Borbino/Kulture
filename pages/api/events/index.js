@@ -1,7 +1,8 @@
-import { sanityClient } from '../../../lib/sanityClient'
+import { sanityClient } from '../../../lib/sanityClient.js'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../auth/[...nextauth]'
-import { withErrorHandler } from '../../../lib/apiErrorHandler'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { logger } from '../../../lib/logger.js';
 
 /**
  * Events API
@@ -76,7 +77,7 @@ async function handler(req, res) {
         },
       })
     } catch (error) {
-      console.error('Error fetching events:', error)
+      logger.error('Error fetching events:', error)
       return res.status(500).json({ error: 'Failed to fetch events' })
     }
   }
@@ -122,7 +123,7 @@ async function handler(req, res) {
 
       return res.status(201).json({ event })
     } catch (error) {
-      console.error('Error creating event:', error)
+      logger.error('Error creating event:', error)
       return res.status(500).json({ error: 'Failed to create event' })
     }
   }
@@ -160,7 +161,7 @@ async function handler(req, res) {
         return res.status(200).json({ event })
       }
     } catch (error) {
-      console.error('Error updating event:', error)
+      logger.error('Error updating event:', error)
       return res.status(500).json({ error: 'Failed to update event' })
     }
   }

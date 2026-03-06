@@ -5,11 +5,11 @@
  * cron: 0 9 * * 1,4 (월·목 오전 9시, 주 2회)
  */
 
-import { withCronAuth } from '../../../lib/cronMiddleware';
-import { withErrorHandler } from '../../../lib/apiErrorHandler';
-import { sendTrendNewsletter } from '../../../lib/newsletter';
-import sanity from '../../../lib/sanityClient';
-import logger from '../../../lib/logger';
+import { withCronAuth } from '../../../lib/cronMiddleware.js';
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
+import { sendTrendNewsletter } from '../../../lib/newsletter.js';
+import sanity from '../../../lib/sanityClient.js';
+import { logger } from '../../../lib/logger.js';
 
 async function handler(req, res) {
   if (req.method !== 'POST') {

@@ -1,8 +1,9 @@
-import { sanityClient } from '../../lib/sanityClient';
+import { sanityClient } from '../../lib/sanityClient.js';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './auth/[...nextauth]';
-import { withErrorHandler } from '../../lib/apiErrorHandler';
-import rateLimitMiddleware from '../../lib/rateLimiter';
+import { withErrorHandler } from '../../lib/apiErrorHandler.js';
+import rateLimitMiddleware from '../../lib/rateLimiter.js';
+import { logger } from '../../lib/logger.js';
 
 /**
  * Posts API
@@ -116,7 +117,7 @@ async function handler(req, res) {
         },
       });
     } catch (error) {
-      console.error('Error fetching posts:', error);
+      logger.error('Error fetching posts:', error);
       return res.status(500).json({ error: 'Failed to fetch posts' });
     }
   }
@@ -199,7 +200,7 @@ async function handler(req, res) {
 
       return res.status(201).json({ post });
     } catch (error) {
-      console.error('Error creating post:', error);
+      logger.error('Error creating post:', error);
       return res.status(500).json({ error: 'Failed to create post' });
     }
   }
@@ -244,7 +245,7 @@ async function handler(req, res) {
 
       return res.status(200).json({ post: updatedPost });
     } catch (error) {
-      console.error('Error updating post:', error);
+      logger.error('Error updating post:', error);
       return res.status(500).json({ error: 'Failed to update post' });
     }
   }
@@ -296,7 +297,7 @@ async function handler(req, res) {
 
       return res.status(200).json({ message: 'Post deleted successfully' });
     } catch (error) {
-      console.error('Error deleting post:', error);
+      logger.error('Error deleting post:', error);
       return res.status(500).json({ error: 'Failed to delete post' });
     }
   }

@@ -4,16 +4,16 @@
  */
 
 import { Server } from 'socket.io';
-import { translate } from '../../../lib/aiTranslation';
-import { getCostMonitor } from '../../../lib/costMonitor';
-import logger from '../../../lib/logger';
+import { translate } from '../../../lib/aiTranslation.js';
+import { getCostMonitor } from '../../../lib/costMonitor.js';
+import { logger } from '../../../lib/logger.js';
 
 const rooms = new Map(); // roomId -> { users: Set, messages: [] }
 const userLanguages = new Map(); // socketId -> language
 
 export default function handler(req, res) {
   if (res.socket.server.io) {
-    console.log('Socket.IO already initialized');
+    logger.info('Socket.IO already initialized');
     res.end();
     return;
   }
@@ -30,12 +30,12 @@ export default function handler(req, res) {
   res.socket.server.io = io;
 
   io.on('connection', (socket) => {
-    console.log('Client connected:', socket.id);
+    logger.info('Client connected:', socket.id);
 
     // Set user language
     socket.on('set-language', (language) => {
       userLanguages.set(socket.id, language);
-      console.log(`User ${socket.id} language set to ${language}`);
+      logger.info(`User ${socket.id} language set to ${language}`);
     });
 
     // Join chat room
@@ -61,7 +61,7 @@ export default function handler(req, res) {
       // Send recent messages
       socket.emit('message-history', room.messages.slice(-50));
       
-      console.log(`User ${socket.id} joined room ${roomId}`);
+      logger.info(`User ${socket.id} joined room ${roomId}`);
     });
 
     // Send message with auto-translation
@@ -180,7 +180,7 @@ export default function handler(req, res) {
 
     // Disconnect
     socket.on('disconnect', () => {
-      console.log('Client disconnected:', socket.id);
+      logger.info('Client disconnected:', socket.id);
       userLanguages.delete(socket.id);
       
       // Remove from all rooms
@@ -200,6 +200,6 @@ export default function handler(req, res) {
     });
   });
 
-  console.log('Socket.IO initialized');
+  logger.info('Socket.IO initialized');
   res.end();
 }

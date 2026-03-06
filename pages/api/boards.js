@@ -1,7 +1,8 @@
-import { sanityClient } from '../../lib/sanityClient';
+import { sanityClient } from '../../lib/sanityClient.js';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './auth/[...nextauth]';
-import { withErrorHandler } from '../../lib/apiErrorHandler';
+import { withErrorHandler } from '../../lib/apiErrorHandler.js';
+import { logger } from '../../lib/logger.js';
 
 /**
  * Boards API
@@ -55,7 +56,7 @@ export default async function handler(req, res) {
 
       return res.status(200).json({ boards });
     } catch (error) {
-      console.error('Error fetching boards:', error);
+      logger.error('Error fetching boards:', error);
       return res.status(500).json({ error: 'Failed to fetch boards' });
     }
   }
@@ -108,7 +109,7 @@ export default async function handler(req, res) {
 
       return res.status(201).json({ board });
     } catch (error) {
-      console.error('Error creating board:', error);
+      logger.error('Error creating board:', error);
       return res.status(500).json({ error: 'Failed to create board' });
     }
   }
@@ -153,7 +154,7 @@ export default async function handler(req, res) {
 
       return res.status(200).json({ board: updatedBoard });
     } catch (error) {
-      console.error('Error updating board:', error);
+      logger.error('Error updating board:', error);
       return res.status(500).json({ error: 'Failed to update board' });
     }
   }

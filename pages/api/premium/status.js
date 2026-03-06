@@ -6,8 +6,8 @@
 
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
-import { withErrorHandler } from '../../../lib/apiErrorHandler';
-import { getMembershipStatus, PLANS } from '../../../lib/premiumMembership';
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
+import { getMembershipStatus, PLANS } from '../../../lib/premiumMembership.js';
 
 async function handler(req, res) {
   if (req.method !== 'GET') {

@@ -3,9 +3,10 @@
  * [목적] 최신 멘션 수 기준 상위 VIP 및 알림 레벨 제공
  */
 
-import sanity from '../../../lib/sanityClient'
-import { getSiteSettings } from '../../../lib/settings'
-import { withErrorHandler } from '../../../lib/apiErrorHandler'
+import sanity from '../../../lib/sanityClient.js'
+import { getSiteSettings } from '../../../lib/settings.js'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { logger } from '../../../lib/logger.js';
 
 async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ message: 'Method not allowed' })
@@ -48,7 +49,7 @@ async function handler(req, res) {
       },
     })
   } catch (error) {
-    console.error('[API /vip/top] error:', error)
+    logger.error('[API /vip/top] error:', error)
     return res.status(500).json({ success: false, message: 'Failed to fetch vip monitoring', error: error.message })
   }
 }

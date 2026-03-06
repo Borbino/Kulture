@@ -3,7 +3,8 @@
  * GET /api/translation/list?lang=ko&filter=all
  */
 
-import { connectToDatabase } from '../../../lib/mongodb';
+import { connectToDatabase } from '../../../lib/mongodb.js';
+import { logger } from '../../../lib/logger.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -52,7 +53,7 @@ export default async function handler(req, res) {
       pages: Math.ceil(total / parseInt(limit)),
     });
   } catch (error) {
-    console.error('List API error:', error);
+    logger.error('List API error:', error);
     res.status(500).json({ error: 'Failed to fetch translations' });
   }
 }

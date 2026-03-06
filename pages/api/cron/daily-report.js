@@ -4,9 +4,9 @@
  * [목적] CEO에게 일일 요약 리포트 제공
  */
 
-import sanity from '../../../lib/sanityClient'
-import { withCronAuth } from '../../../lib/cronMiddleware'
-import logger from '../../../lib/logger'
+import sanity from '../../../lib/sanityClient.js'
+import { withCronAuth } from '../../../lib/cronMiddleware.js'
+import { logger } from '../../../lib/logger.js'
 
 export default withCronAuth(async function dailyReportHandler(req, res) {
   try {

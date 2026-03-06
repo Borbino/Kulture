@@ -5,9 +5,10 @@
 
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../auth/[...nextauth]'
-import { sanityClient } from '../../../lib/sanityClient'
-import { getSiteSettings } from '../../../lib/settings'
-import { withErrorHandler } from '../../../lib/apiErrorHandler'
+import { sanityClient } from '../../../lib/sanityClient.js'
+import { getSiteSettings } from '../../../lib/settings.js'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { logger } from '../../../lib/logger.js';
 
 async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -108,7 +109,7 @@ async function handler(req, res) {
       }
     })
   } catch (error) {
-    console.error('Error fetching badges:', error)
+    logger.error('Error fetching badges:', error)
     return res.status(500).json({
       success: false,
       message: 'Failed to fetch badges',

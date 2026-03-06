@@ -3,9 +3,10 @@
  * Monitor and manage API key rotation
  */
 
-import { getAPIKeyRotationManager } from '../../../lib/apiKeyRotation';
-import { verifyAdmin } from '../../../lib/auth';
-import { withErrorHandler } from '../../../lib/apiErrorHandler';
+import { getAPIKeyRotationManager } from '../../../lib/apiKeyRotation.js';
+import { verifyAdmin } from '../../../lib/auth.js';
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
+import { logger } from '../../../lib/logger.js';
 
 async function handler(req, res) {
   try {
@@ -73,7 +74,7 @@ async function handler(req, res) {
 
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (error) {
-    console.error('API key rotation error:', error);
+    logger.error('API key rotation error:', error);
     return res.status(error.message === 'Forbidden: Admin access required' ? 403 : 500).json({
       error: error.message || 'Internal server error',
     });

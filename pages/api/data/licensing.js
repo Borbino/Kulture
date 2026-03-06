@@ -7,12 +7,12 @@
  * POST /api/data/licensing — API 키 발급 신청
  */
 
-import { withErrorHandler } from '../../../lib/apiErrorHandler';
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
-import sanity from '../../../lib/sanityClient';
+import sanity from '../../../lib/sanityClient.js';
 import crypto from 'crypto';
-import logger from '../../../lib/logger';
+import { logger } from '../../../lib/logger.js';
 
 // ========== B2B 플랜 정의 ==========
 

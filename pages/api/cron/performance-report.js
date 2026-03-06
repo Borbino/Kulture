@@ -4,10 +4,10 @@
  * [목적] API 성능 지표 수집 및 분석
  */
 
-import performanceMonitor from '../../../lib/performanceMonitor'
+import performanceMonitor from '../../../lib/performanceMonitor.js'
 import sanity from '../../../lib/sanityClient.js'
-import { withCronAuth } from '../../../lib/cronMiddleware'
-import logger from '../../../lib/logger'
+import { withCronAuth } from '../../../lib/cronMiddleware.js'
+import { logger } from '../../../lib/logger.js'
 
 export default withCronAuth(async function performanceReportHandler(req, res) {
   try {

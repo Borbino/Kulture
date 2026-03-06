@@ -7,9 +7,9 @@
 
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
-import { withErrorHandler } from '../../../lib/apiErrorHandler';
-import sanity from '../../../lib/sanityClient';
-import logger from '../../../lib/logger';
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
+import sanity from '../../../lib/sanityClient.js';
+import { logger } from '../../../lib/logger.js';
 
 async function handler(req, res) {
   // 관리자 인증 확인

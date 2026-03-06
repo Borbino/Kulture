@@ -1,6 +1,7 @@
-import { getAPIKeyManager } from '../../../lib/apiKeyManager'
-import { getLogAggregator } from '../../../lib/logAggregator'
-import { withErrorHandler } from '../../../lib/apiErrorHandler'
+import { getAPIKeyManager } from '../../../lib/apiKeyManager.js'
+import { getLogAggregator } from '../../../lib/logAggregator.js'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { logger } from '../../../lib/logger.js';
 
 /**
  * 모니터링 통계 API
@@ -82,7 +83,7 @@ async function handler(req, res) {
 
     res.status(200).json(response)
   } catch (error) {
-    console.error('[Monitoring Stats] Error:', error)
+    logger.error('[Monitoring Stats] Error:', error)
     res.status(500).json({
       error: 'Failed to fetch monitoring stats',
       message: error.message,

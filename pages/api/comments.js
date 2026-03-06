@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from './auth/[...nextauth]'
-import { getSanityClient } from '../../lib/sanityClient'
+import { getSanityClient } from '../../lib/sanityClient.js'
+import { logger } from '../../lib/logger.js';
 
 export default async function handler(req, res) {
   const client = getSanityClient()
@@ -37,7 +38,7 @@ export default async function handler(req, res) {
 
       return res.status(200).json({ comments })
     } catch (error) {
-      console.error('댓글 조회 실패:', error)
+      logger.error('댓글 조회 실패:', error)
       return res.status(500).json({ error: '댓글 조회에 실패했습니다' })
     }
   }
@@ -81,7 +82,7 @@ export default async function handler(req, res) {
         comment: result,
       })
     } catch (error) {
-      console.error('댓글 작성 실패:', error)
+      logger.error('댓글 작성 실패:', error)
       return res.status(500).json({ error: '댓글 작성에 실패했습니다' })
     }
   }
@@ -123,7 +124,7 @@ export default async function handler(req, res) {
         comment: result,
       })
     } catch (error) {
-      console.error('댓글 수정 실패:', error)
+      logger.error('댓글 수정 실패:', error)
       return res.status(500).json({ error: '댓글 수정에 실패했습니다' })
     }
   }
@@ -158,7 +159,7 @@ export default async function handler(req, res) {
 
       return res.status(200).json({ message: '댓글이 삭제되었습니다' })
     } catch (error) {
-      console.error('댓글 삭제 실패:', error)
+      logger.error('댓글 삭제 실패:', error)
       return res.status(500).json({ error: '댓글 삭제에 실패했습니다' })
     }
   }

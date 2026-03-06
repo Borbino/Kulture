@@ -1,7 +1,8 @@
-import { sanityClient } from '../../../lib/sanityClient'
+import { sanityClient } from '../../../lib/sanityClient.js'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../../lib/auth/[...nextauth]'
-import { withErrorHandler } from '../../../lib/apiErrorHandler'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { logger } from '../../../lib/logger.js';
 
 
 /**
@@ -53,7 +54,7 @@ async function handler(req, res) {
         total: reactions.length,
       });
     } catch (error) {
-      console.error('Error getting reactions:', error);
+      logger.error('Error getting reactions:', error);
       return res.status(500).json({ error: 'Failed to get reactions' });
     }
   }
@@ -116,7 +117,7 @@ async function handler(req, res) {
 
       return res.status(201).json({ reaction });
     } catch (error) {
-      console.error('Error adding reaction:', error);
+      logger.error('Error adding reaction:', error);
       return res.status(500).json({ error: 'Failed to add reaction' });
     }
   }
@@ -150,7 +151,7 @@ async function handler(req, res) {
 
       return res.status(200).json({ message: 'Reaction removed' });
     } catch (error) {
-      console.error('Error removing reaction:', error);
+      logger.error('Error removing reaction:', error);
       return res.status(500).json({ error: 'Failed to remove reaction' });
     }
   }

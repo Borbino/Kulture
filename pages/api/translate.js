@@ -3,10 +3,10 @@
  * Real-time translation service with caching
  */
 
-import { translate, translateBatch, detectLanguage, SUPPORTED_LANGUAGES } from '../../lib/aiTranslation';
-import { getCachedTranslation, setCachedTranslation, getCacheStatistics } from '../../lib/translationCache';
-import { rateLimiter } from '../../lib/rateLimiter';
-import logger from '../../lib/logger';
+import { translate, translateBatch, detectLanguage, SUPPORTED_LANGUAGES } from '../../lib/aiTranslation.js';
+import { getCachedTranslation, setCachedTranslation, getCacheStatistics } from '../../lib/translationCache.js';
+import { rateLimiter } from '../../lib/rateLimiter.js';
+import { logger } from '../../lib/logger.js';
 
 export default async function handler(req, res) {
   // Rate limiting

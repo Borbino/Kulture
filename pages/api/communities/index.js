@@ -1,8 +1,9 @@
-import { sanityClient } from '../../../lib/sanityClient'
+import { sanityClient } from '../../../lib/sanityClient.js'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../auth/[...nextauth]'
-import { withErrorHandler } from '../../../lib/apiErrorHandler'
-import rateLimitMiddleware from '../../../lib/rateLimiter'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import rateLimitMiddleware from '../../../lib/rateLimiter.js'
+import { logger } from '../../../lib/logger.js';
 
 /**
  * Communities/Groups API
@@ -64,7 +65,7 @@ async function handler(req, res) {
         },
       })
     } catch (error) {
-      console.error('Error fetching communities:', error)
+      logger.error('Error fetching communities:', error)
       return res.status(500).json({ error: 'Failed to fetch communities' })
     }
   }
@@ -104,7 +105,7 @@ async function handler(req, res) {
 
       return res.status(201).json({ community })
     } catch (error) {
-      console.error('Error creating community:', error)
+      logger.error('Error creating community:', error)
       return res.status(500).json({ error: 'Failed to create community' })
     }
   }
@@ -155,7 +156,7 @@ async function handler(req, res) {
         return res.status(200).json({ community })
       }
     } catch (error) {
-      console.error('Error updating community:', error)
+      logger.error('Error updating community:', error)
       return res.status(500).json({ error: 'Failed to update community' })
     }
   }

@@ -1,7 +1,8 @@
-import { sanityClient } from '../../../lib/sanityClient'
+import { sanityClient } from '../../../lib/sanityClient.js'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../../lib/auth/[...nextauth]'
-import { withErrorHandler } from '../../../lib/apiErrorHandler'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { logger } from '../../../lib/logger.js';
 
 
 /**
@@ -83,7 +84,7 @@ async function handler(req, res) {
       limit: parseInt(limit),
     });
   } catch (error) {
-    console.error('Error getting activity feed:', error);
+    logger.error('Error getting activity feed:', error);
     return res.status(500).json({ error: 'Failed to get activity feed' });
   }
 }

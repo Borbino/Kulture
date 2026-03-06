@@ -4,10 +4,10 @@
  * [목적] 트렌드 기반 고품질 2차 창작물 자동 생성
  */
 
-import { generateAdvancedContent } from '../../../lib/advancedContentGeneration'
-import sanity from '../../../lib/sanityClient'
-import { withCronAuth } from '../../../lib/cronMiddleware'
-import logger from '../../../lib/logger'
+import { generateAdvancedContent } from '../../../lib/advancedContentGeneration.js'
+import sanity from '../../../lib/sanityClient.js'
+import { withCronAuth } from '../../../lib/cronMiddleware.js'
+import { logger } from '../../../lib/logger.js'
 
 export default withCronAuth(async function contentGenerationHandler(req, res) {
   try {

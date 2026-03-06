@@ -2,9 +2,9 @@
  * Translation Cache Management API (Admin Only)
  */
 
-import aiTranslation from '../../../lib/aiTranslation';
-import { verifyAuth, isAdmin } from '../../../lib/auth';
-import logger from '../../../lib/logger';
+import aiTranslation from '../../../lib/aiTranslation.js';
+import { verifyAuth, isAdmin } from '../../../lib/auth.js';
+import { logger } from '../../../lib/logger.js';
 
 export default async function handler(req, res) {
   try {

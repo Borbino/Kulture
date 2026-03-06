@@ -1,8 +1,9 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
-import { analyzeSentiment, detectSpam, analyzeCommentQuality, analyzePostQuality } from '../../../lib/aiSentiment';
-import { withErrorHandler } from '../../../lib/apiErrorHandler';
-import rateLimitMiddleware from '../../../lib/rateLimiter';
+import { analyzeSentiment, detectSpam, analyzeCommentQuality, analyzePostQuality } from '../../../lib/aiSentiment.js';
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
+import rateLimitMiddleware from '../../../lib/rateLimiter.js';
+import { logger } from '../../../lib/logger.js';
 
 /**
  * AI 감정/품질 분석 API
@@ -32,7 +33,7 @@ async function handler(req, res) {
 
     switch (type) {
       case 'sentiment':
-        result = analyzeSentiment(text);
+        result = await analyzeSentiment(text);
         break;
 
       case 'spam':
@@ -40,11 +41,11 @@ async function handler(req, res) {
         break;
 
       case 'comment':
-        result = analyzeCommentQuality(text, postContent);
+        result = await analyzeCommentQuality(text, postContent);
         break;
 
       case 'post':
-        result = analyzePostQuality(title, content, tags);
+        result = await analyzePostQuality(title, content, tags);
         break;
 
       default:
@@ -56,7 +57,7 @@ async function handler(req, res) {
       analysis: result,
     });
   } catch (error) {
-    console.error('Error analyzing content:', error);
+    logger.error('Error analyzing content', { error: error.message });
     return res.status(500).json({ error: 'Failed to analyze content' });
   }
 }

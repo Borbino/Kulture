@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs'
-import { getSanityClient } from '../../../lib/sanityClient'
+import { getSanityClient } from '../../../lib/sanityClient.js'
+import { logger } from '../../../lib/logger.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -62,7 +63,7 @@ export default async function handler(req, res) {
       },
     })
   } catch (error) {
-    console.error('회원가입 실패:', error)
+    logger.error('회원가입 실패:', error)
     return res.status(500).json({ error: '회원가입에 실패했습니다' })
   }
 }

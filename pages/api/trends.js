@@ -3,10 +3,11 @@
  * [목적] 프론트엔드에서 최신 트렌드 스냅샷과 급상승 이슈를 조회
  */
 
-import sanity from '../../lib/sanityClient'
-import { getSiteSettings } from '../../lib/settings'
-import { withErrorHandler } from '../../lib/apiErrorHandler'
-import { getAffiliateLinksForContent } from '../../lib/revenueEngine'
+import sanity from '../../lib/sanityClient.js'
+import { getSiteSettings } from '../../lib/settings.js'
+import { withErrorHandler } from '../../lib/apiErrorHandler.js'
+import { getAffiliateLinksForContent } from '../../lib/revenueEngine.js'
+import { logger } from '../../lib/logger.js';
 
 async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ message: 'Method not allowed' })
@@ -56,7 +57,7 @@ async function handler(req, res) {
       },
     })
   } catch (error) {
-    console.error('[API /trends] error:', error)
+    logger.error('[API /trends] error:', error)
     return res.status(500).json({ success: false, message: 'Failed to fetch trends', error: error.message })
   }
 }

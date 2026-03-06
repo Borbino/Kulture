@@ -1,7 +1,8 @@
-import { sanityClient } from '../../../lib/sanityClient'
+import { sanityClient } from '../../../lib/sanityClient.js'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../../lib/auth/[...nextauth]'
-import { withErrorHandler } from '../../../lib/apiErrorHandler'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { logger } from '../../../lib/logger.js';
 
 
 /**
@@ -58,7 +59,7 @@ async function handler(req, res) {
         count: results.length,
       });
     } catch (error) {
-      console.error('Error getting follow list:', error);
+      logger.error('Error getting follow list:', error);
       return res.status(500).json({ error: 'Failed to get follow list' });
     }
   }
@@ -128,7 +129,7 @@ async function handler(req, res) {
 
       return res.status(201).json({ follow });
     } catch (error) {
-      console.error('Error following user:', error);
+      logger.error('Error following user:', error);
       return res.status(500).json({ error: 'Failed to follow user' });
     }
   }
@@ -161,7 +162,7 @@ async function handler(req, res) {
 
       return res.status(200).json({ message: 'Unfollowed successfully' });
     } catch (error) {
-      console.error('Error unfollowing user:', error);
+      logger.error('Error unfollowing user:', error);
       return res.status(500).json({ error: 'Failed to unfollow user' });
     }
   }

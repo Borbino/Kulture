@@ -4,9 +4,9 @@
  * GET /api/data/export?type=trends|hotIssues|vip|emerging|sentiment
  */
 
-import { withErrorHandler } from '../../../lib/apiErrorHandler';
-import sanity from '../../../lib/sanityClient';
-import logger from '../../../lib/logger';
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
+import sanity from '../../../lib/sanityClient.js';
+import { logger } from '../../../lib/logger.js';
 import { DATA_PLANS } from './licensing';
 
 // 플랜별 접근 가능 엔드포인트 매핑

@@ -1,9 +1,10 @@
-import { sanityClient } from '../../lib/sanityClient';
+import { sanityClient } from '../../lib/sanityClient.js';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './auth/[...nextauth]';
-import { getPersonalizedRecommendations, getSimilarPosts, getTrendingPosts } from '../../lib/aiRecommendation';
-import { withErrorHandler } from '../../lib/apiErrorHandler';
-import rateLimitMiddleware from '../../lib/rateLimiter';
+import { getPersonalizedRecommendations, getSimilarPosts, getTrendingPosts } from '../../lib/aiRecommendation.js';
+import { withErrorHandler } from '../../lib/apiErrorHandler.js';
+import rateLimitMiddleware from '../../lib/rateLimiter.js';
+import { logger } from '../../lib/logger.js';
 
 /**
  * AI 추천 API
@@ -58,7 +59,7 @@ async function handler(req, res) {
       count: recommendations.length,
     });
   } catch (error) {
-    console.error('Error getting recommendations:', error);
+    logger.error('Error getting recommendations:', error);
     return res.status(500).json({ error: 'Failed to get recommendations' });
   }
 }
