@@ -6,6 +6,61 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260306-27]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 코드베이스 전면 일관성 감사 (Codebase Consistency Audit)
+- **변경 대상**:
+  - `lib/highQualityTranslation.js` (CommonJS → ESM + OpenAI 제거)
+  - `lib/socialAutoPoster.js` (OpenAI 직접 호출 → aiModelManager 통합)
+  - `lib/costMonitor.js` (모델명 하드코딩 제거, 제공자별 일반화)
+  - `lib/apiKeyManager.js` (require → import 변환)
+  - `lib/securityUtils.js` (require → dynamic import 변환)
+- **변경 요약**: aiModelManager v3.0 도입 이후에도 여러 파일에서 OpenAI 직접 호출(하드코딩된 gpt-4o-mini, gpt-4-turbo-preview, gpt-3.5-turbo) 및 CommonJS `require()`가 잔존하고 있었음. 이를 전면 제거하고 aiModelManager의 `generateWithBestModel()`로 통일.
+---
+
+**[쉬운 설명]**
+
+**이전 상태 (불일치):** aiModelManager v3.0에서 "동적으로 최선의 모델 선택"을 만들어놨으나, 5개 파일이 여전히 특정 모델명(gpt-4-turbo-preview 등)을 직접 코드에 적어 호출하고 있었음.
+
+**새 상태 (통일):** 모든 AI 호출이 `generateWithBestModel(prompt, options)` 단일 인터페이스로 통일. 어떤 파일에서 AI를 사용하든 항상 최신·최고·무료 우선 모델을 자동 선택.
+
+---
+
+- **변경 상세**:
+
+  - `lib/highQualityTranslation.js`:
+    - `const deepl = require('deepl-node')` → `import { Translator } from 'deepl-node'` (ES 동적 import)
+    - `const OpenAI = require('openai')` + `openai.chat.completions.create({model: 'gpt-4-turbo-preview'})` × 2, `gpt-3.5-turbo` × 1 모두 제거
+    - `import { generateWithBestModel } from './aiModelManager.js'` 추가
+    - `module.exports = {...}` → `export { ... }` (ESM named exports)
+    - `console.warn` → `logger.warn`
+    - Google Translate 폴백: `require('@google-cloud/translate')` → REST API fetch 방식으로 교체
+
+  - `lib/socialAutoPoster.js`:
+    - `import OpenAI from 'openai'` + `new OpenAI({apiKey: ...})` + `openai.chat.completions.create({model: 'gpt-4o-mini'})` 제거
+    - `import { generateWithBestModel } from './aiModelManager.js'` 추가
+    - `generateViralCaption()` 내 AI 호출: `openai.chat.completions.create(...)` → `generateWithBestModel(prompt, {maxTokens, preferFree: true})`
+
+  - `lib/costMonitor.js`:
+    - `PRICING.openai.gpt4 / gpt35` (모델별 가격) → `PRICING.openai.standard` (제공자 평균 단가)
+    - 신규 제공자 추가: `anthropic`, `groq`, `openrouter`, `huggingface` (무료 tier)
+    - `calculateCost(provider, chars, model)` → `calculateCost(provider, chars)` (model 파라미터 제거)
+    - `trackRequest()` 미등록 제공자 받으면 자동 등록 (aiModelManager가 새 제공자 발견 시 대응)
+
+  - `lib/apiKeyManager.js`:
+    - `const { logger } = require('./logger')` → `import loggerModule from './logger.js'; const logger = loggerModule.logger;`
+
+  - `lib/securityUtils.js`:
+    - `require('crypto')` (Node.js CJS) → `await import('crypto')` (ESM 동적 import)
+    - `window.crypto` 체크 → `globalThis.crypto` 체크 (Web Worker 환경 호환성 개선)
+
+---
+
+
+
+## 최신 변경 이력
+
 ### [ID: RL-20260306-26]
 - **날짜**: 2026-03-06 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)
