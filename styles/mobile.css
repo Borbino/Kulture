@@ -1,0 +1,175 @@
+/* ============================================================
+   Mobile Global Styles — Kulture
+   [목적] iOS/Android 앱스토어 등록 및 PWA 대응 전용 글로벌 CSS
+          next/_document.jsx 또는 _app.js에서 import
+   ============================================================ */
+
+/* ──────────────────────────────────────────────
+   1. Safe Area 환경변수 등록 (iOS 노치 / 다이나믹 아일랜드 대응)
+   ────────────────────────────────────────────── */
+:root {
+  --sat: env(safe-area-inset-top, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+
+  /* 하단 내비게이션 높이 (BottomNavigation 컴포넌트 기준) */
+  --bottom-nav-height: calc(58px + env(safe-area-inset-bottom, 0px));
+
+  /* 상단 헤더 높이 */
+  --mobile-header-height: calc(52px + env(safe-area-inset-top, 0px));
+}
+
+/* ──────────────────────────────────────────────
+   2. 터치 최적화 기본 설정
+   ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* 전체 스크롤 최적화 */
+  html {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* 탭 하이라이트 기본 제거 (개별 컴포넌트에서 필요시 적용) */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* 텍스트 확대 방지 (iOS) */
+  body {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  /* BottomNavigation 공간 확보 */
+  body {
+    padding-bottom: var(--bottom-nav-height);
+  }
+
+  /* 입력 필드 줌 방지 (iOS: 폰트 크기 16px 이상) */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* ──────────────────────────────────────────────
+   3. 터치 타겟 최소 크기 (WCAG 2.5.5 / Apple HIG 기준 44px)
+   ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  button,
+  a,
+  [role='button'],
+  [role='link'],
+  label[for] {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 예외: 인라인 텍스트 링크 */
+  p a,
+  li a,
+  span a {
+    min-height: unset;
+    min-width: unset;
+    display: inline;
+  }
+}
+
+/* ──────────────────────────────────────────────
+   4. Pull-to-Refresh 방지 (Capacitor 앱에서 의도하지 않은 리프레시 방지)
+   ────────────────────────────────────────────── */
+body.capacitor-native {
+  overscroll-behavior-y: contain;
+}
+
+/* ──────────────────────────────────────────────
+   5. 스플래시 스크린 전환 (앱 시작 시 페이드인)
+   ────────────────────────────────────────────── */
+.app-loaded {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ──────────────────────────────────────────────
+   6. 모바일 카드 스타일 통일 (터치 피드백 포함)
+   ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .mobile-card {
+    border-radius: 16px;
+    padding: 16px;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    transition: transform 0.1s, box-shadow 0.1s;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-card:active {
+    transform: scale(0.98);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* ──────────────────────────────────────────────
+   7. 모바일 그리드 — 아티클 / 포스트 목록
+   ────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .post-grid,
+  [class*='grid'] {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+/* ──────────────────────────────────────────────
+   8. 폰트 크기 반응형 기준선
+   ────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  h1 { font-size: clamp(22px, 6vw, 32px); }
+  h2 { font-size: clamp(18px, 5vw, 26px); }
+  h3 { font-size: clamp(16px, 4.5vw, 20px); }
+  p  { font-size: 15px; line-height: 1.65; }
+}
+
+/* ──────────────────────────────────────────────
+   9. 스크롤 스냅 — 수평 슬라이더 (홈 큐레이션 등)
+   ────────────────────────────────────────────── */
+.scroll-snap-x {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.scroll-snap-x::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-snap-x > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* ──────────────────────────────────────────────
+   10. 다크 모드 최소 지원 (시스템 다크 모드 대응)
+   ────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  body.system-theme {
+    background-color: #0f0f1a;
+    color: #f0f0f5;
+  }
+
+  body.system-theme .mobile-card {
+    background: #1a1a2e;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  }
+}

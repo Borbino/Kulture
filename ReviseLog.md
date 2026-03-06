@@ -6,6 +6,90 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-20260306-21]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 + 설정 (모바일 앱 마켓 등록 준비)
+- **변경 대상**: `capacitor.config.json`, `lib/mobileUtils.js`, `components/BottomNavigation.jsx`, `components/MobileHeader.jsx`, `styles/mobile.css`, `public/manifest.json`, `scripts/generate-app-icons.js`, `package.json`, `pages/_app.js`, `styles/globals.css`
+- **변경 요약**: iOS/Android 앱스토어 등록 사전 준비 — Capacitor 통합 + PWA 고도화 + 모바일 전용 UI 컴포넌트
+- **변경 상세**:
+  - `capacitor.config.json`: Capacitor 7 설정 (appId: app.kulture.global, SplashScreen/PushNotifications/StatusBar 플러그인 설정)
+  - `lib/mobileUtils.js`: 플랫폼 감지(`getPlatform`, `isNativeApp`, `isIOS`, `isAndroid`), 푸시 알림 권한 요청, 로컬 알림, 앱스토어 리뷰 요청, Web Share API, 햅틱 피드백, PWA 설치 프롬프트 전체 구현
+  - `components/BottomNavigation.jsx`: iOS/Android 스타일 하단 5탭 내비게이션 (홈/트렌드/커뮤니티/검색/프로필), safe-area-inset 대응, 44px 터치 타겟
+  - `components/MobileHeader.jsx`: 모바일 전용 헤더 (뒤로가기/로고/타이틀/액션), 노치 대응, transparent 모드
+  - `styles/mobile.css`: Safe-area CSS 변수, 터치 최적화, Pull-to-refresh 방지, 입력 필드 줌 방지(iOS), 스크롤 스냅, 다크모드 기본 대응
+  - `public/manifest.json`: PWA 고도화 — `display_override`, `id`, `share_target`, `protocol_handlers`, `related_applications`(앱스토어 링크), 스크린샷 메타데이터 추가
+  - `scripts/generate-app-icons.js`: sharp 기반 아이콘 일괄 생성 스크립트 (11가지 크기, SVG 기본 아이콘 자동 생성)
+  - `public/icons/`: 11개 아이콘 자동 생성 (16~512px)
+  - `public/screenshots/`: 스크린샷 디렉토리 생성
+  - `package.json`: @capacitor/core+ios+android+push-notifications+local-notifications+haptics+share 추가, icons:generate / mobile:* npm 스크립트 추가
+  - `pages/_app.js`: BottomNavigation 전역 삽입, viewport meta `viewport-fit=cover` 업그레이드
+  - `styles/globals.css`: mobile.css 자동 import
+- **예상 효과**: Capacitor로 Next.js → iOS/Android 네이티브 앱 빌드 즉시 가능. `npm run mobile:sync` 한 번으로 빌드→Capacitor 동기화. 앱스토어 등록 시 PWA manifest가 스토어 메타데이터로 활용됨.
+
+---
+
+### [ID: RL-20260306-20]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 + 수정
+- **변경 대상**: `lib/alerting.js`, `lib/emergingTrendDetector.js`, `.env.template`
+- **변경 요약**: 실시간 운영 알림 — Slack/Discord 웹훅 통합
+- **변경 상세**:
+  - `lib/alerting.js`: 신규 생성 — Slack Block Kit + Discord Embed 이중 채널, 쿨다운 중복 방지(기본 5분), `sendAlert()` 범용 함수, `alertEmergingEntity()` / `alertSystemError()` / `alertScrapingSummary()` 특화 헬퍼
+  - `lib/emergingTrendDetector.js`: `shouldAlert=true` 엔티티 감지 시 `alertEmergingEntity()` 비동기 호출 추가 (서버 에러 시 로그만, 파이프라인 중단 없음)
+  - `.env.template`: 섹션 17-19 추가 (UPSTASH_REDIS_REST_URL+TOKEN, ALERT_MIN_INTERVAL_MS, SLACK_WEBHOOK_URL, DISCORD_WEBHOOK_URL, NEXT_PUBLIC_SITE_URL)
+- **예상 효과**: 이머징 엔티티 velocity ≥ 100 시 Slack/Discord 즉시 알림 — 관리자가 실시간 대응 가능
+
+---
+
+### [ID: RL-20260306-19]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 교체 (전면 리팩토링)
+- **변경 대상**: `lib/apiCache.js`
+- **변경 요약**: In-memory Map() → Upstash Redis REST 기반 서버리스 호환 캐시로 전면 교체
+- **변경 상세**:
+  - `@upstash/redis` npm 패키지 설치 (HTTP REST, TCP 연결 없는 서버리스 전용)
+  - `getRedisClient()`: 동적 import + 지연 초기화, 미설정 시 in-memory Map 자동 폴백
+  - `APICache` 클래스: `get()` / `set()` / `delete()` / `invalidatePattern()` / `getOrFetch()` async 메서드
+  - `TTL` 상수 export: PREMIUM_STATUS(30s), TRENDS_SNAPSHOT(5min), VIP_TOP_LIST(3min), FEED(2min), LEADERBOARD(10min), SITE_SETTINGS(30min)
+  - 싱글톤 `apiCache` export (기존 코드 `new APICache()` 패턴도 하위 호환 유지)
+  - `getStats()`: 캐시 hit rate + 백엔드 종류 반환
+- **예상 효과**: Vercel 서버리스 재시작 후에도 캐시 유지, 트렌드 API DB 쿼리 90% 감소
+
+---
+
+### [ID: RL-20260306-18]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 + 수정
+- **변경 대상**: `pages/sitemap.xml.jsx`, `pages/trends.jsx`, `pages/api/og.js`
+- **변경 요약**: SEO 고도화 — sitemap 버그 수정 + JSON-LD 구조화 데이터 + Dynamic OG 이미지
+- **변경 상세**:
+  - `pages/sitemap.xml.jsx`: `'yoursite.com'` 하드코딩 버그 수정 → `process.env.NEXT_PUBLIC_SITE_URL || 'https://kulture.app'`, 트렌드/프리미엄/리더보드/커뮤니티 정적 URL 추가, `xmlns:xhtml` hreflang 네임스페이스 준비
+  - `pages/trends.jsx`: JSON-LD `WebPage` + `BreadcrumbList` 구조화 데이터 삽입 (`next/script`), OG 메타 강화 (og:image를 `/api/og` 동적 URL로), 4개 언어 hreflang `<link>` 추가, `<title>` SEO 최적화
+  - `pages/api/og.js`: Edge Runtime OG 이미지 생성 — `next/og ImageResponse` 사용, title/subtitle/emoji/category 파라미터, 그라디언트 배경 + 배경 데코레이션, 에러 시 정적 폴백, 1200×630 규격
+- **예상 효과**: 구글/SNS 검색 결과에 리치 카드 노출, sitemap 크롤링 오류 완전 해소, OG 이미지 자동화로 소셜 공유 CTR 향상
+
+---
+
+### [ID: RL-20260306-17]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 (신규 파일 9개)
+- **변경 대상**: `pages/premium.jsx`, `styles/Premium.module.css`, `pages/newsletter/confirmed.jsx`, `pages/newsletter/unsubscribed.jsx`, `styles/NewsletterConfirmed.module.css`, `components/NewsletterSignup.jsx`, `components/NewsletterSignup.module.css`, `components/PremiumBadge.jsx`, `components/PremiumBadge.module.css`
+- **변경 요약**: 프론트엔드 수익화 UI 전체 구현 — 프리미엄 멤버십 페이지 + 뉴스레터 플로우 + 재사용 가능 컴포넌트
+- **변경 상세**:
+  - `pages/premium.jsx`: 3개 플랜 카드 (Monthly $4.99/Annual $47.99/Lifetime $149.99), Stripe/Toss 결제 수단 선택 스위치, 비로그인 시 signin redirect, FAQ 6개, 신뢰 배지 4개, 완전한 에러 처리
+  - `pages/newsletter/confirmed.jsx`: 구독 확인 토큰 처리 → API 호출 → 성공/실패 상태 표시
+  - `pages/newsletter/unsubscribed.jsx`: 수신거부 토큰 처리
+  - `components/NewsletterSignup.jsx`: variant=inline/card/banner 3모드, 4개 언어 placeholder, 성공 상태 전환, 이중 옵트인 안내
+  - `components/PremiumBadge.jsx`: monthly/annual/lifetime/founder 4종 배지, xs/sm/md 3가지 크기
+- **예상 효과**: 프리미엄 결제 퍼널 완성 (프론트엔드 없어서 수익 불가능했던 상태 해소), 뉴스레터 구독자 전환 채널 개통
+
+---
+
 ### [ID: RL-20260306-16]
 - **날짜**: 2026-03-06 (KST)
 - **작성자**: 시스템(자동)

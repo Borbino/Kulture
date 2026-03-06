@@ -1,8 +1,28 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import Script from 'next/script'
 import { useSiteSettings } from '../lib/settings.js'
 import TrendSpotlight from '../components/TrendSpotlight'
 import styles from '../styles/Trends.module.css'
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://kulture.app'
+
+// JSON-LD 구조화 데이터 — ItemList + WebPage
+const trendsJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: '글로벌 K-Culture 트렌드 허브 — Kulture',
+  description: 'K-POP, 드라마, 뷰티, 패션, 스포츠까지 실시간 이슈와 VIP 급상승 현황.',
+  url: `${SITE_URL}/trends`,
+  inLanguage: ['ko', 'en', 'ja', 'zh'],
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '홈', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: '트렌드', item: `${SITE_URL}/trends` },
+    ],
+  },
+}
 
 export default function TrendsPage() {
   const { settings } = useSiteSettings()
@@ -26,12 +46,28 @@ export default function TrendsPage() {
   return (
     <>
       <Head>
-        <title>트렌드 - Kulture</title>
+        <title>트렌드 - Kulture | 글로벌 K-Culture 실시간 허브</title>
         <meta
           name="description"
-          content="글로벌 K-Culture 실시간 트렌드, 핫이슈, VIP 알림을 한눈에 확인하세요."
+          content="글로벌 K-Culture 실시간 트렌드, 핫이슈, VIP 알림을 한눈에 확인하세요. K-POP, 드라마, 뷰티, 패션, 스포츠 최신 이슈."
         />
+        <meta property="og:title" content="트렌드 - Kulture | 글로벌 K-Culture 실시간 허브" />
+        <meta property="og:description" content="K-POP, 드라마, 뷰티, 패션, 스포츠까지 실시간 이슈와 VIP 급상승 현황." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${SITE_URL}/trends`} />
+        <meta property="og:image" content={`${SITE_URL}/api/og?title=${encodeURIComponent('K-Culture 트렌드 허브')}&subtitle=${encodeURIComponent('실시간 이슈 · VIP 알림 · 글로벌 팬덤')}`} />
+        <link rel="canonical" href={`${SITE_URL}/trends`} />
+        <link rel="alternate" hrefLang="ko" href={`${SITE_URL}/ko/trends`} />
+        <link rel="alternate" hrefLang="en" href={`${SITE_URL}/en/trends`} />
+        <link rel="alternate" hrefLang="ja" href={`${SITE_URL}/ja/trends`} />
+        <link rel="alternate" hrefLang="zh" href={`${SITE_URL}/zh/trends`} />
+        <link rel="alternate" hrefLang="x-default" href={`${SITE_URL}/trends`} />
       </Head>
+      <Script
+        id="trends-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(trendsJsonLd) }}
+      />
 
       <div className={styles.container}>
         <header className={styles.header}>

@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
 import ErrorBoundary from '../components/ErrorBoundary';
+import BottomNavigation from '../components/BottomNavigation';
 import { getAdSenseConfig } from '../lib/revenueEngine';
 
 const adSenseConfig = getAdSenseConfig();
@@ -22,7 +23,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* 모바일 최적화 뷰포트: viewport-fit=cover 로 노치/홈인디케이터 safe area 활성화 */}
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
       </Head>
 
       {/* Google AdSense AutoAds — 게시자 ID가 설정된 경우에만 활성화 */}
@@ -38,6 +43,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 
       <ErrorBoundary>
         <Component {...pageProps} />
+        {/* 모바일 하단 탭바 — 모든 페이지 공통 */}
+        <BottomNavigation />
       </ErrorBoundary>
     </SessionProvider>
   );
