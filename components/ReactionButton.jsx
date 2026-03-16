@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './ReactionButton.module.css';
+import { logger } from '../lib/logger.js';
 
 const REACTIONS = [
   { type: 'love', emoji: '❤️', label: 'Love' },
@@ -40,7 +41,7 @@ export default function ReactionButton({ targetType, targetId, initialReactions 
         }
       }
     } catch (error) {
-      console.error('Failed to fetch reactions:', error);
+      logger.error('Failed to fetch reactions:', error);
     }
   };
 
@@ -85,7 +86,7 @@ export default function ReactionButton({ targetType, targetId, initialReactions 
       
       setShowPicker(false);
     } catch (error) {
-      console.error('Failed to update reaction:', error);
+      logger.error('Failed to update reaction:', error);
     }
   };
 

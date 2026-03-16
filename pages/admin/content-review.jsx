@@ -9,6 +9,7 @@ import { useSession, signIn } from 'next-auth/react'
 import sanity from '../../lib/sanityClient'
 import OptimizedImage from '../../components/OptimizedImage'
 import styles from './content-review.module.css'
+import { logger } from '../../lib/logger.js';
 
 export default function ContentReview() {
   const { data: session, status } = useSession()
@@ -46,7 +47,7 @@ export default function ContentReview() {
       `)
       setPendingPosts(posts)
     } catch (error) {
-      console.error('Failed to load posts:', error)
+      logger.error('Failed to load posts:', error)
     } finally {
       setLoading(false)
     }

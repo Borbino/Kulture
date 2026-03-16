@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import SEOHead from '../../components/SEOHead';
 import Toast from '../../components/Toast';
 import styles from '../../styles/ProductDetail.module.css';
+import { logger } from '../../lib/logger.js';
 
 export default function ProductDetailPage() {
   const router = useRouter()
@@ -31,7 +32,7 @@ export default function ProductDetailPage() {
         setProduct(data.products[0])
       }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       setToast({ type: 'error', message: '상품 로드 실패' })
     } finally {
       setLoading(false)
@@ -68,7 +69,7 @@ export default function ProductDetailPage() {
         setToast({ type: 'error', message: data.error || '주문 생성 실패' })
       }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       setToast({ type: 'error', message: '오류가 발생했습니다.' })
     } finally {
       setActionLoading(false)

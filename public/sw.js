@@ -1,3 +1,4 @@
+import { logger } from '../lib/logger.js';
 // Service Worker for Kulture PWA
 const CACHE_NAME = 'kulture-v1';
 const STATIC_CACHE = 'kulture-static-v1';
@@ -13,7 +14,7 @@ const STATIC_ASSETS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(STATIC_CACHE).then((cache) => {
-      console.log('[SW] Caching static assets');
+      logger.info('[SW] Caching static assets');
       return cache.addAll(STATIC_ASSETS);
     })
   );
@@ -102,7 +103,7 @@ self.addEventListener('sync', (event) => {
 
 async function syncPosts() {
   // Implement sync logic for offline posts
-  console.log('[SW] Syncing posts...');
+  logger.info('[SW] Syncing posts...');
 }
 
 // Push notifications

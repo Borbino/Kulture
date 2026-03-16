@@ -51,6 +51,11 @@ async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       date: now.toISOString(),
+      // 명세 호환 alias
+      revenue: estimatedRevenue,
+      cost: apiCost,
+      margin: netMargin,
+      // 상세 필드
       estimatedRevenue,
       apiCost,
       netMargin,

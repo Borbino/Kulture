@@ -5,6 +5,7 @@ import SEOHead from '../../components/SEOHead'
 import CommunityCard from '../../components/CommunityCard'
 import Toast from '../../components/Toast'
 import styles from '../../styles/Communities.module.css'
+import { logger } from '../../lib/logger.js';
 
 export default function CommunitiesPage() {
   const { data: session } = useSession()
@@ -39,7 +40,7 @@ export default function CommunitiesPage() {
         setHasMore(data.communities.length === 12)
       }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       setToast({ type: 'error', message: '커뮤니티 로드 실패' })
     } finally {
       setLoading(false)

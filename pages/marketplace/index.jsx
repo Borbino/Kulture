@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react'
 import SEOHead from '../../components/SEOHead'
 import Toast from '../../components/Toast'
 import styles from '../../styles/Marketplace.module.css'
+import { logger } from '../../lib/logger.js';
 
 export default function MarketplacePage() {
   const { data: session } = useSession()
@@ -40,7 +41,7 @@ export default function MarketplacePage() {
         setHasMore(data.products.length === 12)
       }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       setToast({ type: 'error', message: '상품 로드 실패' })
     } finally {
       setLoading(false)

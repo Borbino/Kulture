@@ -4,6 +4,7 @@
  */
 
 import { getSanityClient } from '../lib/sanityClient'
+import { logger } from '../lib/logger.js';
 
 function generateSiteMap(posts, baseUrl) {
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -105,7 +106,7 @@ export async function getServerSideProps({ res }) {
       props: {},
     }
   } catch (error) {
-    console.error('[Sitemap] Generation failed:', error.message)
+    logger.error('[Sitemap] Generation failed:', error.message)
 
     // 에러 발생 시 최소한의 Sitemap 반환
     const fallbackSitemap = `<?xml version="1.0" encoding="UTF-8"?>

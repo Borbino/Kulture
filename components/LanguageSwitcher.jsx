@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import styles from './LanguageSwitcher.module.css';
 import { SUPPORTED_LANGUAGES } from '../lib/languages.js';
+import { logger } from '../lib/logger.js';
 
 export default function LanguageSwitcher() {
   const router = useRouter();
@@ -33,7 +34,7 @@ export default function LanguageSwitcher() {
         setDetectedLanguage(browserLang);
       }
     } catch (error) {
-      console.error('Language detection failed:', error);
+      logger.error('Language detection failed:', error);
     }
   };
 

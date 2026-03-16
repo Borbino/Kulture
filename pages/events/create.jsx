@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react'
 import SEOHead from '../../components/SEOHead'
 import Toast from '../../components/Toast'
 import styles from '../../styles/CreateEvent.module.css'
+import { logger } from '../../lib/logger.js';
 
 export default function CreateEventPage() {
   const router = useRouter()
@@ -90,7 +91,7 @@ export default function CreateEventPage() {
         setToast({ type: 'error', message: data.error || '이벤트 생성 실패' })
       }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       setToast({ type: 'error', message: '오류가 발생했습니다.' })
     } finally {
       setLoading(false)

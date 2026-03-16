@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import PropTypes from 'prop-types'
 import styles from '../styles/PollComponent.module.css.js'
+import { logger } from '../lib/logger.js';
 
 export default function PollComponent({ poll, onVote }) {
   const { data: session } = useSession()
@@ -42,7 +43,7 @@ export default function PollComponent({ poll, onVote }) {
       }
     } catch (error) {
       alert('투표 중 오류 발생')
-      console.error(error)
+      logger.error(error)
     } finally {
       setLoading(false)
     }

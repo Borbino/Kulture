@@ -6,6 +6,19 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-2026-PHASE6-01]
+- **날짜**: 2026-03-16 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 재무 관제탑(Analytics Dashboard) 구축
+- **변경 요약**: 일일 예상 수익 및 API 비용 모니터링 대시보드 구축
+- **변경 상세 설명**: `/api/admin/finance-stats` API를 신규 생성하여 예상 수익과 비용 데이터를 집계함. `pages/admin/index.jsx` 최상단에 ROI 시각화 위젯을 배치하여, CEO가 프로젝트의 재무 건전성을 1초 만에 파악할 수 있도록 관제탑을 구축함.
+- **변경 대상**:
+  - `pages/api/admin/finance-stats.js` — 신규 생성: Sanity 기사 우선순위 점수 기반 예상 수익 계산, costMonitor 일일 API 비용 집계, 순수익(netMargin) 산출 및 JSON 반환 (명세 호환 alias 필드 `revenue`/`cost`/`margin` 포함)
+  - `pages/admin/index.jsx` — `fetchFinanceStats()` 함수 + `financeStats` state 추가, 대시보드 최상단에 💰 Today's ROI 섹션 및 3-카드(예상 수익·API 비용·순수익) UI 배치, 기사 수·총 우선순위 점수 보조 메타 정보 표시
+  - `styles/Admin.module.css` — `financeSection`, `financeGrid`, `financeCard`, `revenueCard`, `costCard` 스타일 추가; `marginCard`를 초록색 그래디언트(`#15803d → #22c55e`)로 강조, `financeSubLabel`·`financeMeta` 보조 스타일 추가
+
+---
+
 ### [ID: RL-20260306-30]
 - **날짜**: 2026-03-06 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)

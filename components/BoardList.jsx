@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styles from './BoardList.module.css';
+import { logger } from '../lib/logger.js';
 
 export default function BoardList({ category = null }) {
   const [boards, setBoards] = useState([]);
@@ -21,7 +22,7 @@ export default function BoardList({ category = null }) {
       const data = await res.json();
       setBoards(data.boards || []);
     } catch (error) {
-      console.error('Failed to fetch boards:', error);
+      logger.error('Failed to fetch boards:', error);
     } finally {
       setLoading(false);
     }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import ReactionButton from './ReactionButton';
 import styles from './InfiniteScrollPosts.module.css';
+import { logger } from '../lib/logger.js';
 
 export default function InfiniteScrollPosts({ boardId = null, categoryId = null }) {
   const [posts, setPosts] = useState([]);
@@ -32,7 +33,7 @@ export default function InfiniteScrollPosts({ boardId = null, categoryId = null 
         setHasMore(false);
       }
     } catch (error) {
-      console.error('Failed to load posts:', error);
+      logger.error('Failed to load posts:', error);
     } finally {
       setLoading(false);
     }

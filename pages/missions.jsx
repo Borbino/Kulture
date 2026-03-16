@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useSiteSettings } from '../lib/settings.js'
 import styles from '../styles/Missions.module.css'
+import { logger } from '../lib/logger.js';
 
 export default function Missions() {
   const { data: session, status } = useSession()
@@ -54,7 +55,7 @@ export default function Missions() {
         })
       }
     } catch (error) {
-      console.error('Failed to fetch missions:', error)
+      logger.error('Failed to fetch missions:', error)
     } finally {
       setLoading(false)
     }
@@ -91,7 +92,7 @@ export default function Missions() {
         await fetchMissions()
       }
     } catch (error) {
-      console.error('Failed to claim reward:', error)
+      logger.error('Failed to claim reward:', error)
     }
   }
 

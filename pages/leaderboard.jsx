@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useSiteSettings } from '../lib/settings.js'
 import styles from '../styles/Leaderboard.module.css'
+import { logger } from '../lib/logger.js';
 
 export default function Leaderboard() {
   const { data: session } = useSession()
@@ -39,7 +40,7 @@ export default function Leaderboard() {
         setLeaderboard(data.data.leaderboard)
       }
     } catch (error) {
-      console.error('Failed to fetch leaderboard:', error)
+      logger.error('Failed to fetch leaderboard:', error)
     } finally {
       setLoading(false)
     }

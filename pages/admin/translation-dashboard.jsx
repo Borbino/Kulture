@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import styles from './translation-dashboard.module.css';
+import { logger } from '../../lib/logger.js';
 
 export default function TranslationDashboard() {
   const { t, i18n } = useTranslation('common');
@@ -22,7 +23,7 @@ export default function TranslationDashboard() {
       const data = await res.json();
       setStats(data);
     } catch (error) {
-      console.error('Failed to fetch stats:', error);
+      logger.error('Failed to fetch stats:', error);
     }
   };
 
@@ -33,7 +34,7 @@ export default function TranslationDashboard() {
       const data = await res.json();
       setTranslations(data.translations || []);
     } catch (error) {
-      console.error('Failed to fetch translations:', error);
+      logger.error('Failed to fetch translations:', error);
     } finally {
       setLoading(false);
     }
@@ -49,7 +50,7 @@ export default function TranslationDashboard() {
       fetchTranslations();
       fetchStats();
     } catch (error) {
-      console.error('Failed to approve:', error);
+      logger.error('Failed to approve:', error);
     }
   };
 
@@ -63,7 +64,7 @@ export default function TranslationDashboard() {
       fetchTranslations();
       fetchStats();
     } catch (error) {
-      console.error('Failed to reject:', error);
+      logger.error('Failed to reject:', error);
     }
   };
 
@@ -77,7 +78,7 @@ export default function TranslationDashboard() {
       a.download = `${selectedLanguage}-translations.json`;
       a.click();
     } catch (error) {
-      console.error('Failed to export:', error);
+      logger.error('Failed to export:', error);
     }
   };
 
