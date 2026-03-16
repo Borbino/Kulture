@@ -6,6 +6,24 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-2026-PHASE7-01]
+- **날짜**: 2026-03-16 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: UI/UX 대개편 (Design Revamp)
+- **변경 요약**: 글로벌 매거진 스타일 기반의 디자인 시스템 및 코어 레이아웃 구축
+- **변경 상세 설명**: Kulture.net의 비주얼 업그레이드를 위해 `globals.css`에 다크모드/네온 테마 시스템을 도입함. Glassmorphism이 적용된 프리미엄 `Navbar`와 `Footer`를 포함한 `Layout` 컴포넌트를 신규 생성하고 `_app.js`에 전역 적용함.
+- **변경 대상**:
+  - `styles/globals.css` — 전면 재작성: CSS 변수 시스템(`--bg-primary`, `--accent-pink`, `--accent-cyan` 등 30+ 토큰), Inter·Bebas Neue 폰트, 다크 배경(`#0A0A0C`), 네온 스크롤바, 선택 영역 하이라이트, 유틸리티 클래스(`.glass`, `.gradient-text` 등)
+  - `components/Navbar.jsx` — 신규: sticky 포지션, 스크롤 감지 Glassmorphism 전환, 네온 KULTURE 로고, 데스크톱 nav 링크, 검색 오버레이(ESC 닫기), LanguageSwitcher 연동, 모바일 햄버거 드로어
+  - `components/Navbar.module.css` — 신규: `.transparent`/`.scrolled` 상태, 글래스 효과, LIVE 뱃지 pulse 애니메이션, 모바일 반응형
+  - `components/Footer.jsx` — 신규: 4-컬럼 그리드(브랜드·Discover·Company·Support), SNS 아이콘 링크(X·Instagram·YouTube·TikTok), 다국어 현재 로케일 표시, 저작권/법률 링크
+  - `components/Footer.module.css` — 신규: 미니멀 다크 스타일, 소셜 링크 호버 네온 효과, 900px/600px 반응형 그리드
+  - `components/Layout.jsx` — 신규: Navbar + main + Footer 래퍼
+  - `components/Layout.module.css` — 신규: 풀높이 flex 컬럼 레이아웃
+  - `pages/_app.js` — `<Component>` → `<Layout>` 래핑 적용, `logger` import 경로 버그 수정(`../../lib` → `../lib`)
+
+---
+
 ### [ID: RL-2026-PHASE6-01]
 - **날짜**: 2026-03-16 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)

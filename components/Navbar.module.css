@@ -1,0 +1,277 @@
+/* ============================================================
+   Navbar — Glassmorphism Magazine Style
+   ============================================================ */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: var(--navbar-height, 64px);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  transition: background var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+/* 스크롤 전: 투명 */
+.navbar.transparent {
+  background: transparent;
+}
+
+/* 스크롤 후: Glassmorphism */
+.navbar.scrolled {
+  background: var(--glass-bg, rgba(10, 10, 18, 0.72));
+  backdrop-filter: var(--glass-blur, blur(20px));
+  -webkit-backdrop-filter: var(--glass-blur, blur(20px));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+.inner {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* ── Logo ── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logoText {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 28px;
+  letter-spacing: 4px;
+  background: linear-gradient(135deg, #FF2E93, #00E5FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.logoDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-pink, #FF2E93);
+  box-shadow: 0 0 8px var(--accent-pink, #FF2E93);
+  flex-shrink: 0;
+}
+
+/* ── Nav Links ── */
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+}
+
+.navLink {
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary, #a0a0b0);
+  border-radius: var(--radius-sm, 6px);
+  transition: color var(--transition-fast), background var(--transition-fast);
+  white-space: nowrap;
+}
+
+.navLink:hover {
+  color: var(--text-primary, #f0f0f5);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.navLink.active {
+  color: var(--accent-pink, #FF2E93);
+}
+
+/* ── Right Controls ── */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm, 6px);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary, #a0a0b0);
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.iconBtn:hover {
+  color: var(--accent-cyan, #00E5FF);
+  background: rgba(0, 229, 255, 0.08);
+}
+
+.searchIcon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Search overlay */
+.searchOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(10, 10, 12, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 120px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.searchBox {
+  width: 100%;
+  max-width: 640px;
+  padding: 0 24px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 20px;
+  font-weight: 500;
+  background: var(--bg-card, #1a1a22);
+  color: var(--text-primary, #f0f0f5);
+  border: 1px solid rgba(255, 46, 147, 0.5);
+  border-radius: var(--radius-md, 12px);
+  outline: none;
+  box-shadow: 0 0 24px rgba(255, 46, 147, 0.2);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.searchInput:focus {
+  border-color: var(--accent-pink, #FF2E93);
+  box-shadow: 0 0 32px rgba(255, 46, 147, 0.35);
+}
+
+.searchHint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text-muted, #606070);
+  text-align: center;
+}
+
+/* Mobile hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--text-secondary, #a0a0b0);
+  border-radius: 2px;
+  transition: transform var(--transition-normal), opacity var(--transition-normal);
+}
+
+/* Mobile drawer */
+.mobileMenu {
+  display: none;
+  position: fixed;
+  top: var(--navbar-height, 64px);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background: rgba(10, 10, 12, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  flex-direction: column;
+  padding: 32px 24px;
+  gap: 8px;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-8px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.mobileMenu.open {
+  display: flex;
+}
+
+.mobileLink {
+  padding: 14px 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-secondary, #a0a0b0);
+  border-radius: var(--radius-md, 12px);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.mobileLink:hover {
+  color: var(--text-primary, #f0f0f5);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Live badge */
+.liveBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #fff;
+  background: var(--accent-pink, #FF2E93);
+  border-radius: 4px;
+  padding: 2px 6px;
+  vertical-align: middle;
+  margin-left: 6px;
+  box-shadow: 0 0 8px rgba(255, 46, 147, 0.7);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 46, 147, 0.7); }
+  50%       { box-shadow: 0 0 16px rgba(255, 46, 147, 1);  }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .navLinks { display: none; }
+  .hamburger { display: flex; }
+
+  .inner { padding: 0 16px; }
+
+  .logoText { font-size: 24px; letter-spacing: 3px; }
+}

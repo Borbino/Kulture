@@ -1,33 +1,170 @@
-/* Global styles */
+/* ============================================================
+   KULTURE — Global Design System (Phase 7 · Dark Magazine)
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap');
 @import './mobile.css';
 
-* {
+/* ── Design Token Variables ── */
+:root {
+  /* Backgrounds */
+  --bg-primary:    #0A0A0C;
+  --bg-secondary:  #111116;
+  --bg-tertiary:   #18181f;
+  --bg-card:       #1a1a22;
+  --bg-glass:      rgba(255, 255, 255, 0.04);
+
+  /* Accent — Neon / Cyber */
+  --accent-pink:   #FF2E93;
+  --accent-cyan:   #00E5FF;
+  --accent-purple: #9B59FF;
+  --accent-gold:   #FFD700;
+
+  /* Gradients */
+  --gradient-hero:    linear-gradient(135deg, #FF2E93 0%, #9B59FF 50%, #00E5FF 100%);
+  --gradient-card:    linear-gradient(160deg, rgba(255,46,147,0.15) 0%, rgba(0,229,255,0.08) 100%);
+  --gradient-overlay: linear-gradient(to top, rgba(10,10,12,0.95) 0%, rgba(10,10,12,0.4) 60%, transparent 100%);
+
+  /* Typography */
+  --font-sans:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Bebas Neue', 'Inter', sans-serif;
+
+  /* Text */
+  --text-primary:   #f0f0f5;
+  --text-secondary: #a0a0b0;
+  --text-muted:     #606070;
+
+  /* Borders */
+  --border-subtle:  rgba(255, 255, 255, 0.06);
+  --border-accent:  rgba(255, 46, 147, 0.4);
+
+  /* Glass / Blur */
+  --glass-bg:     rgba(10, 10, 18, 0.72);
+  --glass-blur:   blur(20px);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+
+  /* Shadows */
+  --shadow-pink:  0 0 30px rgba(255, 46, 147, 0.25);
+  --shadow-cyan:  0 0 30px rgba(0, 229, 255, 0.2);
+  --shadow-card:  0 8px 32px rgba(0, 0, 0, 0.6);
+
+  /* Spacing (8-pt grid) */
+  --space-1: 4px;  --space-2: 8px;   --space-3: 12px;
+  --space-4: 16px; --space-5: 20px;  --space-6: 24px;
+  --space-8: 32px; --space-10: 40px; --space-12: 48px;
+  --space-16: 64px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+
+  /* Transitions */
+  --transition-fast:   0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow:   0.4s ease;
+
+  /* Navbar height */
+  --navbar-height: 64px;
+}
+
+/* ── Reset ── */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html,
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  line-height: 1.6;
 }
+
+/* ── Typography ── */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+p { color: var(--text-secondary); }
 
 a {
   color: inherit;
   text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
-/* RTL Support */
-[dir='rtl'] {
-  direction: rtl;
-  text-align: right;
+img, video {
+  max-width: 100%;
+  display: block;
 }
 
-[dir='ltr'] {
-  direction: ltr;
-  text-align: left;
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: var(--font-sans);
 }
+
+input, textarea, select {
+  font-family: var(--font-sans);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--accent-pink), var(--accent-purple));
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
+
+/* ── Selection ── */
+::selection {
+  background: rgba(255, 46, 147, 0.35);
+  color: #fff;
+}
+
+/* ── Utility classes ── */
+.neon-text-pink  { color: var(--accent-pink); }
+.neon-text-cyan  { color: var(--accent-cyan); }
+.gradient-text {
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── RTL Support ── */
+[dir='rtl'] { direction: rtl; text-align: right; }
+[dir='ltr'] { direction: ltr; text-align: left; }

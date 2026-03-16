@@ -6,8 +6,9 @@ import Head from 'next/head';
 import Script from 'next/script';
 import ErrorBoundary from '../components/ErrorBoundary.js';
 import BottomNavigation from '../components/BottomNavigation.js';
+import Layout from '../components/Layout.jsx';
 import { getAdSenseConfig } from '../lib/revenueEngine.js';
-import { logger } from '../../lib/logger.js';
+import { logger } from '../lib/logger.js';
 
 const adSenseConfig = getAdSenseConfig();
 
@@ -43,7 +44,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       )}
 
       <ErrorBoundary>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
         {/* 모바일 하단 탭바 — 모든 페이지 공통 */}
         <BottomNavigation />
       </ErrorBoundary>
