@@ -1,5 +1,9 @@
-import { sanityClient } from '../../../lib/sanityClient';
-import { getSession } from 'next-auth/react';
+import { sanityClient } from '../../../lib/sanityClient.js'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../../../lib/auth/[...nextauth]'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { logger } from '../../../lib/logger.js';
+
 
 /**
  * Reaction API
@@ -8,8 +12,8 @@ import { getSession } from 'next-auth/react';
  * - DELETE: Remove reaction
  */
 
-export default async function handler(req, res) {
-  const session = await getSession({ req });
+async function handler(req, res) {
+  const session = await getServerSession(req, res, authOptions)
 
   if (req.method === 'GET') {
     try {
@@ -50,7 +54,7 @@ export default async function handler(req, res) {
         total: reactions.length,
       });
     } catch (error) {
-      console.error('Error getting reactions:', error);
+      logger.error('Error getting reactions:', error);
       return res.status(500).json({ error: 'Failed to get reactions' });
     }
   }
@@ -113,7 +117,7 @@ export default async function handler(req, res) {
 
       return res.status(201).json({ reaction });
     } catch (error) {
-      console.error('Error adding reaction:', error);
+      logger.error('Error adding reaction:', error);
       return res.status(500).json({ error: 'Failed to add reaction' });
     }
   }
@@ -147,10 +151,12 @@ export default async function handler(req, res) {
 
       return res.status(200).json({ message: 'Reaction removed' });
     } catch (error) {
-      console.error('Error removing reaction:', error);
+      logger.error('Error removing reaction:', error);
       return res.status(500).json({ error: 'Failed to remove reaction' });
     }
   }
 
   return res.status(405).json({ error: 'Method not allowed' });
 }
+
+export default withErrorHandler(handler)

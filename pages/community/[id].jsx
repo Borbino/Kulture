@@ -5,6 +5,7 @@ import SEOHead from '../../components/SEOHead';
 import InfiniteScrollPosts from '../../components/InfiniteScrollPosts';
 import Toast from '../../components/Toast';
 import styles from '../../styles/CommunityDetail.module.css';
+import { logger } from '../../lib/logger.js';
 
 export default function CommunityDetailPage() {
   const router = useRouter()
@@ -39,7 +40,7 @@ export default function CommunityDetailPage() {
         }
       }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       setToast({ type: 'error', message: '커뮤니티 로드 실패' })
     } finally {
       setLoading(false)
@@ -71,7 +72,7 @@ export default function CommunityDetailPage() {
         setToast({ type: 'error', message: '참여 실패' })
       }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       setToast({ type: 'error', message: '오류가 발생했습니다.' })
     }
   }
@@ -98,7 +99,7 @@ export default function CommunityDetailPage() {
         setToast({ type: 'error', message: '나가기 실패' })
       }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       setToast({ type: 'error', message: '오류가 발생했습니다.' })
     }
   }

@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { io } from 'socket.io-client';
 import styles from './RealtimeChat.module.css';
+import { logger } from '../lib/logger.js';
 
 export default function RealtimeChat({ roomId, userLanguage = 'en', userName = 'Anonymous' }) {
   const [socket, setSocket] = useState(null);
@@ -23,7 +24,6 @@ export default function RealtimeChat({ roomId, userLanguage = 'en', userName = '
     });
 
     socketInstance.on('connect', () => {
-      console.log('Connected to chat server');
       setIsConnected(true);
       
       // Set user language
@@ -34,7 +34,6 @@ export default function RealtimeChat({ roomId, userLanguage = 'en', userName = '
     });
 
     socketInstance.on('disconnect', () => {
-      console.log('Disconnected from chat server');
       setIsConnected(false);
     });
 
@@ -64,7 +63,7 @@ export default function RealtimeChat({ roomId, userLanguage = 'en', userName = '
     });
 
     socketInstance.on('error', ({ message }) => {
-      console.error('Chat error:', message);
+      logger.error('Chat error:', message);
       alert(message);
     });
 

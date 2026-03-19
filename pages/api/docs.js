@@ -2,7 +2,7 @@
  * OpenAPI Documentation UI
  */
 
-import { openAPISpec } from '../../lib/openapi';
+import { openAPISpec } from '../../lib/openapi.js';
 
 export default function handler(req, res) {
   if (req.method === 'GET') {

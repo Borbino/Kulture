@@ -12,6 +12,22 @@
     {
       "path": "/api/cron/autonomous-discovery",
       "schedule": "0 */4 * * *"
+    },
+    {
+      "path": "/api/cron/emerging-trend-scan",
+      "schedule": "0 */3 * * *"
+    },
+    {
+      "path": "/api/cron/vip-monitoring",
+      "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/cron/trend-detection",
+      "schedule": "0 */2 * * *"
+    },
+    {
+      "path": "/api/newsletter/send",
+      "schedule": "0 9 * * 1,4"
     }
   ],
   "env": {

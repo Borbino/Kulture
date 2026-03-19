@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 import styles from './Search.module.css'
+import { logger } from '../lib/logger.js';
 
 export default function Search({ placeholder, autoFocus }) {
   const [query, setQuery] = useState('')
@@ -38,7 +39,7 @@ export default function Search({ placeholder, autoFocus }) {
         setResults(null)
       }
     } catch (error) {
-      console.error('Search error:', error)
+      logger.error('Search error:', error)
       setResults(null)
     } finally {
       setLoading(false)

@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import PropTypes from 'prop-types'
 import styles from './ErrorBoundary.module.css'
+import { logger } from '../lib/logger.js';
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ export default class ErrorBoundary extends Component {
     })
 
     // 에러 로깅 (추후 Logger 시스템과 통합)
-    console.error('[ErrorBoundary] Error caught:', error, errorInfo)
+    logger.error('[ErrorBoundary] Error caught:', error, errorInfo)
   }
 
   handleReset = () => {

@@ -3,11 +3,14 @@
  * [목적] 사용자 순위 및 통계 제공
  */
 
-import { getSession } from 'next-auth/react'
-import { sanityClient } from '../../../lib/sanityClient'
-import { DEFAULT_SETTINGS, getSiteSettings } from '../../../lib/settings'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../auth/[...nextauth]'
+import { sanityClient } from '../../../lib/sanityClient.js'
+import { DEFAULT_SETTINGS, getSiteSettings } from '../../../lib/settings.js'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { logger } from '../../../lib/logger.js';
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ message: 'Method not allowed' })
   }
@@ -22,7 +25,7 @@ export default async function handler(req, res) {
       })
     }
 
-    const session = await getSession({ req })
+    const session = await getServerSession(req, res, authOptions)
     const { timeframe = 'all', category = 'points', limit = 50 } = req.query
 
     // Date filter based on timeframe
@@ -89,7 +92,7 @@ export default async function handler(req, res) {
       },
     })
   } catch (error) {
-    console.error('Error fetching leaderboard:', error)
+    logger.error('Error fetching leaderboard:', error)
     return res.status(500).json({
       success: false,
       message: 'Failed to fetch leaderboard',
@@ -97,3 +100,5 @@ export default async function handler(req, res) {
     })
   }
 }
+
+export default withErrorHandler(handler)

@@ -6,6 +6,781 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-2026-PHASE7-01]
+- **날짜**: 2026-03-16 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: UI/UX 대개편 (Design Revamp)
+- **변경 요약**: 글로벌 매거진 스타일 기반의 디자인 시스템 및 코어 레이아웃 구축
+- **변경 상세 설명**: Kulture.net의 비주얼 업그레이드를 위해 `globals.css`에 다크모드/네온 테마 시스템을 도입함. Glassmorphism이 적용된 프리미엄 `Navbar`와 `Footer`를 포함한 `Layout` 컴포넌트를 신규 생성하고 `_app.js`에 전역 적용함.
+- **변경 대상**:
+  - `styles/globals.css` — 전면 재작성: CSS 변수 시스템(`--bg-primary`, `--accent-pink`, `--accent-cyan` 등 30+ 토큰), Inter·Bebas Neue 폰트, 다크 배경(`#0A0A0C`), 네온 스크롤바, 선택 영역 하이라이트, 유틸리티 클래스(`.glass`, `.gradient-text` 등)
+  - `components/Navbar.jsx` — 신규: sticky 포지션, 스크롤 감지 Glassmorphism 전환, 네온 KULTURE 로고, 데스크톱 nav 링크, 검색 오버레이(ESC 닫기), LanguageSwitcher 연동, 모바일 햄버거 드로어
+  - `components/Navbar.module.css` — 신규: `.transparent`/`.scrolled` 상태, 글래스 효과, LIVE 뱃지 pulse 애니메이션, 모바일 반응형
+  - `components/Footer.jsx` — 신규: 4-컬럼 그리드(브랜드·Discover·Company·Support), SNS 아이콘 링크(X·Instagram·YouTube·TikTok), 다국어 현재 로케일 표시, 저작권/법률 링크
+  - `components/Footer.module.css` — 신규: 미니멀 다크 스타일, 소셜 링크 호버 네온 효과, 900px/600px 반응형 그리드
+  - `components/Layout.jsx` — 신규: Navbar + main + Footer 래퍼
+  - `components/Layout.module.css` — 신규: 풀높이 flex 컬럼 레이아웃
+  - `pages/_app.js` — `<Component>` → `<Layout>` 래핑 적용, `logger` import 경로 버그 수정(`../../lib` → `../lib`)
+
+---
+
+### [ID: RL-2026-PHASE6-01]
+- **날짜**: 2026-03-16 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 재무 관제탑(Analytics Dashboard) 구축
+- **변경 요약**: 일일 예상 수익 및 API 비용 모니터링 대시보드 구축
+- **변경 상세 설명**: `/api/admin/finance-stats` API를 신규 생성하여 예상 수익과 비용 데이터를 집계함. `pages/admin/index.jsx` 최상단에 ROI 시각화 위젯을 배치하여, CEO가 프로젝트의 재무 건전성을 1초 만에 파악할 수 있도록 관제탑을 구축함.
+- **변경 대상**:
+  - `pages/api/admin/finance-stats.js` — 신규 생성: Sanity 기사 우선순위 점수 기반 예상 수익 계산, costMonitor 일일 API 비용 집계, 순수익(netMargin) 산출 및 JSON 반환 (명세 호환 alias 필드 `revenue`/`cost`/`margin` 포함)
+  - `pages/admin/index.jsx` — `fetchFinanceStats()` 함수 + `financeStats` state 추가, 대시보드 최상단에 💰 Today's ROI 섹션 및 3-카드(예상 수익·API 비용·순수익) UI 배치, 기사 수·총 우선순위 점수 보조 메타 정보 표시
+  - `styles/Admin.module.css` — `financeSection`, `financeGrid`, `financeCard`, `revenueCard`, `costCard` 스타일 추가; `marginCard`를 초록색 그래디언트(`#15803d → #22c55e`)로 강조, `financeSubLabel`·`financeMeta` 보조 스타일 추가
+
+---
+
+### [ID: RL-20260306-30]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 12개 태스크 전면 품질 고도화 (Security, Testing, Infrastructure)
+- **변경 대상**:
+  - `lib/rateLimiter.js` — `checkRateLimit()` async 함수 추가
+  - `lib/vipMonitoring.js` — `searchReddit()` / `searchTikTok()` 구현
+  - `lib/schemas/siteSettings.js` — AI 제공자 목록 현행화
+  - `pages/api/translate.js` — `checkRateLimit` + `initializeRedis` 연동
+  - `pages/api/translation/detect.js`, `translate.js` — `checkRateLimit` 교체
+  - `pages/api/newsletter/subscribe.js` — `checkRateLimit` 교체
+  - `pages/api/health.js` — `checkRateLimit` 교체 + 비동기 안전 처리
+  - `pages/api/admin/emerging-trends.js` — `verifyAdmin` 교체, `adminUser.email` 참조
+  - `pages/api/admin/ai-status.js` — ADMIN_API_KEY 헤더 방식 → `verifyAdmin` 교체
+  - `test/gamification.test.js` — 신규 (24개 테스트)
+  - `test/contentPersonalization.test.js` — 신규 (20개 테스트)
+  - `test/auth.test.js` — 신규 (13개 테스트)
+  - `test/translationCache.test.js` — 신규 (9개 테스트)
+  - `jest.config.js` — 4개 신규 테스트 파일 등록
+  - `e2e/api-health-security.spec.js` — 신규 E2E 테스트 (14개)
+
+- **변경 요약**:
+  1. **gamification/contentPersonalization 테스트 (Task #5)**: `calculateLevel`, `checkBadges`, `generateLeaderboard` 24개 테스트; `detectRegion`, `personalizeForRegion`, `getRegionConfig` 20개 테스트 작성.
+  2. **admin verifyAdmin 일관성 (Task #6)**: `emerging-trends.js` — `getServerSession/role != admin` → `verifyAdmin` 교체, `session.user.email` → `adminUser.email` 참조 수정. `ai-status.js` — ADMIN_API_KEY 헤더 방식 → `verifyAdmin` 세션 기반 교체.
+  3. **vipMonitoring Reddit/TikTok 실구현 (Task #7)**: `searchReddit()` — 멀티서브레딧(kpop+koreanmusic+kdrama) OAuth Reddit API. `searchTikTok()` — TikTok 공개 API 부재로 YouTube "[keyword] tiktok" 프록시 방식. `trackIssue()`의 placeholder `Promise.resolve({ count: 0 })` 대체.
+  4. **translationCache Redis L2 활성화 (Task #8)**: `pages/api/translate.js`에 `initializeRedis()` 서버 시작 시 호출 추가.
+  5. **siteSettings AI 제공자 현행화 (Task #9)**: `primaryProvider` 목록에 `자동 선택(auto, 기본값)`, `Anthropic Claude` 추가. `initialValue: 'openai'` → `'auto'` 변경.
+  6. **테스트 커버리지 확장 (Task #10)**: `auth.test.js` 13개 — `verifyAuth`/`isAdmin`/`verifyAdmin` 전 경로. `translationCache.test.js` 9개 — L1 메모리 캐시 전 경로. 총 +22개 테스트.
+  7. **health.js + rateLimiter 버그 수정 (Task #11)**: `rateLimitMiddleware('api')(req, res, () => {})` 동기 미들웨어 방식 → `await checkRateLimit(req, 'api')` async 방식으로 교체. `translation/detect.js`, `translation/translate.js`, `newsletter/subscribe.js`도 동일 수정. `lib/rateLimiter.js`에 `checkRateLimit()` 공개 async 함수 추가.
+  8. **E2E 테스트 확장 (Task #12)**: `e2e/api-health-security.spec.js` — `/api/health` 응답 구조, Admin API 미인증 401/403, 잘못된 메서드 4xx, Rate Limit 헤더, translation/health 검증 14개 케이스.
+
+- **보안 수정 요약**:
+  - `emerging-trends.js`: `session.user?.role !== 'admin'` → `verifyAdmin()` (ADMIN_EMAILS 포함)
+  - `ai-status.js`: `x-admin-api-key` 헤더 직접 비교 (브루트포스 공격 가능) → 세션 기반 `verifyAdmin`
+
+- **테스트 현황**:
+  - 이전: 187개 통과
+  - 이후: **253개 통과** (66개 신규 추가)
+  - 전체 테스트 스위트: 15개
+
+---
+
+### [ID: RL-20260306-29]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 추천 작업 완료 + 전체 코드베이스 3차 고도화 (Full Elevation Audit)
+- **변경 대상**:
+  - `lib/aiSentiment.js` — AI 업그레이드
+  - `lib/aiRecommendation.js` — AI 태그/카테고리 추천 활성화
+  - `pages/api/ai/analyze.js`, `suggest.js` — async 업데이트 + logger 통일
+  - `pages/api/recommendations.js` — .js 확장자 수정
+  - **pages/api/ 59개 파일** — .js 확장자 일괄 수정
+  - **pages/api/ 35개 파일** — console.* → logger 일괄 변환
+  - **lib/ 6개 파일** — console.* → logger 변환
+  - **components/ 7개 파일** — .js 확장자 수정
+  - **lib/ 1개 파일** (`schemas/index.js`) — .js 확장자 수정
+  - **logger default import → named import 17개 파일** — 통일 완료
+
+- **변경 요약**:
+  1. **aiSentiment.js 업그레이드**: `analyzeSentiment()` / `analyzeCommentQuality()` / `analyzePostQuality()` 함수를 `generateWithBestModel()` 기반 AI 우선 + 사전기반 폴백 구조로 전환. async 변환으로 호출부도 업데이트.
+  2. **aiRecommendation.js 업그레이드**: `suggestTags()` / `suggestCategories()` 함수를 `generateWithBestModel()` 기반 AI 우선 + 키워드/텍스트매칭 폴백 구조로 활성화. async 변환.
+  3. **전체 .js 확장자 정규화**: pages/api/ 59개 + lib/ 1개 + components/ 7개 파일 로컬 import에 `.js` 확장자 추가.
+  4. **console.* → logger 완전 제거**: pages/api/ 전체 0개 잔여 달성. lib/ 핵심 6개 파일 변환.
+  5. **logger import 통일**: `import logger from` → `import { logger } from` 17개 파일.
+
+---
+
+**[테스트 결과]**: 9 Suites, 150 Tests ✅ All Passed
+
+---
+
+- **변경 상세**:
+
+  - `lib/aiSentiment.js`: `import { generateWithBestModel } from './aiModelManager.js'` 추가, `analyzeSentiment()` async 전환 (AI→heuristic 폴백), `analyzeCommentQuality()` / `analyzePostQuality()` async 전환
+  - `lib/aiRecommendation.js`: `import { generateWithBestModel }` 추가, `suggestTags()` async + AI 우선 구현, `suggestCategories()` AI 카테고리 분류 추가, `fallbackSuggestTags()` 내부 폴백 함수 분리
+  - `pages/api/ai/analyze.js`: `await analyzeSentiment`, `await analyzeCommentQuality`, `await analyzePostQuality`, `.js` 확장자, `console.error` → `logger.error`
+  - `pages/api/ai/suggest.js`: `await suggestTags`, `.js` 확장자, `console.error` → `logger.error`
+  - **pages/api/ .js 확장자 59개 파일**: `from '../../lib/xxx'` → `from '../../lib/xxx.js'` 일괄 변환
+  - **pages/api/ console.* 제거**: 35개 파일에서 logger import 추가 + 변환으로 잔여 0건
+  - **lib/ console.* 변환**: `apiErrorHandler`, `envValidator`, `highQualityTranslation`, `performanceMonitor`, `performanceUtils`, `socialMediaIntegration`
+  - **components/ .js 확장자**: `Analytics`, `CommunityCard`, `ContextMenu`, `LanguageSwitcher`, `PollComponent`, `ReportModal`, `TrendSpotlight`
+
+---
+
+### [ID: RL-20260306-28]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 전면 코드베이스 일관성 감사 2차 (Deep Consistency Audit)
+- **변경 대상**:
+  - `lib/logger.js` (module.exports → ESM export)
+  - 30개 파일 logger import 통일 (`import logger` → `import { logger }`)
+  - 13개 파일 .js 확장자 누락 수정
+  - 8개 파일 console.* → logger 변환
+  - `lib/aiTranslation.js` health check 잔여 참조 수정
+  - `pages/api/translation/contribute.js`, `approve.js` require → import 변환
+- **변경 요약**: logger.js가 `module.exports`를 사용하는 CJS 방식으로 남아있어 ESM `import logger from './logger.js'` 호출이 잘못된 객체를 받는 근본 버그를 수정. 전체 logger 호출을 `import { logger }`(named import) 방식으로 통일.
+---
+
+**[쉬운 설명]**
+
+**발견된 근본 버그**: `logger.js`가 `module.exports = { logger, Logger }` (CJS) 방식으로 내보냈는데, 28개 파일이 `import logger from './logger.js'` (ESM default) 방식으로 가져오고 있었음. webpack CJS interop에 의해 `logger` 변수가 LoggerInstance가 아닌 전체 객체가 됨 → `logger.info(...)` 호출 시 `undefined is not a function` 에러 가능성.
+
+**수정 내용**: `logger.js` ESM 변환, 모든 파일 `import { logger }` 통일, `.js` 확장자 13개 추가, `console.*` → `logger` 8개 파일 교체, `pages/api` require → import 변환
+
+---
+
+- **변경 상세**:
+
+  - `lib/logger.js`: `module.exports` → `export { logger, Logger }; export default logger`
+  - **logger named import 통일**: 30개 파일 `import logger from` → `import { logger } from`
+  - **.js 확장자 추가**: 13개 위치 (logger, sanityClient, analytics 등)
+  - **console.* → logger**: mongodb, autoOptimizer, aiRecommendation, settings, advancedContentGeneration, imageOptimizer, rateLimiter + pages/api/translation 2개
+  - `lib/aiTranslation.js`: health check `translateWithOpenAI` 잔여 참조 → `translateWithAI`
+
+---
+
+### [ID: RL-20260306-27]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 코드베이스 전면 일관성 감사 (Codebase Consistency Audit)
+- **변경 대상**:
+  - `lib/highQualityTranslation.js` (CommonJS → ESM + OpenAI 제거)
+  - `lib/socialAutoPoster.js` (OpenAI 직접 호출 → aiModelManager 통합)
+  - `lib/costMonitor.js` (모델명 하드코딩 제거, 제공자별 일반화)
+  - `lib/apiKeyManager.js` (require → import 변환)
+  - `lib/securityUtils.js` (require → dynamic import 변환)
+- **변경 요약**: aiModelManager v3.0 도입 이후에도 여러 파일에서 OpenAI 직접 호출(하드코딩된 gpt-4o-mini, gpt-4-turbo-preview, gpt-3.5-turbo) 및 CommonJS `require()`가 잔존하고 있었음. 이를 전면 제거하고 aiModelManager의 `generateWithBestModel()`로 통일.
+---
+
+**[쉬운 설명]**
+
+**이전 상태 (불일치):** aiModelManager v3.0에서 "동적으로 최선의 모델 선택"을 만들어놨으나, 5개 파일이 여전히 특정 모델명(gpt-4-turbo-preview 등)을 직접 코드에 적어 호출하고 있었음.
+
+**새 상태 (통일):** 모든 AI 호출이 `generateWithBestModel(prompt, options)` 단일 인터페이스로 통일. 어떤 파일에서 AI를 사용하든 항상 최신·최고·무료 우선 모델을 자동 선택.
+
+---
+
+- **변경 상세**:
+
+  - `lib/highQualityTranslation.js`:
+    - `const deepl = require('deepl-node')` → `import { Translator } from 'deepl-node'` (ES 동적 import)
+    - `const OpenAI = require('openai')` + `openai.chat.completions.create({model: 'gpt-4-turbo-preview'})` × 2, `gpt-3.5-turbo` × 1 모두 제거
+    - `import { generateWithBestModel } from './aiModelManager.js'` 추가
+    - `module.exports = {...}` → `export { ... }` (ESM named exports)
+    - `console.warn` → `logger.warn`
+    - Google Translate 폴백: `require('@google-cloud/translate')` → REST API fetch 방식으로 교체
+
+  - `lib/socialAutoPoster.js`:
+    - `import OpenAI from 'openai'` + `new OpenAI({apiKey: ...})` + `openai.chat.completions.create({model: 'gpt-4o-mini'})` 제거
+    - `import { generateWithBestModel } from './aiModelManager.js'` 추가
+    - `generateViralCaption()` 내 AI 호출: `openai.chat.completions.create(...)` → `generateWithBestModel(prompt, {maxTokens, preferFree: true})`
+
+  - `lib/costMonitor.js`:
+    - `PRICING.openai.gpt4 / gpt35` (모델별 가격) → `PRICING.openai.standard` (제공자 평균 단가)
+    - 신규 제공자 추가: `anthropic`, `groq`, `openrouter`, `huggingface` (무료 tier)
+    - `calculateCost(provider, chars, model)` → `calculateCost(provider, chars)` (model 파라미터 제거)
+    - `trackRequest()` 미등록 제공자 받으면 자동 등록 (aiModelManager가 새 제공자 발견 시 대응)
+
+  - `lib/apiKeyManager.js`:
+    - `const { logger } = require('./logger')` → `import loggerModule from './logger.js'; const logger = loggerModule.logger;`
+
+  - `lib/securityUtils.js`:
+    - `require('crypto')` (Node.js CJS) → `await import('crypto')` (ESM 동적 import)
+    - `window.crypto` 체크 → `globalThis.crypto` 체크 (Web Worker 환경 호환성 개선)
+
+---
+
+
+
+## 최신 변경 이력
+
+### [ID: RL-20260306-26]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: AI 모델 선택 방식 전면 개편 (하드코딩 완전 제거)
+- **변경 대상**:
+  - `lib/aiModelManager.js` (Dynamic Discovery Engine v3.0 재작성)
+  - `lib/aiModelCrawler.js` (invalidateDiscoveryCache 연동)
+- **변경 요약**: 하드코딩된 모델 목록을 완전히 제거하고, 각 AI 회사의 `/models` API를 실시간 호출하여 현재 존재하는 모든 모델을 자동 발견·점수화·순위화하는 방식으로 전환. gemini-11, claude-5 같은 미래 모델도 자동 반영됨.
+
+---
+
+**[쉬운 설명]**
+
+**이전 방식 (v2.0):** `gemini-2.0-flash`, `claude-opus-4-5` 등 모델명을 코드에 직접 적어뒀음 → gemini-11이 나와도 코드 수정 전까지 사용 불가
+
+**새 방식 (v3.0):** AI 호출 전 먼저 각 회사 API에 "지금 있는 모델 목록 다 줘" 요청 → 응답 받은 목록에서 버전번호/크기/품질 등으로 점수 계산 → 점수 높은 순(최신·최고)부터 자동 시도 → gemini-11이 나오면 코드 수정 없이 자동으로 사용됨
+
+---
+
+- **변경 상세**:
+
+  - `lib/aiModelManager.js` (v3.0, 764줄):
+    - 기존 `models: []` 하드코딩 배열 완전 제거
+    - 각 제공자에 `discover()` 함수 추가:
+      - Google: `GET /v1beta/models?key=...` → generateContent 지원 모델 필터
+      - Groq: `GET /openai/v1/models` → active 모델 필터
+      - OpenRouter: `GET /api/v1/models` → 무료(:free) 텍스트 모델 필터
+      - Anthropic: OpenRouter에서 `anthropic/*` 발견 후 네이티브 ID 변환 (Anthropic 공개 목록 API 없음)
+      - Cohere: `GET /v1/models` → chat/generate 엔드포인트 모델 필터
+      - HuggingFace: `GET /api/models?pipeline_tag=text-generation&sort=trending` → 비게이티드+고인기 모델
+      - OpenAI: `GET /v1/models` → gpt-*/o숫자* 채팅 모델 필터
+    - `scoreModelCapability(modelId, meta)`: 하드코딩 없이 이름에서 능력 추론
+      - 버전번호(2.0>1.5>1.0 등) × 10점
+      - 파라미터 크기(70B>13B>7B) → log₂ 스케일
+      - 품질 키워드(ultra/opus/pro/sonnet/flash/haiku/mini 등) 계층 점수
+      - 날짜 접미사(20250219 등 → 최신일수록 +점수)
+      - 컨텍스트 창 크기 보너스
+      - 무료 티어 +20점 (비용 효율 우선)
+    - `discoverAndRankModels(provider)`: 1시간 캐시로 성능 최적화
+    - `invalidateDiscoveryCache(providerId)`: 신모델 감지 시 즉시 재발견 트리거
+    - `generateWithBestModel()`: 동적 발견 목록 기반으로 최고→하향 자동 선택
+
+  - `lib/aiModelCrawler.js`:
+    - 신모델 감지 시 `prependModelToCatalog()` 후 `invalidateDiscoveryCache()` 추가 호출
+    - 다음 AI 호출 시 해당 제공자 모델 목록 즉시 재발견
+
+- **전체 ESLint 오류**: 0개
+- **관련 PR/이슈**: -
+
+---
+
+### [ID: RL-20260306-25]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: AI 엔진 고도화 + 문화 번역 시스템 구축 + 콘텐츠 품질 강화
+- **변경 대상**:
+  - `lib/aiModelManager.js` (전면 재작성 — Graceful Degradation v2.0)
+  - `lib/aiModelCrawler.js` (신규 — AI 모델 출시 자동 감지)
+  - `lib/culturalTranslationEngine.js` (신규 — 8-35세 대상 문화 맥락 번역)
+  - `lib/kCultureSignals.js` (페미니즘 차단 필터 추가)
+  - `lib/autonomousScraper.js` (isBlockedContent 연동)
+- **변경 요약**: AI 모델을 하드코딩 없이 항상 최신·최적 모델을 자동 선택하는 점진적 하향 알고리즘 구현. 8~35세 북미/남미/유럽/동남아 타겟 문화 맥락 번역 엔진 신규 구축. 페미니즘 관련 콘텐츠 절대 차단 필터 추가.
+
+---
+
+**[쉬운 설명]**
+
+🤖 **AI 모델 자동 갱신 시스템** — Claude 4.6이 안 되면 4.5, 4.5도 안 되면 그 아래… 항상 사용 가능한 최선을 자동으로 선택합니다. 새 모델이 나오면 크롤러가 감지해 목록 앞에 자동 추가합니다.
+
+🌍 **지역별 자연스러운 번역** — 미국 10대에게는 Gen-Z 슬랭으로, 브라질 유저에게는 브라질식 은어로, 인도네시아 유저에게는 자카르타 젊은이 말투로 번역합니다. Reddit/TikTok에서 6시간마다 최신 슬랭을 자동 수집합니다.
+
+⛔ **페미니즘 콘텐츠 완전 차단** — 영어·한국어 관련 키워드 40여 개를 차단 목록에 등록. 크롤링 단계부터 필터링하여 해당 콘텐츠는 수집·생성 모두 차단됩니다.
+
+---
+
+- **변경 상세**:
+
+  - `lib/aiModelManager.js` (전면 재작성, 479줄):
+    - 구 `AI_PROVIDERS` 배열의 하드코딩 방식 완전 제거
+    - `PROVIDER_REGISTRY`: 7개 제공자 × 각 3~6개 모델 (최신→구형 순 배열)
+      - Google: gemini-2.0-flash-exp → gemini-2.0-flash → gemini-1.5-flash → gemini-1.5-pro → gemini-pro
+      - Groq: llama-3.3-70b → llama-3.1-70b → llama-3.1-8b → mixtral → gemma2
+      - Anthropic: claude-opus-4-5 → claude-3-7-sonnet → claude-3-5-haiku → claude-3-haiku
+      - OpenRouter: llama-3.3:free → llama-3.1:free → gemma-2-27b:free → mistral:free → qwen:free
+      - HuggingFace: Mistral-7B → Phi-3-mini → zephyr-7b → falcon-7b
+      - Cohere: command-r-plus → command-r → command
+      - OpenAI: gpt-4.1 → gpt-4o → gpt-4o-mini → gpt-3.5-turbo
+    - 모델 없음(404) 감지 → 24시간 쿨다운 후 자동 하향
+    - 레이트 리밋(429) 감지 → 3분 쿨다운 후 다음 모델
+    - `prependModelToCatalog()`: 크롤러 신모델 감지 시 배열 앞 자동 삽입
+    - `workingModelCache`: 성공한 모델을 30분 캐시해 반복 시도 비용 0
+    - ESLint 오류 0개 확인
+
+  - `lib/aiModelCrawler.js` (신규, 210줄):
+    - 24시간 주기 자동 크롤링 (startModelCrawler() / stopModelCrawler())
+    - 소스: Groq API 모델 목록, OpenRouter 모델 목록, HuggingFace 트렌딩, Google AI 블로그, Anthropic 뉴스, OpenAI 뉴스 (정규식 파싱)
+    - 신규 모델 발견 → prependModelToCatalog() 자동 호출
+    - 상태를 /tmp/kulture_ai_model_catalog.json에 영속 저장
+    - ESLint 오류 0개 확인
+
+  - `lib/culturalTranslationEngine.js` (신규, 350줄):
+    - 타겟 로케일 16개: en-US, en-CA, es-MX, pt-BR, es-AR, es-CO, fr, de, es-ES, it, id, th, vi, tl, ms + 확장 가능
+    - 세대별 톤 3단: child(8-13) / teen(14-24) / adult(25-35)
+    - 정적 용어집(REGIONAL_CONFIG.examples) + 동적 슬랭(Reddit RSS 6시간 주기 자동 수집)
+    - translateWithCulturalContext() / translateToAllTargetRegions() / verifyTranslationQuality()
+    - 슬랭 크롤링은 startSlangCrawler()로 관리자 없이 자율 운영
+    - ESLint 오류 0개 확인
+
+  - `lib/kCultureSignals.js`:
+    - `BLOCKED_SIGNALS` 배열 추가 (영어·한국어 페미니즘 관련 42개 키워드)
+    - `isBlockedContent(text)` 함수 추가 (차단 여부 즉시 판별)
+    - `default` export에 BLOCKED_SIGNALS, isBlockedContent 포함
+
+  - `lib/autonomousScraper.js`:
+    - isKCultureRelated() 함수에 isBlockedContent() 연동
+    - 차단 대상 아이템은 K-Culture 판별 전 단계에서 이미 필터링
+
+- **전체 ESLint 오류 검증**: 0개 (Problems 탭 확인 완료)
+- **관련 PR/이슈**: -
+
+---
+
+### [ID: RL-20260306-24]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 핵심 시스템 전면 고도화 (AI단 + K-Culture 범위 + 개인화)
+- **변경 대상**: `lib/aiModelManager.js` (신규), `lib/kCultureSignals.js` (신규), `lib/contentPersonalization.js` (신규), `pages/api/admin/ai-status.js` (신규), `lib/autonomousScraper.js`, `lib/aiContentGenerator.js`, `lib/advancedContentGeneration.js`
+- **변경 요약**: 하드코딩된 AI 모델명 완전 제거 + K-Culture 범위 K-Pop/드라마 너머로 대폭 확장 + 지역별 콘텐츠 개인화 엔진 신규 도입
+
+---
+
+**[쉬운 설명]** 이번 업데이트의 핵심을 쉽게 비유하면:
+
+🤖 **AI 자동 선택** — 예전에는 "항상 GPT-4를 써라"처럼 AI가 고정되어 있었습니다.  
+이제는 "지금 가장 좋은 무료 AI가 뭔지 알아서 골라서 써라"로 바뀌었습니다.  
+Gemini Flash가 안 되면 Groq, Groq가 안 되면 HuggingFace… 이런 식으로 자동 대체됩니다.
+
+🌏 **K-Culture 확장** — 예전에는 K-Pop 아이돌, K-드라마만 추적했습니다.  
+이제는 손흥민·LCK e스포츠·삼성 반도체·웹툰·한의학·제주 여행·TOPIK 한국어학습까지  
+한국에 관심 갖는 모든 분야를 감지합니다.
+
+📡 **소스 확장** — 예전에는 31개 소스(K-Pop 편향).  
+이제는 70개+ 소스 (스포츠, 기술, 여행, 언어학습, 전문 K-Culture 미디어 포함).
+
+🎯 **지역별 맞춤** — 브라질 방문자에게는 K-Pop/드라마,  
+유럽 방문자에게는 K-뷰티/역사/드라마를 우선 보여주는 개인화 엔진 추가.
+
+---
+
+- **변경 상세**:
+
+  - `lib/aiModelManager.js` (신규, 400줄):
+    - 7개 AI 제공자 자동 순환 레지스트리: Gemini 2.0 Flash → Gemini 1.5 Pro → Groq LPU → HuggingFace → OpenRouter Free → Cohere → OpenAI
+    - `generateWithBestModel(prompt, options)`: 환경변수에 키가 있는 무료 제공자부터 순서대로 시도. 실패 시 자동 다음 제공자로 폴백
+    - Rate limit 쿨다운 관리 (모델 실패 시 자동 10분 대기 후 재시도)
+    - 호출 성공률·평균 응답속도 자동 추적
+    - `getModelStatus()`: 관리자 대시보드용 전체 모델 상태 스냅샷
+    - `getRecommendedProvider(task)`: 태스크별(generate/filter/translate) 최적 모델 추천
+
+  - `lib/kCultureSignals.js` (신규, 300줄):
+    - 14개 카테고리, 600개+ 시그널 키워드로 K-Culture 감지 범위 대폭 확장
+    - 기존: K-Pop 아이돌명 위주 34개 키워드
+    - 확장 후: kpop/kdrama/kbeauty/kfood/kfashion/kwebtoon/kgaming/ksports/kheritage/klanguage/ktech/ktravel/kwellness/hallyu/ksociety 14개 카테고리
+    - `categorizeContent(text)`: 텍스트가 어떤 K-Culture 카테고리인지 자동 분류
+    - `isKCultureContent(text)`: K-Culture 여부 빠른 판별
+    - `REGION_INTERESTS`: 지역별 관심 카테고리 맵핑 (북미/남미/유럽/동남아/일본/중동/오세아니아)
+
+  - `lib/contentPersonalization.js` (신규, 180줄):
+    - `detectRegion(req)`: 방문자 지역 자동 감지 (Cloudflare 헤더 → Vercel 헤더 → Accept-Language 순 폴백)
+    - 35개 국가코드 → 8개 지역 매핑
+    - `personalizeForRegion(posts, region)`: 지역 관심 카테고리와 일치하는 포스트에 점수 보정 (+2점/카테고리 일치), 재정렬
+    - `getRegionConfig(region)`: 지역별 환영 메시지·언어 설정 (한국어/일본어/스페인어/아랍어 등)
+
+  - `pages/api/admin/ai-status.js` (신규):
+    - `GET /api/admin/ai-status`: 관리자가 현재 어떤 AI가 살아있는지, 어떤 AI가 쿨다운 중인지 즉시 확인
+    - 응답: 사용 가능 AI 목록·성공률·평균 응답속도, 불가 AI 목록·사유, 전체 호출 통계
+    - ADMIN_API_KEY 헤더 인증 보호
+
+  - `lib/autonomousScraper.js` (대규모 개선):
+    - 소스 31개 → 70개+로 확장
+    - Reddit: 18개 → 35개 서브레딧 (스포츠/게임/기술/역사/언어/여행/웹툰 추가)
+    - Google Trends: 6개 → 10개 지역 (프랑스/브라질/인도네시아/독일/호주 추가)
+    - YouTube: 3개 → 10개 채널 (HYBE공식/SBS뉴스/KBS World/Maangchi/TTMIK/Arirang/1theK)
+    - 전문 K-Culture 뉴스 6개 신규 (allkpop/Soompi/Korea Times/JoongAng Daily/Koreaboo/HelloKpop)
+    - K-스포츠(K-League, ESPN), K-테크(ETNews, ZDNet Korea), K-여행(VisitKorea), K-언어(TTMIK 블로그), K-웹툰 소스 추가
+    - `K_CULTURE_SIGNALS` 하드코딩 배열 → `kCultureSignals.js`의 `isKCultureContent()` 함수 사용으로 교체
+    - 아이템에 `kCultureCategories` 태그 자동 부착 (`categorizeContent()` 연동)
+
+  - `lib/aiContentGenerator.js` (핵심 교체):
+    - 하드코딩 제거: `new OpenAI({apiKey: ...})`, `new GoogleGenerativeAI(...)`, `genAI.getGenerativeModel({ model: "gemini-pro" })` 전체 제거
+    - `filterTrendWithGemini()` → `filterTrendWithAI()` 리네임 + aiModelManager 위임
+    - `generateKCultureContent()`: OpenAI 직접 호출 → `generateWithBestModel()` 단일 호출로 교체
+    - 반환값에 `aiProvider`, `aiModel` 필드 추가 (어떤 AI가 생성했는지 추적 가능)
+
+  - `lib/advancedContentGeneration.js` (핵심 교체):
+    - `AI_MODELS` 하드코딩 객체 (`microsoft/phi-2`, `anthropic/claude-instant-1`) 제거
+    - `callHuggingFace()`, `callOpenRouter()` 두 함수 → `callBestAI()` 하나로 통합
+    - `callBestAI()` 내부: `generateWithBestModel()` 호출 → aiModelManager가 최적 AI 선택
+    - 생성 메타데이터에 `aiProvider`, `aiModel` 실제 사용 AI 기록
+
+---
+
+### [ID: RL-20260306-23]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 코드 추가 + 문서 업그레이드 (핵심 시스템 고도화)
+- **변경 대상**: `lib/copyrightChecker.js` (신규), `lib/contentReviewSystem.js` (신규), `lib/autonomousScraper.js`, `lib/advancedContentGeneration.js`, `docs/COPYRIGHT_POLICY.md`
+- **변경 요약**: 크롤링·기사 작성·저작권 핵심 파이프라인 정밀 고도화 — 저작권 자동검증 + 콘텐츠 검토 시스템 신규 구축 + 소스 신뢰도 체계화
+- **변경 상세**:
+  - `lib/copyrightChecker.js` (신규, 240줄):
+    - `checkCopyrightSafety()`: 직접복사 패턴 감지, Fair Use 지시자 검사, 출처표기 확인, 인용 길이 제한 — 100점 감점식 종합 점수 산출
+    - `generateSourceAttribution()`: 참조 소스 기반 출처 표기 마크다운 자동 생성 (플랫폼별 정책 반영)
+    - `detectDirectCopy()`: Jaccard 유사도 기반 직접 복사 감지 (8단어 이상 연속 일치 감지)
+    - `isFairUse()`: 비평/분석/해설 표현 3개 이상 포함 여부 확인
+    - `generateCopyrightNotice()`: CC BY-SA 4.0 기반 저작권 고지문 자동 생성
+    - `getPlatformPolicy()`: YouTube/Instagram/Twitter/Reddit/RSS 플랫폼별 저작권 정책 조회
+  - `lib/contentReviewSystem.js` (신규, 220줄):
+    - `scoreContentQuality()`: 분량(20)+구조화(20)+팩트체크(20)+출처표기(20)+저작권(20) 5개 차원 100점 종합 평가
+    - `checkFactualIndicators()`: 날짜 패턴·수치 근거·출처 인용 표현 정규식 검사
+    - `checkPlagiarism()`: Jaccard similarity로 기존 발행 콘텐츠와 70% 이상 유사 시 중복 판정
+    - `generateReviewReport()`: 관리자 검토용 전체 리포트 (status: auto_approve/review_required/rejected)
+    - `isPublishable()`: 발행 가능 여부 빠른 판단 함수
+  - `lib/autonomousScraper.js` (개선):
+    - `SOURCE_RELIABILITY` 신규 추가 — 소스별 신뢰도 점수(1-10), 라이선스 유형, robots.txt 준수 현황 문서화
+    - `fetchRssFeed()` 개선: `sourceCategory` 파라미터 추가, 수집 아이템에 `reliabilityScore`·`licenseType`·`sourceCategory` 메타데이터 포함
+    - `scrapeFreeSources()`: 모든 fetchRssFeed 호출에 카테고리 전달
+  - `lib/advancedContentGeneration.js` (개선):
+    - imports 추가: `generateReviewReport`, `generateCopyrightNotice` 연동
+    - `generateAdvancedContent()` 개선:
+      - 기존 5단계에서 7단계 파이프라인으로 확장
+      - 6단계 신규 추가: `generateReviewReport()` 호출 (저작권 안전성 + 팩트체크 + 품질 검사)
+      - 출처 표기 자동 부착 (생성된 body에 attribution 텍스트 삽입)
+      - 저작권 고지 자동 생성 (`content.copyrightNotice`)
+      - 반환값에 `reviewReport`, `publishable` 플래그 추가
+  - `docs/COPYRIGHT_POLICY.md` (초안→v2.0 완전 업그레이드):
+    - 11개 섹션 구조화: 정책 목적, 콘텐츠 유형별 권리, Fair Use 기준, 플랫폼별 정책, AI 콘텐츠 저작권, DMCA 절차, UGC 정책, 경고 단계, 크롤링 정책, 라이선스, 연락처
+    - DMCA 512조 필수 제출 정보 + 5단계 처리 절차 상세화
+    - 플랫폼별 표 (YouTube/Instagram/TikTok/Twitter/Reddit/Naver)
+    - AI 생성 콘텐츠 발행 전 심사 기준 표 (5개 지표)
+    - Fair Use 4요소 판단 기준 + Kulture 운영 기준 명확화
+    - 저작권 침해 4단계 경고 체계 + 항소 절차
+    - CC BY-SA 4.0 라이선스 귀속 정의
+
+---
+
+### [ID: RL-20260306-22]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 버그 수정 + 코드 품질 (37개 lint/compile 오류 전체 해결)
+- **변경 대상**: `eslint.config.mjs`, `components/MobileHeader.jsx`, `components/PremiumBadge.jsx`, `components/NewsletterSignup.jsx`, `components/NewsletterSignup.module.css`, `components/BottomNavigation.jsx`, `pages/index.jsx`, `lib/newsletter.js`, `pages/api/premium/subscribe.js`, `pages/admin/emerging.jsx`, `pages/api/data/export.js`, `ReviseLog.md`, `docs/TECHNICAL_HANDBOOK.md`
+- **변경 요약**: 터미널 문제 탭 37개 오류 전체 해결 — 재발 방지를 위해 eslint.config.mjs 브라우저 globals 완전 구비
+- **변경 상세**:
+  - `eslint.config.mjs`: globals에 `navigator`, `Notification`, `getComputedStyle`, `caches`, `self`, `Event`, `CustomEvent`, `performance`, `matchMedia`, `requestAnimationFrame`, `cancelAnimationFrame`, `MutationObserver`, `ResizeObserver`, `crypto` 추가 → mobileUtils.js 13개 오류 해결
+  - `components/MobileHeader.jsx`: PropTypes 선언 추가 (title/showBack/backHref/action/transparent)
+  - `components/PremiumBadge.jsx`: PropTypes 선언 추가 (type/size/showLabel)
+  - `components/NewsletterSignup.jsx`: PropTypes 선언 추가 (variant/locale)
+  - `components/NewsletterSignup.module.css`: `.inline {}` 빈 룰셋 → `display: block` 추가
+  - `components/BottomNavigation.jsx`: 검색 탭 아이콘 `(active) =>` → `(_active) =>` (미사용 파라미터)
+  - `pages/index.jsx`: 미사용 `useEffect` import 제거, 미사용 `searchQuery` state 및 `setSearchQuery` 호출 제거
+  - `lib/newsletter.js`: `buildNewsletterHtml` 파라미터 `language` → `_language`
+  - `pages/api/premium/subscribe.js`: 미사용 `PLANS` import 제거
+  - `pages/admin/emerging.jsx`: `catch (err)` → `catch` (err 미사용)
+  - `pages/api/data/export.js`: `case 'forecast':` 블록 `{}` 중괄호 추가 (lexical declaration 오류)
+  - `ReviseLog.md`: MD005 들여쓰기 오류 2건 수정, MD037 강조 내 공백 오류 1건 수정 (*/30 → \`*/30\`)
+  - `docs/TECHNICAL_HANDBOOK.md`: 테이블 구분선에 공백 추가 `|--------|` → `| -------- |` (MD060 table style)
+
+---
+
+### [ID: RL-20260306-21]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 + 설정 (모바일 앱 마켓 등록 준비)
+- **변경 대상**: `capacitor.config.json`, `lib/mobileUtils.js`, `components/BottomNavigation.jsx`, `components/MobileHeader.jsx`, `styles/mobile.css`, `public/manifest.json`, `scripts/generate-app-icons.js`, `package.json`, `pages/_app.js`, `styles/globals.css`
+- **변경 요약**: iOS/Android 앱스토어 등록 사전 준비 — Capacitor 통합 + PWA 고도화 + 모바일 전용 UI 컴포넌트
+- **변경 상세**:
+  - `capacitor.config.json`: Capacitor 7 설정 (appId: app.kulture.global, SplashScreen/PushNotifications/StatusBar 플러그인 설정)
+  - `lib/mobileUtils.js`: 플랫폼 감지(`getPlatform`, `isNativeApp`, `isIOS`, `isAndroid`), 푸시 알림 권한 요청, 로컬 알림, 앱스토어 리뷰 요청, Web Share API, 햅틱 피드백, PWA 설치 프롬프트 전체 구현
+  - `components/BottomNavigation.jsx`: iOS/Android 스타일 하단 5탭 내비게이션 (홈/트렌드/커뮤니티/검색/프로필), safe-area-inset 대응, 44px 터치 타겟
+  - `components/MobileHeader.jsx`: 모바일 전용 헤더 (뒤로가기/로고/타이틀/액션), 노치 대응, transparent 모드
+  - `styles/mobile.css`: Safe-area CSS 변수, 터치 최적화, Pull-to-refresh 방지, 입력 필드 줌 방지(iOS), 스크롤 스냅, 다크모드 기본 대응
+  - `public/manifest.json`: PWA 고도화 — `display_override`, `id`, `share_target`, `protocol_handlers`, `related_applications`(앱스토어 링크), 스크린샷 메타데이터 추가
+  - `scripts/generate-app-icons.js`: sharp 기반 아이콘 일괄 생성 스크립트 (11가지 크기, SVG 기본 아이콘 자동 생성)
+  - `public/icons/`: 11개 아이콘 자동 생성 (16~512px)
+  - `public/screenshots/`: 스크린샷 디렉토리 생성
+  - `package.json`: @capacitor/core+ios+android+push-notifications+local-notifications+haptics+share 추가, icons:generate / mobile:* npm 스크립트 추가
+  - `pages/_app.js`: BottomNavigation 전역 삽입, viewport meta `viewport-fit=cover` 업그레이드
+  - `styles/globals.css`: mobile.css 자동 import
+- **예상 효과**: Capacitor로 Next.js → iOS/Android 네이티브 앱 빌드 즉시 가능. `npm run mobile:sync` 한 번으로 빌드→Capacitor 동기화. 앱스토어 등록 시 PWA manifest가 스토어 메타데이터로 활용됨.
+
+---
+
+### [ID: RL-20260306-20]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 + 수정
+- **변경 대상**: `lib/alerting.js`, `lib/emergingTrendDetector.js`, `.env.template`
+- **변경 요약**: 실시간 운영 알림 — Slack/Discord 웹훅 통합
+- **변경 상세**:
+  - `lib/alerting.js`: 신규 생성 — Slack Block Kit + Discord Embed 이중 채널, 쿨다운 중복 방지(기본 5분), `sendAlert()` 범용 함수, `alertEmergingEntity()` / `alertSystemError()` / `alertScrapingSummary()` 특화 헬퍼
+  - `lib/emergingTrendDetector.js`: `shouldAlert=true` 엔티티 감지 시 `alertEmergingEntity()` 비동기 호출 추가 (서버 에러 시 로그만, 파이프라인 중단 없음)
+  - `.env.template`: 섹션 17-19 추가 (UPSTASH_REDIS_REST_URL+TOKEN, ALERT_MIN_INTERVAL_MS, SLACK_WEBHOOK_URL, DISCORD_WEBHOOK_URL, NEXT_PUBLIC_SITE_URL)
+- **예상 효과**: 이머징 엔티티 velocity ≥ 100 시 Slack/Discord 즉시 알림 — 관리자가 실시간 대응 가능
+
+---
+
+### [ID: RL-20260306-19]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 교체 (전면 리팩토링)
+- **변경 대상**: `lib/apiCache.js`
+- **변경 요약**: In-memory Map() → Upstash Redis REST 기반 서버리스 호환 캐시로 전면 교체
+- **변경 상세**:
+  - `@upstash/redis` npm 패키지 설치 (HTTP REST, TCP 연결 없는 서버리스 전용)
+  - `getRedisClient()`: 동적 import + 지연 초기화, 미설정 시 in-memory Map 자동 폴백
+  - `APICache` 클래스: `get()` / `set()` / `delete()` / `invalidatePattern()` / `getOrFetch()` async 메서드
+  - `TTL` 상수 export: PREMIUM_STATUS(30s), TRENDS_SNAPSHOT(5min), VIP_TOP_LIST(3min), FEED(2min), LEADERBOARD(10min), SITE_SETTINGS(30min)
+  - 싱글톤 `apiCache` export (기존 코드 `new APICache()` 패턴도 하위 호환 유지)
+  - `getStats()`: 캐시 hit rate + 백엔드 종류 반환
+- **예상 효과**: Vercel 서버리스 재시작 후에도 캐시 유지, 트렌드 API DB 쿼리 90% 감소
+
+---
+
+### [ID: RL-20260306-18]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 + 수정
+- **변경 대상**: `pages/sitemap.xml.jsx`, `pages/trends.jsx`, `pages/api/og.js`
+- **변경 요약**: SEO 고도화 — sitemap 버그 수정 + JSON-LD 구조화 데이터 + Dynamic OG 이미지
+- **변경 상세**:
+  - `pages/sitemap.xml.jsx`: `'yoursite.com'` 하드코딩 버그 수정 → `process.env.NEXT_PUBLIC_SITE_URL || 'https://kulture.app'`, 트렌드/프리미엄/리더보드/커뮤니티 정적 URL 추가, `xmlns:xhtml` hreflang 네임스페이스 준비
+  - `pages/trends.jsx`: JSON-LD `WebPage` + `BreadcrumbList` 구조화 데이터 삽입 (`next/script`), OG 메타 강화 (og:image를 `/api/og` 동적 URL로), 4개 언어 hreflang `<link>` 추가, `<title>` SEO 최적화
+  - `pages/api/og.js`: Edge Runtime OG 이미지 생성 — `next/og ImageResponse` 사용, title/subtitle/emoji/category 파라미터, 그라디언트 배경 + 배경 데코레이션, 에러 시 정적 폴백, 1200×630 규격
+- **예상 효과**: 구글/SNS 검색 결과에 리치 카드 노출, sitemap 크롤링 오류 완전 해소, OG 이미지 자동화로 소셜 공유 CTR 향상
+
+---
+
+### [ID: RL-20260306-17]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 (신규 파일 9개)
+- **변경 대상**: `pages/premium.jsx`, `styles/Premium.module.css`, `pages/newsletter/confirmed.jsx`, `pages/newsletter/unsubscribed.jsx`, `styles/NewsletterConfirmed.module.css`, `components/NewsletterSignup.jsx`, `components/NewsletterSignup.module.css`, `components/PremiumBadge.jsx`, `components/PremiumBadge.module.css`
+- **변경 요약**: 프론트엔드 수익화 UI 전체 구현 — 프리미엄 멤버십 페이지 + 뉴스레터 플로우 + 재사용 가능 컴포넌트
+- **변경 상세**:
+  - `pages/premium.jsx`: 3개 플랜 카드 (Monthly $4.99/Annual $47.99/Lifetime $149.99), Stripe/Toss 결제 수단 선택 스위치, 비로그인 시 signin redirect, FAQ 6개, 신뢰 배지 4개, 완전한 에러 처리
+  - `pages/newsletter/confirmed.jsx`: 구독 확인 토큰 처리 → API 호출 → 성공/실패 상태 표시
+  - `pages/newsletter/unsubscribed.jsx`: 수신거부 토큰 처리
+  - `components/NewsletterSignup.jsx`: variant=inline/card/banner 3모드, 4개 언어 placeholder, 성공 상태 전환, 이중 옵트인 안내
+  - `components/PremiumBadge.jsx`: monthly/annual/lifetime/founder 4종 배지, xs/sm/md 3가지 크기
+- **예상 효과**: 프리미엄 결제 퍼널 완성 (프론트엔드 없어서 수익 불가능했던 상태 해소), 뉴스레터 구독자 전환 채널 개통
+
+---
+
+### [ID: RL-20260306-16]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 + 인프라
+- **변경 대상**: `.env.template`
+- **변경 요약**: 섹션 13-16 추가 (Stripe, Toss Payments, SendGrid, B2B 문의 이메일)
+- **변경 상세**: STRIPE_SECRET_KEY/WEBHOOK_SECRET/PRICE_IDs(3개), Toss TOSS_SECRET_KEY/CLIENT_KEY, SendGrid EMAIL_API_KEY/FROM, B2B_CONTACT_EMAIL 총 12개 환경 변수 문서화. 프리미엄 멤버십 + 뉴스레터 + 데이터 라이선싱 운영에 필요한 전체 설정 안내.
+
+---
+
+### [ID: RL-20260306-15]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 (신규 파일 5개)
+- **변경 대상**: `pages/api/data/licensing.js`, `pages/api/data/export.js`, `lib/schemas/dataLicensingRequest.js`
+- **변경 요약**: Phase C-3 — 데이터 라이선싱 B2B API 구현
+- **변경 상세**:
+  - `DATA_PLANS`: Starter($99)/Professional($299)/Enterprise($499) 3단계 플랜
+  - `/api/data/licensing`: GET 플랜 안내, POST API 키 발급 신청 (관리자 승인 방식)
+  - `/api/data/export`: API 키 인증, 플랜별 접근 제어, 월간 요청 한도 관리, 6개 데이터 타입 (trends/hotIssues/vip/emerging/sentiment/forecast)
+  - `computeForecast()`: 최근 데이터의 언급 velocity 기반 rising/falling/breakout 예측
+  - `dataLicensingRequest` Sanity 스키마 + `schemas/index.js` + `sanity.config.js` 등록
+  - `vercel.json`에 뉴스레터 발송 cron 추가 (월·목 09:00)
+- **예상 효과**: 미디어/에이전시/K-Culture 리서치 기업 대상 B2B 수익 채널 개통 (월 $99-499/고객)
+
+---
+
+### [ID: RL-20260306-14]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 수정
+- **변경 대상**: `lib/aiSentiment.js`
+- **변경 요약**: Phase C-2 — 다국어 감성 분석 일본어/중국어 확장
+- **변경 상세**:
+  - `SENTIMENT_DICT`: 긍정/부정/독성 사전을 ko/en/ja/zh 4개 언어 구조로 재편
+  - `detectLanguage(text)`: 유니코드 범위 기반 빠른 언어 감지 (한글/일본어/중국어/영어)
+  - `analyzeSentiment(text, langHint)`: 감지된 언어 + 영어 공통 사전 동시 검사, 반환값에 `detectedLanguage` 필드 추가
+  - K-Culture 특성상 일본·중국 팬덤 댓글 정확도 대폭 향상 예상
+
+---
+
+### [ID: RL-20260306-13]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 수정 (마이그레이션)
+- **변경 대상**: `lib/vipMonitoring.js`
+- **변경 요약**: Phase C-1 — Twitter/X v2 raw fetch → `twitter-api-v2` SDK 마이그레이션
+- **변경 상세**:
+  - `import { TwitterApi } from 'twitter-api-v2'` 추가 (패키지 기설치)
+  - `searchTwitter()` 함수: raw fetch + 수동 타임아웃/레이트리밋 처리 → `twitterClient.v2.searchRecent()` SDK 호출로 교체
+  - SDK 장점: 자동 레이트리밋 추적, 페이지네이션 내장, `public_metrics` 자동 파싱, 에러 코드 정확도 향상
+  - 쿼리에 `-is:retweet` 필터 추가로 리트윗 제외, 노이즈 감소
+
+---
+
+### [ID: RL-20260306-12]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 (신규 파일 3개 + 수정 2개)
+- **변경 대상**: `pages/admin/emerging.jsx`, `pages/api/admin/emerging-trends.js`, `lib/premiumMembership.js`, `pages/api/premium/subscribe.js`, `pages/api/premium/status.js`, `pages/api/premium/webhook.js`
+- **변경 요약**: Phase B-2/B-3 — 프리미엄 멤버십 결제 흐름 + 이머징 트렌드 관리 대시보드
+- **변경 상세**:
+  - `lib/premiumMembership.js`: PLANS 3종(월간/연간/평생), Stripe 체크아웃 세션, Toss Payments 결제 준비/승인, 멤버십 상태 조회, 자동 만료 처리
+  - `pages/api/premium/subscribe.js`: Stripe/Toss 세션 생성 (provider 선택)
+  - `pages/api/premium/status.js`: 현재 사용자 멤버십 상태 + 전체 플랜 목록 반환
+  - `pages/api/premium/webhook.js`: Stripe 웹훅 서명 검증 (HMAC-SHA256, 타이밍 공격 방어)
+  - `pages/admin/emerging.jsx`: 이머징 엔티티 테이블 + 알림 탭 + VIP 승격/무시 액션 + 상세 모달 (완전한 관리 UI)
+  - `pages/api/admin/emerging-trends.js`: 조회/상태변경 API (관리자 인증 필수)
+  - `lib/schemas/premiumMember.js`: 멤버십 Sanity 스키마 (5가지 상태, Stripe/Toss 필드)
+
+---
+
+### [ID: RL-20260306-11]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: 시스템(자동)
+- **변경 유형**: 코드 추가 (신규 파일 2개)
+- **변경 대상**: `lib/newsletter.js`, `pages/api/newsletter/subscribe.js`, `pages/api/newsletter/send.js`, `lib/schemas/newsletterSubscriber.js`
+- **변경 요약**: Phase B-1 — 이메일 뉴스레터 구독 + 발송 시스템 완전 구현
+- **변경 상세**:
+  - `lib/newsletter.js`: 이중 옵트인 방식 구독 등록, 수신거부 처리, K-Culture 트렌드 기반 HTML 뉴스레터 자동 생성, SendGrid 배치 발송 (100명씩, 레이트리밋 준수)
+  - `subscribeToNewsletter()`: 중복 체크, 재활성화, GDPR 준수 이중 옵트인
+  - `sendTrendNewsletter()`: 다국어(ko/en/ja/zh) 제목 + HTML 템플릿 자동 생성
+  - `/api/newsletter/subscribe`: IP 기반 레이트리밋 (3회/분), 입력 검증
+  - `/api/newsletter/send`: 관리자/cron 트리거, 테스트 모드 지원
+  - `newsletterSubscriber` Sanity 스키마 (이중 옵트인 상태 추적)
+  - `vercel.json`에 뉴스레터 cron 등록 (월·목 09:00 UTC)
+
+---
+
+### [ID: RL-20260306-10]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 인프라 (Cron + 환경변수)
+- **변경 대상 파일**: `vercel.json`, `.env.template`
+- **변경 요약**: vercel.json에 Cron Job 5개 등록, .env.template에 수익화/신규SNS/이머징트렌드 변수 추가
+- **변경 상세 설명**: `vercel.json`의 crons 섹션에 `emerging-trend-scan`(3시간마다), `vip-monitoring`(30분마다), `trend-detection`(2시간마다) 3개를 추가(기존 2개 포함 총 5개). `.env.template`에 섹션 10-12 추가: 수익화(AdSense Publisher ID, 슬롯, Coupang Partners, Amazon Associates), 신규 SNS(VK.com, Mastodon), 이머징트렌드(AUTO_TRACK_THRESHOLD, ALERT_THRESHOLD) 총 12개 변수 추가.
+- **관련 RL**: RL-20260306-07~09
+
+---
+
+### [ID: RL-20260306-09]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 신규 기능
+- **변경 대상 파일**: `pages/api/cron/emerging-trend-scan.js` (신규)
+- **변경 요약**: 이머징 트렌드 자동 발굴 Cron Job — 3시간마다 실행
+- **변경 상세 설명**: `scrapeFreeSources`(31개 무료 소스)로 글로벌 데이터 수집 → `runEmergingTrendScan`으로 미지정 엔티티 탐지 → velocity score >= 100이면 `emergingAlert` 타입으로 Sanity에 즉시 저장 → 관리자 대시보드에서 승인/거부 처리. `withCronAuth` 래퍼로 인증 보호.
+- **관련 RL**: RL-20260306-07, RL-20260306-08
+
+---
+
+### [ID: RL-20260306-08]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 신규 기능
+- **변경 대상 파일**: `lib/revenueEngine.js` (신규)
+- **변경 요약**: 수익 극대화 엔진 — AdSense, Coupang, Amazon, 프리미엄, 뉴스레터 통합
+- **변경 상세 설명**: 8개 수익 채널 자동화: (1)Google AdSense RPM 카테고리별 최적화($2-9.2), (2)Coupang Partners 제휴링크 빌더(5-12% 커미션), (3)Amazon Associates 글로벌 K-상품 링크(3-10%), (4)프리미엄 멤버십 $4.99/월 설정, (5)뉴스레터 RPM 수익 계산($2/1000), (6)SEO 고RPM 키워드 목록(K-Beauty 최고 $9.2), (7)콘텐츠 수익성 우선순위 점수(`calculateRevenuePriority`), (8)월간 수익 예측 리포트(`generateRevenueReport`). CEO 코드 수정 없이 admin dashboard에서 수익률 조회 가능 구조.
+- **영향 범위**: 전체 콘텐츠 생성 파이프라인의 수익 최적화, 제휴 링크 자동 삽입 준비
+
+---
+
+### [ID: RL-20260306-07]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 신규 기능
+- **변경 대상 파일**: `lib/emergingTrendDetector.js` (신규)
+- **변경 요약**: Zero-Prior-Knowledge 이머징 트렌드 탐지 엔진
+- **변경 상세 설명**: 관리자가 지정하지 않은 신규 인물/그룹/이슈를 자동 발굴하는 엔진. NLP 규칙 기반 엔티티 추출(K-Pop 그룹 패턴, 한국인 이름, 로마자 표기, 해시태그), 크로스소스 빈도 분석, 속도(Velocity) 점수 산정, VIP_MAP + TRACKING_ISSUES 대조로 미지정 엔티티 필터. velocity >= 50이면 Sanity `emergingTrend` 문서로 자동 저장, >= 100이면 `emergingAlert`로 즉시 알림. 환경변수로 임계값 조정 가능(`EMERGING_TREND_AUTO_TRACK_THRESHOLD`, `EMERGING_TREND_ALERT_THRESHOLD`).
+- **영향 범위**: 원칙 14 완전 준수 — VIP 미지정 인물도 트래픽·SNS 기반 자동 탐지
+
+---
+
+### [ID: RL-20260306-06]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 기능 확장 + 코드 품질
+- **변경 대상 파일**: `lib/autonomousScraper.js`, `lib/socialMediaIntegration.js`, `lib/trendManagement.js`
+- **변경 요약**: autonomousScraper 글로벌 31개 소스 확장, socialMediaIntegration Mastodon/VK 추가, 전 파일 console → logger 변환
+- **변경 상세 설명**: `autonomousScraper.js` 전면 재작성(v2.0): 기존 Reddit 3개 + Google Trends KR 1개 → Reddit 18개(kpop, hallyu, bangtan, blackpink, TWICE, aespa, NewJeans, IVE, EXO, SEVENTEEN, NCT, Stray Kids, LE SSERAFIM, 기타) + Google Trends 6개 지역(global/KR/US/JP/TW/GB) + YouTube RSS 3채널(SM/YG/JYP) + Tumblr 태그 3개 + Mastodon 3개 + Naver 1개 = **총 31개** 무료 소스. K-Culture 신호어 30개 기반 1차 필터 추가. `socialMediaIntegration.js`에 Mastodon 공개 타임라인 API(`fetchMastodonHashtag`) + VK.com 뉴스피드 검색(`fetchVKData`) + PLATFORM_CONFIG에 두 플랫폼 메타데이터 추가. `trendManagement.js`, `autonomousScraper.js`의 모든 console.log/error → logger.info/error 변환.
+- **영향 범위**: 트렌드 수집 범위 10배 확장(2→31 소스), 동유럽/러시아/Fediverse 트래픽 포착
+
+---
+
+### [ID: RL-20260306-05]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 품질 개선 (로깅 + 아키텍처)
+- **변경 대상 파일**: `lib/trendManagement.js`, `pages/api/cron/trend-detection.js`, `pages/api/cron/vip-monitoring.js`, `pages/api/cron/content-generation.js`, `pages/api/cron/daily-report.js`, `pages/api/cron/performance-report.js`, `pages/_document.jsx`, `components/RealtimeChat.jsx`, `components/CommunityCard.jsx`, `components/RecommendationWidget.jsx`
+- **변경 요약**: Sanity 단일 인스턴스 원칙 적용 + console.log → logger 변환 (cron 5개) + 기타 console 정리
+- **변경 상세 설명**: `lib/trendManagement.js`에서 `createClient`를 직접 호출하는 코드를 `import sanityClient from './sanityClient.js'`로 교체해 Sanity 단일 인스턴스 원칙(WORKGUIDE 참고) 준수. cron 5개 파일(`trend-detection`, `vip-monitoring`, `content-generation`, `daily-report`, `performance-report`)에서 `console.log/error/warn` 총 26개를 `lib/logger`의 `logger.info/warn/error('[cron]', ...)` 호출로 교체해 프로덕션 환경에서 구조화된 로그가 출력되도록 개선. 그 외 `_document.jsx` SW 등록 log 2개 제거, `RealtimeChat.jsx` 연결 상태 log 2개 제거, `CommunityCard.jsx` catch 블록 error log 제거, `RecommendationWidget.jsx` error log → 유지 주석으로 교체.
+- **영향 범위**: 프로덕션 로그 품질, Sanity 클라이언트 중복 인스턴스 방지, 운영 모니터링 가시성
+
+---
+
+### [ID: RL-20260306-04]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 코드 품질 (런타임 타입 안전성)
+- **변경 대상 파일**: `components/CommunityCard.jsx`, `components/ContextMenu.jsx`, `components/OptimizedImage.jsx`, `components/PollComponent.jsx`, `components/ReactionButton.jsx`, `components/RecommendationWidget.jsx`, `components/ReportModal.jsx`
+- **변경 요약**: 7개 컴포넌트 PropTypes 추가 + OptimizedImage eslint-disable 제거
+- **변경 상세 설명**: 전체 컴포넌트 디렉토리 감사에서 12개 컴포넌트 중 props를 받는 7개에 PropTypes 선언이 누락되어 있음을 확인. 각 컴포넌트의 실제 사용 패턴을 분석해 필수값(`.isRequired`)과 선택값, 정확한 타입(shape, oneOf, objectOf(number) 등)을 지정. `OptimizedImage.jsx`에서는 기존에 있던 `/* eslint-disable react/prop-types */` 주석도 함께 제거해 ESLint 규칙이 정상 작동하도록 복원. `ReportModal.jsx`는 `targetType: oneOf(['post','comment','user'])`처럼 허용값을 명시해 잘못된 값 전달 시 경고가 표시되도록 강화.
+- **영향 범위**: 개발 환경 런타임 타입 경고, ESLint 정적 분석 품질
+
+---
+
+### [ID: RL-20260306-03]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 보안 + 코드 표준화
+- **변경 대상 파일**: `pages/api/posts.js`, `pages/api/recommendations.js`, `pages/api/reports.js`, `pages/api/messages.js`, `pages/api/trends.js`, `pages/api/boards.js`, `pages/api/polls/index.js`, `pages/api/communities/index.js`, `pages/api/gamification/claim-reward.js`, `pages/api/gamification/leaderboard.js`, `pages/api/gamification/missions.js`, `pages/api/gamification/badges.js`, `pages/api/admin/cost-monitor.js`, `pages/api/admin/key-rotation.js`, `pages/api/admin/finance-stats.js`, `pages/api/ai/content-generator.js`, `pages/api/ai/suggest.js`, `pages/api/ai/analyze.js`, `pages/api/vip/top.js`, `pages/api/events/index.js`, `pages/api/marketplace/index.js`, `pages/api/moderation/report.js`, `pages/api/monitoring/stats.js`
+- **변경 요약**: 23개 API 파일에 withErrorHandler + rateLimitMiddleware + getServerSession 일괄 적용
+- **변경 상세 설명**: 전체 API 라우트 감사에서 `lib/apiErrorHandler.js`의 `withErrorHandler` 래퍼, `lib/rateLimiter.js`의 `rateLimitMiddleware`, 그리고 서버사이드 세션 조회를 위한 `next-auth`의 `getServerSession`이 적용되지 않은 API가 다수 발견. `getSession`(클라이언트 전용)을 서버 측에서 사용하는 보안 안티패턴도 함께 수정. 23개 파일에 공통 패턴(`import → async function handler → export default withErrorHandler(handler)`)을 적용해 예외 처리 누락, Rate Limit 미적용, 세션 조회 오류의 세 가지 문제를 일괄 해소. `marketplace/index.js`는 `next-auth/next` 임포트 경로 오류도 함께 수정.
+- **영향 범위**: API 전체 에러 핸들링 일관성, DDoS/브루트포스 방어, 서버사이드 인증 보안
+
+---
+
+### [ID: RL-20260306-02]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 문서화
+- **변경 대상 파일**: `README.md`, `.env.template`
+- **변경 요약**: README 버전 통일·Phase 서술 현행화·기술스택 버전 업데이트, .env.template 전면 재작성
+- **변경 상세 설명**: `README.md`에서 v12.0/v14.0이 혼재하던 버전 표기를 v14.0으로 통일하고, Phase 0 중심의 구시대 서술을 "Phase 1~6 완료, Phase 7 준비 중"으로 현행화. 기술 스택 버전도 React 19.2.0, NextAuth.js 4.24.13, Sanity.io v7.13.0 (Sanity Studio v4)으로 package.json 실제값과 일치시킴. `.env.template`은 기존 미입력 항목 외에 9개 섹션(기본·DB·AI·SNS·결제·이메일·모니터링·보안·Sanity)으로 구조화하고 22개 이상의 누락 변수(SNS 키, AI 키, Sentry DSN, Cost Monitor 임계값 등)를 주석과 함께 추가해 신규 팀원이 처음 설정 시 누락 없이 완성할 수 있도록 개선.
+- **영향 범위**: 신규 팀원 온보딩, 환경변수 누락으로 인한 배포 실패 예방, 문서 신뢰도
+
+---
+
+### [ID: RL-20260306-01]
+- **날짜**: 2026-03-06 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 보안
+- **변경 대상 파일**: `next.config.js`
+- **변경 요약**: HTTP 보안 헤더 4개 추가 (HSTS, Referrer-Policy, Permissions-Policy, CSP)
+- **변경 상세 설명**: `next.config.js`의 `headers()` 설정에 프로덕션 배포 시 필수적인 보안 헤더 4개를 추가. `Strict-Transport-Security`(HSTS, max-age 1년 + includeSubDomains + preload)로 HTTPS 강제 적용, `Referrer-Policy: strict-origin-when-cross-origin`으로 외부 요청 시 referrer 정보 최소화, `Permissions-Policy`로 미사용 브라우저 API(camera, microphone, geolocation 등) 차단, `Content-Security-Policy`로 XSS 방어(default-src self, script-src self unsafe-eval unsafe-inline, img-src self data: blob: https:, 개발 환경 script-src에 localhost 허용) 설정. OWASP Top 10 A05(보안 설정 오류) 항목 대응.
+- **영향 범위**: 모든 페이지 HTTP 응답 헤더, XSS 방어, MITM 방어, 브라우저 API 접근 제한
+
+---
+
+### [ID: RL-20260305-02]
+- **날짜**: 2026-03-05 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 설정
+- **변경 대상 파일**: `.env.template`
+- **변경 요약**: 누락된 SNS / AI / 관리자 환경변수 추가
+- **변경 상세 설명**: 전체 코드베이스 감사 결과, `.env.template`에 `lib/socialAutoPoster.js`가 의존하는 X(Twitter) 읽기+쓰기 키 4개(`X_API_KEY`, `X_API_SECRET`, `X_ACCESS_TOKEN`, `X_ACCESS_SECRET`)와 Facebook 키 2개(`FB_PAGE_ID`, `FB_PAGE_ACCESS_TOKEN`), Gemini AI 키(`GOOGLE_GEMINI_API_KEY`), 사이트 도메인(`NEXT_PUBLIC_SITE_URL`), 관리자 이메일(`ADMIN_EMAILS`), 발신 이메일 주소(`EMAIL_FROM`) 총 10개 변수가 누락되어 있음을 확인. 프로덕션 환경(Vercel)에 신규 키를 설정할 수 있도록 `.env.template`에 주석과 함께 추가. SNS 자동 포스터(`distributeToSocialMedia`)가 silently fail하는 문제를 배포 전에 막는 유일한 가이드.
+- **관련 RL**: RL-20260305-01
+
+---
+
+### [ID: RL-20260305-01]
+- **날짜**: 2026-03-05 (KST)
+- **작성자**: AI Agent (GitHub Copilot)
+- **변경 유형**: 버그 수정 (보안 + SEO)
+- **변경 대상 파일**: `pages/index.jsx`, `pages/api/sitemap.xml.js`, `lib/advancedContentGeneration.js`, `lib/securityMiddleware.js`, `lib/openapi.js`, `lib/notificationSystem.js`
+- **변경 요약**: 도메인 SSoT 복원 — 전 파일 `www.kulture.wiki` 단일화
+- **변경 상세 설명**: 전체 코드베이스 감사에서 `kulture.wiki`, `kulture.com` 2개 도메인이 혼재함을 발견. 올바른 도메인은 `www.kulture.wiki`(CEO 확인). `pages/api/sitemap.xml.js`, `lib/securityMiddleware.js`(CORS + CSP), `lib/openapi.js`, `lib/notificationSystem.js`, `components/SEOHead.jsx`, `lib/socialAutoPoster.js` 6개 파일을 `https://www.kulture.wiki` 기준으로 통일. `NEXT_PUBLIC_SITE_URL` 환경변수 미설정 시에도 올바른 기본값 보장.
+- **영향 범위**: SEO canonical 신호, CORS 보안 정책, API 문서, SNS 포스팅 링크, 이메일 발신자 주소
+
+---
+
 ### [ID: RL-20260227-10]
 - **날짜**: 2026-02-27 14:10 (KST)
 - **작성자**: Gems & GitHub Copilot
@@ -169,13 +944,15 @@
     - ReviseLog.md: RL-20251205-04 엔트리 추가 (상세 변경 기록)
     - IMPLEMENTATION_STATUS_20251205.md: 새로 생성 (전체 구현 상태 보고서)
     - FINAL_VERIFICATION_CHECKLIST_20251205.md: 새로 생성 (배포 전 검증 체크리스트)
-- 핵심 기능:
+
+  - 핵심 기능:
   - CEO가 /admin/settings 페이지에서 모든 신규 기능의 On/Off 즉시 제어 가능
   - Sanity siteSettings 변경 → useSiteSettings 훅 감지 → 프론트엔드 자동 갱신 (캐싱 없음)
   - 3계층 제어: UI(링크 숨김 + 404) + API(403 Forbidden) + 설정(Sanity 중앙 제어)
   - 초기 로드: DEFAULT_SETTINGS로 모든 기능 활성화 (Sanity 로드 후 업데이트)
   - 에러 처리: Sanity 조회 실패 시 DEFAULT_SETTINGS 폴백
-- 관련 PR/이슈: 프로젝트 원칙 12 완전 이행, CRITICAL_VIOLATIONS_REPORT.md 해결
+
+  - 관련 PR/이슈: 프로젝트 원칙 12 완전 이행, CRITICAL_VIOLATIONS_REPORT.md 해결
 
 RL-20251205-02
 - 날짜: 2025-12-05 18:00 (KST)
@@ -205,7 +982,7 @@ RL-20251205-03
 RL-20251205-01
 - Change: Vercel cron schedule reduced for Hobby plan compatibility
   - vercel.json: removed high-frequency crons and kept a single daily job (/api/cron/daily-report at 10:00 KST) to allow deployment on free tier
-  - Rationale: Hobby accounts permit only once-per-day cron executions; previous schedules (*/30, */2, hourly, etc.) blocked deployment
+  - Rationale: Hobby accounts permit only once-per-day cron executions; previous schedules (`*/30`, `*/2`, hourly, etc.) blocked deployment
 
 RL-20251126-10
 - Critical: 프로젝트 원칙 위반 사항 발견 및 보고

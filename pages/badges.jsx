@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useSiteSettings } from '../lib/settings.js'
 import styles from '../styles/Badges.module.css'
+import { logger } from '../lib/logger.js';
 
 export default function Badges() {
   const { data: session } = useSession()
@@ -43,7 +44,7 @@ export default function Badges() {
         }
       }
     } catch (error) {
-      console.error('Failed to fetch badges:', error)
+      logger.error('Failed to fetch badges:', error)
     } finally {
       setLoading(false)
     }

@@ -1,5 +1,8 @@
-import { sanityClient } from '../../../lib/sanityClient'
-import { getSession } from 'next-auth/react'
+import { sanityClient } from '../../../lib/sanityClient.js'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../auth/[...nextauth]'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { logger } from '../../../lib/logger.js';
 
 /**
  * Events API
@@ -8,8 +11,8 @@ import { getSession } from 'next-auth/react'
  * - PATCH: Join/Leave event
  */
 
-export default async function handler(req, res) {
-  const session = await getSession({ req })
+async function handler(req, res) {
+  const session = await getServerSession(req, res, authOptions)
 
   if (req.method === 'GET') {
     try {
@@ -74,7 +77,7 @@ export default async function handler(req, res) {
         },
       })
     } catch (error) {
-      console.error('Error fetching events:', error)
+      logger.error('Error fetching events:', error)
       return res.status(500).json({ error: 'Failed to fetch events' })
     }
   }
@@ -120,7 +123,7 @@ export default async function handler(req, res) {
 
       return res.status(201).json({ event })
     } catch (error) {
-      console.error('Error creating event:', error)
+      logger.error('Error creating event:', error)
       return res.status(500).json({ error: 'Failed to create event' })
     }
   }
@@ -158,10 +161,12 @@ export default async function handler(req, res) {
         return res.status(200).json({ event })
       }
     } catch (error) {
-      console.error('Error updating event:', error)
+      logger.error('Error updating event:', error)
       return res.status(500).json({ error: 'Failed to update event' })
     }
   }
 
   return res.status(405).json({ error: 'Method not allowed' })
 }
+
+export default withErrorHandler(handler)

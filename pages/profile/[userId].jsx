@@ -7,6 +7,7 @@ import FollowButton from '../../components/FollowButton'
 import InfiniteScrollPosts from '../../components/InfiniteScrollPosts'
 import Toast from '../../components/Toast'
 import styles from '../../styles/Profile.module.css'
+import { logger } from '../../lib/logger.js';
 
 export default function Profile() {
   const router = useRouter()
@@ -41,7 +42,7 @@ export default function Profile() {
         }
       } catch (err) {
         setError('사용자 정보 로드 실패')
-        console.error(err)
+        logger.error(err)
       } finally {
         setLoading(false)
       }

@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react'
 import SEOHead from '../../components/SEOHead'
 import Toast from '../../components/Toast'
 import styles from '../../styles/Events.module.css'
+import { logger } from '../../lib/logger.js';
 
 export default function EventsPage() {
   const { data: session } = useSession()
@@ -44,7 +45,7 @@ export default function EventsPage() {
         setHasMore(data.events.length === 12)
       }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       setToast({ type: 'error', message: '이벤트 로드 실패' })
     } finally {
       setLoading(false)

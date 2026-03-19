@@ -3,10 +3,12 @@
  * Get translation cost statistics and budget status
  */
 
-import { getCostMonitor } from '../../../lib/costMonitor';
-import { verifyAdmin } from '../../../lib/auth';
+import { getCostMonitor } from '../../../lib/costMonitor.js';
+import { verifyAdmin } from '../../../lib/auth.js';
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js';
+import { logger } from '../../../lib/logger.js';
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   try {
     // Admin only
     await verifyAdmin(req, res);
@@ -41,9 +43,11 @@ export default async function handler(req, res) {
 
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (error) {
-    console.error('Cost monitoring error:', error);
+    logger.error('Cost monitoring error:', error);
     return res.status(error.message === 'Forbidden: Admin access required' ? 403 : 500).json({
       error: error.message || 'Internal server error',
     });
   }
 }
+
+export default withErrorHandler(handler);

@@ -1,0 +1,17 @@
+/* ============================================================
+   Layout — Wrapper
+   ============================================================ */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg-primary, #0A0A0C);
+}
+
+.main {
+  flex: 1;
+  width: 100%;
+  /* Push content below sticky navbar */
+  padding-top: 0;
+}

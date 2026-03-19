@@ -1,42 +1,61 @@
 {
   "name": "Kulture - K-Culture Global Community",
   "short_name": "Kulture",
-  "description": "전세계 K-Culture 팬들의 글로벌 커뮤니티",
-  "start_url": "/",
+  "description": "전세계 K-Culture 팬들의 글로벌 커뮤니티 — K-POP, 드라마, 뷰티, 패션 실시간 트렌드",
+  "start_url": "/?source=pwa",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "background_color": "#667eea",
   "theme_color": "#667eea",
   "orientation": "portrait-primary",
+  "lang": "ko",
+  "dir": "ltr",
+  "id": "app.kulture.global",
+  "categories": ["social", "entertainment", "lifestyle", "news"],
+  "iarc_rating_id": "",
+  "prefer_related_applications": false,
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=app.kulture.android",
+      "id": "app.kulture.android"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/kulture/id0000000000"
+    }
+  ],
   "icons": [
     {
       "src": "/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/icons/icon-96x96.png",
       "sizes": "96x96",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/icons/icon-128x128.png",
       "sizes": "128x128",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/icons/icon-144x144.png",
       "sizes": "144x144",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/icons/icon-152x152.png",
       "sizes": "152x152",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/icons/icon-192x192.png",
@@ -48,7 +67,7 @@
       "src": "/icons/icon-384x384.png",
       "sizes": "384x384",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/icons/icon-512x512.png",
@@ -57,39 +76,65 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["social", "entertainment", "lifestyle"],
   "screenshots": [
-    {
-      "src": "/screenshots/desktop-1.png",
-      "sizes": "1920x1080",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
     {
       "src": "/screenshots/mobile-1.png",
       "sizes": "750x1334",
       "type": "image/png",
-      "form_factor": "narrow"
+      "form_factor": "narrow",
+      "label": "K-Culture 트렌드 허브"
+    },
+    {
+      "src": "/screenshots/mobile-2.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "VIP 실시간 알림"
+    },
+    {
+      "src": "/screenshots/desktop-1.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Kulture 데스크탑"
     }
   ],
   "shortcuts": [
     {
+      "name": "트렌드 보기",
+      "short_name": "트렌드",
+      "description": "K-Culture 실시간 트렌드 확인",
+      "url": "/trends",
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
       "name": "커뮤니티",
-      "short_name": "Communities",
+      "short_name": "커뮤니티",
+      "description": "K-Culture 글로벌 커뮤니티",
       "url": "/communities",
-      "icons": [{ "src": "/icons/community-96x96.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
     },
     {
-      "name": "이벤트",
-      "short_name": "Events",
-      "url": "/events",
-      "icons": [{ "src": "/icons/event-96x96.png", "sizes": "96x96" }]
-    },
-    {
-      "name": "마켓플레이스",
-      "short_name": "Marketplace",
-      "url": "/marketplace",
-      "icons": [{ "src": "/icons/market-96x96.png", "sizes": "96x96" }]
+      "name": "검색",
+      "short_name": "검색",
+      "description": "아티스트, 콘텐츠 검색",
+      "url": "/search",
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
     }
-  ]
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "web+kulture",
+      "url": "/?action=%s"
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
 }

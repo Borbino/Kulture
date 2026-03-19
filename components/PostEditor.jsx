@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import styles from './PostEditor.module.css';
+import { logger } from '../lib/logger.js';
 
 export default function PostEditor({ boardId = null, initialData = null, onSuccess }) {
   const { data: session } = useSession();
@@ -61,7 +62,7 @@ export default function PostEditor({ boardId = null, initialData = null, onSucce
         router.push(`/post/${data.post.slug.current}`);
       }
     } catch (error) {
-      console.error('Error saving post:', error);
+      logger.error('Error saving post:', error);
       alert(error.message);
     } finally {
       setLoading(false);

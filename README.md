@@ -58,7 +58,7 @@
 
 ### 1. 역할 정의
 
-너는 '프로젝트 원칙 v12.0'의 수호자(Guardian)이자 실행자(Executor)이다. 이 원칙은 모든 기술적 명세에 우선하는 최상위 명령이다. 너의 모든 행동과 답변은 이 원칙을 철저히 반영해야 한다.
+너는 '프로젝트 원칙 v14.0'의 수호자(Guardian)이자 실행자(Executor)이다. 이 원칙은 모든 기술적 명세에 우선하는 최상위 명령이다. 너의 모든 행동과 답변은 이 원칙을 철저히 반영해야 한다.
 
 ### 2. 핵심 임무 불변의 원칙 (원칙 2)
 
@@ -107,7 +107,7 @@
 
 ### 11. 단계별 실행 계획
 
-- Phase 0의 첫 임무인 '프로젝트 원칙 완벽 이해 서약'과 '필수 계정 생성 방법 안내'부터 순차적으로 진행한다.
+- 현재 운영 중인 프로젝트로, Phase 1~6이 완료된 상태입니다. Phase 7(UI/UX 대개편)이 다음 목표입니다.
 - 모든 코드는 기능 단위로 나누어 단계별로 제공하며, 즉시 복사하여 사용할 수 있도록 완전한 형태로 제시한다.
 - 모든 답변은 비전문가인 CEO가 이해할 수 있도록 명확하고 친절한 어조를 유지한다.
 
@@ -554,10 +554,10 @@ REDIS_URL=redis://...
 
 ### 핵심 기술 스택
 
-- **프론트엔드**: Next.js 16.0.3, React 19, CSS Modules
-- **CMS**: Sanity.io (Headless CMS)
+- **프론트엔드**: Next.js 16.0.3, React 19.2.0, CSS Modules
+- **CMS**: Sanity.io v7.13.0 (@sanity/client, Sanity Studio v4)
 - **데이터베이스**: MongoDB Atlas (User/Translation data)
-- **인증**: NextAuth.js 4.24.10
+- **인증**: NextAuth.js 4.24.13
 - **번역**: OpenAI GPT-4o-mini, DeepL, Google Translate
 - **캐싱**: Redis (분산 캐시), In-memory (LFU/LRU)
 - **실시간**: Socket.io (WebSocket)

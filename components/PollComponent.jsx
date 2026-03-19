@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import styles from '../styles/PollComponent.module.css'
+import PropTypes from 'prop-types'
+import styles from '../styles/PollComponent.module.css.js'
+import { logger } from '../lib/logger.js';
 
 export default function PollComponent({ poll, onVote }) {
   const { data: session } = useSession()
@@ -41,7 +43,7 @@ export default function PollComponent({ poll, onVote }) {
       }
     } catch (error) {
       alert('투표 중 오류 발생')
-      console.error(error)
+      logger.error(error)
     } finally {
       setLoading(false)
     }
@@ -91,4 +93,20 @@ export default function PollComponent({ poll, onVote }) {
       </div>
     </div>
   )
+}
+
+PollComponent.propTypes = {
+  poll: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    options: PropTypes.arrayOf(
+      PropTypes.shape({
+        _key: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+        voteCount: PropTypes.number,
+      })
+    ).isRequired,
+  }).isRequired,
+  onVote: PropTypes.func,
 }

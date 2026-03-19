@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import PropTypes from 'prop-types'
 import styles from './CommentSection.module.css'
+import { logger } from '../lib/logger.js';
 
 export default function CommentSection({ postId }) {
   const { data: session } = useSession()
@@ -23,7 +24,7 @@ export default function CommentSection({ postId }) {
         setComments(data.comments)
       }
     } catch (error) {
-      console.error('Failed to fetch comments:', error)
+      logger.error('Failed to fetch comments:', error)
     } finally {
       setLoading(false)
     }

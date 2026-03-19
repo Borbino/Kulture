@@ -1,0 +1,170 @@
+/* ============================================================
+   Footer — Minimal Magazine Style
+   ============================================================ */
+
+.footer {
+  margin-top: auto;
+  border-top: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+  background: var(--bg-secondary, #111116);
+}
+
+.inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 48px 24px 32px;
+}
+
+/* ── Top row ── */
+.top {
+  display: grid;
+  grid-template-columns: 1.5fr repeat(3, 1fr);
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+/* ── Brand column ── */
+.brand {}
+
+.logoText {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 32px;
+  letter-spacing: 5px;
+  background: linear-gradient(135deg, #FF2E93, #00E5FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.tagline {
+  font-size: 13px;
+  color: var(--text-muted, #606070);
+  line-height: 1.6;
+  max-width: 240px;
+}
+
+/* SNS links */
+.socialLinks {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm, 6px);
+  border: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+  color: var(--text-muted, #606070);
+  transition: color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.socialLink:hover {
+  color: var(--accent-pink, #FF2E93);
+  border-color: rgba(255, 46, 147, 0.4);
+  box-shadow: 0 0 12px rgba(255, 46, 147, 0.2);
+}
+
+.socialLink svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* ── Link columns ── */
+.column {}
+
+.columnTitle {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-primary, #f0f0f5);
+  margin-bottom: 16px;
+}
+
+.columnLinks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.columnLinks a {
+  font-size: 13px;
+  color: var(--text-muted, #606070);
+  transition: color var(--transition-fast);
+}
+
+.columnLinks a:hover {
+  color: var(--accent-cyan, #00E5FF);
+}
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: var(--border-subtle, rgba(255,255,255,0.06));
+  margin-bottom: 24px;
+}
+
+/* ── Bottom row ── */
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.copyright {
+  font-size: 12px;
+  color: var(--text-muted, #606070);
+}
+
+.copyright strong {
+  color: var(--accent-pink, #FF2E93);
+}
+
+.legalLinks {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.legalLinks a {
+  font-size: 12px;
+  color: var(--text-muted, #606070);
+  transition: color var(--transition-fast);
+}
+
+.legalLinks a:hover {
+  color: var(--text-secondary, #a0a0b0);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .top {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .top {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .inner {
+    padding: 36px 16px 24px;
+  }
+
+  .bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

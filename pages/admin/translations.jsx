@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import styles from './translations.module.css'
+import { logger } from '../../lib/logger.js';
 
 export default function TranslationsAdminPage() {
   const [stats, setStats] = useState(null)
@@ -17,7 +18,7 @@ export default function TranslationsAdminPage() {
         setStats(data)
       }
     } catch (error) {
-      console.error('Failed to fetch stats', error)
+      logger.error('Failed to fetch stats', error)
     }
   }
 
@@ -33,7 +34,7 @@ export default function TranslationsAdminPage() {
         setAuthenticated(false)
       }
     } catch (error) {
-      console.error('Failed to fetch suggestions', error)
+      logger.error('Failed to fetch suggestions', error)
     } finally {
       setLoading(false)
     }
@@ -50,7 +51,7 @@ export default function TranslationsAdminPage() {
         fetchSuggestions()
       }
     } catch (error) {
-      console.error('Failed to update suggestion', error)
+      logger.error('Failed to update suggestion', error)
     }
   }
 

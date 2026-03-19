@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import PropTypes from 'prop-types';
 import styles from './FollowButton.module.css';
+import { logger } from '../lib/logger.js';
 
 export default function FollowButton({ userId, initialFollowing = false, onFollowChange }) {
   const { data: session } = useSession();
@@ -40,7 +41,7 @@ export default function FollowButton({ userId, initialFollowing = false, onFollo
         }
       }
     } catch (error) {
-      console.error('Failed to update follow status:', error);
+      logger.error('Failed to update follow status:', error);
     } finally {
       setLoading(false);
     }

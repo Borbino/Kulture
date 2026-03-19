@@ -1,5 +1,9 @@
-import { sanityClient } from '../../lib/sanityClient';
-import { getSession } from 'next-auth/react';
+import { sanityClient } from '../../lib/sanityClient.js';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './auth/[...nextauth]';
+import { withErrorHandler } from '../../lib/apiErrorHandler.js';
+import rateLimitMiddleware from '../../lib/rateLimiter.js';
+import { logger } from '../../lib/logger.js';
 
 /**
  * Messages (DM) API
@@ -9,8 +13,9 @@ import { getSession } from 'next-auth/react';
  * - DELETE: Delete message
  */
 
-export default async function handler(req, res) {
-  const session = await getSession({ req });
+async function handler(req, res) {
+  rateLimitMiddleware('api')(req, res, () => {});
+  const session = await getServerSession(req, res, authOptions);
 
   if (!session) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -73,7 +78,7 @@ export default async function handler(req, res) {
         },
       });
     } catch (error) {
-      console.error('Error fetching messages:', error);
+      logger.error('Error fetching messages:', error);
       return res.status(500).json({ error: 'Failed to fetch messages' });
     }
   }
@@ -141,7 +146,7 @@ export default async function handler(req, res) {
 
       return res.status(201).json({ message });
     } catch (error) {
-      console.error('Error sending message:', error);
+      logger.error('Error sending message:', error);
       return res.status(500).json({ error: 'Failed to send message' });
     }
   }
@@ -178,7 +183,7 @@ export default async function handler(req, res) {
 
       return res.status(200).json({ message: updatedMessage });
     } catch (error) {
-      console.error('Error updating message:', error);
+      logger.error('Error updating message:', error);
       return res.status(500).json({ error: 'Failed to update message' });
     }
   }
@@ -212,10 +217,12 @@ export default async function handler(req, res) {
 
       return res.status(200).json({ message: 'Message deleted successfully' });
     } catch (error) {
-      console.error('Error deleting message:', error);
+      logger.error('Error deleting message:', error);
       return res.status(500).json({ error: 'Failed to delete message' });
     }
   }
 
   return res.status(405).json({ error: 'Method not allowed' });
 }
+
+export default withErrorHandler(handler);

@@ -2,8 +2,8 @@
  * Translation System Status and Health Check
  */
 
-import aiTranslation from '../../../lib/aiTranslation';
-import logger from '../../../lib/logger';
+import aiTranslation from '../../../lib/aiTranslation.js';
+import { logger } from '../../../lib/logger.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {

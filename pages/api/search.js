@@ -3,7 +3,8 @@
  * [목적] Sanity CMS 콘텐츠 검색 기능 + 게시판, 댓글, 유저 검색
  */
 
-import { getSanityClient } from '../../lib/sanityClient'
+import { getSanityClient } from '../../lib/sanityClient.js'
+import { logger } from '../../lib/logger.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -156,7 +157,7 @@ export default async function handler(req, res) {
       hasMore: totalResults === parseInt(limit),
     })
   } catch (error) {
-    console.error('Search error:', error)
+    logger.error('Search error:', error)
     return res.status(500).json({
       error: 'Search failed',
       message: error.message,

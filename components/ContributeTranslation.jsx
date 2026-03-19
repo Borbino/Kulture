@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import PropTypes from 'prop-types';
 import styles from './ContributeTranslation.module.css';
+import { logger } from '../lib/logger.js';
 
 export default function ContributeTranslation({ translationKey, originalText, currentTranslation }) {
   const { i18n } = useTranslation('common');
@@ -41,7 +42,7 @@ export default function ContributeTranslation({ translationKey, originalText, cu
         alert('번역 제출에 실패했습니다');
       }
     } catch (error) {
-      console.error('Failed to submit translation:', error);
+      logger.error('Failed to submit translation:', error);
       alert('번역 제출 중 오류가 발생했습니다');
     } finally {
       setSubmitting(false);

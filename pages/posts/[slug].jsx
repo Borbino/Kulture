@@ -10,6 +10,7 @@ import FollowButton from '../../components/FollowButton'
 import Toast from '../../components/Toast'
 import PollComponent from '../../components/PollComponent'
 import styles from '../../styles/PostDetail.module.css'
+import { logger } from '../../lib/logger.js';
 
 export default function Post() {
   const router = useRouter()
@@ -37,7 +38,7 @@ export default function Post() {
         }
       } catch (err) {
         setError('게시글 로드 실패')
-        console.error(err)
+        logger.error(err)
       } finally {
         setLoading(false)
       }
@@ -54,7 +55,7 @@ export default function Post() {
         const data = await res.json()
         setPoll(data?.polls?.[0] || null)
       } catch (err) {
-        console.error('투표 로드 실패', err)
+        logger.error('투표 로드 실패', err)
       } finally {
         setPollLoading(false)
       }
@@ -69,7 +70,7 @@ export default function Post() {
       const data = await res.json()
       setPoll(data?.polls?.[0] || null)
     } catch (err) {
-      console.error('투표 갱신 실패', err)
+      logger.error('투표 갱신 실패', err)
     }
   }
 
@@ -358,7 +359,7 @@ export async function getStaticProps({ params }) {
       revalidate: 3600, // 1시간마다 재생성
     }
   } catch (error) {
-    console.error('[Post SSG] Error:', error)
+    logger.error('[Post SSG] Error:', error)
     return {
       notFound: true,
     }

@@ -1,6 +1,6 @@
-/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import Image from 'next/image';
+import PropTypes from 'prop-types';
 
 export default function OptimizedImage({
   src,
@@ -66,6 +66,18 @@ export default function OptimizedImage({
       )}
     </div>
   );
+}
+
+OptimizedImage.propTypes = {
+  src: PropTypes.string,
+  alt: PropTypes.string,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  priority: PropTypes.bool,
+  quality: PropTypes.number,
+  sizes: PropTypes.string,
+  fallbackSrc: PropTypes.string,
+  className: PropTypes.string,
 }
 
 // Blur placeholder generators

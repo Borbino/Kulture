@@ -3,7 +3,8 @@
  * POST /api/translation/contribute
  */
 
-import { translateHighQuality, evaluateTranslationQuality } from '../../../lib/highQualityTranslation';
+import { evaluateTranslationQuality } from '../../../lib/highQualityTranslation.js';
+import { logger } from '../../../lib/logger.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -26,7 +27,7 @@ export default async function handler(req, res) {
       qualityScore = evaluation.score;
       qualityFeedback = evaluation.feedback;
     } catch (error) {
-      console.error('Quality evaluation failed:', error);
+      logger.error('[TranslationContribute]', `Quality evaluation failed: ${error.message}`);
     }
 
     // Store in database
@@ -83,16 +84,16 @@ export default async function handler(req, res) {
       autoApproved: false,
     });
   } catch (error) {
-    console.error('Contribute API error:', error);
+    logger.error('[TranslationContribute]', `API error: ${error.message}`);
     res.status(500).json({ error: 'Failed to submit translation' });
   }
 }
 
 async function updateTranslationFile(translation) {
-  const fs = require('fs').promises;
-  const path = require('path');
+  const { promises: fs } = await import('fs');
+  const { join, dirname } = await import('path');
 
-  const filePath = path.join(
+  const filePath = join(
     process.cwd(),
     'public',
     'locales',
@@ -105,7 +106,7 @@ async function updateTranslationFile(translation) {
     try {
       const content = await fs.readFile(filePath, 'utf8');
       translations = JSON.parse(content);
-    } catch (error) {
+    } catch {
       // File doesn't exist, start fresh
       translations = {};
     }
@@ -122,12 +123,12 @@ async function updateTranslationFile(translation) {
     current[keys[keys.length - 1]] = translation.translated;
 
     // Ensure directory exists
-    await fs.mkdir(path.dirname(filePath), { recursive: true });
+    await fs.mkdir(dirname(filePath), { recursive: true });
 
     // Write file
     await fs.writeFile(filePath, JSON.stringify(translations, null, 2), 'utf8');
   } catch (error) {
-    console.error('Failed to update translation file:', error);
+    logger.error('[TranslationContribute]', `Failed to update translation file: ${error.message}`);
     throw error;
   }
 }

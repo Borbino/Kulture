@@ -7,6 +7,7 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import styles from '../../styles/PerformanceDashboard.module.css'
+import { logger } from '../../lib/logger.js';
 
 export default function PerformanceDashboard() {
   const [report, setReport] = useState(null)
@@ -22,7 +23,7 @@ export default function PerformanceDashboard() {
       const data = await res.json()
       setReport(data)
     } catch (error) {
-      console.error('Failed to fetch performance report:', error)
+      logger.error('Failed to fetch performance report:', error)
     }
   }
 
@@ -33,7 +34,7 @@ export default function PerformanceDashboard() {
       const data = await res.json()
       setOptimizations(data)
     } catch (error) {
-      console.error('Failed to fetch optimizations:', error)
+      logger.error('Failed to fetch optimizations:', error)
     }
   }
 

@@ -5,6 +5,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Toast from '../../components/Toast';
 import styles from '../../styles/Admin.module.css';
+import { logger } from '../../lib/logger.js';
 
 function ModerationSection() {
   const [reports, setReports] = useState([])
@@ -23,7 +24,7 @@ function ModerationSection() {
       const data = await res.json()
       setReports(data.reports || [])
     } catch (error) {
-      console.error('Failed to fetch reports:', error)
+      logger.error('Failed to fetch reports:', error)
     } finally {
       setLoading(false)
     }
@@ -49,7 +50,7 @@ function ModerationSection() {
         setSelectedReport(null)
       }
     } catch (error) {
-      console.error('Failed to resolve report:', error)
+      logger.error('Failed to resolve report:', error)
       setToastMessage('❌ 처리 실패')
     }
   }
@@ -188,7 +189,7 @@ export default function AdminPage() {
       const data = await res.json()
       setStats(data)
     } catch (error) {
-      console.error('Failed to fetch admin stats:', error)
+      logger.error('Failed to fetch admin stats:', error)
     } finally {
       setLoading(false)
     }
@@ -202,7 +203,7 @@ export default function AdminPage() {
         setFinanceStats(data)
       }
     } catch (error) {
-      console.error('Failed to fetch finance stats:', error)
+      logger.error('Failed to fetch finance stats:', error)
     }
   }
 
@@ -281,7 +282,14 @@ export default function AdminPage() {
               <h2>📊 대시보드</h2>
 
               <section className={styles.financeSection}>
-                <h3>💰 일일 재무 관제탑 (Today's ROI)</h3>
+                <h3>💰 Today&#39;s ROI (일일 재무 관제탑)</h3>
+                {financeStats && (
+                  <p className={styles.financeMeta}>
+                    기준일: {new Date(financeStats.date).toLocaleDateString('ko-KR')}
+                    &nbsp;·&nbsp;오늘 기사 <strong>{financeStats.articleCount ?? 0}건</strong>
+                    &nbsp;·&nbsp;총 우선순위 점수 <strong>{financeStats.totalPriorityScore ?? 0}</strong>
+                  </p>
+                )}
                 <div className={styles.financeGrid}>
                   <div className={`${styles.financeCard} ${styles.revenueCard}`}>
                     <p className={styles.financeLabel}>📈 예상 수익 (Estimated Revenue)</p>
@@ -292,8 +300,9 @@ export default function AdminPage() {
                     <p className={styles.financeValue}>{formatCurrency(financeStats?.apiCost)}</p>
                   </div>
                   <div className={`${styles.financeCard} ${styles.marginCard}`}>
-                    <p className={styles.financeLabel}>🚀 순수익 마진 (Net Margin)</p>
+                    <p className={styles.financeLabel}>🚀 순수익 (Net Margin)</p>
                     <p className={styles.financeValue}>{formatCurrency(financeStats?.netMargin)}</p>
+                    <p className={styles.financeSubLabel}>수익 - 비용 = 실이익</p>
                   </div>
                 </div>
               </section>

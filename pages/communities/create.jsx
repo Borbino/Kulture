@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react'
 import SEOHead from '../../components/SEOHead'
 import Toast from '../../components/Toast'
 import styles from '../../styles/CreateCommunity.module.css'
+import { logger } from '../../lib/logger.js';
 
 export default function CreateCommunityPage() {
   const router = useRouter()
@@ -70,7 +71,7 @@ export default function CreateCommunityPage() {
         setToast({ type: 'error', message: data.error || '커뮤니티 생성 실패' })
       }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       setToast({ type: 'error', message: '오류가 발생했습니다.' })
     } finally {
       setLoading(false)

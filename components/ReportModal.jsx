@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import styles from '../styles/ReportModal.module.css'
+import PropTypes from 'prop-types'
+import styles from '../styles/ReportModal.module.css.js'
+import { logger } from '../lib/logger.js';
 
 export default function ReportModal({ targetType, targetId, onClose, onSuccess }) {
   const { data: session } = useSession()
@@ -53,7 +55,7 @@ export default function ReportModal({ targetType, targetId, onClose, onSuccess }
       }
     } catch (err) {
       setError('신고 중 오류 발생')
-      console.error(err)
+      logger.error(err)
     } finally {
       setLoading(false)
     }
@@ -121,4 +123,11 @@ export default function ReportModal({ targetType, targetId, onClose, onSuccess }
       </div>
     </div>
   )
+}
+
+ReportModal.propTypes = {
+  targetType: PropTypes.oneOf(['post', 'comment', 'user']).isRequired,
+  targetId: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSuccess: PropTypes.func,
 }

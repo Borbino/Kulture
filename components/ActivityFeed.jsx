@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styles from './ActivityFeed.module.css';
+import { logger } from '../lib/logger.js';
 
 const ACTIVITY_TYPES = {
   post_created: { icon: '📝', color: '#3b82f6', label: 'created a post' },
@@ -35,7 +36,7 @@ export default function ActivityFeed({ mode = 'feed', userId = null }) {
       const data = await res.json();
       setActivities(data.activities || []);
     } catch (error) {
-      console.error('Failed to fetch activities:', error);
+      logger.error('Failed to fetch activities:', error);
     } finally {
       setLoading(false);
     }

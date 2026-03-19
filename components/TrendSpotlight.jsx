@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSiteSettings } from '../lib/settings.js'
-import styles from '../styles/TrendSpotlight.module.css'
+import styles from '../styles/TrendSpotlight.module.css.js'
+import { logger } from '../lib/logger.js';
 
 export default function TrendSpotlight() {
   const { settings } = useSiteSettings()
@@ -40,7 +41,7 @@ export default function TrendSpotlight() {
         }
       } catch (err) {
         setError('트렌드 데이터를 불러오지 못했습니다')
-        console.error(err)
+        logger.error(err)
       } finally {
         setLoading(false)
       }

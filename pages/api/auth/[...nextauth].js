@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import GitHubProvider from 'next-auth/providers/github'
 import bcrypt from 'bcryptjs'
-import { getSanityClient } from '../../../lib/sanityClient'
+import { getSanityClient } from '../../../lib/sanityClient.js'
 
 export const authOptions = {
   providers: [

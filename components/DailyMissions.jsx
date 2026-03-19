@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import styles from './DailyMissions.module.css';
+import { logger } from '../lib/logger.js';
 
 export default function DailyMissions() {
   const { data: session } = useSession();
@@ -22,7 +23,7 @@ export default function DailyMissions() {
       setMissions(data.missions || []);
       setStreak(data.streak || 0);
     } catch (error) {
-      console.error('Failed to fetch missions:', error);
+      logger.error('Failed to fetch missions:', error);
     } finally {
       setLoading(false);
     }

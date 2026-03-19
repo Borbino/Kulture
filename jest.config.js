@@ -29,6 +29,12 @@ const config = {
     '**/test/performanceAnalyzer.test.js',
     '**/test/apiKeyManager.test.js',
     '**/test/logAggregator.test.js',
+    '**/test/aiSentiment.test.js',
+    '**/test/aiRecommendation.test.js',
+    '**/test/gamification.test.js',
+    '**/test/contentPersonalization.test.js',
+    '**/test/auth.test.js',
+    '**/test/translationCache.test.js',
   ],
 }
 

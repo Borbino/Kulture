@@ -1,0 +1,118 @@
+/* ============================================================
+   MobileHeader Component Styles
+   ============================================================ */
+
+/* 데스크탑에서는 숨김 */
+.header {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 900;
+
+    /* 높이 고정 + iOS 노치 대응 */
+    height: calc(52px + env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
+    padding-left: max(env(safe-area-inset-left), 16px);
+    padding-right: max(env(safe-area-inset-right), 16px);
+
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .transparent {
+    background: transparent;
+    border-bottom: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* ── Left ── */
+  .left {
+    display: flex;
+    align-items: center;
+    min-width: 44px;
+  }
+
+  .backBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #1a1a2e;
+    border-radius: 10px;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.15s;
+  }
+
+  .backBtn:active {
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .logoLink {
+    text-decoration: none;
+  }
+
+  .logoText {
+    font-size: 20px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+  }
+
+  .transparent .logoText {
+    -webkit-text-fill-color: #fff;
+    background: none;
+    color: #fff;
+  }
+
+  /* ── Title ── */
+  .title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 120px);
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .transparent .title {
+    color: #fff;
+  }
+
+  /* ── Right ── */
+  .right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 44px;
+  }
+
+  .rightPlaceholder {
+    width: 40px;
+    height: 40px;
+  }
+}

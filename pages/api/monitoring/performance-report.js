@@ -4,8 +4,9 @@
  * [목적] 실시간 성능 메트릭 및 최적화 제안 제공
  */
 
-import performanceMonitor from '../../../lib/performanceMonitoringEnhanced'
-import { withErrorHandler } from '../../../lib/apiErrorHandler'
+import performanceMonitor from '../../../lib/performanceMonitoringEnhanced.js'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import { verifyAdmin } from '../../../lib/auth.js'
 
 async function handler(req, res) {
   const { method } = req
@@ -24,6 +25,8 @@ async function handler(req, res) {
  * GET: 성능 리포트 조회
  */
 async function handleGet(req, res) {
+  try { await verifyAdmin(req, res) } catch { return res.status(401).json({ error: 'Unauthorized' }) }
+
   const { format = 'json' } = req.query
 
   const report = performanceMonitor.generateReport()
@@ -86,13 +89,8 @@ async function handleGet(req, res) {
  * DELETE: 메트릭 초기화
  */
 async function handleDelete(req, res) {
-  // 관리자 권한 체크 (간단한 비밀번호 인증)
-  const { password } = req.body
-  const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'kulture2025'
-
-  if (password !== adminPassword) {
-    return res.status(401).json({ error: 'Unauthorized' })
-  }
+  // 세션 기반 어드민 검증 (하드코딩 패스워드 제거)
+  try { await verifyAdmin(req, res) } catch { return res.status(401).json({ error: 'Unauthorized' }) }
 
   performanceMonitor.reset()
 

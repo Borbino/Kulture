@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import SEOHead from '../../components/SEOHead';
 import Toast from '../../components/Toast';
 import styles from '../../styles/EventDetail.module.css';
+import { logger } from '../../lib/logger.js';
 
 export default function EventDetailPage() {
   const router = useRouter()
@@ -37,7 +38,7 @@ export default function EventDetailPage() {
         }
       }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       setToast({ type: 'error', message: '이벤트 로드 실패' })
     } finally {
       setLoading(false)
@@ -70,7 +71,7 @@ export default function EventDetailPage() {
         setToast({ type: 'error', message: '참여 실패' })
       }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       setToast({ type: 'error', message: '오류가 발생했습니다.' })
     } finally {
       setActionLoading(false)
@@ -100,7 +101,7 @@ export default function EventDetailPage() {
         setToast({ type: 'error', message: '취소 실패' })
       }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       setToast({ type: 'error', message: '오류가 발생했습니다.' })
     } finally {
       setActionLoading(false)

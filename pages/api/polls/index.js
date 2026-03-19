@@ -1,5 +1,9 @@
-import { sanityClient } from '../../../lib/sanityClient'
-import { getSession } from 'next-auth/react'
+import { sanityClient } from '../../../lib/sanityClient.js'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../auth/[...nextauth]'
+import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
+import rateLimitMiddleware from '../../../lib/rateLimiter.js'
+import { logger } from '../../../lib/logger.js';
 
 /**
  * Polls API
@@ -8,8 +12,9 @@ import { getSession } from 'next-auth/react'
  * - PATCH: Vote on poll
  */
 
-export default async function handler(req, res) {
-  const session = await getSession({ req })
+async function handler(req, res) {
+  rateLimitMiddleware('api')(req, res, () => {})
+  const session = await getServerSession(req, res, authOptions)
 
   if (req.method === 'GET') {
     try {
@@ -75,7 +80,7 @@ export default async function handler(req, res) {
         },
       })
     } catch (error) {
-      console.error('Error fetching polls:', error)
+      logger.error('Error fetching polls:', error)
       return res.status(500).json({ error: 'Failed to fetch polls' })
     }
   }
@@ -119,7 +124,7 @@ export default async function handler(req, res) {
 
       return res.status(201).json({ poll })
     } catch (error) {
-      console.error('Error creating poll:', error)
+      logger.error('Error creating poll:', error)
       return res.status(500).json({ error: 'Failed to create poll' })
     }
   }
@@ -166,10 +171,12 @@ export default async function handler(req, res) {
 
       return res.status(201).json({ vote })
     } catch (error) {
-      console.error('Error voting on poll:', error)
+      logger.error('Error voting on poll:', error)
       return res.status(500).json({ error: 'Failed to vote' })
     }
   }
 
   return res.status(405).json({ error: 'Method not allowed' })
 }
+
+export default withErrorHandler(handler)
