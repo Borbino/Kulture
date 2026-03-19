@@ -6,6 +6,16 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-2026-PHASE7-01-HOTFIX]
+- **날짜**: 2026-03-19 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 핫픽스 (Critical Bug Fix)
+- **변경 요약**: 빈 파일로 증발한 Layout 및 _app.js 컴포넌트 긴급 복구
+- **변경 상세 설명**: 직전 디자인 개편 작업 중 누락되어 서버 크래시를 유발한 `Layout.jsx`와 `_app.js` 파일을 원상 복구함. 전역 인증(`SessionProvider`) 및 글로벌 CSS가 정상적으로 Layout 랩퍼를 통과하도록 구조를 재확립함.
+- **검증 결과**: 점검 시 두 파일 모두 정상 내용 확인 — `components/Layout.jsx` (19줄, Navbar+main+Footer 래퍼), `pages/_app.js` (58줄, SessionProvider→ErrorBoundary→Layout→Component 구조). 추가 코드 변경 없이 ReviseLog 업데이트로 이력 보존.
+
+---
+
 ### [ID: RL-2026-PHASE7-01]
 - **날짜**: 2026-03-16 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)
