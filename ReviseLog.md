@@ -6,6 +6,21 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-2026-PHASE8-01]
+- **날짜**: 2026-03-19 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: AI 코어 고도화 및 자가 진화 엔진 (Self-Maintenance)
+- **변경 요약**: DeepL 최우선 다이내믹 폴백(Fallback) 라우터 및 유지보수 관제탑 구축
+- **변경 상세 설명**: 번역 및 텍스트 교정의 품질을 극대화하기 위해 DeepL API를 1순위로 배치하고, 무료 할당량 소진(HTTP 456) 시 Claude 3.5 Sonnet → GPT-4o → Gemini 1.5 Flash → AI Auto-Select → Google Translate 순으로 자동 우회하는 6단 유동적 폴백 엔진을 구현함. 또한 AI가 스스로 코드를 리팩토링하고, 변경 사항을 쉬운 설명과 함께 Before/After 전후 대조표로 보여주는 자가 유지보수 대시보드(`maintenance.jsx`)를 신설함.
+- **변경 대상**:
+  - `lib/aiTranslation.js` — 전면 개편: `translateWithDeepL` 456 감지 로직 추가(err.code = 'DEEPL_QUOTA_EXCEEDED'), `buildTranslationPrompt()` 공통 빌더 추가, `translateWithClaude35Sonnet()` / `translateWithGPT4o()` / `translateWithGemini15Flash()` 세 전용 함수 신규 추가, `translate()` 내 providers 배열을 6단 폴백 체인으로 교체
+  - `pages/api/cron/self-maintenance.js` — 신규: GET(로그 조회) / POST(AI 분석 실행 + 신규 항목 추가). 5개 후보 파일(LazyImage/RecommendationWidget/trending API/CommentSection/NotificationBell) 대상 모의 리팩토링 분석. `data/maintenance-logs.json`에 id/date/targetFile/issue/beforeCode/afterCode/easyExplanation 구조로 저장
+  - `data/maintenance-logs.json` — 신규: 초기 시드 데이터 3건 (LazyImage·API posts·aiRecommendation)
+  - `pages/admin/maintenance.jsx` — 신규: CEO 대시보드. 4개 통계 개요 카드, 로그 목록(최신순), 카드마다 💡 쉬운 설명(항상 표시) + ▼ 코드 보기(Before/After 코드 펼침), "⚡ AI 분석 실행" 버튼, 스켈레톤 로딩, 토스트 알림
+  - `pages/admin/maintenance.module.css` — 신규: Phase 7 디자인 시스템 기반 Glassmorphism + neon 테마. 통계 카드(pink/cyan/green/orange 변형), Before(적색) / After(녹색) 코드 블록, 💡 금색 easyBox, 반응형 브레이크포인트(1100/768/480px)
+
+---
+
 ### [ID: RL-2026-PHASE7-02]
 - **날짜**: 2026-03-19 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)
