@@ -6,6 +6,20 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-2026-PHASE7-02]
+- **날짜**: 2026-03-19 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: UI/UX 대개편 (Design Revamp)
+- **변경 요약**: 메인 홈페이지(index.jsx) 글로벌 매거진 스타일 피드 적용
+- **변경 상세 설명**: 밋밋한 기존 메인 피드를 빌보드 매거진 스타일로 전면 개편함. 네온 호버(Hover) 액션과 글래스모피즘이 적용된 `MagazineCard` 컴포넌트를 신규 도입하고, 반응형 그리드 레이아웃과 최상단 Hero 섹션을 구축하여 체류 시간과 시각적 몰입도를 극대화함.
+- **변경 대상**:
+  - `components/MagazineCard.jsx` — 신규: 썸네일, 제목, 요약, 조회수/투표수 카드. hover 시 neon pink/cyan 글로우 + translateY 애니메이션. Glassmorphism 배경. 카테고리 뱃지, 🔥 HOT Trending 뱃지
+  - `components/MagazineCard.module.css` — 신규: `.card` Glassmorphism, `.card:hover` neon glow + scale, `.cyan` 변형, `.trendingBadge`, `.categoryBadge`, 스켈레톤 shimmer
+  - `pages/index.jsx` — 전면 개편: Hero Section(배경 이미지+그래디언트, Bebas Neue 타이틀, CTA 버튼 2개, 상위 2개 기사 카드 스트립), TrendSpotlight 스트립, 카테고리 필터 탭(All/K-Pop/K-Drama/K-Beauty/K-Food/K-Games), 4→3→2→1열 반응형 그리드, 스켈레톤 로딩, Sanity API 폴백→목 데이터 8건
+  - `styles/Home.module.css` — 전면 재작성: 다크 배경, Hero 스타일, neon accent 변수 활용, 카테고리 탭, 반응형 그리드 브레이크포인트(1200/860/560px), shimmer 스켈레톤 애니메이션
+
+---
+
 ### [ID: RL-2026-PHASE7-01-HOTFIX]
 - **날짜**: 2026-03-19 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)
