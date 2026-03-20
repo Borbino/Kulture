@@ -6,6 +6,16 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-2026-PHASE12-01]
+- **날짜**: 2026-03-21 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: SEO 엔진 고도화 — 프로그래매틱 SEO + 동적 JSON-LD 자동화 (pSEO)
+- **변경 요약**: 기사 발행 즉시 Google/Bing 색인 핑 + 동적 NewsArticle·BreadcrumbList JSON-LD 주입 + 35개국 hreflang 자동화
+- **변경 상세 설명**: AI가 생성하는 대량의 다국어 기사가 검색엔진에 실시간으로 노출되도록 SEO 파이프라인을 전면 개편함. `SEOHead.jsx`에 `article` prop을 추가해 Sanity 기사 데이터를 받으면 Google 권장 NewsArticle + BreadcrumbList + WebSite(SearchAction) JSON-LD 스키마를 동적으로 `<head>` 에 주입함. `og:type`을 article/website로 자동 전환하고, article:published_time / article:author / article:tag OG 메타도 자동 생성함. hreflang은 next-i18next.config.js의 35개 로케일 배열을 실시간으로 순회해 x-default 포함 36개 `<link rel="alternate">` 태그를 자동 발급함. `pages/api/seo/ping.js`를 신규 생성해 Sanity 웹훅으로부터 slug/url을 수신하면 Google Indexing API + Bing IndexNow에 병렬 핑을 전송하도록 구성함. 도메인 외부 URL 핑 차단(SSRF 방어), webhook secret 검증, API 키 미설정 시 graceful skip 등 보안 조치를 포함함.
+- **변경 대상**:
+  - `components/SEOHead.jsx` — `article` prop(NewsArticle JSON-LD용), `type` prop 신규 추가. `buildArticleJsonLd()` 헬퍼: NewsArticle 스키마(headline/description/image/datePublished/dateModified/author/publisher/articleSection/keywords/inLanguage) 동적 생성. `buildBreadcrumbJsonLd()` 헬퍼: 홈→카테고리→기사 3단계 BreadcrumbList 생성. WebSite JSON-LD(SearchAction 포함): 비기사 페이지에만 삽입. hreflang: locales 배열 전체 순회 → 35개국 + x-default 자동 발급. og:type 동적 전환(website↔article). article:* OG 메타 자동 생성. og:image:width/height, og:site_name, twitter:site 추가.
+  - `pages/api/seo/ping.js` — **신규 생성**: POST 핸들러(Sanity 웹훅 수신 → Google Indexing API URL_UPDATED/URL_DELETED 핑 + Bing IndexNow 핑 병렬 실행). GET 헬스체크. SANITY_WEBHOOK_SECRET 검증(선택적). SSRF 방어(자사 도메인 외 URL 차단). 응답: `{ pinged, action, results: { google, bing } }`. 환경변수: `GOOGLE_INDEXING_API_KEY`, `BING_INDEXNOW_KEY`, `SANITY_WEBHOOK_SECRET`, `NEXT_PUBLIC_SITE_URL`.
+
 ### [ID: RL-2026-PHASE11-01]
 - **날짜**: 2026-03-20 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)
