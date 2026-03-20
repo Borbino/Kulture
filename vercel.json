@@ -28,6 +28,10 @@
     {
       "path": "/api/newsletter/send",
       "schedule": "0 9 * * 1,4"
+    },
+    {
+      "path": "/api/cron/self-maintenance",
+      "schedule": "0 0 * * 0"
     }
   ],
   "env": {

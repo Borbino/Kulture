@@ -6,6 +6,19 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-2026-PHASE8-02]
+- **날짜**: 2026-03-20 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: API 최적화 및 완전 자율화 (Cost & Cron Optimization)
+- **변경 요약**: 자가 유지보수 Cron 스케줄 등록 및 번역 캐싱 파이프라인 연동
+- **변경 상세 설명**: `vercel.json`에 `self-maintenance` API를 주간 Cron(매주 일요일 자정 UTC)으로 등록하여 시스템 자가 진화 루프를 인간의 개입 없이 완전 자동화함. 또한 외부 API 비용 누수를 막기 위해 `lib/translationCache.js`를 신규 구축하고 `aiTranslation.js`에 Zero-Cost 캐시 게이트를 연동함. 동일 텍스트 번역 요청 시 언어 감지 포함 모든 API 호출을 생략하고 저장된 값을 즉시 반환하며, 누적 절감 통계(hit율, 예상 절감액)를 실시간 추적함.
+- **변경 대상**:
+  - `vercel.json` — `crons` 배열에 `{ path: "/api/cron/self-maintenance", schedule: "0 0 * * 0" }` 추가 (매주 일요일 자정 UTC 자동 실행)
+  - `lib/translationCache.js` — 신규: SHA-256 해시 기반 캐시 키(`text + targetLang`), LRU 축출(10만 엔트리 상한), TTL 30일, `getCached()` / `setCached()` / `getCacheStats()` / `clearCache()` 공개 API. 통계: hits/misses/hitRate/size/estimatedSavedUsd
+  - `lib/aiTranslation.js` — `translate()` 최상단에 Zero-Cost 캐시 게이트 삽입. 언어 감지 전에 캐시를 먼저 확인하여 캐시 히트 시 모든 외부 API 호출(언어 감지 AI 포함) 완전 생략. 번역 성공 후 캐시 저장 추가
+
+---
+
 ### [ID: RL-2026-PHASE8-01]
 - **날짜**: 2026-03-19 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)
