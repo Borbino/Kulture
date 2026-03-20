@@ -1,11 +1,13 @@
 /**
  * Navbar — Premium Magazine-style with Glassmorphism
  * Phase 7 · Kulture Design System
+ * Phase 9 · Gamification EXP Badge 변수 동지 연동
  */
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import LanguageSwitcher from './LanguageSwitcher';
+import { getLevelInfo } from '../lib/gamificationEngine.js';
 import styles from './Navbar.module.css';
 
 const NAV_LINKS = [
@@ -22,6 +24,11 @@ export default function Navbar() {
   const [menuOpen,    setMenuOpen]    = useState(false);
   const [searchOpen,  setSearchOpen]  = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Phase 9 — Mock EXP (350 EXP, Lv.3 K-Pop Fan)
+  // 프로덕션에서는 useSession() 세션 유저 데이터로 교체
+  const userExp   = 350;
+  const levelInfo = getLevelInfo(userExp);
 
   // Glassmorphism on scroll
   useEffect(() => {
@@ -81,6 +88,15 @@ export default function Navbar() {
 
           {/* Right controls */}
           <div className={styles.controls}>
+            {/* Phase 9 — EXP / Level Badge */}
+            <div className={styles.expBadge} title={`${userExp} EXP 누적`}>
+              <span className={styles.expBadgeIcon}>{levelInfo.icon}</span>
+              <div className={styles.expBadgeInfo}>
+                <span className={styles.expBadgeLevel}>Lv.{levelInfo.level} {levelInfo.title}</span>
+                <span className={styles.expBadgeExp}>{userExp} EXP</span>
+              </div>
+            </div>
+
             {/* Search */}
             <button
               className={styles.iconBtn}

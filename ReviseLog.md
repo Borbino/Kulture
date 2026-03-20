@@ -6,6 +6,19 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-2026-PHASE9-01]
+- **날짜**: 2026-03-21 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 프로덕트 고도화 (Gamification — 글로벌 팬덤 락인)
+- **변경 요약**: 유저 리텐션 극대화를 위한 게이미피케이션 엔진 및 일일 미션 UI 구축
+- **변경 상세 설명**: `lib/gamificationEngine.js`를 신규 구축하여 포인트 적립(`awardPoints`), 7단계 레벨 시스템(`LEVELS`), 뱃지 체계(`BADGES`), 일일 미션 생성(`getDailyMissions`) 기능을 구현함. `DailyMissions.jsx`를 네온/글래스모피즘 테마로 전면 재설계하여 레벨바·미션별 진행률·CLAIM 리워드 버튼을 포함한 인터랙티브 UI로 교체함. 또한 `Navbar.jsx`에 현재 레벨·EXP를 실시간으로 표시하는 EXP 뱃지를 삽입하여 유저의 성장 상태를 항상 노출함.
+- **변경 대상**:
+  - `lib/gamificationEngine.js` — 신규: `ACTION_POINTS`(7종 액션 포인트 테이블), `LEVELS`(7단계: Rookie → K-Culture God), `BADGES`(5종), Mock `_store` Map. `awardPoints(userId, actionType)` / `getLevelInfo(exp)` / `checkNewBadges(prev, next)` / `getDailyMissions(userId)` / `getUserProfile(userId)` 공개 API
+  - `components/DailyMissions.jsx` — 전면 재작성: `gamificationEngine.js` 연동, `MOCK_EXP=350` 초기 상태, 레벨바·요약·CLAIM ALL 버튼·미션 카드(진행률바+CLAIM 버튼+난이도 배지) 포함 인터랙티브 JSX
+  - `components/DailyMissions.module.css` — 전면 재작성: 다크 글래스모피즘 테마. `.widget`, `.expPill`, `.levelBar`, `.levelFill`(네온 그래디언트), `.missionCard`, `.progressFill`, `.claimBtn`(네온 핑크 glowPulse 애니메이션), `.diffBadge`(easy/medium/hard), `.allDoneBanner` 신규 정의
+  - `components/Navbar.jsx` — `getLevelInfo` 임포트 추가, `.controls` 내 EXP/레벨 뱃지 삽입 (레벨 아이콘·타이틀·EXP 수치 표시)
+  - `components/Navbar.module.css` — `.expBadge`, `.expBadgeIcon`, `.expBadgeInfo`, `.expBadgeLevel`, `.expBadgeExp` 신규 정의 + 모바일 `display:none` 반응형 추가
+
 ### [ID: RL-2026-PHASE8-02]
 - **날짜**: 2026-03-20 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)

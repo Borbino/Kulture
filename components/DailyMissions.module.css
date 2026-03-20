@@ -1,9 +1,348 @@
-.container {
+/* ================================================================
+   DailyMissions — Phase 9 Gamification Widget
+   Glassmorphism + Neon Theme
+   ================================================================ */
+
+/* ── 위젯 컨테이너 ── */
+.widget {
+  background: rgba(10, 10, 18, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
   padding: 20px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
 }
+
+.widget::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,229,255,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ── 헤더 ── */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.widgetIcon {
+  font-size: 26px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.widgetTitle {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  color: var(--text-primary, #f0f0f5);
+  margin: 0 0 2px;
+}
+
+.widgetSub {
+  font-size: 11px;
+  color: var(--text-secondary, #a0a0b0);
+  margin: 0;
+}
+
+/* EXP 맨득 포 빌 */
+.expPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  white-space: nowrap;
+}
+
+.expIcon { font-size: 14px; }
+
+.expValue {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-cyan, #00e5ff);
+}
+
+/* ── 레벨 프로그레스 ── */
+.levelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.levelLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary, #f0f0f5);
+}
+
+.levelNext {
+  font-size: 11px;
+  color: var(--text-secondary, #a0a0b0);
+}
+
+.levelBar {
+  height: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.levelFill {
+  height: 100%;
+  background: linear-gradient(90deg, #00e5ff 0%, #ff2e93 100%);
+  border-radius: 999px;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+}
+
+/* ── 완료 현황 요약 ── */
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.summaryText {
+  font-size: 13px;
+  color: var(--text-secondary, #a0a0b0);
+}
+
+.summaryText strong {
+  color: var(--accent-cyan, #00e5ff);
+  font-weight: 700;
+}
+
+/* CLAIM ALL 버튼 */
+.claimAllBtn {
+  position: relative;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, #00e5ff 0%, #0084ff 100%);
+  color: #000;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.5);
+}
+
+.claimAllBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 24px rgba(0, 229, 255, 0.8);
+}
+
+/* ── 미션 리스트 ── */
+.missionList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.missionCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.missionCard:hover {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: rgba(0, 229, 255, 0.15);
+}
+
+.missionCard.done {
+  border-color: rgba(34, 197, 94, 0.2);
+  background: rgba(34, 197, 94, 0.05);
+  opacity: 0.75;
+}
+
+.missionLeft {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.missionIcon { font-size: 22px; flex-shrink: 0; }
+
+.missionBody { flex: 1; min-width: 0; }
+
+.missionTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+  flex-wrap: wrap;
+}
+
+.missionTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #f0f0f5);
+}
+
+.missionDesc {
+  font-size: 11px;
+  color: var(--text-secondary, #a0a0b0);
+  margin: 0 0 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 난이도 배지 */
+.diffBadge {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.easy   { background: rgba(34,197,94,0.15);   color: #4ade80;  border: 1px solid rgba(34,197,94,0.25); }
+.medium { background: rgba(234,179,8,0.12);   color: #fbbf24;  border: 1px solid rgba(234,179,8,0.25); }
+.hard   { background: rgba(239,68,68,0.12);   color: #f87171;  border: 1px solid rgba(239,68,68,0.25); }
+
+/* 프로그레스 바 */
+.progressRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.progressBar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-cyan, #00e5ff), #0084ff);
+  border-radius: 999px;
+  box-shadow: 0 0 6px rgba(0,229,255,0.5);
+  transition: width 0.4s ease;
+}
+
+.progressText {
+  font-size: 10px;
+  color: var(--text-secondary, #a0a0b0);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* 미션 우측 영역 */
+.missionRight {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 60px;
+}
+
+/* CLAIM 버튼 */
+.claimBtn {
+  position: relative;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, #ff2e93, #c0006e);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.3;
+  cursor: pointer;
+  overflow: hidden;
+  animation: glowPulse 2s infinite;
+  transition: transform 0.15s;
+}
+
+.claimBtn:hover {
+  transform: scale(1.08);
+}
+
+.claimBtn small {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  display: block;
+}
+
+/* CLAIM 네온 및 우주 효과 */
+.claimGlow {
+  position: absolute;
+  inset: -1px;
+  border-radius: 8px;
+  background: transparent;
+  box-shadow: 0 0 0 1px rgba(255,46,147,0.5), 0 0 20px rgba(255,46,147,0.4);
+  pointer-events: none;
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255,46,147,0.5); }
+  50%       { box-shadow: 0 0 20px rgba(255,46,147,0.9), 0 0 30px rgba(255,46,147,0.4); }
+}
+
+/* 완료 상태 */
+.claimed {
+  font-size: 11px;
+  font-weight: 700;
+  color: #4ade80;
+  letter-spacing: 0.04em;
+}
+
+.rewardPending {
+  font-size: 11px;
+  color: var(--text-secondary, #a0a0b0);
+}
+
+/* ── 모든 미션 완료 배너 ── */
+.allDoneBanner {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  font-size: 13px;
+  color: #4ade80;
+  text-align: center;
+  font-weight: 500;
+}
+
 
 .header {
   margin-bottom: 24px;

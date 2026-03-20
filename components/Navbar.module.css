@@ -266,6 +266,53 @@
   50%       { box-shadow: 0 0 16px rgba(255, 46, 147, 1);  }
 }
 
+/* ── Phase 9 — EXP Badge ── */
+.expBadge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 11px;
+  border-radius: 10px;
+  background: rgba(10, 10, 18, 0.6);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  backdrop-filter: blur(10px);
+  cursor: default;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+}
+
+.expBadge:hover {
+  border-color: rgba(0, 229, 255, 0.55);
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.25);
+}
+
+.expBadgeIcon {
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.expBadgeInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  line-height: 1;
+}
+
+.expBadgeLevel {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary, #f0f0f5);
+  white-space: nowrap;
+}
+
+.expBadgeExp {
+  font-size: 10px;
+  color: var(--accent-cyan, #00E5FF);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .navLinks { display: none; }
@@ -274,4 +321,7 @@
   .inner { padding: 0 16px; }
 
   .logoText { font-size: 24px; letter-spacing: 3px; }
+
+  /* EXP badge 모바일에서 숨김 */
+  .expBadge { display: none; }
 }
