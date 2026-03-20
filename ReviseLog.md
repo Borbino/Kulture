@@ -6,6 +6,17 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-2026-PHASE11-01]
+- **날짜**: 2026-03-20 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 데이터 분석 및 수익성 추적 (Data & Analytics)
+- **변경 요약**: GA4 커스텀 이벤트 추적 고도화 및 Admin 대시보드 수익 지표 위젯 연동
+- **변경 상세 설명**: 트래픽의 수익 전환율을 정확히 측정하기 위해 `lib/analytics.js`에 광고 및 제휴 블록 클릭 추적 기능을 추가함. 언어별 수익성 파악을 위해 `user_language` 메타데이터 전송 로직을 포함했으며, CEO가 실시간 A/B 테스트 결과와 수익 지표를 확인할 수 있도록 관리자 대시보드(`pages/admin/index.jsx`) UI를 확장함.
+- **변경 대상**:
+  - `lib/analytics.js` — `trackAdClick(slotId, variant, userLanguage)` 신규: GA4 `ad_click` 이벤트 + `ad_variant`·`user_language`·`value` 파라미터 전송. `trackMonetizationClick(productId, contentSlug)` 신규: `monetization_click` 이벤트 + 언어 메타데이터. `trackTimeOnPage(slug, seconds, scrollDepthPct)` 신규: `time_on_page` 이벤트 + `scroll_depth_pct`·`engagement_time_msec` GA4 연동. 3개 함수 모두 서버사이드 `logger.info` 백업 로깅 포함
+  - `pages/admin/index.jsx` — `getAllExperimentStats` 임포트 추가, `abStats` state 신규, 대시보드 최상단에 **Revenue & Growth Metrics** 섹션 삽입: 3종 실험(ad_placement/cta_color/ad_glow) 카드 UI, Variant별 노출·클릭·CTR·체류시간 메트릭 배지, CTR 비율 진행바, Winner 자동 배지 표시
+  - `styles/Admin.module.css` — `.abSection`, `.abGrid`, `.abCard`, `.abCardHeader`, `.abExpName`, `.abWinnerBadge`, `.abRunningBadge`, `.abVariantList`, `.abVariantRow`, `.abVariantWinner`, `.abVariantId`, `.abVariantLabel`, `.abMetrics`, `.abMetricBadge`, `.abCtrBadge`, `.abBarWrap`, `.abBar`, `.abTotal`, `.abSectionTitle`, `.abSectionSub` 신규 정의
+
 ### [ID: RL-2026-PHASE11-FINAL]
 - **날짜**: 2026-03-20 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)

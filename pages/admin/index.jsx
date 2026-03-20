@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Toast from '../../components/Toast';
 import styles from '../../styles/Admin.module.css';
 import { logger } from '../../lib/logger.js';
+import { getAllExperimentStats } from '../../lib/abTestingEngine.js';
 
 function ModerationSection() {
   const [reports, setReports] = useState([])
@@ -164,6 +165,7 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('dashboard')
   const [stats, setStats] = useState(null)
   const [financeStats, setFinanceStats] = useState(null)
+  const [abStats, setAbStats] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -180,6 +182,7 @@ export default function AdminPage() {
     if (session?.user?.role === 'admin') {
       fetchStats()
       fetchFinanceStats()
+      setAbStats(getAllExperimentStats())
     }
   }, [session])
 
@@ -280,6 +283,56 @@ export default function AdminPage() {
           {activeTab === 'dashboard' && (
             <div className={styles.dashboard}>
               <h2>📊 대시보드</h2>
+
+              {/* ── Phase 11: Revenue & Growth Metrics ── */}
+              <section className={styles.abSection}>
+                <h3 className={styles.abSectionTitle}>🧪 Revenue &amp; Growth Metrics — A/B Test Live Results</h3>
+                <p className={styles.abSectionSub}>
+                  데이터가 충분히 쌓이면 Winner가 자동 확정되어 전체 트래픽의 90%가 승자 Variant로 자동 라우팅됩니다.
+                </p>
+                <div className={styles.abGrid}>
+                  {abStats.map(exp => (
+                    <div key={exp.experimentId} className={styles.abCard}>
+                      <div className={styles.abCardHeader}>
+                        <span className={styles.abExpName}>{exp.name}</span>
+                        {exp.winner ? (
+                          <span className={styles.abWinnerBadge}>🏆 Winner: {exp.winner}</span>
+                        ) : (
+                          <span className={styles.abRunningBadge}>🔄 Running</span>
+                        )}
+                      </div>
+                      <div className={styles.abVariantList}>
+                        {exp.variants.map(v => (
+                          <div key={v.id} className={`${styles.abVariantRow} ${v.isWinner ? styles.abVariantWinner : ''}`}>
+                            <span className={styles.abVariantId}>{v.id}</span>
+                            <span className={styles.abVariantLabel}>{v.label}</span>
+                            <div className={styles.abMetrics}>
+                              <span className={styles.abMetricBadge} title="노출 수">👁 {v.impressions.toLocaleString()}</span>
+                              <span className={styles.abMetricBadge} title="클릭 수">🖱 {v.clicks.toLocaleString()}</span>
+                              <span className={`${styles.abMetricBadge} ${styles.abCtrBadge}`} title="CTR">CTR {v.ctr}</span>
+                              <span className={styles.abMetricBadge} title="평균 체류시간">⏱ {v.avgDwellSec}</span>
+                            </div>
+                            <div className={styles.abBarWrap}>
+                              <div
+                                className={styles.abBar}
+                                style={{
+                                  width: v.impressions > 0
+                                    ? `${Math.min((v.clicks / Math.max(v.impressions, 1)) * 100 * 20, 100)}%`
+                                    : '2%',
+                                  background: v.isWinner
+                                    ? 'linear-gradient(90deg,#00e5ff,#ff2e93)'
+                                    : 'rgba(255,255,255,0.15)',
+                                }}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <p className={styles.abTotal}>총 노출: {exp.totalImpressions.toLocaleString()}회</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
 
               <section className={styles.financeSection}>
                 <h3>💰 Today&#39;s ROI (일일 재무 관제탑)</h3>

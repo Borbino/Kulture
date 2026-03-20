@@ -362,4 +362,181 @@
   .financeValue {
     font-size: 26px;
   }
+
+  .abGrid {
+    grid-template-columns: 1fr;
+  }
 }
+
+/* ══════════════════════════════════════════════
+   Phase 11 — Revenue & Growth Metrics (A/B)
+   ══════════════════════════════════════════════ */
+
+.abSection {
+  margin-bottom: 32px;
+  padding: 24px;
+  background: rgba(10, 10, 18, 0.55);
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+}
+
+.abSectionTitle {
+  font-size: 16px;
+  font-weight: 800;
+  color: #f0f0f5;
+  margin: 0 0 6px;
+  letter-spacing: 0.04em;
+}
+
+.abSectionSub {
+  font-size: 12px;
+  color: #a0a0b0;
+  margin: 0 0 20px;
+}
+
+.abGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+/* A/B 실험 카드 */
+.abCard {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.abCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.abExpName {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e0e0ee;
+}
+
+.abWinnerBadge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff2e93, #c0006e);
+  color: #fff;
+  white-space: nowrap;
+  box-shadow: 0 0 10px rgba(255, 46, 147, 0.5);
+}
+
+.abRunningBadge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(0, 229, 255, 0.12);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  color: #00e5ff;
+  white-space: nowrap;
+  animation: abPulse 2s ease-in-out infinite;
+}
+
+@keyframes abPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+/* Variant 행 */
+.abVariantList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.abVariantRow {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.abVariantRow:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.abVariantWinner {
+  border-color: rgba(255, 46, 147, 0.25) !important;
+  background: rgba(255, 46, 147, 0.06) !important;
+}
+
+.abVariantId {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  width: 20px;
+  color: #00e5ff;
+  margin-right: 6px;
+}
+
+.abVariantLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #d0d0e0;
+  margin-right: auto;
+}
+
+/* 메트릭 뱃지 묶음 */
+.abMetrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 6px 0;
+}
+
+.abMetricBadge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #b0b0c8;
+  white-space: nowrap;
+}
+
+.abCtrBadge {
+  background: rgba(0, 229, 255, 0.1);
+  color: #00e5ff;
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  font-weight: 800;
+}
+
+/* CTR 진행 바 */
+.abBarWrap {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.abBar {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.5s ease;
+  min-width: 4px;
+}
+
+.abTotal {
+  font-size: 11px;
+  color: #606070;
+  margin: 8px 0 0;
+  text-align: right;
+}
+
