@@ -9,6 +9,7 @@ import ReactionButton from '../../components/ReactionButton'
 import FollowButton from '../../components/FollowButton'
 import Toast from '../../components/Toast'
 import PollComponent from '../../components/PollComponent'
+import AdPlacement from '../../components/AdPlacement'
 import styles from '../../styles/PostDetail.module.css'
 import { logger } from '../../lib/logger.js';
 
@@ -190,6 +191,9 @@ export default function Post() {
             <img src={post.mainImage} alt={post.title} />
           </div>
         )}
+
+        {/* Phase 10 — 기사 본문 바로 위 광고 (가장 높은 주목도) */}
+        <AdPlacement placement="article" />
 
         {/* Content */}
         <div className={styles.content}>

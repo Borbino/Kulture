@@ -6,6 +6,19 @@
 
 ## 최신 변경 이력
 
+### [ID: RL-2026-PHASE10-01]
+- **날짜**: 2026-03-20 (KST)
+- **작성자**: GitHub Copilot (Claude Sonnet 4.6)
+- **변경 유형**: 수익 극대화 및 프로덕트 고도화 (Revenue Optimization)
+- **변경 요약**: AI 자율 A/B 테스트 엔진 및 동적 광고 배치 시스템 구축
+- **변경 상세 설명**: 트래픽을 실제 수익으로 전환하는 비율(CVR/CTR)을 극대화하기 위해 `abTestingEngine.js`를 신규 도입함. AI가 트래픽의 일부를 활용하여 광고 배치와 UI 요소의 다양한 변인을 스스로 테스트하고, 가장 수익률이 높은 승자(Winner) 배치를 찾아 전체 시스템에 자동 적용하는 '무인 수익 펌핑 로직'을 완성함. Variant별 임의 배정(Sticky) + 유저 체류시간·CTR 기반 가중 점수(0.6×CTR + 0.4×DwellScore) 알고리즘으로 Winner 자동 확정 후 90% 트래픽 자동 라우팅함.
+- **변경 대상**:
+  - `lib/abTestingEngine.js` — 신규: `EXPERIMENTS`(3종 실험: ad_placement/cta_color/ad_glow), Sticky weighted-random `assignVariant()`, `trackImpression()` / `trackClick()` / `trackDwell()` 이벤트 수집, `_maybePickWinner()` 자동 승자 판별(MIN_IMPRESSIONS=50), `getExperimentStats()` / `getAllExperimentStats()` / `getWinner()` 조회 API
+  - `components/AdPlacement.jsx` — 신규: `ad_placement` + `ad_glow` 실험군 연동, IntersectionObserver 기반 노출 추적, `pagehide` 체류시간 기록, 클릭 이벤트 로깅. 구글 애드센스(adSlot prop) 또는 모의 배너 자동 전환. Variant A/B/C별 버튼 색상(핑크/사이언/그라디언트) 동적 적용
+  - `components/AdPlacement.module.css` — 신규: `.glowSoft`(사이언 glow), `.glowStrong`(핑크 pinkPulse 애니메이션), `.sizeFeed`/`.sizeArticle`/`.sizeSidebar` 반응형 레이아웃, 모바일 최적화
+  - `pages/index.jsx` — `AdPlacement` 임포트 추가. 매거진 피드 그리드에서 4번째 카드마다 `placement="feed"` 광고 풀-위드 삽입
+  - `pages/posts/[slug].jsx` — `AdPlacement` 임포트 추가. 기사 본문(`<div className={styles.content}>`) 바로 위에 `placement="article"` 광고 삽입 (가장 높은 주목도 위치)
+
 ### [ID: RL-2026-PHASE9-01]
 - **날짜**: 2026-03-21 (KST)
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)

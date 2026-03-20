@@ -5,10 +5,10 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import MagazineCard from '../components/MagazineCard';
 import TrendSpotlight from '../components/TrendSpotlight';
+import AdPlacement from '../components/AdPlacement';
 import styles from '../styles/Home.module.css';
 import { logger } from '../lib/logger.js';
 
@@ -28,8 +28,8 @@ const MOCK_ARTICLES = [
   },
   {
     _id: 'mock-2',
-    title: 'Song Hye-Kyo's Upcoming Netflix Drama Already Breaking Pre-Release Records',
-    excerpt: 'The globally beloved actress returns with a psychological thriller that has already sold streaming rights to 38 countries before its official premiere.',
+    title: "Song Hye-Kyo's Upcoming Netflix Drama Already Breaking Pre-Release Records",
+    excerpt: "The globally beloved actress returns with a psychological thriller that has already sold streaming rights to 38 countries before its official premiere.",
     thumbnail: null,
     category: 'K-Drama',
     views: 95200,
@@ -40,8 +40,8 @@ const MOCK_ARTICLES = [
   },
   {
     _id: 'mock-3',
-    title: 'K-Beauty's Glass Skin Trend Dominates TikTok with 4.2 Billion Views in March',
-    excerpt: '\'Glass skin\' has become the defining beauty trend of 2026. Korean skincare brands like COSRX and Laneige report 300% sales surges in Western markets.',
+    title: "K-Beauty's Glass Skin Trend Dominates TikTok with 4.2 Billion Views in March",
+    excerpt: "'Glass skin' has become the defining beauty trend of 2026. Korean skincare brands like COSRX and Laneige report 300% sales surges in Western markets.",
     thumbnail: null,
     category: 'K-Beauty',
     views: 74100,
@@ -63,7 +63,7 @@ const MOCK_ARTICLES = [
   {
     _id: 'mock-5',
     title: 'Michelin Awards 3 Stars to Seoul\'s Jungsik — Global Foodies Flock to Korea',
-    excerpt: 'Chef Yim Jung-sik's signature modern Korean cuisine earns the highest culinary honour, cementing Seoul as one of the world's top gastronomic destinations.',
+    excerpt: "Chef Yim Jung-sik's signature modern Korean cuisine earns the highest culinary honour, cementing Seoul as one of the world's top gastronomic destinations.",
     thumbnail: null,
     category: 'K-Food',
     views: 43800,
@@ -84,8 +84,8 @@ const MOCK_ARTICLES = [
   },
   {
     _id: 'mock-7',
-    title: 'Parasite Director Bong Joon-ho's New Sci-Fi Epic Gets Standing Ovation at Cannes',
-    excerpt: 'Bong Joon-ho's long-awaited sci-fi thriller "Okja 2046" premiered to a 12-minute standing ovation at the Cannes Film Festival.',
+    title: "Parasite Director Bong Joon-ho's New Sci-Fi Epic Gets Standing Ovation at Cannes",
+    excerpt: "Bong Joon-ho's long-awaited sci-fi thriller \"Okja 2046\" premiered to a 12-minute standing ovation at the Cannes Film Festival.",
     thumbnail: null,
     category: 'K-Drama',
     views: 58300,
@@ -126,7 +126,6 @@ function SkeletonGrid() {
 }
 
 export default function Home() {
-  const { t } = useTranslation('common');
   const [articles, setArticles]       = useState([]);
   const [activeCategory, setCategory] = useState('All');
   const [loading, setLoading]         = useState(true);
@@ -256,12 +255,20 @@ export default function Home() {
           ) : (
             <div className={styles.grid}>
               {rest.map((article, i) => (
-                <MagazineCard
-                  key={article._id || i}
-                  article={article}
-                  trending={article.trending}
-                  glowColor={i % 3 === 0 ? 'cyan' : 'pink'}
-                />
+                <>
+                  <MagazineCard
+                    key={article._id || i}
+                    article={article}
+                    trending={article.trending}
+                    glowColor={i % 3 === 0 ? 'cyan' : 'pink'}
+                  />
+                  {/* Phase 10 — 4번째 카드마다 인라인 광고 삽입 */}
+                  {(i + 1) % 4 === 0 && (
+                    <div key={`ad-${i}`} style={{ gridColumn: '1 / -1' }}>
+                      <AdPlacement placement="feed" />
+                    </div>
+                  )}
+                </>
               ))}
             </div>
           )}
