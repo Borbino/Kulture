@@ -23,7 +23,7 @@ export default function RecommendationWidget({ type = 'personalized', postId = n
       const res = await fetch(url);
       const data = await res.json();
       setPosts(data.posts || []);
-    } catch (error) {
+    } catch {
       // recommendations fetch failed
     } finally {
       setLoading(false);

@@ -100,7 +100,7 @@ export default function Login() {
       } else {
         router.push('/')
       }
-    } catch (err) {
+    } catch {
       setError('OAuth 로그인 실패')
     } finally {
       setLoading(false)

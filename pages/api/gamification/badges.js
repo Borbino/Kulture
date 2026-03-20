@@ -40,7 +40,7 @@ async function handler(req, res) {
     )
 
     let userBadges = []
-    let userProgress = {}
+    const userProgress = {}
 
     // Get user's badges and progress if logged in
     if (session?.user?.email) {

@@ -1,6 +1,4 @@
-import { logger } from '../lib/logger.js';
 // Service Worker for Kulture PWA
-const CACHE_NAME = 'kulture-v1';
 const STATIC_CACHE = 'kulture-static-v1';
 const DYNAMIC_CACHE = 'kulture-dynamic-v1';
 
@@ -14,7 +12,7 @@ const STATIC_ASSETS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(STATIC_CACHE).then((cache) => {
-      logger.info('[SW] Caching static assets');
+      console.info('[SW] Caching static assets');
       return cache.addAll(STATIC_ASSETS);
     })
   );
@@ -41,7 +39,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
 
   // Skip cross-origin requests
-  if (url.origin !== location.origin) {
+  if (url.origin !== self.location.origin) {
     return;
   }
 
@@ -103,7 +101,7 @@ self.addEventListener('sync', (event) => {
 
 async function syncPosts() {
   // Implement sync logic for offline posts
-  logger.info('[SW] Syncing posts...');
+  console.info('[SW] Syncing posts...');
 }
 
 // Push notifications
@@ -129,6 +127,6 @@ self.addEventListener('push', (event) => {
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   event.waitUntil(
-    clients.openWindow(event.notification.data.url)
+    self.clients.openWindow(event.notification.data.url)
   );
 });

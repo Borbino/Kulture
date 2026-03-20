@@ -83,7 +83,7 @@ export default function PerformanceDashboard() {
       } else {
         setMessage('❌ ' + data.error)
       }
-    } catch (error) {
+    } catch {
       setMessage('❌ 최적화 적용 중 오류가 발생했습니다.')
     }
 
@@ -112,7 +112,7 @@ export default function PerformanceDashboard() {
       } else {
         setMessage('❌ ' + data.error)
       }
-    } catch (error) {
+    } catch {
       setMessage('❌ 초기화 중 오류가 발생했습니다.')
     }
 

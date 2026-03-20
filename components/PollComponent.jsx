@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import PropTypes from 'prop-types'
 import styles from '../styles/PollComponent.module.css.js'

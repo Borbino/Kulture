@@ -31,7 +31,7 @@ export default function CommunityCard({ community, onJoin }) {
         setIsMember(true)
         onJoin && onJoin()
       }
-    } catch (error) {
+    } catch {
       alert('커뮤니티 참여 실패')
     } finally {
       setLoading(false)

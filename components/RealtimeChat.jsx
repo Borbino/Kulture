@@ -8,7 +8,7 @@ import { io } from 'socket.io-client';
 import styles from './RealtimeChat.module.css';
 import { logger } from '../lib/logger.js';
 
-export default function RealtimeChat({ roomId, userLanguage = 'en', userName = 'Anonymous' }) {
+export default function RealtimeChat({ roomId, userLanguage = 'en', userName: _userName = 'Anonymous' }) {
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');

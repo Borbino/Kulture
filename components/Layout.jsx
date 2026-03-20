@@ -5,6 +5,7 @@
 import Navbar from './Navbar';
 import Footer from './Footer';
 import styles from './Layout.module.css';
+import PropTypes from 'prop-types';
 
 export default function Layout({ children }) {
   return (
@@ -17,3 +18,7 @@ export default function Layout({ children }) {
     </div>
   );
 }
+
+Layout.propTypes = {
+  children: PropTypes.node,
+};

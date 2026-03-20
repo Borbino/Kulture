@@ -54,6 +54,8 @@ async function handlePost(req, res) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
 
+  const { action } = req.body || {}
+
   if (action === 'apply_auto') {
     // 자동 적용 가능한 최적화만 실행
     const results = await autoOptimizer.applyAutoOptimizations()

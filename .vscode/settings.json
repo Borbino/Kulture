@@ -23,5 +23,15 @@
   },
   "yaml.schemas": {
     "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml"
+  },
+  "chat.tools.terminal.autoApprove": {
+    "/^# translationCache\\.js: U\\+200B 제거\npython3 -c \"\nwith open\\('/workspaces/Kulture/lib/translationCache\\.js', 'r', encoding='utf-8'\\) as f:\n    content = f\\.read\\(\\)\nfixed = content\\.replace\\('\\\\u200b', ''\\)\nwith open\\('/workspaces/Kulture/lib/translationCache\\.js', 'w', encoding='utf-8'\\) as f:\n    f\\.write\\(fixed\\)\nprint\\('done'\\)\n\"$/": {
+      "approve": true,
+      "matchCommandLine": true
+    },
+    "/^python3 -c \"\nwith open\\('/workspaces/Kulture/lib/translationCache\\.js', 'r', encoding='utf-8'\\) as f:\n    content = f\\.read\\(\\)\nfixed = content\\.replace\\('\\\\u200b', ''\\)\nwith open\\('/workspaces/Kulture/lib/translationCache\\.js', 'w', encoding='utf-8'\\) as f:\n    f\\.write\\(fixed\\)\nprint\\('done, removed:', content\\.count\\(chr\\(0x200b\\)\\), 'occurrences'\\)\n\"$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
   }
 }

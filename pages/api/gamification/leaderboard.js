@@ -3,10 +3,8 @@
  * [목적] 사용자 순위 및 통계 제공
  */
 
-import { getServerSession } from 'next-auth'
-import { authOptions } from '../auth/[...nextauth]'
 import { sanityClient } from '../../../lib/sanityClient.js'
-import { DEFAULT_SETTINGS, getSiteSettings } from '../../../lib/settings.js'
+import { getSiteSettings } from '../../../lib/settings.js'
 import { withErrorHandler } from '../../../lib/apiErrorHandler.js'
 import { logger } from '../../../lib/logger.js';
 
@@ -25,7 +23,6 @@ async function handler(req, res) {
       })
     }
 
-    const session = await getServerSession(req, res, authOptions)
     const { timeframe = 'all', category = 'points', limit = 50 } = req.query
 
     // Date filter based on timeframe

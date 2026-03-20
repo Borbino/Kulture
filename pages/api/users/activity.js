@@ -75,7 +75,7 @@ async function handler(req, res) {
   }
 }
 
-async function checkBadgeAchievements(userId, user, action) {
+async function checkBadgeAchievements(userId, user, _action) {
   try {
     // Get all badges
     const badges = await sanityClient.fetch(

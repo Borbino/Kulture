@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'next-i18next';
+import PropTypes from 'prop-types';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import styles from './translation-dashboard.module.css';
 import { logger } from '../../lib/logger.js';
 
 export default function TranslationDashboard() {
-  const { t, i18n } = useTranslation('common');
   const [stats, setStats] = useState(null);
   const [translations, setTranslations] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState('ko');
@@ -299,6 +298,22 @@ function TranslationRow({ translation, onApprove, onReject }) {
     </>
   );
 }
+
+TranslationRow.propTypes = {
+  translation: PropTypes.shape({
+    id: PropTypes.string,
+    key: PropTypes.string,
+    original: PropTypes.string,
+    translated: PropTypes.string,
+    contributor: PropTypes.shape({
+      name: PropTypes.string,
+    }),
+    status: PropTypes.string,
+    qualityScore: PropTypes.number,
+  }),
+  onApprove: PropTypes.func,
+  onReject: PropTypes.func,
+};
 
 export async function getServerSideProps({ locale }) {
   return {

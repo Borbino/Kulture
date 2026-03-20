@@ -9,7 +9,6 @@ import {
   suggestTags,
   suggestCategories,
   extractUserInterests,
-  getPersonalizedRecommendations,
   getSimilarPosts,
   getTrendingPosts,
 } from '../lib/aiRecommendation.js';

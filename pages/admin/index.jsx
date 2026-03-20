@@ -12,7 +12,7 @@ function ModerationSection() {
   const [reports, setReports] = useState([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('pending')
-  const [selectedReport, setSelectedReport] = useState(null)
+  const [, setSelectedReport] = useState(null)
   const [toastMessage, setToastMessage] = useState('')
 
   useEffect(() => {
@@ -161,7 +161,7 @@ function ModerationSection() {
 export default function AdminPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const [toastMessage, setToastMessage] = useState('')
+  const [toastMessage] = useState('')
   const [activeTab, setActiveTab] = useState('dashboard')
   const [stats, setStats] = useState(null)
   const [financeStats, setFinanceStats] = useState(null)

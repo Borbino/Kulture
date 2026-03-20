@@ -1,13 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
 import Link from 'next/link'
-import CommentSection from '../../components/CommentSection'
-import ReactionButton from '../../components/ReactionButton'
-import FollowButton from '../../components/FollowButton'
-import Toast from '../../components/Toast'
 import PollComponent from '../../components/PollComponent'
 import AdPlacement from '../../components/AdPlacement'
 import styles from '../../styles/PostDetail.module.css'
@@ -16,13 +11,12 @@ import { logger } from '../../lib/logger.js';
 export default function Post() {
   const router = useRouter()
   const { slug } = router.query
-  const { data: session } = useSession()
   const [post, setPost] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [toastMessage, setToastMessage] = useState('')
   const [poll, setPoll] = useState(null)
   const [pollLoading, setPollLoading] = useState(true)
+  const relatedPosts = []
 
   useEffect(() => {
     if (!slug) return

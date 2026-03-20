@@ -231,7 +231,6 @@ async function calculateStreak(userId) {
 
     const uniqueDates = [...new Set(completedDates.map(d => d.date))].sort().reverse();
     let streak = 0;
-    const today = new Date().toISOString().split('T')[0];
 
     for (let i = 0; i < uniqueDates.length; i++) {
       const expectedDate = new Date();

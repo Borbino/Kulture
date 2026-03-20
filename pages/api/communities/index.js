@@ -52,7 +52,7 @@ async function handler(req, res) {
 
       const communities = await sanityClient.fetch(query, params)
 
-      let countQuery = `count(*[_type == "community"])`
+      const countQuery = `count(*[_type == "community"])`
       const total = await sanityClient.fetch(countQuery)
 
       return res.status(200).json({

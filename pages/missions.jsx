@@ -7,7 +7,7 @@ import styles from '../styles/Missions.module.css'
 import { logger } from '../lib/logger.js';
 
 export default function Missions() {
-  const { data: session, status } = useSession()
+  const { status } = useSession()
   const { settings } = useSiteSettings()
   const [missions, setMissions] = useState([])
   const [loading, setLoading] = useState(true)

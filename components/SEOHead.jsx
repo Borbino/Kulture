@@ -90,9 +90,11 @@ function SEOHead({
   const { locale, locales, defaultLocale, asPath } = router;
   const pageType = type || (article ? 'article' : 'website');
 
+  // SSR 초기 렌더 시 asPath가 undefined일 수 있으므로 안전망 처리
+  const safePath = asPath || '';
   // Clean path to avoid double slashes
-  const cleanPath = asPath.split('?')[0];
-  const queryString = asPath.split('?')[1] ? `?${asPath.split('?')[1]}` : '';
+  const cleanPath = safePath.split('?')[0];
+  const queryString = safePath.split('?')[1] ? `?${safePath.split('?')[1]}` : '';
 
   // Canonical URL construction (Current Page)
   // If current locale is default, do not append locale to URL if strategy is prefix-except-default (Next.js default)

@@ -89,6 +89,7 @@ const nextConfig = {
               "upgrade-insecure-requests",
             ].join('; ')
           },
+        ],
       },
       {
         source: '/static/:path*',

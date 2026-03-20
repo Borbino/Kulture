@@ -12,7 +12,7 @@ import {
   confirmSubscription,
   unsubscribeFromNewsletter,
 } from '../../../lib/newsletter.js';
-import { rateLimiter, checkRateLimit } from '../../../lib/rateLimiter.js';
+import { checkRateLimit } from '../../../lib/rateLimiter.js';
 
 async function handler(req, res) {
   if (req.method === 'POST') {

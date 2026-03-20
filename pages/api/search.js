@@ -42,7 +42,7 @@ export default async function handler(req, res) {
     if (dateFrom) params.dateFrom = dateFrom
     if (dateTo) params.dateTo = dateTo
 
-    let results = {}
+    const results = {}
 
     // 게시글 검색
     if (type === 'all' || type === 'posts') {

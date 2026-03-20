@@ -4,6 +4,7 @@ import { appWithTranslation } from 'next-i18next';
 import { useEffect } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
+import PropTypes from 'prop-types';
 import ErrorBoundary from '../components/ErrorBoundary.js';
 import BottomNavigation from '../components/BottomNavigation.js';
 import Layout from '../components/Layout.jsx';
@@ -56,3 +57,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 
 // next-i18next로 앱 래핑
 export default appWithTranslation(MyApp);
+
+MyApp.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+  pageProps: PropTypes.object.isRequired,
+};

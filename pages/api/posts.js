@@ -128,7 +128,7 @@ async function handler(req, res) {
     }
 
     try {
-      const { title, body, boardId, categoryIds, tags, images, isAnonymous } = req.body;
+      const { title, body, boardId, categoryIds, tags, isAnonymous } = req.body;
 
       // Validation
       if (!title || !body || !boardId) {

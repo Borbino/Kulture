@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import Link from 'next/link'
 import InfiniteScrollPosts from '../components/InfiniteScrollPosts'
 import styles from '../styles/Search.module.css'
 
