@@ -6,7 +6,8 @@ import Link from 'next/link'
 import PollComponent from '../../components/PollComponent'
 import AdPlacement from '../../components/AdPlacement'
 import styles from '../../styles/PostDetail.module.css'
-import { logger } from '../../lib/logger.js';
+import { logger } from '../../lib/logger.js'
+import { initTimeOnPageTracking, initScrollDepthTracking } from '../../lib/analytics.js'
 
 export default function Post() {
   const router = useRouter()
@@ -58,6 +59,18 @@ export default function Post() {
 
     fetchPoll()
   }, [])
+
+  // GA4 체류 시간(30s/60s/120s) & 스크롤 깊이(50%/90%) 자동 추적
+  // post 로드 완료 후 활성화, 페이지 이동 시 타이머·리스너 자동 정리
+  useEffect(() => {
+    if (!slug || !post) return
+    const cleanupTime = initTimeOnPageTracking(slug)
+    const cleanupScroll = initScrollDepthTracking(slug)
+    return () => {
+      cleanupTime()
+      cleanupScroll()
+    }
+  }, [slug, post])
 
   const handlePollVote = async () => {
     try {
