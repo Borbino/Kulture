@@ -2,12 +2,20 @@
  * [설명] 고급 AI 콘텐츠 자동 생성 Cron Job (100% 무료)
  * [실행주기] 하루 4회 (09:00, 12:00, 15:00, 18:00 KST)
  * [목적] 트렌드 기반 고품질 2차 창작물 자동 생성
+ *
+ * [아키텍처] Micro-Batching 패턴
+ *   - Vercel Hobby 플랜 실행 시간 제한 대응
+ *   - 매 실행마다 최고 점수 이슈 1개만 처리 (타임아웃 방지)
+ *   - 처리 완료 후 shouldAutoGenerate = false 마킹 (중복 생성 방지)
  */
 
 import { generateAdvancedContent } from '../../../lib/advancedContentGeneration.js'
 import sanity from '../../../lib/sanityClient.js'
 import { withCronAuth } from '../../../lib/cronMiddleware.js'
 import { logger } from '../../../lib/logger.js'
+
+// Vercel Hobby 플랜이 허용하는 최대 실행 시간(초) 확보
+export const maxDuration = 60
 
 export default withCronAuth(async function contentGenerationHandler(req, res) {
   try {
@@ -26,7 +34,7 @@ export default withCronAuth(async function contentGenerationHandler(req, res) {
       })
     }
 
-    // 최근 24시간 내 Hot Issue 가져오기 (mentions >= 1000)
+    // 최근 24시간 내 Hot Issue 가져오기 (shouldAutoGenerate == true 인 것만)
     const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
     const hotIssues = await sanity.fetch(
       `
@@ -42,18 +50,24 @@ export default withCronAuth(async function contentGenerationHandler(req, res) {
       | order(score desc)[0...10]
     `)
 
-    // 통합
+    // 통합 (_id, _type 포함하여 처리 완료 마킹에 활용)
     const allIssues = [
       ...hotIssues.map(h => ({
+        _id: h._id,
+        _type: 'hotIssue',
         keyword: h.keyword,
         description: h.description,
         mentions: h.mentions,
+        score: h.mentions,
         sources: ['Hot Issue'],
       })),
       ...activeTrends.map(t => ({
+        _id: t._id,
+        _type: 'trendTracking',
         keyword: t.keyword,
         description: `트렌드 점수: ${Math.floor(t.score)}, 성장률: ${(t.growthRate * 100).toFixed(1)}%`,
         mentions: t.totalMentions,
+        score: t.score,
         sources: t.sources || [],
       })),
     ]
@@ -69,87 +83,105 @@ export default withCronAuth(async function contentGenerationHandler(req, res) {
       }
     })
 
-    logger.info('[cron]', `[Content Generation] ${uniqueIssues.length} unique issues to process`)
+    logger.info('[cron]', `[Content Generation] ${uniqueIssues.length} unique issues found`)
 
-    const generatedContent = []
+    // [Micro-Batching] 가장 점수가 높은 이슈 1개만 선택
+    // → 타임아웃 방지: 루프 대신 단일 작업만 실행
+    const [issue] = uniqueIssues.slice(0, 1)
+
+    if (!issue) {
+      logger.info('[cron]', '[Content Generation] No issues to process.')
+      return res.status(200).json({
+        success: true,
+        message: 'No issues to process',
+        generated: 0,
+      })
+    }
+
     const formats = ['article', 'reportage', 'story', 'retrospective', 'interview']
+    const format = formats[Math.floor(Math.random() * formats.length)]
 
-    for (const issue of uniqueIssues.slice(0, 5)) {
-      // 상위 5개만 처리
-      try {
-        // 포맷 랜덤 선택 (다양성)
-        const format = formats[Math.floor(Math.random() * formats.length)]
+    logger.info('[cron]', `[Content Generation] Generating ${format} for "${issue.keyword}"...`)
 
-        logger.info('[cron]', `[Content Generation] Generating ${format} for "${issue.keyword}"...`)
+    // 고급 AI 콘텐츠 생성 (preferFree: true — 무료 AI 모델 강제 사용)
+    const result = await generateAdvancedContent(issue, format, { preferFree: true })
 
-        // 고급 AI 콘텐츠 생성
-        const result = await generateAdvancedContent(issue, format)
+    if (!result.success) {
+      logger.error('[cron]', `[Content Generation] Failed for "${issue.keyword}":`, result.error)
 
-        if (!result.success) {
-          logger.error('[cron]', `[Content Generation] Failed for "${issue.keyword}":`, result.error)
-          continue
-        }
+      // 실패해도 중복 시도 방지를 위해 shouldAutoGenerate 마킹
+      await markIssueProcessed(issue)
 
-        const { content, qualityCheck, metadata } = result
+      return res.status(200).json({
+        success: false,
+        message: `Generation failed: ${result.error}`,
+        generated: 0,
+      })
+    }
 
-        // 품질 점수가 70점 이상만 저장
-        if (qualityCheck.score < 70) {
-          logger.warn('[cron]', 
-            `[Content Generation] Low quality (${qualityCheck.score}/100) for "${issue.keyword}", skipping`
-          )
-          continue
-        }
+    const { content, qualityCheck, metadata } = result
 
-        // 소셜 포스트 생성
-        const socialPosts = generateSocialPosts(content)
+    // 품질 점수가 70점 미만이면 저장 생략, 마킹 후 종료
+    if (qualityCheck.score < 70) {
+      logger.warn('[cron]',
+        `[Content Generation] Low quality (${qualityCheck.score}/100) for "${issue.keyword}", skipping save`
+      )
+      await markIssueProcessed(issue)
 
-        // Sanity에 저장 (CEO 승인 대기)
-        const draft = await sanity.create({
-          _type: 'post',
-          title: content.title,
-          body: `${content.subtitle}\n\n${content.body}\n\n${content.conclusion}`,
-          socialPosts,
-          metadata: {
-            source: `AI Generated (${metadata.aiModel})`,
-            sourceIssue: issue.keyword,
-            mentions: issue.mentions,
-            trustScore: qualityCheck.score,
-            aiModel: metadata.aiModel,
-            format,
-            generationTime: metadata.generationTime,
-            readability: qualityCheck.readability,
-            seoScore: qualityCheck.seoScore,
-            feedbackPatterns: metadata.ceoPreferences?.topKeyPhrases || [],
-          },
-          status: 'pending',
-          createdAt: new Date().toISOString(),
-        })
+      return res.status(200).json({
+        success: true,
+        message: `Low quality score (${qualityCheck.score}/100), skipped`,
+        generated: 0,
+      })
+    }
 
-        generatedContent.push({
+    // 소셜 포스트 생성
+    const socialPosts = generateSocialPosts(content)
+
+    // Sanity에 저장 (CEO 승인 대기)
+    const draft = await sanity.create({
+      _type: 'post',
+      title: content.title,
+      body: `${content.subtitle}\n\n${content.body}\n\n${content.conclusion}`,
+      socialPosts,
+      metadata: {
+        source: `AI Generated (${metadata.aiModel})`,
+        sourceIssue: issue.keyword,
+        mentions: issue.mentions,
+        trustScore: qualityCheck.score,
+        aiModel: metadata.aiModel,
+        format,
+        generationTime: metadata.generationTime,
+        readability: qualityCheck.readability,
+        seoScore: qualityCheck.seoScore,
+        feedbackPatterns: metadata.ceoPreferences?.topKeyPhrases || [],
+      },
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+    })
+
+    logger.info('[cron]', `[Content Generated] ${issue.keyword} -> ${draft._id} (Quality: ${qualityCheck.score}/100)`)
+
+    // 처리 완료 마킹 — 다음 크론 실행 시 중복 생성 방지
+    await markIssueProcessed(issue)
+
+    const elapsed = Date.now() - startTime
+
+    logger.info('[cron]', `[Content Generation] Completed in ${elapsed}ms.`)
+
+    res.status(200).json({
+      success: true,
+      generated: 1,
+      content: [
+        {
           issueKeyword: issue.keyword,
           draftId: draft._id,
           format,
           qualityScore: qualityCheck.score,
-        })
-
-        logger.info('[cron]', `[Content Generated] ${issue.keyword} -> ${draft._id} (Quality: ${qualityCheck.score}/100)`)
-
-        // Rate Limit 방지 (HF API)
-        await new Promise(resolve => setTimeout(resolve, 5000)) // 5초 대기
-      } catch (error) {
-        logger.error('[cron]', `[Content Generation] Error for "${issue.keyword}":`, error.message)
-      }
-    }
-
-    const elapsed = Date.now() - startTime
-
-    logger.info('[cron]', `[Content Generation] Completed in ${elapsed}ms. Generated ${generatedContent.length} contents.`)
-
-    res.status(200).json({
-      success: true,
-      generated: generatedContent.length,
-      content: generatedContent,
+        },
+      ],
       usedAdvancedAI: true,
+      preferFree: true,
       executionTime: elapsed,
     })
   } catch (error) {
@@ -157,6 +189,24 @@ export default withCronAuth(async function contentGenerationHandler(req, res) {
     res.status(500).json({ error: error.message, stack: error.stack })
   }
 })
+
+/**
+ * 처리 완료된 이슈를 Sanity에서 마킹하여 중복 생성 방지
+ * - hotIssue: shouldAutoGenerate = false
+ * - trendTracking: status = "processed"
+ */
+async function markIssueProcessed(issue) {
+  try {
+    if (issue._type === 'hotIssue') {
+      await sanity.patch(issue._id).set({ shouldAutoGenerate: false }).commit()
+    } else if (issue._type === 'trendTracking') {
+      await sanity.patch(issue._id).set({ status: 'processed' }).commit()
+    }
+    logger.info('[cron]', `[Content Generation] Marked as processed: ${issue._id} (${issue._type})`)
+  } catch (patchError) {
+    logger.error('[cron]', `[Content Generation] Failed to mark processed: ${issue._id}`, patchError.message)
+  }
+}
 
 /**
  * 소셜 미디어 포스트 생성
