@@ -22,11 +22,43 @@ export default defineConfig({
     structureTool({
       structure: (S) =>
         S.list()
-          .title('Content')
+          .title('Kulture CMS — CEO 지휘실')
           .items([
-            // 콘텐츠 관리
+            // ─────────────────────────────────────────
+            // [1] CEO 액션 필요: AI 생성 초안 검토 큐
+            // ─────────────────────────────────────────
             S.listItem()
-              .title('Posts')
+              .title('🚨 발행 대기 중인 초안 (Action Required)')
+              .schemaType('post')
+              .child(
+                S.documentList()
+                  .title('발행 대기 초안')
+                  .schemaType('post')
+                  .filter('_type == "post" && status == "draft"')
+                  .defaultOrdering([{ field: '_createdAt', direction: 'desc' }])
+              ),
+
+            // ─────────────────────────────────────────
+            // [2] 발행 완료 게시물 (Published)
+            // ─────────────────────────────────────────
+            S.listItem()
+              .title('✅ 발행 완료 (Published)')
+              .schemaType('post')
+              .child(
+                S.documentList()
+                  .title('발행 완료')
+                  .schemaType('post')
+                  .filter('_type == "post" && status == "published"')
+                  .defaultOrdering([{ field: '_updatedAt', direction: 'desc' }])
+              ),
+
+            S.divider(),
+
+            // ─────────────────────────────────────────
+            // [기존] 그 외 전체 스키마 — 원래 구조 유지
+            // ─────────────────────────────────────────
+            S.listItem()
+              .title('Posts (전체)')
               .child(S.documentTypeList('post').title('Posts')),
             S.listItem()
               .title('Authors')
