@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import PropTypes from 'prop-types'
-import styles from '../styles/PollComponent.module.css.js'
+import styles from '../styles/PollComponent.module.css'
 import { logger } from '../lib/logger.js';
 
 export default function PollComponent({ poll, onVote }) {

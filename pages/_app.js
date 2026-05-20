@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
 import PropTypes from 'prop-types';
-import ErrorBoundary from '../components/ErrorBoundary.js';
-import BottomNavigation from '../components/BottomNavigation.js';
+import ErrorBoundary from '../components/ErrorBoundary'
+import BottomNavigation from '../components/BottomNavigation'
 import Layout from '../components/Layout.jsx';
 import { getAdSenseConfig } from '../lib/revenueEngine.js';
 import { logger } from '../lib/logger.js';

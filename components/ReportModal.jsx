@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import PropTypes from 'prop-types'
-import styles from '../styles/ReportModal.module.css.js'
+import styles from '../styles/ReportModal.module.css'
 import { logger } from '../lib/logger.js';
 
 export default function ReportModal({ targetType, targetId, onClose, onSuccess }) {

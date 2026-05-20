@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSiteSettings } from '../lib/settings.js'
-import styles from '../styles/TrendSpotlight.module.css.js'
+import styles from '../styles/TrendSpotlight.module.css'
 import { logger } from '../lib/logger.js';
 
 export default function TrendSpotlight() {
