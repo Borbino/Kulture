@@ -1,4 +1,4 @@
-# 🚀 KULTURE.NET — 런칭 체크리스트 (LAUNCH CHECKLIST)
+# 🚀 KULTURE.WIKI — 런칭 체크리스트 (LAUNCH CHECKLIST)
 
 > **CEO 전용 가이드** · Phase 11 발급 · 2026-03-20 KST  
 > 이 체크리스트를 순서대로 완료하면 Kulture.wiki이 실서비스로 오픈됩니다.  

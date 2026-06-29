@@ -1,4 +1,4 @@
-# ⚡ KULTURE.NET
+# ⚡ KULTURE.WIKI
 ### Fully Autonomous K-Culture AI Magazine & Revenue Empire
 
 > **"The world speaks K-Culture. Kulture speaks back — autonomously."**  
@@ -21,7 +21,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                        KULTURE.NET EMPIRE                           │
+│                       KULTURE.WIKI EMPIRE                           │
 │                                                                     │
 │  🧠 PILLAR I          🌐 PILLAR II        🎮 PILLAR III  💰 PILLAR IV│
 │  Zero-Cost            Dynamic             Fandom          Revenue   │
