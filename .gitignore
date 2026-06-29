@@ -35,3 +35,7 @@ coverage
 
 # Sanity
 .sanity
+
+# next-sitemap generated files (served via pages/sitemap.xml.jsx dynamic route)
+public/sitemap.xml
+public/sitemap-0.xml

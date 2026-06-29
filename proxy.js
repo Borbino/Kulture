@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 
 /**
- * Kulture - 다국어 라우팅 및 봇 감지 미들웨어
+ * Kulture - 다국어 라우팅 및 봇 감지 프록시
  * V15.1 제 2장 정책 1: 8개 국어 하이브리드 SEO 번역 및 라우팅 최적화
+ * Next.js 16: middleware.js 규약 → proxy.js 로 마이그레이션
  */
 
 // 지원 대상 8개 핵심 언어 (V15.1 제 2장 정책 1 — zh는 zh-CN 단일 처리)
@@ -67,7 +68,7 @@ function extractLocaleFromPath(pathname) {
   return { locale: null, pathWithoutLocale: pathname };
 }
 
-export function middleware(request) {
+export function proxy(request) {
   const { pathname } = request.nextUrl;
   const userAgent = request.headers.get('user-agent') || '';
 
