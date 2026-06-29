@@ -1,4 +1,4 @@
-name: Automation – Content Scraping & Discovery
+ㅇname: Automation – Content Scraping & Discovery
 
 # [V15.1 정책 3] 자동화는 GitHub Actions에서 실행한다. (Vercel Cron 사용 금지)
 # Vercel crons 블록이 vercel.json에서 제거되었으므로 이 Workflow가 유일한 스케줄러다.
