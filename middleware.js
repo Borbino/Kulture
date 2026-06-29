@@ -5,8 +5,8 @@ import { NextResponse } from 'next/server';
  * V15.1 제 2장 정책 1: 8개 국어 하이브리드 SEO 번역 및 라우팅 최적화
  */
 
-// 지원 대상 8개 핵심 언어
-const SUPPORTED_LOCALES = ['en', 'es', 'zh-CN', 'zh-TW', 'ja', 'ko', 'ar', 'fr', 'de'];
+// 지원 대상 8개 핵심 언어 (V15.1 제 2장 정책 1 — zh는 zh-CN 단일 처리)
+const SUPPORTED_LOCALES = ['en', 'es', 'zh-CN', 'ja', 'ko', 'ar', 'fr', 'de'];
 const DEFAULT_LOCALE = 'ko';
 const LOCALE_COOKIE_NAME = 'NEXT_LOCALE';
 

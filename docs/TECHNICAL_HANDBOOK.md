@@ -432,61 +432,9 @@ Response: {
 
 ---
 
-## 💬 Section 5: 실시간 채팅 & 번역
+## � Section 5 (구 Section 6): 콘텐츠 제한 & 저작권
 
-### 5-1. WebSocket 채팅
-
-**기능**:
-- Socket.io 기반 실시간 통신
-- 룸 기반 격리 (무제한 사용자)
-- 자동 번역 (200+ 언어)
-- 타이핑 표시기
-- 메시지 히스토리 (최근 50개)
-
-**서버 구조**:
-```javascript
-// pages/api/chat/socket.js
-io.on('connection', (socket) => {
-  socket.on('join', ({ room, user, language }) => {
-    socket.join(room);
-  });
-  
-  socket.on('message', async ({ room, message, language }) => {
-    // 모든 사용자의 언어로 자동 번역
-    const translations = await translateToAllLanguages(message);
-    io.to(room).emit('message', { ...message, translations });
-  });
-  
-  socket.on('typing', ({ room, user }) => {
-    socket.to(room).emit('typing', user);
-  });
-});
-```
-
-**클라이언트 사용**:
-```javascript
-// components/RealtimeChat.jsx
-import { useSocket } from '../hooks/useSocket';
-
-function RealtimeChat({ room, user }) {
-  const { socket, messages, sendMessage, typing } = useSocket(room, user);
-  
-  return (
-    <div>
-      {messages.map(msg => (
-        <div key={msg.id}>
-          {msg.translations[user.language] || msg.text}
-        </div>
-      ))}
-      {typing.length > 0 && <div>{typing.join(', ')} is typing...</div>}
-    </div>
-  );
-}
-```
-
----
-
-## 🔒 Section 6: 콘텐츠 제한 & 저작권
+> **[V15.1 정책 6]** 실시간 채팅은 아키텍처에 존재하지 않는다. 커뮤니케이션은 게시물/댓글 기반 비동기 구조로만 운영된다.
 
 ### 6-1. 콘텐츠 제한 시스템
 

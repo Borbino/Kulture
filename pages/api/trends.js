@@ -43,16 +43,21 @@ async function handler(req, res) {
       sanity.fetch(hotIssuesQuery),
     ])
 
-    // 상위 트렌드 주제 기반 제휴 링크 자동 생성
+    // [V15.1 정책 2] 2-Step 수익화: 제휴 링크 메타데이터만 생성하고 pending 상태로 반환.
+    // 최종 삽입은 CEO가 /admin 대시보드에서 승인해야 한다. (자동 삽입 금지)
     const topTopic = hotIssues?.[0]?.keyword || snapshot?.trends?.[0]?.keyword || 'K-Pop'
-    const affiliateLinks = getAffiliateLinksForContent(topTopic)
+    const affiliateSuggestions = {
+      status: 'pending_approval', // CEO 승인 전까지 프론트엔드에서 렌더링하지 않음
+      metadata: getAffiliateLinksForContent(topTopic),
+      generatedAt: new Date().toISOString(),
+    }
 
     return res.status(200).json({
       success: true,
       data: {
         snapshot: snapshot || { trends: [], timestamp: null },
         hotIssues: hotIssues || [],
-        affiliateLinks,
+        affiliateSuggestions, // 변경: affiliateLinks → affiliateSuggestions (pending_approval)
         topTopic,
       },
     })

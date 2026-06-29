@@ -45,7 +45,7 @@
 | `lib/aiContentGenerator.js` | 탐지된 트렌드를 GPT-4o / Claude 3.5 Sonnet으로 전문 기사 자동 생성 |
 | `lib/advancedContentGeneration.js` | SEO 최적화 메타태그·슬러그·구조화 데이터 자동 주입 |
 | `lib/aiModelManager.js` | AI 모델 비용·품질 모니터링 및 자동 최적 모델 선택 |
-| `pages/api/cron/` | Vercel Cron으로 매일 자동 실행 (Zero Human Intervention) |
+| `.github/workflows/` | GitHub Actions로 매일 자동 실행 — Zero Human Intervention, $0 비용 |
 
 **핵심 가치**: $0 크롤링 비용 + AI 기사 생성으로 **무한 콘텐츠 공급**
 
@@ -73,7 +73,6 @@
 | `lib/gamificationEngine.js` | 7단계 레벨(Rookie → K-Culture God), 5종 배지, 포인트 적립 엔진 |
 | `components/DailyMissions.jsx` | 매일 미션 CLAIM UI — 체류시간·재방문율 극대화 |
 | `components/Navbar.jsx` | EXP 뱃지 상시 노출 — 유저 성장 욕구 자극 |
-| `components/RealtimeChat.jsx` | 실시간 글로벌 팬덤 커뮤니티 (Supabase Realtime) |
 | `pages/leaderboard.jsx` | 글로벌 랭킹 — 경쟁 심리 기반 락인 |
 | `components/ActivityFeed.jsx` | 커뮤니티 활동 피드 |
 
@@ -99,10 +98,10 @@
 
 | 레이어 | 기술 | 용도 |
 |--------|------|------|
-| **Frontend** | Next.js 14 (Pages Router) | SSG/ISR 하이브리드 렌더링 |
+| **Frontend** | Next.js (App Router 목표, 현재 Pages Router) | SSG/ISR 하이브리드 렌더링 |
 | **CMS** | Sanity.io | 헤드리스 콘텐츠 관리 |
-| **Hosting** | Vercel | 자동 배포, Serverless Functions, Cron |
-| **DB/Auth** | Supabase | 실시간 채팅, 유저 인증, 게이미피케이션 DB |
+| **Hosting** | Vercel | 자동 배포, Serverless Functions |
+| **DB/Auth** | Supabase | 유저 인증, 포인트/아바타 DB, 커뮤니티 UGC (PostgreSQL + 이미지 스토리지) |
 | **AI — 번역** | DeepL API | 1순위 고품질 번역 |
 | **AI — 생성** | OpenAI GPT-4o | 기사 생성, 콘텐츠 분석 |
 | **AI — 폴백** | Claude 3.5 Sonnet, Gemini 1.5 Flash | 다단계 AI 폴백 체인 |

@@ -1,0 +1,75 @@
+name: Automation – SNS Bot & Newsletter
+
+# [V15.1 정책 3] 자동화는 GitHub Actions에서 실행한다. (Vercel Cron 사용 금지)
+# 뉴스레터 발송 및 SNS 자동 포스팅 스케줄을 담당한다.
+
+on:
+  schedule:
+    # 뉴스레터 발송 — 매주 월·목 UTC 09:00 (KST 18:00)
+    - cron: '0 9 * * 1,4'
+  workflow_dispatch: # 수동 트리거 허용 (테스트·긴급 발송)
+    inputs:
+      target:
+        description: '실행 대상 (newsletter | sns-post | all)'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - newsletter
+          - sns-post
+          - all
+
+jobs:
+  newsletter:
+    name: Newsletter Send
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'workflow_dispatch' && (inputs.target == 'newsletter' || inputs.target == 'all') ||
+      github.event.schedule == '0 9 * * 1,4'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+
+      - name: Send newsletter
+        run: node scripts/newsletter/send.js
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEWSLETTER_API_KEY: ${{ secrets.NEWSLETTER_API_KEY }}
+
+  sns-post:
+    name: SNS Auto Post
+    runs-on: ubuntu-latest
+    # SNS 자동 포스팅은 수동 트리거 전용 (schedule 없음 — CEO 2-Step 승인 후 실행)
+    # [V15.1 정책 2] CEO 승인 없는 자동 SNS 포스팅은 금지.
+    if: github.event_name == 'workflow_dispatch' && (inputs.target == 'sns-post' || inputs.target == 'all')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+
+      - name: Run SNS bot
+        run: node scripts/sns/post.js
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SNS_TWITTER_TOKEN: ${{ secrets.SNS_TWITTER_TOKEN }}
+          SNS_INSTAGRAM_TOKEN: ${{ secrets.SNS_INSTAGRAM_TOKEN }}
+          SNS_FACEBOOK_TOKEN: ${{ secrets.SNS_FACEBOOK_TOKEN }}
