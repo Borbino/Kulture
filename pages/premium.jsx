@@ -77,7 +77,7 @@ const FAQS = [
   },
   {
     q: '환불 정책은 어떻게 되나요?',
-    a: '결제 후 7일 이내에 미사용 상태라면 전액 환불됩니다. support@kulture.app으로 문의해주세요.',
+    a: '결제 후 7일 이내에 미사용 상태라면 전액 환불됩니다. support@kulture.wiki으로 문의해주세요.',
   },
   {
     q: '평생 구독은 정말 평생인가요?',
@@ -89,7 +89,7 @@ const FAQS = [
   },
   {
     q: '기업/기관 단체 구독이 가능한가요?',
-    a: 'B2B 데이터 라이선싱은 별도로 제공됩니다. business@kulture.app으로 문의해주세요.',
+    a: 'B2B 데이터 라이선싱은 별도로 제공됩니다. business@kulture.wiki으로 문의해주세요.',
   },
   {
     q: '구독 중 플랜 변경이 가능한가요?',
@@ -249,8 +249,8 @@ export default function PremiumPage() {
           <Link href="/" className={styles.backLink}>← 홈으로 돌아가기</Link>
           <p className={styles.support}>
             결제 문의:{' '}
-            <a href="mailto:support@kulture.app" className={styles.supportLink}>
-              support@kulture.app
+            <a href="mailto:support@kulture.wiki" className={styles.supportLink}>
+              support@kulture.wiki
             </a>
           </p>
         </div>

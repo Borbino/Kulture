@@ -5,7 +5,7 @@
   "server": {
     "androidScheme": "https",
     "iosScheme": "ionic",
-    "hostname": "kulture.app"
+    "hostname": "kulture.wiki"
   },
   "android": {
     "allowMixedContent": false,

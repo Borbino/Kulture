@@ -152,7 +152,7 @@ export default async function handler(req) {
                 fontSize: '16px',
               }}
             >
-              kulture.app
+              kulture.wiki
             </div>
             <div
               style={{

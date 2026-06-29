@@ -60,17 +60,17 @@ describe('isAdmin', () => {
   });
 
   test('이메일이 ADMIN_EMAILS에 포함 → true', () => {
-    process.env.ADMIN_EMAILS = 'admin@kulture.co,super@kulture.co';
-    expect(isAdmin({ role: 'user', email: 'admin@kulture.co' })).toBe(true);
+    process.env.ADMIN_EMAILS = 'admin@kulture.wiki,super@kulture.wiki';
+    expect(isAdmin({ role: 'user', email: 'admin@kulture.wiki' })).toBe(true);
   });
 
   test('이메일이 ADMIN_EMAILS에 미포함 → false', () => {
-    process.env.ADMIN_EMAILS = 'admin@kulture.co';
+    process.env.ADMIN_EMAILS = 'admin@kulture.wiki';
     expect(isAdmin({ role: 'user', email: 'other@test.com' })).toBe(false);
   });
 
   test('role=admin이면 ADMIN_EMAILS 무관하게 true', () => {
-    process.env.ADMIN_EMAILS = 'admin@kulture.co';
+    process.env.ADMIN_EMAILS = 'admin@kulture.wiki';
     expect(isAdmin({ role: 'admin', email: 'anyone@test.com' })).toBe(true);
   });
 });
@@ -94,9 +94,9 @@ describe('verifyAdmin', () => {
   });
 
   test('ADMIN_EMAILS로 관리자 승격 → 통과', async () => {
-    process.env.ADMIN_EMAILS = 'special@kulture.co';
-    getServerSession.mockResolvedValue({ user: { email: 'special@kulture.co', role: 'user' } });
+    process.env.ADMIN_EMAILS = 'special@kulture.wiki';
+    getServerSession.mockResolvedValue({ user: { email: 'special@kulture.wiki', role: 'user' } });
     const user = await verifyAdmin(mockReq, mockRes);
-    expect(user.email).toBe('special@kulture.co');
+    expect(user.email).toBe('special@kulture.wiki');
   });
 });

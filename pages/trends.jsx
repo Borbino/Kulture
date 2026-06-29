@@ -5,7 +5,7 @@ import { useSiteSettings } from '../lib/settings.js'
 import TrendSpotlight from '../components/TrendSpotlight'
 import styles from '../styles/Trends.module.css'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://kulture.app'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://kulture.wiki'
 
 // JSON-LD 구조화 데이터 — ItemList + WebPage
 const trendsJsonLd = {

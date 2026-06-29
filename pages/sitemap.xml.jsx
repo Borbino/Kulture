@@ -80,7 +80,7 @@ function generateSiteMap(posts, baseUrl) {
 export async function getServerSideProps({ res }) {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
     ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')
-    : 'https://kulture.app'
+    : 'https://kulture.wiki'
 
   try {
     const client = getSanityClient()

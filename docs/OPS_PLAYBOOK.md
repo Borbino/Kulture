@@ -159,7 +159,7 @@ MONGODB_URI=mongodb+srv://...
 MONGODB_DB_NAME=kulture
 
 # Notification
-ADMIN_EMAIL=admin@kulture.com
+ADMIN_EMAIL=admin@kulture.wiki
 EMAIL_API_KEY=...
 SLACK_WEBHOOK_URL=...
 
@@ -280,9 +280,9 @@ MONGODB_DB_NAME=kulture
 
 ```bash
 # Email (SendGrid)
-ADMIN_EMAIL=admin@kulture.com
+ADMIN_EMAIL=admin@kulture.wiki
 EMAIL_API_KEY=SG.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-EMAIL_FROM=noreply@kulture.com
+EMAIL_FROM=noreply@kulture.wiki
 
 # Slack Webhook
 SLACK_WEBHOOK_URL=https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXX

@@ -226,7 +226,7 @@ const sampleData = {
     description:
       'K-POP, K-Drama, K-Movie 등 한류 문화의 모든 것을 실시간으로 전달하는 글로벌 커뮤니티 플랫폼',
     keywords: ['K-POP', 'K-Drama', 'K-Movie', 'Korean Wave', 'Hallyu'],
-    contactEmail: 'contact@kulture.com',
+    contactEmail: 'contact@kulture.wiki',
     socialLinks: {
       twitter: 'https://twitter.com/kulture',
       instagram: 'https://instagram.com/kulture',
