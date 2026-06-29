@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://kulture.net
+Host: https://kulture.wiki
 
 # Sitemaps
-Sitemap: https://kulture.net/sitemap.xml
+Sitemap: https://kulture.wiki/sitemap.xml

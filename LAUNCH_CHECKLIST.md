@@ -1,7 +1,7 @@
 # 🚀 KULTURE.NET — 런칭 체크리스트 (LAUNCH CHECKLIST)
 
 > **CEO 전용 가이드** · Phase 11 발급 · 2026-03-20 KST  
-> 이 체크리스트를 순서대로 완료하면 Kulture.net이 실서비스로 오픈됩니다.  
+> 이 체크리스트를 순서대로 완료하면 Kulture.wiki이 실서비스로 오픈됩니다.  
 > 완료한 항목은 `- [x]`로 표시하세요.
 
 ---
@@ -26,7 +26,7 @@
 
 ### 🔐 인증 (NextAuth)
 
-- [ ] `NEXTAUTH_URL` — 실제 도메인 입력 (예: `https://kulture.net`)
+- [ ] `NEXTAUTH_URL` — 실제 도메인 입력 (예: `https://kulture.wiki`)
 - [ ] `NEXTAUTH_SECRET` — 터미널에서 `openssl rand -base64 32` 실행 후 복사
 - [ ] `GOOGLE_CLIENT_ID` — [console.cloud.google.com](https://console.cloud.google.com) → OAuth 2.0 클라이언트
 - [ ] `GOOGLE_CLIENT_SECRET` — 위와 동일 (소셜 로그인용)
@@ -84,11 +84,11 @@
 
 ---
 
-## ✅ STEP 4 — 도메인 연결 (kulture.net)
+## ✅ STEP 4 — 도메인 연결 (kulture.wiki)
 
 > 도메인 등록업체(가비아, Cloudflare, Namecheap 등)에서 DNS를 설정합니다.
 
-- [ ] **Vercel 도메인 추가**: Vercel → 프로젝트 → Settings → Domains → `kulture.net` 입력 후 Add
+- [ ] **Vercel 도메인 추가**: Vercel → 프로젝트 → Settings → Domains → `kulture.wiki` 입력 후 Add
 - [ ] **A 레코드 추가** (도메인 등록업체 DNS 관리 페이지):
   ```
   타입: A
@@ -103,15 +103,15 @@
   값: cname.vercel-dns.com
   TTL: 300
   ```
-- [ ] **DNS 전파 확인**: [whatsmydns.net](https://www.whatsmydns.net) 에서 `kulture.net` A 레코드가 Vercel IP로 전파됐는지 확인 (최대 24시간 소요)
+- [ ] **DNS 전파 확인**: [whatsmydns.net](https://www.whatsmydns.net) 에서 `kulture.wiki` A 레코드가 Vercel IP로 전파됐는지 확인 (최대 24시간 소요)
 - [ ] **SSL 인증서 자동 발급 확인**: Vercel 대시보드에서 도메인 옆 🔒 자물쇠 표시 확인 (자동 Let's Encrypt)
-- [ ] **`https://kulture.net`** 에서 홈페이지 정상 로드 확인
+- [ ] **`https://kulture.wiki`** 에서 홈페이지 정상 로드 확인
 
 ---
 
 ## ✅ STEP 5 — Google AdSense 연동
 
-- [ ] **AdSense 계정 생성**: [adsense.google.com](https://adsense.google.com) → 사이트 `kulture.net` 등록
+- [ ] **AdSense 계정 생성**: [adsense.google.com](https://adsense.google.com) → 사이트 `kulture.wiki` 등록
 - [ ] **사이트 인증 완료**: `_app.js`에 AdSense 스크립트 삽입 후 Google 검토 승인 대기 (1~3일)
 - [ ] **승인 후 `adClient` 값 업데이트**: `components/AdPlacement.jsx`의 `adClient` prop에 실제 `ca-pub-XXXXXXXXXX` 값 전달
 - [ ] **AdSense Auto Ads 활성화**: 자동 광고 배치 옵션 ON (AdPlacement 컴포넌트와 병행 운용)
@@ -120,9 +120,9 @@
 
 ## ✅ STEP 6 — Google Search Console & Analytics
 
-- [ ] **Search Console 등록**: [search.google.com/search-console](https://search.google.com/search-console) → `kulture.net` 속성 추가
-- [ ] **사이트맵 제출**: Search Console → Sitemaps → `https://kulture.net/sitemap.xml` 제출
-- [ ] **Google Analytics 4 설정**: [analytics.google.com](https://analytics.google.com) → 스트림에 `kulture.net` 등록
+- [ ] **Search Console 등록**: [search.google.com/search-console](https://search.google.com/search-console) → `kulture.wiki` 속성 추가
+- [ ] **사이트맵 제출**: Search Console → Sitemaps → `https://kulture.wiki/sitemap.xml` 제출
+- [ ] **Google Analytics 4 설정**: [analytics.google.com](https://analytics.google.com) → 스트림에 `kulture.wiki` 등록
 - [ ] **GA4 측정 ID 환경변수 등록**: `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX`
 - [ ] **색인 요청**: Search Console → URL 검사 → 홈페이지 URL 크롤링 요청
 
@@ -151,7 +151,7 @@ git log --oneline -5
 date
 ```
 
-> **축하합니다. Kulture.net 제국이 공식 론칭되었습니다. 🚀**
+> **축하합니다. Kulture.wiki 제국이 공식 론칭되었습니다. 🚀**
 
 ---
 

@@ -3,7 +3,6 @@
  * GET /api/translation/list?lang=ko&filter=all
  */
 
-import { connectToDatabase } from '../../../lib/mongodb.js';
 import { logger } from '../../../lib/logger.js';
 
 export default async function handler(req, res) {
@@ -12,48 +11,16 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { lang = 'ko', filter = 'all', page = 1, limit = 50 } = req.query;
-    
-    const { db } = await connectToDatabase();
-    
-    const query = { targetLanguage: lang };
-    if (filter !== 'all') {
-      query.status = filter;
-    }
-    
-    const skip = (parseInt(page) - 1) * parseInt(limit);
-    
-    const translations = await db.collection('translations')
-      .find(query)
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(parseInt(limit))
-      .toArray();
-    
-    const total = await db.collection('translations').countDocuments(query);
-    
-    // Populate contributor information
-    const translationsWithContributors = await Promise.all(
-      translations.map(async (trans) => {
-        if (trans.contributorId) {
-          const contributor = await db.collection('users').findOne(
-            { _id: trans.contributorId },
-            { projection: { name: 1, email: 1 } }
-          );
-          return { ...trans, contributor };
-        }
-        return trans;
-      })
-    );
-    
+    // TODO: Migrate to Supabase — MongoDB dependency removed
+    logger.info('[TranslationList]', 'List requested');
     res.status(200).json({
-      translations: translationsWithContributors,
-      total,
-      page: parseInt(page),
-      pages: Math.ceil(total / parseInt(limit)),
+      translations: [],
+      total: 0,
+      page: 1,
+      pages: 0,
     });
   } catch (error) {
-    logger.error('List API error:', error);
+    logger.error('[TranslationList]', `API error: ${error.message}`);
     res.status(500).json({ error: 'Failed to fetch translations' });
   }
 }

@@ -32,7 +32,7 @@
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)
 - **변경 유형**: 문서화 및 런칭 준비 (Documentation & Launch Prep)
 - **변경 요약**: Kulture 제국 백서(README) 개편 및 런칭 체크리스트 생성
-- **변경 상세 설명**: 전체 Phase(1~10)의 개발이 무결점으로 완료됨에 따라, 전체 시스템의 코어 아키텍처를 `README.md`에 문서화하고, CEO의 성공적인 실서비스 배포를 위한 `LAUNCH_CHECKLIST.md`를 신규 발급함. 이로써 Kulture.net의 모든 개발 파이프라인을 공식적으로 종료함.
+- **변경 상세 설명**: 전체 Phase(1~10)의 개발이 무결점으로 완료됨에 따라, 전체 시스템의 코어 아키텍처를 `README.md`에 문서화하고, CEO의 성공적인 실서비스 배포를 위한 `LAUNCH_CHECKLIST.md`를 신규 발급함. 이로써 Kulture.wiki의 모든 개발 파이프라인을 공식적으로 종료함.
 - **변경 대상**:
   - `README.md` — 전면 개편: 제국 백서(Whitepaper) 스타일. 4대 Pillar 아키텍처 다이어그램, 기술 스택, Phase별 개발 역사, 운영 지표 목표 포함
   - `LAUNCH_CHECKLIST.md` — 신규: 환경변수 세팅 · Vercel 배포 · Cron Job 활성화 · 도메인 연결 · 애드센스/API 연동 전체 체크박스 가이드
@@ -120,7 +120,7 @@
 - **작성자**: GitHub Copilot (Claude Sonnet 4.6)
 - **변경 유형**: UI/UX 대개편 (Design Revamp)
 - **변경 요약**: 글로벌 매거진 스타일 기반의 디자인 시스템 및 코어 레이아웃 구축
-- **변경 상세 설명**: Kulture.net의 비주얼 업그레이드를 위해 `globals.css`에 다크모드/네온 테마 시스템을 도입함. Glassmorphism이 적용된 프리미엄 `Navbar`와 `Footer`를 포함한 `Layout` 컴포넌트를 신규 생성하고 `_app.js`에 전역 적용함.
+- **변경 상세 설명**: Kulture.wiki의 비주얼 업그레이드를 위해 `globals.css`에 다크모드/네온 테마 시스템을 도입함. Glassmorphism이 적용된 프리미엄 `Navbar`와 `Footer`를 포함한 `Layout` 컴포넌트를 신규 생성하고 `_app.js`에 전역 적용함.
 - **변경 대상**:
   - `styles/globals.css` — 전면 재작성: CSS 변수 시스템(`--bg-primary`, `--accent-pink`, `--accent-cyan` 등 30+ 토큰), Inter·Bebas Neue 폰트, 다크 배경(`#0A0A0C`), 네온 스크롤바, 선택 영역 하이라이트, 유틸리티 클래스(`.glass`, `.gradient-text` 등)
   - `components/Navbar.jsx` — 신규: sticky 포지션, 스크롤 감지 Glassmorphism 전환, 네온 KULTURE 로고, 데스크톱 nav 링크, 검색 오버레이(ESC 닫기), LanguageSwitcher 연동, 모바일 햄버거 드로어

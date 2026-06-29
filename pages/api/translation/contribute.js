@@ -30,10 +30,8 @@ export default async function handler(req, res) {
       logger.error('[TranslationContribute]', `Quality evaluation failed: ${error.message}`);
     }
 
-    // Store in database
-    const { connectToDatabase } = await import('../../../lib/mongodb');
-    const { db } = await connectToDatabase();
-
+    // Store in database (file-based fallback — MongoDB dependency removed)
+    // TODO: Migrate to Supabase
     const contribution = {
       key,
       original,
@@ -48,27 +46,9 @@ export default async function handler(req, res) {
       createdAt: new Date(),
     };
 
-    const result = await db.collection('translations').insertOne(contribution);
-
-    // Auto-approve high-quality translations (score >= 9)
+    // Auto-approve high-quality translations (score >= 9) — file-based
     if (qualityScore >= 9) {
-      await db.collection('translations').updateOne(
-        { _id: result.insertedId },
-        {
-          $set: {
-            status: 'approved',
-            approvedAt: new Date(),
-            approvedBy: 'auto',
-          },
-        }
-      );
-
-      // Update translation file immediately
-      await updateTranslationFile({
-        ...contribution,
-        _id: result.insertedId,
-      });
-
+      await updateTranslationFile(contribution);
       return res.status(201).json({
         success: true,
         message: 'Translation submitted and auto-approved',

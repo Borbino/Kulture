@@ -3,7 +3,6 @@
  * GET /api/translation/stats
  */
 
-import { connectToDatabase } from '../../../lib/mongodb.js';
 import { logger } from '../../../lib/logger.js';
 
 export default async function handler(req, res) {
@@ -12,48 +11,17 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { db } = await connectToDatabase();
-    
-    const totalLanguages = 100;
-    
-    const totalTranslations = await db.collection('translations').countDocuments();
-    const pendingTranslations = await db.collection('translations').countDocuments({ status: 'pending' });
-    const approvedTranslations = await db.collection('translations').countDocuments({ status: 'approved' });
-    const rejectedTranslations = await db.collection('translations').countDocuments({ status: 'rejected' });
-    
-    const completionRate = (approvedTranslations / (totalLanguages * 110)) * 100;
-    
-    const topContributors = await db.collection('translations')
-      .aggregate([
-        { $group: { _id: '$contributorId', count: { $sum: 1 } } },
-        { $sort: { count: -1 } },
-        { $limit: 10 },
-        {
-          $lookup: {
-            from: 'users',
-            localField: '_id',
-            foreignField: '_id',
-            as: 'user'
-          }
-        },
-        { $unwind: '$user' },
-        {
-          $project: {
-            name: '$user.name',
-            count: 1
-          }
-        }
-      ])
-      .toArray();
-    
+    // TODO: Migrate to Supabase — MongoDB dependency removed
+    logger.info('[TranslationStats]', 'Stats requested');
+
     res.status(200).json({
-      totalLanguages,
-      totalTranslations,
-      pendingTranslations,
-      approvedTranslations,
-      rejectedTranslations,
-      completionRate,
-      topContributors,
+      totalLanguages: 0,
+      totalTranslations: 0,
+      pendingTranslations: 0,
+      approvedTranslations: 0,
+      rejectedTranslations: 0,
+      completionRate: 0,
+      topContributors: [],
     });
   } catch (error) {
     logger.error('Stats API error:', error);

@@ -9,7 +9,7 @@
 
 ## 💡 프로젝트 비전 (Vision)
 
-**Kulture.net**은 단순한 K-Pop 뉴스 사이트가 아니다.  
+**Kulture.wiki**은 단순한 K-Pop 뉴스 사이트가 아니다.  
 이것은 **인간의 개입 없이 스스로 콘텐츠를 생성·번역·배포하고, 유저를 락인(Lock-in)하며, 광고 수익을 극대화**하는 — 세계 최초의 **완전 자율형 K-Culture 수익 제국**이다.
 
 > Phase 1부터 Phase 10까지, 10개의 핵심 엔진이 유기적으로 연결되어  
@@ -191,7 +191,7 @@ vercel --prod
 <div align="center">
 
 **Built with ❤️ by GitHub Copilot (Claude Sonnet 4.6)**  
-**CEO: Borbino · Kulture.net · March 2026**
+**CEO: Borbino · Kulture.wiki · March 2026**
 
 *"The greatest K-Culture empire the internet has ever seen."*
 

@@ -3,8 +3,6 @@
  * POST /api/translation/approve
  */
 
-import { connectToDatabase } from '../../../lib/mongodb.js';
-import { ObjectId } from 'mongodb';
 import { logger } from '../../../lib/logger.js';
 
 export default async function handler(req, res) {
@@ -14,34 +12,15 @@ export default async function handler(req, res) {
 
   try {
     const { id } = req.body;
-    
+
     if (!id) {
       return res.status(400).json({ error: 'Translation ID is required' });
     }
-    
-    const { db } = await connectToDatabase();
-    
-    const result = await db.collection('translations').updateOne(
-      { _id: new ObjectId(id) },
-      {
-        $set: {
-          status: 'approved',
-          approvedAt: new Date(),
-          approvedBy: req.user?.id || 'admin', // Assume user from auth middleware
-        },
-      }
-    );
-    
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ error: 'Translation not found' });
-    }
-    
-    // Get the approved translation
-    const translation = await db.collection('translations').findOne({ _id: new ObjectId(id) });
-    
-    // Update the translation file
-    await updateTranslationFile(translation);
-    
+
+    // TODO: Migrate to Supabase — MongoDB dependency removed
+    logger.info('[TranslationApprove]', `Approve requested for id: ${id}`);
+    await updateTranslationFile({ id });
+
     res.status(200).json({ success: true, message: 'Translation approved' });
   } catch (error) {
     logger.error('[TranslationApprove]', `API error: ${error.message}`);

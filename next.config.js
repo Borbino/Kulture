@@ -10,7 +10,7 @@ const nextConfig = {
   
   // Code splitting configuration
   experimental: {
-    optimizePackageImports: ['@sanity/client', 'next-auth', 'socket.io-client'],
+    optimizePackageImports: ['@sanity/client', 'next-auth'],
   },
   
   images: {

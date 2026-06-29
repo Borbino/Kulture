@@ -164,7 +164,7 @@ export default function Home() {
         <meta property="og:title"       content="Kulture — Global K-Culture Magazine" />
         <meta property="og:description" content="Your premier destination for K-Pop, K-Drama, K-Beauty and all things Korean culture." />
         <meta property="og:type"        content="website" />
-        <link rel="canonical" href="https://kulture.net/" />
+        <link rel="canonical" href="https://kulture.wiki/" />
       </Head>
 
       <div className={styles.page}>
