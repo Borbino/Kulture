@@ -1,4 +1,4 @@
-ㅇname: Automation – Content Scraping & Discovery
+name: Automation – Content Scraping & Discovery
 
 # [V15.1 정책 3] 자동화는 GitHub Actions에서 실행한다. (Vercel Cron 사용 금지)
 # Vercel crons 블록이 vercel.json에서 제거되었으므로 이 Workflow가 유일한 스케줄러다.
@@ -17,6 +17,8 @@ on:
     - cron: '0 5 * * *'
     # 주간 자기 유지보수 — 매주 일요일 UTC 00:00
     - cron: '0 0 * * 0'
+    # Top 20 자율 스크래퍼 — 매 6시간 (UTC 0/6/12/18:30)
+    - cron: '30 */6 * * *'
   workflow_dispatch: # 수동 트리거 허용
 
 jobs:
@@ -169,3 +171,30 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
           SANITY_API_TOKEN: ${{ secrets.SANITY_API_TOKEN }}
+
+  top20-scraper:
+    name: Top 20 Trend Scraper (무과금 자율 엔진)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 */6 * * *'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+
+      - name: Run Top 20 scraper
+        run: node scripts/scraper/top20-scraper.js
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+          NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
+          SANITY_API_TOKEN: ${{ secrets.SANITY_API_TOKEN }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
